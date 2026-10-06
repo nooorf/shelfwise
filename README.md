@@ -6,6 +6,7 @@ Conversational library search that turns requests like *"dark, psychological, no
 
 - Design: [docs/SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md)
 - Plan and progress: [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)
+- Human tasks (query writing, grading, recordings): [MY_TASKS.md](MY_TASKS.md)
 
 ## Quickstart
 

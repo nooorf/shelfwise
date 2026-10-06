@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed simulate tick api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed simulate tick pool label eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -24,6 +24,16 @@ simulate:  ## Shelve every book and simulate 12 months of circulation (replaces 
 
 tick:  ## Keep availability changing during a demo (Ctrl-C to stop)
 	uv run python scripts/availability_tick.py --interval 60
+
+pool:  ## Add every search system's top 10 per query to eval/data/qrels.csv
+	uv run python scripts/pool.py
+
+label:  ## Grade pooled books: make label JUDGE=<your initials>
+	@test -n "$(JUDGE)" || (echo "usage: make label JUDGE=<your initials>" && exit 1)
+	uv run python scripts/label.py --judge $(JUDGE)
+
+eval:  ## Score all systems on the dev split and save a report
+	uv run python scripts/evaluate.py
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload
