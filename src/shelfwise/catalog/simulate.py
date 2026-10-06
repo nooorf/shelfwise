@@ -27,11 +27,17 @@ FLOORS = {
     "1": "Children & Teens",
     "2": "Fiction",
     "3": "Nonfiction",
+    "4": "Science & Technology",
 }
 
 _KIDS_COMPATIBLE = {"children's", "young adult", "fantasy", "adventure", "humor", "graphic novels"}
 # Rough Dewey classes for nonfiction call numbers.
 _DEWEY = {
+    "computer science": "004",
+    "programming": "005",
+    "artificial intelligence": "006",
+    "mathematics": "510",
+    "engineering": "620",
     "philosophy": "100",
     "psychology": "150",
     "self-help": "158",
@@ -47,6 +53,10 @@ _DEWEY = {
     "history": "900",
 }
 _NAME_SUFFIXES = {"jr", "jr.", "sr", "sr.", "ii", "iii", "iv"}
+_SCI_TECH = {
+    "computer science", "programming", "artificial intelligence", "mathematics", "engineering",
+    "science",
+}  # fmt: skip
 
 
 # --- Inputs and outputs -----------------------------------------------------------------------
@@ -117,7 +127,8 @@ def shelve(genres: tuple[str, ...], author: str | None) -> tuple[str, str]:
             return "1", f"GN {code}"
     nonfiction = [g for g in genres if g in NONFICTION_GENRES]
     if nonfiction and len(nonfiction) == len(genre_set):
-        return "3", f"{_DEWEY.get(nonfiction[0], '000')} {code}"
+        floor = "4" if nonfiction[0] in _SCI_TECH else "3"
+        return floor, f"{_DEWEY.get(nonfiction[0], '000')} {code}"
     return "2", f"FIC {code}"
 
 

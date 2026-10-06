@@ -173,3 +173,258 @@ isbn13,title,author,subject
 9780671632588,Psycho-cybernetics,Maxwell Maltz,self-help techniques
 9781497316928,"The art of money getting, or, Golden rules for money getting","P. T. Barnum, P. T. Barnum",self-help techniques
 9780768487008,The art of persuasion,Bob Burg,self-help techniques
+9780131103306,The C Programming Language,"Brian W. Kernighan, Dennis MacAlistair Ritchie",computer programming
+9780596516604,Learning Python,"Mark Lutz, David Ascher",computer programming
+9780070131514,Introduction to Algorithms,"Thomas H. Cormen, Charles E. Leiserson",computer programming
+9780071240833,Software Engineering,"Roger S. Pressman, Bruce Maxim",computer programming
+9780132100670,The Pragmatic Programmer,"Andy Hunt, Dave Thomas",computer programming
+9780613922081,Hackers,Steven Levy,computer programming
+9781306813099,Python For Data Analysis,Wes McKinney,computer programming
+9781119149224,PHP & MySQL,Jon Duckett,computer programming
+9780596004651,Head first Java,Kathy Sierra,computer programming
+9781548955489,JavaScript,David Flanagan,computer programming
+9781593279929,Automate the Boring Stuff with Python,Al Sweigart,computer programming
+9781593279288,"Python Crash Course, 2nd Edition",Eric Matthes,computer programming
+9780074620380,Object-oriented Programming with C++,E. Balagurusamy,computer programming
+9781593275907,Black Hat Python,"Justin Seitz, Tim Arnold",computer programming
+9780262510875,Structure and Interpretation of Computer Programs (SICP),"Harold Abelson, Gerald Jay Sussman",computer programming
+9781292472553,Artificial intelligence,"Stuart J. Russell, Peter Norvig",algorithms
+9781480560406,Algorithms to Live By,"Brian Christian, Tom Griffiths",algorithms
+9781292374062,Computer Networks,"Andrew S. Tanenbaum, John David Wetherall",algorithms
+9780201896855,The art of computer programming,Donald Knuth,algorithms
+9780141985428,Weapons of Math Destruction,Cathy O'Neil,algorithms
+9780060564896,Prey,Michael Crichton,algorithms
+9780615459813,Data Structures and Algorithms Made Easy,Narasimha Karumanchi,algorithms
+9781617292231,Grokking Algorithms,Aditya Y. Bhargava,algorithms
+9781848000698,The algorithm design manual,Steven S. Skiena,algorithms
+9780201000238,Data structures and algorithms,"Alfred V. Aho, John E. Hopcroft",algorithms
+9780393357363,Hello world,Hannah Fry,algorithms
+9781409191148,QualityLand,Marc-Uwe Kling,algorithms
+9781721307234,Algorithms of Oppression,Safiya Umoja Noble,algorithms
+9780997316001,Computer Science Distilled,"Wladston Ferreira Filho, Raimondo Pictet",algorithms
+9780134389967,Concrete mathematics,"Ronald L. Graham, Donald Knuth",algorithms
+9781491904398,Data science from scratch,Joel Grus,data structures (computer science)
+9780929306377, Fundamentals of Data Structures in C++ 2nd Edition,"Ellis Horowitz, Sartaj Sahni",data structures (computer science)
+9780070380011,Schaum's outline of theory and problems of data structures,Seymour Lipschutz,data structures (computer science)
+9780929306407,Fundamentals of data structures in C,Ellis Horowitz,data structures (computer science)
+9780538798136,C++ Programming,D. S. Malik,data structures (computer science)
+9780201591187,"Data structures, algorithms, and software principles in C",Thomas A. Standish,data structures (computer science)
+9780070651579,An introduction to data structures with applications,"Jean-Paul Tremblay, Paul Gordon Sorenson",data structures (computer science)
+9780805354409,Data structures and algorithm analysis in C,Mark Allen Weiss,data structures (computer science)
+9781118290279,Data Structures and Algorithms in Python,"Michael T. Goodrich, Roberto Tamassia",data structures (computer science)
+9780131997462,Data Structures Using C,Aaron M. Tenenbaum,data structures (computer science)
+9780534951238,Data structures,"Richard F. Gilberg, Behrouz A. Forouzan",data structures (computer science)
+9780134847993,Data structures & algorithms in Java,Robert Lafore,data structures (computer science)
+9780130220059,Algorithms and data structures,Niklaus Wirth,data structures (computer science)
+9780130224187,Algorithms + data structures=programs,Niklaus Wirth,data structures (computer science)
+9780521631242,Purely functional data structures,Chris Okasaki,data structures (computer science)
+9781103479740,The Autobiography of Benjamin Franklin,Benjamin Franklin,operating systems (computers)
+9781718503540,Linux Basics for Hackers,OccupyTheWeb,operating systems (computers)
+9780471417439,Operating System Concepts,Abraham Silberschatz,operating systems (computers)
+9780071136686,Advanced concepts in operating systems,Mukesh Singhal,operating systems (computers)
+9781292061429,Modern Operating Systems,"Andrew S. Tanenbaum, Herbert Bos",operating systems (computers)
+9781593273897,The Linux Command Line,William E. Shotts,operating systems (computers)
+9780470278826,Linux For Dummies,"Dee-Ann LeBlanc, Melanie Hoag",operating systems (computers)
+9781587990809,Just for fun,"Linus Torvalds, David Diamond",operating systems (computers)
+9780133315622,UNIX System Programming Using C++,Terrence Chan,operating systems (computers)
+9780070854673,Operating systems,"Stuart E. Madnick, John Donovan",operating systems (computers)
+9781565928756,The Cathedral and the Bazaar,Eric S. Raymond,operating systems (computers)
+9781423954392,CompTIA A+ Certification,CompTIA,operating systems (computers)
+9781119137863,CompTIA A+ Complete Study Guide,Quentin Docter,operating systems (computers)
+9781782168492,Kali Linux,"Wolf Halton, Bo Weaver",operating systems (computers)
+9780789719034,Upgrading and repairing PCs,"Scott Mueller, Mark Edward Soper",operating systems (computers)
+9781593270872,Hacking,"Jon Erickson, Jon Erickson",computer networks
+9781119485544,Hacking for Dummies,"Kevin Beaver, Jutta Schmidt",computer networks
+9780471249528,Digital literacy,Paul Gilster,computer networks
+9780321965516,Don't Make Me Think,Steve Krug,computer networks
+9781292405506,Computer networking,"James F. Kurose, Keith W. Ross",computer networks
+9780071742559,Gray Hat Hacking,"Shon Harris, Allen Harper",computer networks
+9781665197052,The Art of Deception,"Kevin D. Mitnick, William L. Simon",computer networks
+9780140816518,The Road Ahead,"Bill Gates, Nathan Myhrvold",computer networks
+9780070435063,Cyber law simplified,Vivek Sood,computer networks
+9781281740809,The wealth of networks,Yochai Benkler,computer networks
+9780072322040,Data Communications and Networking,"Behrouz A. Forouzan, Catherine Ann Coombs",computer networks
+9780137073986,Teaching and learning with technology,"Judy Lever-Duffy, Jean B. McDonald",computer networks
+9780694507719,Medea,Euripides,computer networks
+9780593163269,The Singularity Is Near,Ray Kurzweil,computer networks
+9781740310000,The Internet for Dummies,"John R. Levine, Carol Baroudi",computer networks
+9781306451024,SQL for Dummies,"Allen G. Taylor, Reinhard Engel",database management
+9781491903117,Designing Data-Intensive Applications,Martin Kleppmann,database management
+9780070310865,Database system concepts,Abraham Silberschatz,database management
+9780136006374,A first course in database systems,"Jeffrey D. Ullman, Jennifer D. Widom",database management
+9780321122261,Fundamentals of database systems,"Ramez Elmasri, Shamkant B. Navathe",database management
+9780256076295,Reconfigurable Processor Array A Bit Sliced Parallel Computer (USA),A. Rushton,database management
+9780062390851,Everybody Lies,Seth Stephens-Davidowitz,database management
+9780387848846,The Elements of Statistical Learning,"Trevor Hastie, Robert Tibshirani",database management
+9780072472578,Interactive Computing Series,Kenneth C. Laudon,database management
+9781484226032,Blockchain Basics,Daniel Drescher,database management
+9780070108295,Distributed databases,Stefano Ceri,database management
+9781890774820,Murach's MySQL,Joel Murach,database management
+9780072465358,Database management systems,"Raghu Ramakrishnan, Johannes Gehrke",database management
+9781783555147,Python machine learning,Sebastian Raschka,database management
+9780321884497,Database Design for Mere Mortals,Michael J. Hernandez,database management
+9781098122461,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",Aurélien Géron,machine learning
+9780195671544,Artificial Intelligence and Intelligent Systems,N. P. Padhy,machine learning
+9780262035613,Deep Learning,"Ian Goodfellow, Yoshua Bengio",machine learning
+9781449369415,Introduction to Machine Learning with Python,"Andreas C. Mueller, Sarah Guido",machine learning
+9780262306164,Machine learning,"Kevin P. Murphy, Kevin P. Murphy",machine learning
+9780141979243,The Master Algorithm,Pedro Domingos,machine learning
+9780241404829,Artificial Intelligence,Melanie Mitchell,machine learning
+9780262337588,Machine learning,Ethem Alpaydin,machine learning
+9781098107963,Designing Machine Learning Systems,Chip Huyen,machine learning
+9780262012119,Introduction to machine learning,Ethem Alpaydin,machine learning
+9781633436589,Deep Learning with Python,"Francois Chollet, Matthew Watson",machine learning
+9781491962299,Hands-On Machine Learning with Scikit-Learn and TensorFlow,Aurélien Géron,machine learning
+9780393635829,The Alignment Problem,Brian Christian,machine learning
+9781999579500,The Hundred-Page Machine Learning Book,Andriy Burkov,machine learning
+9781108569323,Mathematics for Machine Learning,"Marc Peter Deisenroth, A. Aldo Faisal",machine learning
+9780812439250,"I, Robot",Isaac Asimov,artificial intelligence
+9780613824224,Ender's Game,Orson Scott Card,artificial intelligence
+9780394756820,"Gödel, Escher, Bach",Douglas R. Hofstadter,artificial intelligence
+9781848941113,A Torre Negra,Stephen King,artificial intelligence
+9780575082410,The moon is a harsh mistress,Robert A. Heinlein,artificial intelligence
+9780593311295,Klara and the Sun,Kazuo Ishiguro,artificial intelligence
+9780765397539,All Systems Red,Martha Wells,artificial intelligence
+9781501227745,Superintelligence,Nick Bostrom,artificial intelligence
+9781101946596,Life 3.0,Max Tegmark,artificial intelligence
+9780593734247,Nexus,Yuval Noah Harari,artificial intelligence
+9780316246620,Ancillary Justice,Ann Leckie,artificial intelligence
+9781597805742,The Windup Girl,Paolo Bacigalupi,artificial intelligence
+9781980021711,Network Effect,Martha Wells,artificial intelligence
+9781250191786,Rogue Protocol,Martha Wells,artificial intelligence
+9781250186935,Artificial Condition,Martha Wells,artificial intelligence
+9781543057386,Distributed Systems,"Andrew S. Tanenbaum, Maarten Van Steen",parallel programming (computer science)
+9780132702256,Java Concurrency in Practice,"Brian Goetz, Joshua Bloch",parallel programming (computer science)
+9780120146802,Advances in Electronics and Electron Physics (Advances in Imaging and Electron Physics),Peter W. Hawkes,parallel programming (computer science)
+9780072822564,Parallel Programming in C with MPI and OpenMP,Michael J. Quinn,parallel programming (computer science)
+9780596551179,Hadoop,"Tom White, Tom White",parallel programming (computer science)
+9781937785659,Seven Concurrency Models In Seven Weeks,Paul Butcher,parallel programming (computer science)
+9781306812450,Parallel And Concurrent Programming In Haskell,Simon Marlow,parallel programming (computer science)
+9781617292019,Elixir in action,Sas̄a Jurić,parallel programming (computer science)
+9781306810647,Pthreads programming,"Bradford Nichols, Dick Buttlar",parallel programming (computer science)
+9780262181624,"Turtles, termites, and traffic jams",Mitchel Resnick,parallel programming (computer science)
+9780123814722,Programming massively parallel processors hands-on with CUDA,"Kirk, David",parallel programming (computer science)
+9780321531346,Parallel programming,Lawrence Snyder,parallel programming (computer science)
+9780585037042,Parallel algorithms for regular architectures,Russ Miller,parallel programming (computer science)
+9780262200875,Parallel logic programming,Evan Tick,parallel programming (computer science)
+9781282650398,Parallel programming,"Barry Wilkinson, Michael W. Allen",parallel programming (computer science)
+9780465072996,The Psychology of Everyday Things,Donald A. Norman,computer architecture
+9781562762506,How computers work,"Ron White, Timothy Edward Downs",computer architecture
+9780120121588,"Advances in Computers, Volume 49 (Advances in Computers)","Marvin V. Zelkowitz, Marshall C. Yovits",computer architecture
+9780713914825,The Soul of a New Machine,Tracy Kidder,computer architecture
+9780130195708,"Microprocessor Architecture, Programming, and Applications with the 8085",Ramesh S. Gaonkar,computer architecture
+9780134494333,Clean Architecture,Robert C. Martin,computer architecture
+9780070256866,Computer organization,V. Carl Hamacher,computer architecture
+9780471722571,Systems Analysis and Design,"Alan Dennis, Barbara Haley Wixom",computer architecture
+9781098155438,Think Python,"Allen B. Downey, Allen Downey",computer architecture
+9780120121380,Advances in Computers,Marshall C. Yovits,computer architecture
+9781492034025,Building Microservices,Sam Newman,computer architecture
+9780130351197,Computer organization and architecture,William Stallings,computer architecture
+9780131666375,Computer system architecture,M. Morris Mano,computer architecture
+9780138546625,Structured Computer Organization,Andrew S. Tanenbaum,computer architecture
+9780135809440,Microcomputer systems,Yu-cheng Liu,computer architecture
+9780070612938,Power system analysis,John J. Grainger,distributed systems
+9781484200766,Pro Git,"Scott Chacon, Ben Straub",distributed systems
+9780070612853,Elements of power system analysis,William D. Stevenson,distributed systems
+9780470313114,Security Engineering,Ross J. Anderson,distributed systems
+9781491910290,Web Scraping with Python,Ryan Mitchell,distributed systems
+9780813812700,Analysis of faulted power systems,P. M. Anderson,distributed systems
+9781608196104,The grid,Gretchen Anna Bakke,distributed systems
+9780132199087,Distributed Operating Systems,Andrew S. Tanenbaum,distributed systems
+9780201498387,Distributed operating systems & algorithms,Randy Chow,distributed systems
+9780780311190,Distributed Operating Systems,"Pradeep K. Sinha, Preeti Sinha",distributed systems
+9780738495965,Patterns,IBM Redbooks,distributed systems
+9780596553609,Active Directory,"Robbie Allen, Joe Richards",distributed systems
+9780596001582,DNS and BIND,"Paul Albitz, Cricket Liu",distributed systems
+9781804615348,Solutions Architect's Handbook,"Saurabh Shrivastava, Neelanjali Srivastav",distributed systems
+9780387523804,Neural networks,"Berndt Müller, Berndt Müller",distributed systems
+9780201006506,The Mythical Man-Month,Frederick P. Brooks,software engineering
+9780201544350,Object-Oriented Software Engineering,Ivar Jacobson,software engineering
+9781588362896,Masters of Doom,David Kushner,software engineering
+9781491973899,The Manager's Path,Camille Fournier,software engineering
+9780131984615,Software Engineering,"Shari Lawrence Pfleeger, Joanne M Atlee",software engineering
+9780201398151,Software engineering,"Ian Sommerville, Sommerville, Ian.",software engineering
+9781942788379,Accelerate,"Nicole Forsgren, Jez Humble",software engineering
+9780077122799,Software project management,Bob Hughes,software engineering
+9780137585281,Test-driven development,Kent Beck,software engineering
+9780201168938,Engineering design graphics,James H. Earle,software engineering
+9781491929124,Site Reliability Engineering,"Betsy Beyer, Jones, Chris (Computer engineer)",software engineering
+9780471157120,Introducing Computers,Robert H. Blissmer,software engineering
+9780582256347,Mechatronics,W. Bolton,software engineering
+9781593274245,Think like a Programmer,V. Anton Spraul,software engineering
+9780831126995,Machinerys Handbook,"Erik Oberg, E. Oberg",software engineering
+9780345374912,Jurassic Park,Michael Crichton,systems engineering
+9780345412997,Airframe,Michael Crichton,systems engineering
+9780136169390,Signals and Systems,"Alan V. Oppenheim, Alan S. Willsky",systems engineering
+9780471775331,Digital photography for dummies,Julie Adair King,systems engineering
+9780795326998,On Photography,Susan Sontag,systems engineering
+9781566195027,To engineer is human,Henry Petroski,systems engineering
+9780133356724,Digital image processing,"Rafael C. Gonzalez, Richard E. Woods",systems engineering
+9780872591721,The ARRL handbook for the radio amateur,American Radio Relay League (ARRL),systems engineering
+9780517277553,Michael Crichton's Jurassic World (Jurassic Park / Lost World),Michael Crichton,systems engineering
+9780132217354,Systems engineering and analysis,"Benjamin S. Blanchard, Wolter J. Fabrycky",systems engineering
+9780470446546,World History for Dummies,Peter Haugen,systems engineering
+9780471727491,Control Systems Engineering,Norman S. Nise,systems engineering
+9780309102384,Glut,Alex Wright,systems engineering
+9781543660630,A Crack in Creation,"Jennifer A. Doudna, Samuel H. Sternberg",systems engineering
+9780131111202,Digital systems,"Ronald J. Tocci, Neal S. Widmer",systems engineering
+9781491946251,Fluent Python,Luciano Ramalho,python (computer program language)
+9781593276034,Python crash course,Eric Matthes,python (computer program language)
+9780596001674,Python Cookbook,"Alex Martelli, David Ascher",python (computer program language)
+9780596528980,Python,Mark Lutz,python (computer program language)
+9781449302856,Programming Python,Mark Lutz,python (computer program language)
+9781098121228,Python Data Science Handbook,Jake VanderPlas,python (computer program language)
+9780132269933,Core Python programming,Wesley Chun,python (computer program language)
+9780072127188,"Python, The Complete Reference",Martin C. Brown,python (computer program language)
+9781593277345,Python Playground,Mahesh Venkitachalam,python (computer program language)
+9781535483834,Python,Byron Francis,python (computer program language)
+9781336017818,Head First Python,Paul Barry,python (computer program language)
+9781590282977,Python programming,John M. Zelle,python (computer program language)
+9781118057315,Beginning Python,James R. Payne,python (computer program language)
+9781548987848,Python for Kids,Jason R. Briggs,python (computer program language)
+9781722834920,Learn Programming,Antti Salonen,python (computer program language)
+9780201700732,The C++ programming language,Bjarne Stroustrup,c++ (computer program language)
+9780070681828,Programming in ANSI C,E. Balagurusamy,c++ (computer program language)
+9780393979503,C programming,K. N. King,c++ (computer program language)
+9781782369219,C++,"Paul J. Deitel, Harvey M. Deitel",c++ (computer program language)
+9780198078883,Computer Fundamentals and Programming in C,Reema Thareja,c++ (computer program language)
+9780078816543,C++,Herbert Schildt,c++ (computer program language)
+9780534374907,Invitation to Computer Science,"G. Michael Schneider, Judith L. Gersting",c++ (computer program language)
+9780672226601,The Waite Group's Turbo C programming for the PC,Robert Lafore,c++ (computer program language)
+9780131173347,C how to program,"Harvey M. Deitel, Paul J. Deitel",c++ (computer program language)
+9780534385255,Computer science,"Behrouz A. Forouzan, Richard F. Gilberg",c++ (computer program language)
+9780789751980,C Programming Absolute Beginner's Guide,Greg Perry,c++ (computer program language)
+9780199452057,Introduction to C Programming,Reema Thareja,c++ (computer program language)
+9780471597568,Applied Cryptography,Bruce Schneier,c++ (computer program language)
+9780201721485,C++ Primer,Stanley B. Lippman,c++ (computer program language)
+9780135974445,"Agile Software Development, Principles, Patterns, and Practices",Robert C. Martin,c++ (computer program language)
+9780471089872,Elementary linear algebra,"Howard Anton, Chris Rorres",linear algebra
+9780961408893,Introduction to linear algebra,Gilbert Strang,linear algebra
+9781323170564,Linear algebra and its applications,"David C. Lay, Lay",linear algebra
+9780130084514,Linear algebra,"Stephen H. Friedberg, Arnold J. Insel",linear algebra
+9780697268518,Linear Algebra with Applications,Gareth Williams,linear algebra
+9780155510074,Linear algebra and its applications,Gilbert Strang,linear algebra
+9780131860612,Differential equations & linear algebra,"Jerry Farlow, James E. Hall",linear algebra
+9780471000075,Calculus,Tom M. Apostol,linear algebra
+9780023659508,Introductory linear algebra with applications,Bernard Kolman,linear algebra
+9780070380233,3000 solved problems in linear algebra,Seymour Lipschutz,linear algebra
+9780321390530,Mathematical proofs,"Gary Chartrand, Albert D. Polimeni",linear algebra
+9780201824162,Introduction to linear algebra,Lee W. Johnson,linear algebra
+9780133214314,Advanced engineering mathematics,"Greenberg, Michael D.",linear algebra
+9780131437401,Introductory linear algebra,"Bernard Kolman, David R. Hill",linear algebra
+9780130337818,Linear algebra with applications,Steven J. Leon,linear algebra
+9780840058188,Calculus,James Stewart,calculus
+9780520009288,Philosophiae naturalis principia mathematica,Sir Isaac Newton,calculus
+9780471082712,Calculus with analytic geometry,"Howard Anton, Albert Herr",calculus
+9780471046325,Calculus,"Howard Anton, Howard A. Anton",calculus
+9780534362980,"Calculus, Early Transcendentals",James Stewart,calculus
+9781629920283,Calculus Made Easy,Silvanus Phillips Thompson,calculus
+9780470274262,Matrices and tensors in physics,A. W. Joshi,calculus
+9780618007295,Advanced Mathematics,Richard G. Brown,calculus
+9780618068524,Calculus,Ron Larson,calculus
+9780224044479,The Road to Reality,Roger Penrose,calculus
+9780060441074,"The calculus, with analytic geometry","Louis Leithold, Leithold",calculus
+9780521683852,Calculus,Michael Spivak,calculus
+9780201529296,Calculus and analytic geometry,George Brinton Thomas,calculus
+9780201531749,Calculus and analytic geometry,George Brinton Thomas,calculus
+9780070577275,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons,calculus

@@ -91,3 +91,42 @@ def test_history_plus_fiction_in_one_subject_is_historical_fiction() -> None:
         "historical fiction"
     ]
     assert "historical fiction" not in map_subjects(["English fiction, history and criticism"])[0]
+
+
+# Real subjects (first 14) from Open Library works.
+INTRO_TO_ALGORITHMS = [
+    "Algorithms", "Computer algorithms", "Computer programming", "open_syllabus_project",
+    "Programming", "Algorithmes", "Programmation (Informatique)", "54.10 theoretical informatics",
+    "Algorithmus", "Informatik", "Theoretische Informatik", "Algorithmentheorie",
+    "COMPUTER PROGRAMS", "PROGRAMMING LANGUAGES",
+]  # fmt: skip
+I_ROBOT = [
+    "smear campaigns", "supercomputers", "computers", "Frankenstein complex", "hyperspace",
+    "heisenbugs", "asteroids", "space stations", "robots", "morality", "Science fiction",
+    "Fiction",
+]  # fmt: skip
+
+
+def test_textbook_gets_technical_genres_and_textbook_tag() -> None:
+    genres, tags = map_subjects(INTRO_TO_ALGORITHMS)
+
+    assert {"programming", "computer science"} <= set(genres)
+    assert "textbook" in tags
+
+
+def test_robot_novel_is_not_a_computer_science_book() -> None:
+    genres, _ = map_subjects(I_ROBOT)
+
+    assert "science fiction" in genres
+    assert not {"computer science", "artificial intelligence", "programming"} & set(genres)
+
+
+def test_math_and_ai_subjects() -> None:
+    assert map_subjects(["Algebras, Linear", "Textbooks", "Mathematics"]) == (
+        ["mathematics"],
+        ["textbook"],
+    )
+    assert map_subjects(["Machine learning", "Neural networks (Computer science)"])[0] == [
+        "artificial intelligence",
+        "computer science",
+    ]

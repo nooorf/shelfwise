@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 from shelfwise.ingest.normalize import normalize_isbn
 from shelfwise.ingest.openlibrary import OpenLibraryClient
 
-DEFAULT_SUBJECTS = [
+GENERAL_SUBJECTS = [
     "psychological fiction",
     "thrillers",
     "detective and mystery stories",
@@ -27,6 +27,27 @@ DEFAULT_SUBJECTS = [
     "history",
     "self-help techniques",
 ]
+# Course and technical books a university library holds (eval category "learning").
+TECHNICAL_SUBJECTS = [
+    "computer programming",
+    "algorithms",
+    "data structures (computer science)",
+    "operating systems (computers)",
+    "computer networks",
+    "database management",
+    "machine learning",
+    "artificial intelligence",
+    "parallel programming (computer science)",
+    "computer architecture",
+    "distributed systems",
+    "software engineering",
+    "systems engineering",
+    "python (computer program language)",
+    "c++ (computer program language)",
+    "linear algebra",
+    "calculus",
+]
+DEFAULT_SUBJECTS = GENERAL_SUBJECTS + TECHNICAL_SUBJECTS
 
 
 def main() -> None:

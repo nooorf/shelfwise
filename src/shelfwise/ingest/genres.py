@@ -69,6 +69,51 @@ RULES: tuple[GenreRule, ...] = (
     GenreRule("war", (r"war fiction", r"war stories", r"world war")),
     GenreRule("biography", (r"\bbiograph",), (r"autobiograph",)),
     GenreRule("memoir", (r"\bmemoirs?\b", r"autobiograph")),
+    # Technical / course books. Listed before general nonfiction so they lead the genre list.
+    GenreRule(
+        "artificial intelligence",
+        (r"artificial intelligence", r"machine learning", r"neural networks", r"deep learning"),
+    ),
+    GenreRule(
+        "programming",
+        (
+            r"\bprogramming\b",
+            r"program(ming)? languages?",
+            r"\bpython\b",
+            r"\bjava\b",
+            r"\bjavascript\b",
+        ),
+    ),
+    GenreRule(
+        "computer science",
+        (
+            r"computer science",
+            r"\balgorithms?\b",
+            r"data structures",
+            r"operating systems",
+            r"computer networks?",
+            r"\bdatabases?\b",
+            r"database management",
+            r"computer architecture",
+            r"distributed (systems|processing)",
+            r"parallel (programming|processing)",
+            r"software engineering",
+            r"electronic data processing",
+            r"\bcomputers?\b",
+        ),
+    ),
+    GenreRule(
+        "mathematics",
+        (
+            r"\bmathematic",
+            r"\balgebras?\b",
+            r"\bcalculus\b",
+            r"\bstatistics\b",
+            r"\bprobabilit",
+            r"\bgeometry\b",
+        ),
+    ),
+    GenreRule("engineering", (r"\bengineering\b",)),
     GenreRule("history", (r"\bhistory\b",), _NONFICTION_ONLY),
     GenreRule(
         "science",
@@ -89,6 +134,7 @@ NONFICTION_GENRES = frozenset(
     {
         "true crime", "biography", "memoir", "history", "science", "philosophy", "psychology",
         "self-help", "business", "politics", "religion", "travel", "essays",
+        "artificial intelligence", "programming", "computer science", "mathematics", "engineering",
     }
 )  # fmt: skip
 _FICTION = re.compile(r"\bfiction\b|\bnovels?\b|\bstories\b")
@@ -104,11 +150,17 @@ _NOISE = (
 
 
 def _fold_subject(subject: str) -> str:
-    return " ".join(re.sub(r"[^\w\s]", " ", normalize_text(subject).casefold()).split())
+    return " ".join(re.sub(r"[^\w\s]|_", " ", normalize_text(subject).casefold()).split())
+
+
+# Signals that a book is used for teaching; normalized to one searchable tag.
+_TEXTBOOK_SUBJECTS = {"open syllabus project", "textbooks", "textbook"}
 
 
 def _as_tag(folded: str) -> str:
     # "Marriage, fiction" / "Artists -- Fiction" -> "marriage" / "artists"
+    if folded in _TEXTBOOK_SUBJECTS:
+        return "textbook"
     return re.sub(r"\s+fiction$", "", folded).strip()
 
 

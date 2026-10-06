@@ -45,6 +45,9 @@ def result() -> SimulationResult:
         # Noisy "children's" tag on an adult classic must not send it to the kids' floor.
         (("historical fiction", "children's", "classics"), "Charles Dickens", ("2", "FIC DIC")),
         (("memoir",), "Martin Luther King, Jr.", ("3", "920 KIN")),
+        (("programming", "computer science"), "Thomas H. Cormen", ("4", "005 COR")),
+        (("artificial intelligence",), "Ian Goodfellow", ("4", "006 GOO")),
+        (("mathematics",), "Gilbert Strang", ("4", "510 STR")),
         ((), None, ("2", "FIC ANO")),
     ],
 )
