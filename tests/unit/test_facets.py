@@ -4,6 +4,7 @@ from pydantic import ValidationError
 from shelfwise.tagging.facets import (
     PROMPT_VERSION,
     BookFacets,
+    BookFacetsLLM,
     BookRecord,
     apply_consistency_rules,
     build_messages,
@@ -116,3 +117,31 @@ def test_consistency_rules_keep_a_real_historical_setting() -> None:
 
 def test_themes_underscores_become_spaces() -> None:
     assert normalize_themes(["mental_health"]) == ["mental health"]
+
+
+def test_llm_schema_puts_themes_first_and_uses_words() -> None:
+    schema = BookFacetsLLM.model_json_schema()
+
+    assert next(iter(schema["properties"])) == "themes"
+    assert schema["properties"]["darkness"]["enum"] == [
+        "light",
+        "some serious moments",
+        "dark",
+        "very dark",
+    ]
+    assert "future" in schema["properties"]["historical_setting"]["description"]
+
+
+def test_llm_words_map_to_stored_scales() -> None:
+    answer = BookFacetsLLM.model_validate(
+        {
+            "themes": ["grief"], "fiction": True, "audience": "adult", "historical_setting": "no",
+            "setting_period": None, "darkness": "dark", "romance": "central",
+            "violence": "mild or off-page", "supernatural": "no", "pace": "slow", "reading_level": None,
+        }
+    )  # fmt: skip
+
+    facets = answer.to_facets()
+
+    assert (facets.darkness, facets.romance, facets.violence) == (2, 3, 1)
+    assert facets.themes == ["grief"]

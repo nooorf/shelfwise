@@ -13,9 +13,10 @@ from ..fakes import FakeLLM
 from .factories import add_work
 
 DARK = {
-    "fiction": True, "audience": "adult", "darkness": 3, "romance": 0, "violence": 2,
-    "pace": "fast", "supernatural": "no", "historical_setting": "no", "setting_period": None,
-    "reading_level": None, "themes": ["Obsession", "trauma"],
+    "themes": ["Obsession", "trauma"], "fiction": True, "audience": "adult",
+    "historical_setting": "no", "setting_period": None, "darkness": "very dark",
+    "romance": "none", "violence": "on-page", "supernatural": "no", "pace": "fast",
+    "reading_level": None,
 }  # fmt: skip
 
 
@@ -52,7 +53,7 @@ def test_tags_are_saved_with_version_and_themes(
         ).scalar_one()
     assert saved is not None
     assert saved["darkness"] == 3 and saved["source"] == "llm"
-    assert saved["model_version"] == "facets-v1/qwen3:4b"
+    assert saved["model_version"] == "facets-v2/qwen3:4b"
     assert themes == ["obsession", "trauma"]
 
 

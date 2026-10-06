@@ -17,7 +17,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-PROMPT_VERSION = "facets-v1"
+# v2: the model answers in words, themes first (v1's 0-3 digits collapsed to 0 on small models).
+PROMPT_VERSION = "facets-v2"
 MAX_DESCRIPTION_CHARS = 1500
 MAX_SUBJECTS = 15
 
@@ -25,6 +26,8 @@ YesNoUnclear = Literal["yes", "no", "unclear"]
 
 
 class BookFacets(BaseModel):
+    """Tags as stored and used by filters and the ranker (0-3 scales)."""
+
     fiction: bool = Field(description="true for novels and stories; false for nonfiction")
     audience: Literal["children", "ya", "adult"] = Field(
         description="children: under ~12; ya: teenage readers; adult: everyone else"
@@ -71,6 +74,74 @@ class BookFacets(BaseModel):
         min_length=0,
         max_length=6,
     )
+
+
+DARKNESS = ("light", "some serious moments", "dark", "very dark")
+ROMANCE = ("none", "minor subplot", "significant subplot", "central")
+VIOLENCE = ("none", "mild or off-page", "on-page", "graphic")
+
+
+class BookFacetsLLM(BaseModel):
+    """What the LLM fills in. Field order matters: themes come first so the model has described
+    the book before it scores it, and scales are words rather than digits, because small models
+    under constrained decoding drift to the lowest digit."""
+
+    themes: list[str] = Field(
+        description="2 to 5 short lowercase themes of the book, e.g. 'grief', 'obsession', "
+        "'coming of age', 'surveillance'",
+        min_length=0,
+        max_length=6,
+    )
+    fiction: bool = Field(description="true for novels and stories; false for nonfiction")
+    audience: Literal["children", "ya", "adult"] = Field(
+        description="children: under ~12; ya: teenage readers; adult: everyone else"
+    )
+    historical_setting: YesNoUnclear = Field(
+        description="yes ONLY if the story is set in a period that was already the past when the "
+        "book was written (e.g. the French Revolution in a 19th-century novel, World War II in a "
+        "2010s novel). Stories set in the author's own present, or in the future, are no. "
+        "unclear: can't tell. Nonfiction: no"
+    )
+    setting_period: str | None = Field(
+        description="short name of that past era when historical_setting is yes, e.g. "
+        "'French Revolution, 1789-1793'; otherwise null"
+    )
+    darkness: Literal["light", "some serious moments", "dark", "very dark"] = Field(
+        description="light: uplifting or gentle. some serious moments. dark: crime, abuse, grief, "
+        "despair or violence are central. very dark: bleak, disturbing, horror"
+    )
+    romance: Literal["none", "minor subplot", "significant subplot", "central"] = Field(
+        description="how much of the story is a romantic or sexual relationship; central for "
+        "romance novels"
+    )
+    violence: Literal["none", "mild or off-page", "on-page", "graphic"]
+    supernatural: YesNoUnclear = Field(
+        description="yes: magic, ghosts, vampires, curses, psychic or paranormal powers. "
+        "Science-fiction technology is NOT supernatural. no: realistic or scientific"
+    )
+    pace: Literal["slow", "medium", "fast"] = Field(
+        description="how fast the story moves; nonfiction: medium unless clearly otherwise"
+    )
+    reading_level: Literal["intro", "intermediate", "advanced"] | None = Field(
+        description="ONLY for technical, academic or course books: intro (no prior knowledge), "
+        "intermediate (some background), advanced (graduate or specialist). null for fiction "
+        "and general-audience nonfiction"
+    )
+
+    def to_facets(self) -> BookFacets:
+        return BookFacets(
+            fiction=self.fiction,
+            audience=self.audience,
+            darkness=DARKNESS.index(self.darkness),
+            romance=ROMANCE.index(self.romance),
+            violence=VIOLENCE.index(self.violence),
+            pace=self.pace,
+            supernatural=self.supernatural,
+            historical_setting=self.historical_setting,
+            setting_period=self.setting_period,
+            reading_level=self.reading_level,
+            themes=self.themes,
+        )
 
 
 @dataclass(frozen=True)

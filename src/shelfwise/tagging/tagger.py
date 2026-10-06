@@ -17,6 +17,7 @@ from shelfwise.catalog import schema
 from shelfwise.llm.client import LLMInvalidOutput, StructuredResult
 from shelfwise.tagging.facets import (
     BookFacets,
+    BookFacetsLLM,
     BookRecord,
     apply_consistency_rules,
     build_messages,
@@ -97,7 +98,7 @@ def tag_books(
     stats = TagRunStats()
     for i, book in enumerate(books, start=1):
         try:
-            result = llm.chat_structured(build_messages(book), BookFacets, max_tokens=300)
+            result = llm.chat_structured(build_messages(book), BookFacetsLLM, max_tokens=300)
         except LLMInvalidOutput as exc:
             with engine.begin() as conn:
                 conn.execute(
@@ -110,7 +111,7 @@ def tag_books(
             stats.failed += 1
         else:
             with engine.begin() as conn:
-                save_facets(conn, book.work_id, result.value, version)
+                save_facets(conn, book.work_id, result.value.to_facets(), version)
             stats.tagged += 1
             stats.seconds += result.stats.total_ms / 1000
             stats.completion_tokens += result.stats.completion_tokens
