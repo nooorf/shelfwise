@@ -1,5 +1,7 @@
 # Evaluation data
 
+Grading rules for `data/qrels.csv`: [GRADING.md](GRADING.md).
+
 ## `data/queries.csv` — query set A
 
 One row per query. Edit freely; `make test` validates the file.

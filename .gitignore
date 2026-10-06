@@ -12,6 +12,9 @@ build/
 # Environment
 .env
 
+# Private to-do list (kept locally, never committed)
+MY_TASKS.md
+
 # Data (large or licensed; rebuilt by scripts)
 data/raw/
 data/cache/

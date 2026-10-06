@@ -4,7 +4,7 @@
     uv run python scripts/label.py --judge NF --query M01   # only one query
 
 Keys: 0 1 2 3 = grade · s = skip · b = back (re-grade previous) · q = save and quit
-Grading guide: MY_TASKS.md, task "Grade the judging pool".
+Grading guide: eval/GRADING.md
 """
 
 import argparse
