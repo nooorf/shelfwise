@@ -5,7 +5,13 @@ from sqlalchemy import Connection, insert, update
 
 from shelfwise.catalog import schema
 from shelfwise.evaluation.judgments import work_keys
-from shelfwise.evaluation.systems import SYSTEMS, SearchContext, bm25_lookup, popular
+from shelfwise.evaluation.systems import (
+    SYSTEMS,
+    SearchContext,
+    available_systems,
+    bm25_lookup,
+    popular,
+)
 
 from .factories import add_author, add_copy, add_edition, add_work
 
@@ -47,7 +53,8 @@ FILTERED_QUERY = "a dark thriller under 300 pages published after 2000"
 
 
 def test_every_filtered_system_respects_hard_filters(conn: Connection, ctx: SearchContext) -> None:
-    for name, system in SYSTEMS.items():
+    for name in available_systems(ctx, list(SYSTEMS)):  # dense ones: test_embeddings.py
+        system = SYSTEMS[name]
         if name == "bm25_raw":
             continue  # the deliberately unfiltered keyword baseline
         assert set(titles(conn, system(ctx, FILTERED_QUERY, 10))) <= {"Sharp Objects"}, name

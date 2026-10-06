@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://shelfwise:shelfwise@localhost:5432/shelfwise"
     redis_url: str = "redis://localhost:6379/0"
     ollama_url: str = "http://localhost:11434"
+    embedding_model: str = "bge-base"  # see shelfwise.embed.models.MODELS
     log_level: str = "INFO"
     log_json: bool = True
 

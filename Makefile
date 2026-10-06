@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed simulate tick pool label eval api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed simulate tick embed pool label eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -24,6 +24,9 @@ simulate:  ## Shelve every book and simulate 12 months of circulation (replaces 
 
 tick:  ## Keep availability changing during a demo (Ctrl-C to stop)
 	uv run python scripts/availability_tick.py --interval 60
+
+embed:  ## Embed new or changed books with the default model (MODEL=all for every model)
+	uv run python scripts/embed.py $(if $(MODEL),--model $(MODEL),)
 
 pool:  ## Add every search system's top 10 per query to eval/data/qrels.csv
 	uv run python scripts/pool.py

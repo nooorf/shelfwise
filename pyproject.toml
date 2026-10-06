@@ -19,6 +19,7 @@ dependencies = [
     "bm25s>=0.2",
     "pystemmer>=2.2",
     "numpy>=1.26",
+    "sentence-transformers>=3.3",
 ]
 
 [dependency-groups]

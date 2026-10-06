@@ -14,6 +14,7 @@ from pathlib import Path
 from sqlalchemy import text
 
 from shelfwise.catalog.db import make_engine
+from shelfwise.config import get_settings
 from shelfwise.evaluation.judgments import (
     Judgment,
     load_judgments,
@@ -22,7 +23,7 @@ from shelfwise.evaluation.judgments import (
     work_keys,
 )
 from shelfwise.evaluation.queries import load_queries
-from shelfwise.evaluation.systems import POOL_SYSTEMS, SYSTEMS, SearchContext
+from shelfwise.evaluation.systems import POOL_SYSTEMS, SYSTEMS, available_systems, load_context
 
 QUERIES = Path("eval/data/queries.csv")
 QRELS = Path("eval/data/qrels.csv")
@@ -33,13 +34,14 @@ def main() -> None:
     parser.add_argument("--depth", type=int, default=10)
     parser.add_argument("--systems", nargs="+", default=list(POOL_SYSTEMS), choices=list(SYSTEMS))
     parser.add_argument("--queries", type=Path, default=QUERIES)
+    parser.add_argument("--embedding-model", default=get_settings().embedding_model)
     parser.add_argument("--qrels", type=Path, default=QRELS)
     args = parser.parse_args()
 
     queries = load_queries(args.queries)
     existing = load_judgments(args.qrels)
     with make_engine().connect() as conn:
-        ctx = SearchContext.build(conn)
+        ctx = load_context(conn, args.embedding_model)
         keys = work_keys(conn)
         info = {
             r.work_id: (r.title, r.author or "")
@@ -51,9 +53,11 @@ def main() -> None:
                 )
             )
         }
+        systems = available_systems(ctx, args.systems)
+        print(f"pooling from: {', '.join(systems)}")
         pooled = []
         for q in queries:
-            ids = [w for name in args.systems for w in SYSTEMS[name](ctx, q.text, args.depth)]
+            ids = [w for name in systems for w in SYSTEMS[name](ctx, q.text, args.depth)]
             for work_id in dict.fromkeys(ids):
                 title, author = info[work_id]
                 pooled.append(Judgment(q.id, keys[work_id], title=title, author=author))

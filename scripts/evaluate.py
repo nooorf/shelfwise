@@ -17,11 +17,12 @@ from pathlib import Path
 
 from shelfwise.catalog.db import make_engine
 from shelfwise.catalog.meta import get_catalog_version
+from shelfwise.config import get_settings
 from shelfwise.evaluation.judgments import load_judgments, qrels_by_query, work_keys
 from shelfwise.evaluation.metrics import bootstrap_ci, mean, query_metrics
 from shelfwise.evaluation.queries import load_queries
 from shelfwise.evaluation.splits import split_of
-from shelfwise.evaluation.systems import SYSTEMS, SearchContext
+from shelfwise.evaluation.systems import SYSTEMS, available_systems, load_context
 
 QUERIES = Path("eval/data/queries.csv")
 QRELS = Path("eval/data/qrels.csv")
@@ -49,6 +50,7 @@ def main() -> None:
     parser.add_argument("--split", choices=["dev", "test", "all"], default="dev")
     parser.add_argument("--systems", nargs="+", default=list(SYSTEMS), choices=list(SYSTEMS))
     parser.add_argument("--queries", type=Path, default=QUERIES)
+    parser.add_argument("--embedding-model", default=get_settings().embedding_model)
     parser.add_argument("--qrels", type=Path, default=QRELS)
     args = parser.parse_args()
 
@@ -74,9 +76,10 @@ def main() -> None:
     }
     with make_engine().connect() as conn:
         report["catalog_version"] = get_catalog_version(conn)
-        ctx = SearchContext.build(conn)
+        report["embedding_model"] = args.embedding_model
+        ctx = load_context(conn, args.embedding_model)
         key_of = work_keys(conn)
-        for name in args.systems:
+        for name in available_systems(ctx, args.systems):
             per_query = {}
             for q in scored:
                 ranked = [key_of[w] for w in SYSTEMS[name](ctx, q.text, K)]
