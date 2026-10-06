@@ -30,3 +30,22 @@ class FakeEmbedder:
     def encode_query(self, query: str) -> np.ndarray:
         self.queries.append(query)
         return self._vector(query)
+
+
+class FakeLLM:
+    """Returns canned structured outputs in order; raises the ones that are exceptions."""
+
+    def __init__(self, *outputs: object, model: str = "fake-llm") -> None:
+        self.model = model
+        self.outputs = list(outputs)
+        self.calls: list[list[dict[str, str]]] = []
+
+    def chat_structured(self, messages, schema, **kwargs):  # type: ignore[no-untyped-def]
+        from shelfwise.llm.client import GenerationStats, StructuredResult
+
+        self.calls.append(messages)
+        output = self.outputs.pop(0) if len(self.outputs) > 1 else self.outputs[0]
+        if isinstance(output, Exception):
+            raise output
+        stats = GenerationStats(self.model, 100, 40, 50.0, 0.0, 1)
+        return StructuredResult(schema.model_validate(output), stats)

@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed simulate tick embed llm llm-pull pool label eval api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed simulate tick embed llm llm-pull tag pool label eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -30,6 +30,10 @@ llm:  ## Run the local LLM server (leave it running in its own terminal)
 
 llm-pull:  ## Download the configured LLM (SHELFWISE_LLM_MODEL, default qwen3:4b)
 	ollama pull $${SHELFWISE_LLM_MODEL:-qwen3:4b}
+
+tag:  ## Tag untagged books with the local LLM (resumable; needs `make llm`), then re-embed
+	uv run python scripts/tag_books.py
+	uv run python scripts/embed.py
 
 embed:  ## Embed new or changed books with the default model (MODEL=all for every model)
 	uv run python scripts/embed.py $(if $(MODEL),--model $(MODEL),)

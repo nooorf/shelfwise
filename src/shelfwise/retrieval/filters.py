@@ -43,7 +43,10 @@ _COMPARE: dict[str, Callable[[Any, Any], ColumnElement[bool]]] = {
     "gte": operator.ge,
     "eq": operator.eq,
 }
-FACET_COLUMNS = ("darkness", "romance", "violence", "pace", "supernatural", "audience", "fiction")
+FACET_COLUMNS = (
+    "darkness", "romance", "violence", "pace", "supernatural", "audience", "fiction",
+    "historical_setting", "reading_level",
+)  # fmt: skip
 _EDITION_FIELDS = {"pages", "isbn", "language"}
 
 

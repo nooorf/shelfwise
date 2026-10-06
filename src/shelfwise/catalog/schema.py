@@ -151,15 +151,25 @@ work_facets = Table(
     Column("supernatural", Text),
     Column("audience", Text),
     Column("fiction", Boolean),
+    Column("historical_setting", Text),
+    Column("setting_period", Text),  # free text, e.g. "French Revolution, 1789-1793"
+    Column("reading_level", Text),  # technical/course books only
     Column("source", Text, nullable=False),
-    Column("model_version", Text),
+    Column("model_version", Text),  # e.g. "facets-v1/qwen3:4b"; null for human labels
     Column("confidence", REAL),
+    Column("tagged_at", DateTime(timezone=True), nullable=False, server_default=func.now()),
     CheckConstraint("darkness BETWEEN 0 AND 3", name="ck_facets_darkness"),
     CheckConstraint("romance BETWEEN 0 AND 3", name="ck_facets_romance"),
     CheckConstraint("violence BETWEEN 0 AND 3", name="ck_facets_violence"),
     CheckConstraint("pace IN ('slow', 'medium', 'fast')", name="ck_facets_pace"),
     CheckConstraint("supernatural IN ('yes', 'no', 'unclear')", name="ck_facets_supernatural"),
     CheckConstraint("audience IN ('children', 'ya', 'adult')", name="ck_facets_audience"),
+    CheckConstraint(
+        "historical_setting IN ('yes', 'no', 'unclear')", name="ck_facets_historical_setting"
+    ),
+    CheckConstraint(
+        "reading_level IN ('intro', 'intermediate', 'advanced')", name="ck_facets_reading_level"
+    ),
     CheckConstraint("source IN ('llm', 'human')", name="ck_facets_source"),
 )
 
