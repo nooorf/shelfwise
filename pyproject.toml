@@ -45,6 +45,8 @@ extend-exclude = ["*.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+# Line length is the formatter's job; long regex patterns and URLs are fine.
+ignore = ["E501"]
 
 [tool.pyright]
 include = ["src", "tests"]

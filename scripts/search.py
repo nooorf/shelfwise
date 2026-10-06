@@ -3,7 +3,8 @@
     uv run python scripts/search.py "murder on the orient expres"
     uv run python scripts/search.py "data structures in c++" -k 5
 
-Shows ISBN, title and author lookups, then BM25 results with per-field scores and availability.
+Shows the parsed constraints, ISBN/title/author lookups, then BM25 results (run on the query with
+its constraints removed) with per-field scores and availability. Filters are not applied yet.
 """
 
 import argparse
@@ -13,6 +14,8 @@ from sqlalchemy import text
 
 from shelfwise.catalog.availability import fetch_live_availability
 from shelfwise.catalog.db import make_engine
+from shelfwise.query.constraints import contradictions
+from shelfwise.query.rules import parse_rules
 from shelfwise.retrieval.lexical import FIELDS, build_lexical_index
 from shelfwise.retrieval.lookup import find_authors, find_by_isbn, find_titles
 
@@ -22,6 +25,13 @@ def main() -> None:
     parser.add_argument("query")
     parser.add_argument("-k", type=int, default=10)
     args = parser.parse_args()
+
+    parse = parse_rules(args.query)
+    for c in parse.constraints:
+        print(f"Rule:   {c.field} {c.op} {c.value} ({c.strength})  <- {c.span!r}")
+    for problem in contradictions(parse.constraints):
+        print(f"Conflict: {problem.message()}")
+    print(f"Residual: {parse.residual!r}\n")
 
     with make_engine().connect() as conn:
         titles: dict[int, str] = {
@@ -36,8 +46,8 @@ def main() -> None:
         for a in find_authors(conn, args.query):
             print(f"Author: {a.score:.2f}  {a.name} ({len(a.work_ids)} books)")
 
-        hits = index.search(args.query, k=args.k)
-        fields = index.field_scores(args.query)
+        hits = index.search(parse.residual, k=args.k)
+        fields = index.field_scores(parse.residual)
         row_of = {int(w): i for i, w in enumerate(index.work_ids)}
         availability = fetch_live_availability(conn, [h.work_id for h in hits])
 
