@@ -1,4 +1,4 @@
-.PHONY: install up down migrate api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -12,6 +12,12 @@ down:
 
 migrate:  ## Apply database migrations
 	uv run alembic upgrade head
+
+seed-sample:  ## Regenerate data/seed/isbns.csv from Open Library searches
+	uv run python scripts/sample_seed_isbns.py
+
+import-seed:  ## Import data/seed/isbns.csv (cached lookups; safe to re-run)
+	uv run python scripts/import_isbns.py data/seed/isbns.csv --source seed
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload

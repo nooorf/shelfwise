@@ -14,11 +14,12 @@ dependencies = [
     "alembic>=1.13",
     "psycopg[binary]>=3.2",
     "pgvector>=0.3",
+    "httpx2>=2.13",
+    "rapidfuzz>=3.9",
 ]
 
 [dependency-groups]
 dev = [
-    "httpx2>=2.13",
     "hypothesis>=6.100",
     "pre-commit>=3.8",
     "pyright>=1.1.380",

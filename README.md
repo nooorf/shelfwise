@@ -16,6 +16,7 @@ cp .env.example .env
 make install     # Python 3.12 env + git hooks
 make up          # Postgres (pgvector) + Redis
 make migrate     # create the catalog schema
+make import-seed # load the seed shelf from Open Library (~5 min first time, cached after)
 make test        # unit tests (make test-all adds integration tests)
 make api         # http://localhost:8000/api/v1/health
 ```
