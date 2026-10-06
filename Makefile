@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed simulate tick api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -18,6 +18,12 @@ seed-sample:  ## Regenerate data/seed/isbns.csv from Open Library searches
 
 import-seed:  ## Import data/seed/isbns.csv (cached lookups; safe to re-run)
 	uv run python scripts/import_isbns.py data/seed/isbns.csv --source seed
+
+simulate:  ## Shelve every book and simulate 12 months of circulation (replaces copies/loans)
+	uv run python scripts/simulate_library.py
+
+tick:  ## Keep availability changing during a demo (Ctrl-C to stop)
+	uv run python scripts/availability_tick.py --interval 60
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload
