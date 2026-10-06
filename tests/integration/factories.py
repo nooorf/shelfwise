@@ -6,6 +6,7 @@ from datetime import date
 from sqlalchemy import Connection, insert
 
 from shelfwise.catalog import schema
+from shelfwise.ingest.normalize import normalize_author, title_norm
 
 _barcodes = itertools.count(1)
 
@@ -13,7 +14,7 @@ _barcodes = itertools.count(1)
 def add_work(conn: Connection, title: str = "The Silent Patient") -> int:
     return conn.execute(
         insert(schema.work)
-        .values(title=title, title_norm=title.lower())
+        .values(title=title, title_norm=title_norm(title))
         .returning(schema.work.c.work_id)
     ).scalar_one()
 
@@ -45,4 +46,13 @@ def add_copy(
             due_date=due_date,
         )
         .returning(schema.copy.c.copy_id)
+    ).scalar_one()
+
+
+def add_author(conn: Connection, name: str) -> int:
+    display, name_norm = normalize_author(name)
+    return conn.execute(
+        insert(schema.author)
+        .values(display=display, name_norm=name_norm)
+        .returning(schema.author.c.author_id)
     ).scalar_one()

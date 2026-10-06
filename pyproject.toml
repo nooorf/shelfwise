@@ -16,6 +16,9 @@ dependencies = [
     "pgvector>=0.3",
     "httpx2>=2.13",
     "rapidfuzz>=3.9",
+    "bm25s>=0.2",
+    "pystemmer>=2.2",
+    "numpy>=1.26",
 ]
 
 [dependency-groups]

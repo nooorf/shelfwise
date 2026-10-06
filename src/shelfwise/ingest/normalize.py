@@ -51,7 +51,7 @@ def normalize_text(raw: str) -> str:
     return _WHITESPACE.sub(" ", unicodedata.normalize("NFKC", raw)).strip()
 
 
-def _fold(text: str) -> str:
+def fold_text(text: str) -> str:
     """Casefolded, accent-free, punctuation-free, single-spaced: for matching, not display."""
     decomposed = unicodedata.normalize("NFKD", text.casefold())
     without_marks = "".join(c for c in decomposed if not unicodedata.combining(c))
@@ -69,7 +69,7 @@ def split_title(title: str, subtitle: str | None = None) -> tuple[str, str | Non
 
 def title_norm(title: str) -> str:
     """Matching key for titles: drops series suffixes, leading articles, case and punctuation."""
-    folded = _fold(_SERIES_SUFFIX.sub("", title))
+    folded = fold_text(_SERIES_SUFFIX.sub("", title))
     for article in _ARTICLES:
         if folded.startswith(article):
             return folded[len(article) :]
@@ -99,7 +99,7 @@ def normalize_author(raw: str) -> tuple[str, str]:
     # Join runs of single-letter initials so "J. R. R." and "J.R.R." match.
     merged: list[str] = []
     previous_was_initial = False
-    for token in _fold(display).split():
+    for token in fold_text(display).split():
         is_initial = len(token) == 1
         if is_initial and previous_was_initial:
             merged[-1] += token
