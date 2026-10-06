@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+
+# Data (large or licensed; rebuilt by scripts)
+data/raw/
+data/cache/
+data/processed/
+*.dump
+
+# Models and checkpoints
+models/
+checkpoints/
+
+# Frontend
+node_modules/
+apps/web/dist/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
