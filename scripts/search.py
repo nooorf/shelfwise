@@ -3,8 +3,9 @@
     uv run python scripts/search.py "murder on the orient expres"
     uv run python scripts/search.py "data structures in c++" -k 5
 
-Shows the parsed constraints, ISBN/title/author lookups, then BM25 results (run on the query with
-its constraints removed) with per-field scores and availability. Filters are not applied yet.
+Shows the parsed constraints, ISBN/title/author lookups, then BM25 results restricted to works
+that satisfy every hard constraint (searching the query with its constraints removed). If nothing
+passes the filters, shows how many works each dropped constraint would allow.
 """
 
 import argparse
@@ -16,6 +17,7 @@ from shelfwise.catalog.availability import fetch_live_availability
 from shelfwise.catalog.db import make_engine
 from shelfwise.query.constraints import contradictions
 from shelfwise.query.rules import parse_rules
+from shelfwise.retrieval.filters import allowed_mask, relaxations
 from shelfwise.retrieval.lexical import FIELDS, build_lexical_index
 from shelfwise.retrieval.lookup import find_authors, find_by_isbn, find_titles
 
@@ -46,11 +48,16 @@ def main() -> None:
         for a in find_authors(conn, args.query):
             print(f"Author: {a.score:.2f}  {a.name} ({len(a.work_ids)} books)")
 
-        hits = index.search(parse.residual, k=args.k)
+        mask = allowed_mask(conn, parse.constraints, index.work_ids)
+        suggestions = relaxations(conn, parse.constraints) if not mask.any() else []
+        hits = index.search(parse.residual, k=args.k, allowed=mask)
         fields = index.field_scores(parse.residual)
         row_of = {int(w): i for i, w in enumerate(index.work_ids)}
         availability = fetch_live_availability(conn, [h.work_id for h in hits])
 
+    print(f"\nPass hard filters: {int(mask.sum())} of {len(mask)} works")
+    for r in suggestions:
+        print(f"  drop {r.label!r} -> {r.count} works")
     print(f"\nBM25 top {args.k}  ({' / '.join(FIELDS)})")
     for h in hits:
         per_field = " / ".join(f"{fields[f][row_of[h.work_id]]:4.1f}" for f in FIELDS)

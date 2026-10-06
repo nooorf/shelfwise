@@ -11,20 +11,34 @@ from shelfwise.ingest.normalize import normalize_author, title_norm
 _barcodes = itertools.count(1)
 
 
-def add_work(conn: Connection, title: str = "The Silent Patient") -> int:
+def add_work(
+    conn: Connection,
+    title: str = "The Silent Patient",
+    first_pub_year: int | None = None,
+    genres: list[str] | None = None,
+) -> int:
     return conn.execute(
         insert(schema.work)
-        .values(title=title, title_norm=title_norm(title))
+        .values(
+            title=title,
+            title_norm=title_norm(title),
+            first_pub_year=first_pub_year,
+            genres=genres or [],
+        )
         .returning(schema.work.c.work_id)
     ).scalar_one()
 
 
 def add_edition(
-    conn: Connection, work_id: int, pages: int | None = 320, isbn13: str | None = None
+    conn: Connection,
+    work_id: int,
+    pages: int | None = 320,
+    isbn13: str | None = None,
+    pub_year: int | None = None,
 ) -> int:
     return conn.execute(
         insert(schema.edition)
-        .values(work_id=work_id, pages=pages, isbn13=isbn13)
+        .values(work_id=work_id, pages=pages, isbn13=isbn13, pub_year=pub_year)
         .returning(schema.edition.c.edition_id)
     ).scalar_one()
 
