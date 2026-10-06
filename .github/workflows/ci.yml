@@ -16,3 +16,22 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run pyright
       - run: uv run pytest -m "not integration and not llm"
+
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: shelfwise
+          POSTGRES_PASSWORD: shelfwise
+          POSTGRES_DB: shelfwise
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U shelfwise" --health-interval 5s
+          --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - run: uv run pytest -m integration

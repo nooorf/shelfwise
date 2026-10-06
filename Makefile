@@ -1,4 +1,4 @@
-.PHONY: install up down api test test-all lint fmt
+.PHONY: install up down migrate api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -10,13 +10,16 @@ up:  ## Start Postgres and Redis
 down:
 	docker compose down
 
+migrate:  ## Apply database migrations
+	uv run alembic upgrade head
+
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload
 
 test:  ## Unit tests only (no services needed)
 	uv run pytest -m "not integration and not llm"
 
-test-all:  ## Everything, including tests that need `make up`
+test-all:  ## Everything, including integration tests (needs `make up`)
 	uv run pytest
 
 lint:

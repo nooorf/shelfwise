@@ -10,6 +10,10 @@ dependencies = [
     "pydantic>=2.8",
     "pydantic-settings>=2.4",
     "structlog>=24.1",
+    "sqlalchemy>=2.0.30",
+    "alembic>=1.13",
+    "psycopg[binary]>=3.2",
+    "pgvector>=0.3",
 ]
 
 [dependency-groups]

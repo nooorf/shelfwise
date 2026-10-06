@@ -18,6 +18,14 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     log_json: bool = True
 
+    @property
+    def sqlalchemy_url(self) -> str:
+        """database_url with the psycopg 3 driver, as SQLAlchemy and Alembic expect."""
+        prefix = "postgresql://"
+        if self.database_url.startswith(prefix):
+            return "postgresql+psycopg://" + self.database_url.removeprefix(prefix)
+        return self.database_url
+
 
 @lru_cache
 def get_settings() -> Settings:

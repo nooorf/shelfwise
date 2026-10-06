@@ -15,6 +15,7 @@ Requires [uv](https://docs.astral.sh/uv/) and Docker.
 cp .env.example .env
 make install     # Python 3.12 env + git hooks
 make up          # Postgres (pgvector) + Redis
-make test        # unit tests
+make migrate     # create the catalog schema
+make test        # unit tests (make test-all adds integration tests)
 make api         # http://localhost:8000/api/v1/health
 ```
