@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     ollama_url: str = "http://localhost:11434"
     embedding_model: str = "bge-base"  # see shelfwise.embed.models.MODELS
+    # Local LLM served by Ollama. Mac (8 GB): qwen3:4b; RTX 4090: qwen3:8b or qwen3:14b.
+    llm_model: str = "qwen3:4b"
     log_level: str = "INFO"
     log_json: bool = True
 

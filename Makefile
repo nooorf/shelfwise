@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed simulate tick embed pool label eval api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed simulate tick embed llm llm-pull pool label eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -24,6 +24,12 @@ simulate:  ## Shelve every book and simulate 12 months of circulation (replaces 
 
 tick:  ## Keep availability changing during a demo (Ctrl-C to stop)
 	uv run python scripts/availability_tick.py --interval 60
+
+llm:  ## Run the local LLM server (leave it running in its own terminal)
+	ollama serve
+
+llm-pull:  ## Download the configured LLM (SHELFWISE_LLM_MODEL, default qwen3:4b)
+	ollama pull $${SHELFWISE_LLM_MODEL:-qwen3:4b}
 
 embed:  ## Embed new or changed books with the default model (MODEL=all for every model)
 	uv run python scripts/embed.py $(if $(MODEL),--model $(MODEL),)

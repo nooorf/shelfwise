@@ -10,7 +10,7 @@ Conversational library search that turns requests like *"dark, psychological, no
 
 ## Quickstart
 
-Requires [uv](https://docs.astral.sh/uv/) and Docker.
+Requires [uv](https://docs.astral.sh/uv/), Docker and [Ollama](https://ollama.com).
 
 ```bash
 cp .env.example .env
@@ -20,5 +20,8 @@ make migrate     # create the catalog schema
 make import-seed # load the seed shelf from Open Library (~5 min first time, cached after)
 make simulate    # shelves, copies and 12 months of simulated circulation
 make test        # unit tests (make test-all adds integration tests)
+make embed       # embed the books for meaning-based search
+make llm         # in a second terminal: the local LLM server
+make llm-pull    # download the LLM (~2.5 GB)
 make api         # http://localhost:8000/api/v1/health
 ```
