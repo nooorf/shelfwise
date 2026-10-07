@@ -82,6 +82,7 @@ def main() -> None:
         raise SystemExit("No gold queries selected.")
     llm_ms: list[float] = []
     fallbacks: list[str] = []
+    fast: list[str] = []  # plain lookups parsed without the LLM
     with ExitStack() as stack:
         if args.parser == "cascade":
             conn = stack.enter_context(make_engine().connect())
@@ -92,6 +93,8 @@ def main() -> None:
                 result = cascade.parse(text, today)
                 if result.used_llm:
                     llm_ms.append(result.llm_ms)
+                elif result.fast_path:
+                    fast.append(text)
                 else:
                     fallbacks.append(result.error or "unknown")
                 print(".", end="", file=sys.stderr, flush=True)
@@ -99,7 +102,7 @@ def main() -> None:
         else:
             parse = parse_rules_only
         predicted = {g.id: parse(g.text, gold.today) for g in golds}
-    if llm_ms or fallbacks:
+    if llm_ms or fallbacks or fast:
         print(file=sys.stderr)
     results = [score_query(g, predicted[g.id]) for g in golds]
     summary = summarize(results)
@@ -114,6 +117,7 @@ def main() -> None:
             "model": args.model or llm.model,
             "prompt_version": PROMPT_VERSION,
             "fallbacks": fallbacks,
+            "fast_path": len(fast),
             "ms_p50": statistics.median(llm_ms) if llm_ms else None,
             "ms_p95": sorted(llm_ms)[int(0.95 * (len(llm_ms) - 1))] if llm_ms else None,
         }
@@ -142,7 +146,7 @@ def main() -> None:
         p50, p95 = info["ms_p50"] or 0, info["ms_p95"] or 0
         print(
             f"  llm {info['model']} ({PROMPT_VERSION}): p50 {p50:.0f} ms, p95 {p95:.0f} ms, "
-            f"{len(fallbacks)} fell back to rules"
+            f"{len(fast)} plain lookups skipped it, {len(fallbacks)} fell back to rules"
         )
     print(f"  exact match       {_pct(summary.exact_match)}")
     print(f"  intent accuracy   {_pct(summary.intent_accuracy)}")

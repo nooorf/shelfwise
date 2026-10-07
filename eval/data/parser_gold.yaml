@@ -376,6 +376,879 @@ queries:
     seeds: [Designing Data-Intensive Applications]
     keep: [distributed systems]
 
+  # --- Set A expansion (2026-10-07) ---------------------------------------------------
+
+  - id: L07
+    intent: lookup
+    lookup: {title: Big Little Lies}
+
+  - id: L08
+    intent: lookup
+    lookup: {title: Frankenstein}
+
+  - id: L09
+    intent: lookup
+    lookup: {title: The Way of Kings, author: Brandon Sanderson}
+
+  - id: L10
+    intent: lookup
+    lookup: {title: Catching Fire}
+
+  - id: L11
+    intent: lookup
+    lookup: {title: The Girl on the Train}
+
+  - id: L12
+    intent: lookup
+    lookup: {title: 11/22/63}
+
+  - id: L13
+    intent: lookup
+    lookup: {title: The Six Wives of Henry VIII}
+
+  - id: L14
+    intent: lookup
+    lookup: {title: Evil Under the Sun}
+
+  - id: L15
+    intent: lookup
+    lookup: {title: Out of Africa}
+
+  - id: L16
+    intent: lookup
+    lookup: {title: The White Queen, author: Philippa Gregory}
+
+  - id: L17
+    intent: lookup
+    lookup: {title: Test Driven Development, author: Kent Beck}
+
+  - id: L18
+    intent: lookup
+    lookup: {title: A Great and Terrible Beauty}
+
+  - id: L19
+    intent: lookup
+    lookup: {title: "Seabiscuit | Seabiscuit: An American Legend"}
+
+  - id: L20
+    intent: lookup
+    constraints:
+      - isbn in [9780765326355] hard
+
+  - id: L21
+    intent: lookup
+    lookup: {title: The Redbreast, author: Jo Nesbo}
+
+  - id: L22
+    intent: lookup
+    lookup: {title: "Wicked | Wicked: The Life and Times of the Wicked Witch of the West"}
+
+  - id: L23
+    intent: lookup
+    lookup: {title: The Painted Veil}
+
+  - id: L24
+    intent: lookup
+    lookup: {title: The Girl on the Train, author: Paula Hawkins}
+
+  - id: A05
+    intent: lookup
+    lookup: {author: James Patterson}
+
+  - id: A06
+    intent: lookup
+    lookup: {author: Terry Pratchett}
+
+  - id: A07
+    intent: lookup
+    lookup: {author: Nora Roberts}
+    constraints:
+      - year gte 1990 hard
+      - year lte 1999 hard
+
+  - id: A08
+    intent: discover
+    lookup: {author: Neil Gaiman}
+    constraints:
+      - facet.audience eq children soft
+
+  - id: A09
+    intent: lookup
+    lookup: {author: Lee Child}
+    constraints:
+      - year gte 2021 soft
+    notes: "\"latest\" follows the rule convention (recent = last 5 years, soft)"
+
+  - id: A10
+    intent: lookup
+    lookup: {author: Stephen King}
+    constraints:
+      - not genre in [horror] hard
+    drop: [horror]
+
+  - id: A11
+    intent: lookup
+    lookup: {author: Roald Dahl}
+
+  - id: A12
+    intent: lookup
+    lookup: {author: William Shakespeare}
+
+  - id: A13
+    intent: lookup
+    lookup: {author: Harlan Coben}
+    constraints:
+      - genre in [thriller] soft
+      - available_now eq true hard
+    keep: [thriller]
+
+  - id: A14
+    intent: lookup
+    lookup: {author: Sarah J. Maas}
+    constraints:
+      - not theme eq series soft
+    drop: [series]
+
+  - id: A15
+    intent: lookup
+    lookup: {author: Jim Butcher}
+    keep: [dresden]
+
+  - id: A16
+    intent: lookup
+    lookup: {author: Dr. Seuss}
+    constraints:
+      - available_now eq true hard
+
+  - id: G05
+    intent: discover
+    constraints:
+      - genre in [psychological thriller] soft
+    keep: [psychological thriller]
+
+  - id: G06
+    intent: discover
+    constraints:
+      - genre in [graphic novels] soft
+    keep: [manga]
+
+  - id: G07
+    intent: discover
+    constraints:
+      - genre in [true crime] soft
+    keep: [true crime]
+
+  - id: G08
+    intent: discover
+    constraints:
+      - genre in [romance] soft
+      - facet.historical_setting eq yes soft
+    keep: [historical, romance]
+
+  - id: G09
+    intent: discover
+    constraints:
+      - genre in [science fiction] soft
+    keep: [space opera]
+
+  - id: G10
+    intent: discover
+    constraints:
+      - genre in [poetry] soft
+    keep: [poetry]
+
+  - id: G11
+    intent: discover
+    constraints:
+      - genre in [essays] soft
+    keep: [essay]
+
+  - id: G12
+    intent: discover
+    constraints:
+      - genre in [memoir] soft
+    keep: [memoir]
+
+  - id: G13
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+    keep: [urban fantasy]
+
+  - id: G14
+    intent: discover
+    constraints:
+      - genre in [gothic] soft
+      - facet.fiction eq true soft
+    keep: [gothic]
+
+  - id: G15
+    intent: discover
+    constraints:
+      - genre in [self-help] soft
+    keep: [self help | self-help]
+
+  - id: G16
+    intent: discover
+    constraints:
+      - genre in [mystery] soft
+      - facet.darkness lte 1 soft
+    keep: [cozy | cosy, mystery | mysteries]
+
+  - id: S09
+    intent: discover
+    constraints:
+      - genre in [humor] soft
+    keep: [laugh | funny | humor | humorous]
+
+  - id: S10
+    intent: discover
+    keep: [atmospheric, moody]
+
+  - id: S11
+    intent: discover
+    constraints:
+      - genre in [mystery] soft
+      - facet.pace eq slow soft
+    keep: [slow burn, atmosphere | atmospheric]
+
+  - id: S12
+    intent: discover
+    constraints:
+      - facet.fiction eq true soft
+    keep: [immigrant, family | families]
+
+  - id: S13
+    intent: discover
+    constraints:
+      - facet.fiction eq true soft
+    keep: [animal]
+
+  - id: S14
+    intent: discover
+    keep: [obsession]
+
+  - id: S15
+    intent: discover
+    constraints:
+      - facet.darkness lte 1 soft
+      - facet.fiction eq true soft
+    keep: [heartwarming, friendship]
+
+  - id: S16
+    intent: discover
+    keep: [sense of place | city]
+
+  - id: S17
+    intent: discover
+    constraints:
+      - facet.darkness gte 2 soft
+    keep: [creepy, halloween]
+
+  - id: S18
+    intent: discover
+    keep: [ocean | sea]
+
+  - id: S19
+    intent: discover
+    constraints:
+      - facet.fiction eq true soft
+    keep: [revenge]
+
+  - id: S20
+    intent: discover
+    keep: [villain]
+
+  - id: S21
+    intent: discover
+    keep: [fairy tale, retelling]
+
+  - id: S22
+    intent: discover
+    constraints:
+      - facet.darkness gte 2 soft
+    keep: [academia]
+
+  - id: S23
+    intent: discover
+    constraints:
+      - facet.fiction eq true soft
+    keep: [horse]
+
+  - id: S24
+    intent: discover
+    keep: [time loop]
+
+  - id: S25
+    intent: discover
+    constraints:
+      - genre in [thriller] soft
+    keep: [unreliable narrator]
+
+  - id: S26
+    intent: discover
+    constraints:
+      - facet.darkness lte 1 soft
+    keep: [hopeful, end of the world | apocalypse | apocalyptic]
+
+  - id: S27
+    intent: discover
+    keep: [family saga | saga, generations | generational]
+
+  - id: S28
+    intent: discover
+    constraints:
+      - facet.supernatural eq yes soft
+    keep: [dragon]
+
+  - id: S29
+    intent: discover
+    constraints:
+      - genre in [thriller] soft
+    keep: [twist | twisty]
+
+  - id: S30
+    intent: discover
+    keep: [mind bending | mindbending | mind bender | mess with | psychological]
+
+  - id: M07
+    intent: discover
+    constraints:
+      - genre in [romance] soft
+      - pages lt 300 hard
+      - year gte 2024 hard
+    keep: [romance]
+
+  - id: M08
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - not theme eq series soft
+      - pages lt 400 hard
+    keep: [fantasy]
+    drop: [series]
+
+  - id: M09
+    intent: discover
+    constraints:
+      - genre in [classics] soft
+      - year lt 1950 hard
+      - pages lte 250 soft
+    keep: [classic]
+
+  - id: M10
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - facet.audience eq ya soft
+      - year gte 2010 hard
+      - year lte 2015 hard
+    keep: [fantasy]
+
+  - id: M11
+    intent: discover
+    constraints:
+      - genre in [mystery] soft
+      - pages approx 250 soft
+    keep: [mystery]
+
+  - id: M12
+    intent: discover
+    constraints:
+      - genre in [horror] soft
+      - facet.fiction eq true soft
+      - year gte 1980 hard
+      - year lte 1989 hard
+    keep: [horror]
+
+  - id: M13
+    intent: discover
+    constraints:
+      - genre in [thriller] soft
+      - year gte 2021 soft
+      - pages lt 350 soft
+    keep: [thriller]
+
+  - id: M14
+    intent: discover
+    constraints:
+      - facet.fiction eq false soft
+      - genre in [science] soft
+      - year gt 2010 hard
+      - pages lt 300 hard
+    keep: [science]
+
+  - id: M15
+    intent: discover
+    constraints:
+      - genre in [poetry] soft
+      - pages lte 250 soft
+      - year gte 1900 hard
+      - year lte 1999 hard
+    keep: [poetry]
+
+  - id: M16
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - facet.fiction eq true soft
+      - pages gte 600 hard
+    keep: [fantasy]
+
+  - id: M17
+    intent: discover
+    constraints:
+      - genre in [thriller] soft
+      - facet.pace eq fast soft
+      - pages lt 300 hard
+      - available_now eq true hard
+    keep: [thriller]
+
+  - id: M18
+    intent: discover
+    constraints:
+      - genre in [historical fiction] soft
+      - facet.historical_setting eq yes soft
+      - year gte 2021 soft
+    keep: [rome]
+
+  - id: M19
+    intent: discover
+    constraints:
+      - genre in [humor] soft
+      - facet.audience eq ya soft
+      - pages lt 250 hard
+    keep: [funny | humor | humorous]
+
+  - id: M20
+    intent: discover
+    constraints:
+      - genre in [biography] soft
+      - year gte 2000 hard
+    keep: [scientist]
+
+  - id: M21
+    intent: discover
+    constraints:
+      - genre in [mystery] soft
+      - facet.audience eq children soft
+      - pages lte 250 soft
+    keep: [mystery]
+
+  - id: M22
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - facet.darkness gte 2 soft
+      - year gte 2016 hard
+    keep: [dark, fantasy]
+
+  - id: M23
+    intent: discover
+    constraints:
+      - genre in [romance] soft
+      - pages approx 200 soft
+    keep: [romance]
+
+  - id: M24
+    intent: discover
+    constraints:
+      - genre in [mystery] soft
+      - facet.fiction eq true soft
+      - year gt 2015 hard
+      - pages lt 300 hard
+    keep: [mystery]
+
+  - id: N06
+    intent: discover
+    constraints:
+      - facet.supernatural eq yes soft
+      - not title eq Twilight hard
+    keep: [vampire]
+    drop: [twilight]
+
+  - id: N07
+    intent: discover
+    constraints:
+      - genre in [romance] soft
+      - not theme eq sex scenes | sex soft
+    keep: [romance]
+    drop: [sex]
+
+  - id: N08
+    intent: discover
+    constraints:
+      - genre in [thriller] soft
+      - not theme eq children harmed | child abuse | harm to children soft
+    keep: [thriller]
+    drop: [harmed, abuse]
+
+  - id: N09
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - not facet.audience eq ya hard
+    keep: [fantasy]
+    drop: [ya | young adult]
+
+  - id: N10
+    intent: discover
+    constraints:
+      - facet.darkness gte 2 soft
+      - facet.violence lte 2 hard
+    keep: [scary]
+    drop: [gory | gore]
+
+  - id: N11
+    intent: discover
+    constraints:
+      - genre in [historical fiction] soft
+      - not theme eq royalty | royals | kings and queens soft
+    keep: [historical]
+    drop: [royalty | royal]
+
+  - id: N12
+    intent: discover
+    constraints:
+      - not theme eq cheating | infidelity soft
+    keep: [sad]
+    drop: [cheating]
+
+  - id: N13
+    intent: discover
+    constraints:
+      - genre in [science fiction] soft
+      - not theme eq aliens soft
+    keep: [sci fi | science fiction | scifi]
+    drop: [alien]
+
+  - id: N14
+    intent: discover
+    constraints:
+      - genre in [mystery] soft
+      - not theme eq cozy soft
+    keep: [mystery]
+    drop: [cozy | cosy]
+
+  - id: N15
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - not theme eq elves soft
+      - not theme eq dwarves soft
+    keep: [fantasy]
+    drop: [elves | elf, dwarves | dwarf]
+
+  - id: N16
+    intent: discover
+    constraints:
+      - facet.fiction eq false soft
+      - not genre in [politics] hard
+    drop: [politics]
+
+  - id: N17
+    intent: discover
+    constraints:
+      - genre in [thriller] soft
+      - not facet.supernatural eq yes hard
+      - pages lt 400 hard
+    keep: [thriller]
+    drop: [supernatural]
+
+  - id: N18
+    intent: discover
+    constraints:
+      - facet.audience eq ya soft
+      - facet.darkness lte 1 hard
+    drop: [depressing]
+
+  - id: N19
+    intent: discover
+    constraints:
+      - genre in [romance] soft
+      - not theme eq love triangle soft
+    keep: [romance]
+    drop: [love triangle]
+
+  - id: N20
+    intent: discover
+    constraints:
+      - facet.romance lte 1 hard
+    drop: [romance | romantic]
+
+  - id: V05
+    intent: discover
+    constraints:
+      - genre in [mystery] soft
+      - available_now eq true hard
+    keep: [mystery | mysteries]
+
+  - id: V06
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - available_now eq true hard
+    keep: [fantasy]
+
+  - id: V07
+    intent: discover
+    constraints:
+      - genre in [graphic novels] soft
+      - available_now eq true hard
+    keep: [graphic novel]
+
+  - id: V08
+    intent: discover
+    constraints:
+      - genre in [romance] soft
+      - available_now eq true hard
+    keep: [romance]
+
+  - id: V09
+    intent: lookup
+    lookup: {author: Stephen King}
+    constraints:
+      - available_now eq true hard
+
+  - id: V10
+    intent: discover
+    constraints:
+      - available_now eq true hard
+    keep: [world war]
+
+  - id: V11
+    intent: discover
+    constraints:
+      - genre in [thriller] soft
+      - available_now eq true hard
+    keep: [thriller]
+
+  - id: V12
+    intent: discover
+    constraints:
+      - pages lte 250 soft
+      - available_now eq true hard
+
+  - id: V13
+    intent: discover
+    constraints:
+      - genre in [fantasy] soft
+      - popular eq true soft
+    keep: [fantasy]
+
+  - id: V14
+    intent: discover
+    constraints:
+      - genre in [science fiction] soft
+      - available_now eq true hard
+    keep: [sci fi | science fiction | scifi]
+
+  - id: V15
+    intent: lookup
+    lookup: {title: The Hobbit}
+
+  - id: V16
+    intent: discover
+    constraints:
+      - genre in [poetry] soft
+      - available_now eq true hard
+    keep: [poetry]
+
+  - id: P06
+    intent: similar
+    seeds: [The Way of Kings]
+
+  - id: P07
+    intent: similar
+    seeds: [Big Little Lies]
+
+  - id: P08
+    intent: similar
+    seeds: [Frankenstein]
+    constraints:
+      - genre in [classics] soft
+    keep: [classic]
+
+  - id: P09
+    intent: similar
+    seeds: [The Girl on the Train]
+    constraints:
+      - facet.darkness shift -1 soft
+    keep: [happier | happy]
+
+  - id: P10
+    intent: similar
+    seeds: ["The Lightning Thief | Percy Jackson and the Olympians | Percy Jackson"]
+    constraints:
+      - facet.audience eq adult soft
+
+  - id: P11
+    intent: similar
+    seeds: [11/22/63]
+    keep: [time travel]
+
+  - id: P12
+    intent: similar
+    seeds: [The Dream Thieves]
+
+  - id: P13
+    intent: similar
+    seeds: [Pride and Prejudice]
+    constraints:
+      - year shift 1 soft
+    keep: [modern]
+    notes: "\"modern\" may mean a modern setting too; it stays in the query"
+
+  - id: P14
+    intent: similar
+    seeds: ["Seabiscuit | Seabiscuit: An American Legend"]
+
+  - id: P15
+    intent: similar
+    seeds: ["Death Note | Death Note, Vol. 1: Boredom"]
+
+  - id: P16
+    intent: similar
+    seeds: [Gone Girl]
+
+  - id: P17
+    intent: similar
+    seeds: [The Hunger Games]
+    constraints:
+      - facet.violence shift -1 soft
+    drop: [violent | violence]
+
+  - id: P18
+    intent: similar
+    seeds: [The White Queen]
+
+  - id: P19
+    intent: similar
+    seeds: [Catching Fire]
+
+  - id: P20
+    intent: similar
+    seeds: ["Sapiens | Sapiens: A Brief History of Humankind"]
+    constraints:
+      - pages shift -1 soft
+
+  - id: U05
+    intent: discover
+
+  - id: U06
+    intent: discover
+    keep: [plane | flight | travel]
+
+  - id: U07
+    intent: discover
+    keep: [sad]
+
+  - id: U08
+    intent: surprise
+
+  - id: U09
+    intent: discover
+    constraints:
+      - popular eq true soft
+
+  - id: U10
+    intent: discover
+    keep: [mom | mother]
+
+  - id: U11
+    intent: discover
+
+  - id: U12
+    intent: discover
+    constraints:
+      - pages lte 250 soft
+
+  - id: U13
+    intent: surprise
+
+  - id: U14
+    intent: discover
+    constraints:
+      - popular eq true soft
+
+  - id: H05
+    intent: lookup
+    lookup: {title: Harry Potter and the Cursed Throne}
+
+  - id: H06
+    intent: discover
+    constraints:
+      - year eq 2030 hard
+    notes: "sanity check: no book can match"
+
+  - id: H07
+    intent: discover
+    constraints:
+      - pages lt 50 hard
+      - year lt 1500 hard
+
+  - id: H08
+    intent: surprise
+    notes: "the role-play is ignored; what's left is 'recommend books'"
+
+  - id: H09
+    intent: other
+
+  - id: H10
+    intent: discover
+    constraints:
+      - genre in [romance] soft
+      - not genre in [romance] hard
+    notes: contradiction; the system asks what was meant
+
+  - id: H11
+    intent: discover
+    keep: [blue cover, school]
+    notes: "can't be identified; the system should ask for more"
+
+  - id: H12
+    intent: lookup
+    lookup: {author: Stephen King}
+    notes: no catalog book can match; must not invent one
+
+  - id: H13
+    intent: other
+
+  - id: H14
+    intent: other
+
+  - id: H15
+    intent: discover
+    constraints:
+      - pages approx 1000 soft
+      - pages lte 250 soft
+
+  - id: H16
+    intent: lookup
+    lookup: {title: Gone Girl}
+    notes: answering needs grounding (set E); the parse is a lookup
+
+  - id: T13
+    intent: discover
+    constraints:
+      - facet.reading_level eq intro soft
+    keep: [test driven development | tdd]
+
+  - id: T14
+    intent: discover
+    constraints:
+      - facet.reading_level eq intro soft
+    keep: [linux]
+
+  - id: T15
+    intent: discover
+    keep: [signals and systems]
+    notes: "also an Oppenheim title; a course request, so discover"
+
+  - id: T16
+    intent: discover
+    keep: [php, mysql, website]
+
   # --- Set B only ----------------------------------------------------------------------------
 
   # Lookups

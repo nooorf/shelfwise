@@ -2,7 +2,8 @@ import pytest
 from sqlalchemy import Connection, insert
 
 from shelfwise.catalog import schema
-from shelfwise.query.cascade import CatalogLinker
+from shelfwise.query.cascade import CatalogLinker, fast_lookup
+from shelfwise.query.rules import parse_rules
 
 from .factories import add_author, add_edition, add_work
 
@@ -47,3 +48,27 @@ def test_authors_link_by_surname(linker: CatalogLinker) -> None:
 
 def test_every_given_word_must_be_in_the_author_name(linker: CatalogLinker) -> None:
     assert linker.author("james clear") is None  # not E. L. James
+
+
+@pytest.mark.parametrize(
+    ("query", "title", "author"),
+    [
+        ("do you have harry potter goblet of fire", "Harry Potter and the Goblet of Fire", None),
+        ("oliver twist", "Oliver Twist", None),
+        ("anything by charles dickens", None, "Charles Dickens"),
+    ],
+)
+def test_fast_lookup_on_the_catalog(
+    linker: CatalogLinker, query: str, title: str | None, author: str | None
+) -> None:
+    parse = fast_lookup(parse_rules(query), linker)
+
+    assert parse is not None and parse.lookup is not None
+    assert (parse.lookup.title, parse.lookup.author) == (title, author)
+
+
+@pytest.mark.parametrize(
+    "query", ["something like gone girl", "a twisty book about a girl", "harry potter"]
+)
+def test_fast_lookup_leaves_the_rest_to_the_llm(linker: CatalogLinker, query: str) -> None:
+    assert fast_lookup(parse_rules(query), linker) is None

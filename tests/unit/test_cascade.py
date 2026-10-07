@@ -14,7 +14,9 @@ TODAY = date(2026, 10, 7)
 
 TITLES = {
     "gone girl": Link("Gone Girl", 11),
-    "the kite runner": Link("The Kite Runner", 13),
+    "kite runner": Link("The Kite Runner", 13),
+    "dune": Link("Dune", 14),
+    "graphic novels": Link("Graphic Novels", 15),
 }
 AUTHORS = {"stephen king": Link("Stephen King"), "dickens": Link("Charles Dickens")}
 
@@ -23,10 +25,13 @@ class FakeLinker:
     """Knows a few catalog spellings; anything else is "not in the catalog"."""
 
     def title(self, text: str) -> Link | None:
-        return TITLES.get(text.lower())
+        return next((link for name, link in TITLES.items() if name in text.lower()), None)
 
     def author(self, text: str) -> Link | None:
         return AUTHORS.get(text.lower())
+
+    def author_in(self, text: str) -> Link | None:
+        return next((link for name, link in AUTHORS.items() if name in text.lower()), None)
 
 
 def parse(query: str, **llm_output: object):  # type: ignore[no-untyped-def]
@@ -224,3 +229,47 @@ def test_prompt_lists_every_field_and_the_rule_hints() -> None:
     assert user["content"].endswith(
         "Already handled (leave out of semantic_query): under 300 pages"
     )
+
+
+@pytest.mark.parametrize(
+    ("query", "title", "author", "constraints"),
+    [
+        ("do you have gone girl", "Gone Girl", None, set()),
+        ("is the kite runner available", "The Kite Runner", None, set()),  # status always shown
+        ("do you have dune", "Dune", None, set()),  # one-word title plus a lookup cue
+        ("anything by stephen king", None, "Stephen King", set()),
+        ("works by dickens published before 1900", None, "Charles Dickens", {"year lt 1900 hard"}),
+        ("stephen king books available now", None, "Stephen King", {"available_now eq True hard"}),
+        ("9781250301697", None, None, {"isbn in ['9781250301697'] hard"}),
+    ],
+)
+def test_plain_lookups_skip_the_llm(
+    query: str, title: str | None, author: str | None, constraints: set[str]
+) -> None:
+    llm = FakeLLM(LLMUnavailable("must not be called"))
+    result = CascadeParser(llm, FakeLinker()).parse(query, TODAY)
+
+    assert result.fast_path and not result.used_llm
+    assert llm.calls == []
+    assert result.request.intent == "lookup"
+    spec = result.request.lookup
+    assert (spec.title if spec else None, spec.author if spec else None) == (title, author)
+    assert found(result.request) == constraints
+
+
+@pytest.mark.parametrize(
+    "query",
+    [
+        "something like gone girl but less romance",  # words the title doesn't explain
+        "books by stephen king other than it",
+        "dune",  # one word, no lookup cue: could be a description
+        "graphic novels",  # a title made of genre words
+        "a dark fantasy",  # no catalog match at all
+    ],
+)
+def test_anything_more_goes_to_the_llm(query: str) -> None:
+    llm = FakeLLM({"intent": "discover"})
+    result = CascadeParser(llm, FakeLinker()).parse(query, TODAY)
+
+    assert not result.fast_path
+    assert len(llm.calls) == 1

@@ -34,7 +34,7 @@ A constraint is one line: `[not] field op value hard|soft`. `not` means polarity
 
 | Intent | When | Example |
 | --- | --- | --- |
-| `lookup` | One specific book (title or ISBN), or an author's books with nothing beyond filters | "do you have dune", "anything by stephen king", "is the shining checked out" |
+| `lookup` | One specific book (title or ISBN), or an author's books, optionally narrowed by filters, genres or "not X" | "do you have dune", "anything by stephen king", "stephen king but not horror", "is the shining checked out" |
 | `similar` | Names a book as the reference point | "like gone girl but less romance", "loved the hunger games, what next" |
 | `discover` | Describes what they want | "dark psychological thriller under 300 pages" |
 | `refine` | Only makes sense as a change to the previous results | "something shorter", "only ones I can borrow today" |
@@ -47,6 +47,7 @@ A constraint is one line: `[not] field op value hard|soft`. `not` means polarity
 
 - Write the canonical title and the author's full name, not the typed spelling: `harry poter half blood prince` → `Harry Potter and the Half-Blood Prince`. Fixing typos is the entity linker's job.
 - A title lookup carries **no** `available_now`: copy status is always shown for a looked-up book, so "is X available" needs no filter. An author lookup lists many books, so it does carry one.
+- An author plus a mood or an audience ("something by neil gaiman for kids") is `discover`, with the author in `lookup`.
 - An ISBN is a constraint (`isbn in [...] hard`, as ISBN-13), not a lookup title.
 
 ## Constraint fields

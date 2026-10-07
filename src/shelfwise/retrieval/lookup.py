@@ -32,7 +32,7 @@ _CANDIDATES = 25
 _TYPO_RATIO = 80  # rapidfuzz ratio for "same word, with a typo"
 _TITLE_STOPWORDS = {"the", "a", "an", "and", "of", "on", "in", "to", "s", "for", "with", "or"}
 # Words of a request that aren't part of a title: left out when measuring query coverage.
-_REQUEST_WORDS = QUERY_FILLER | _TITLE_STOPWORDS | {
+REQUEST_WORDS = QUERY_FILLER | _TITLE_STOPWORDS | {
     "do", "you", "have", "has", "is", "are", "there", "any", "got", "i", "me", "my", "can",
     "could", "by", "what", "which", "where", "find", "get", "copy", "copies", "available",
     "checked", "out", "shelf", "library", "today", "now", "um", "ideally", "edition", "older",
@@ -108,7 +108,7 @@ def find_titles(
         {"q": folded, "full": _FULL_CONFIDENCE_LENGTH, "candidates": _CANDIDATES},
     )
     query_words = folded.split()
-    request = [w for w in query_words if w not in _REQUEST_WORDS] or query_words
+    request = [w for w in query_words if w not in REQUEST_WORDS] or query_words
     scored = [
         TitleMatch(
             r.work_id,

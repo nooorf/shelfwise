@@ -44,6 +44,9 @@ class NoCatalog:
     def author(self, text: str) -> None:
         return None
 
+    def author_in(self, text: str) -> None:
+        return None
+
 
 def test_cascade_parses_a_negation_with_the_real_model(client: OllamaClient) -> None:
     from shelfwise.query.cascade import CascadeParser

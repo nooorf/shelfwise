@@ -23,13 +23,14 @@ import structlog
 from rapidfuzz import fuzz
 from sqlalchemy import Connection
 
-from shelfwise.ingest.normalize import fold_text
+from shelfwise.ingest.genres import GENRES
+from shelfwise.ingest.normalize import fold_text, title_norm
 from shelfwise.llm.client import LLMInvalidOutput, LLMUnavailable, StructuredLLM
 from shelfwise.query.constraints import Constraint
 from shelfwise.query.extract import QueryLLM, build_messages, negated_words, to_constraints
 from shelfwise.query.request import LookupSpec, ParsedRequest, constraint_problems, from_rules
 from shelfwise.query.rules import RuleParse, parse_rules
-from shelfwise.retrieval.lookup import find_authors, find_titles
+from shelfwise.retrieval.lookup import REQUEST_WORDS, find_authors, find_titles
 
 log = structlog.get_logger(__name__)
 
@@ -48,7 +49,8 @@ class Link:
 
 class Linker(Protocol):
     def title(self, text: str) -> Link | None: ...
-    def author(self, text: str) -> Link | None: ...
+    def author(self, text: str) -> Link | None: ...  # `text` is just a name
+    def author_in(self, text: str) -> Link | None: ...  # the best author named in a message
 
 
 class CatalogLinker:
@@ -72,12 +74,17 @@ class CatalogLinker:
             return None
         return Link(matches[0].name)
 
+    def author_in(self, text: str) -> Link | None:
+        matches = find_authors(self.conn, text, limit=1)
+        return Link(matches[0].name) if matches else None
+
 
 @dataclass(frozen=True)
 class CascadeResult:
     request: ParsedRequest
     used_llm: bool
     llm_ms: float = 0.0
+    fast_path: bool = False  # a plain lookup, answered without the LLM
     error: str | None = None  # why the LLM step was skipped or failed
 
 
@@ -150,6 +157,70 @@ def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
     )
 
 
+# "do you have X", "is X in", "looking for X", "a copy of X", "where can I find X", "X by Y".
+_LOOKUP_CUE = re.compile(
+    r"\b(?:do (?:you|u) have|have you got|got any|looking for|a copy of|where can i find|"
+    r"is .+ (?:in|available|checked out|on the shelf)|by)\b"
+)
+# Request words beyond the lookup's own ("do u have", "works by", "that book called X").
+_FILLER = REQUEST_WORDS | {"u", "ur", "that", "this", "works", "titled", "called", "it", "its"}
+# A title made only of these ("Horror", "Graphic Novels") is more likely a description.
+_GENRE_WORDS = {w for g in GENRES for w in fold_text(g).split()} | {
+    "novel", "novels", "story", "stories", "fiction", "books", "book", "classic",
+}  # fmt: skip
+
+
+def _matched(name_words: list[str], query_words: list[str]) -> set[str]:
+    """Query words that are (typo-tolerant) words of the name."""
+    return {
+        q
+        for q in query_words
+        if any(q == n or (len(n) > 3 and fuzz.ratio(q, n) >= 80) for n in name_words)
+    }
+
+
+def fast_lookup(rules: RuleParse, linker: Linker) -> ParsedRequest | None:
+    """The parse of a plain known-item request, or None when the LLM is needed (step 4 is
+    "skipped for high-confidence lookups"). Plain means: an ISBN, or a catalog title and/or
+    author that accounts for every word of the message apart from request words ("do you
+    have", "is it checked out") and what the rules already took."""
+    if any(c.field == "isbn" for c in rules.constraints):
+        return ParsedRequest(intent="lookup", constraints=rules.constraints)
+    words = fold_text(rules.residual).split()
+    content = [w for w in words if w not in _FILLER]
+    if not content:
+        return None
+    cue = bool(_LOOKUP_CUE.search(fold_text(rules.text)))
+
+    title = linker.title(rules.residual)
+    title_words: set[str] = set()
+    if title is not None:
+        name = [w for w in title_norm(title.name).split() if w not in _FILLER]
+        covered = _matched(name, content)
+        complete = _matched(content, name) == set(name)  # every title word was said
+        plain = not set(name) <= _GENRE_WORDS and (len(name) > 1 or cue)
+        if name and complete and plain:
+            title_words = covered
+        else:
+            title = None
+    author = linker.author_in(rules.residual)
+    author_words = _matched(fold_text(author.name).split(), content) if author else set()
+    if not author_words or author_words <= title_words:
+        author, author_words = None, set()  # none named, or its words are the title's
+    if not (title or author) or set(content) - title_words - author_words:
+        return None
+    constraints = rules.constraints
+    if title is not None:
+        constraints = [c for c in constraints if c.field != "available_now"]
+    return ParsedRequest(
+        intent="lookup",
+        lookup=LookupSpec(
+            title=title.name if title else None, author=author.name if author else None
+        ),
+        constraints=constraints,
+    )
+
+
 class CascadeParser:
     def __init__(self, llm: StructuredLLM, linker: Linker) -> None:
         self.llm = llm
@@ -157,6 +228,8 @@ class CascadeParser:
 
     def parse(self, query: str, today: date | None = None) -> CascadeResult:
         rules = parse_rules(query, today)
+        if (plain := fast_lookup(rules, self.linker)) is not None:
+            return CascadeResult(plain, used_llm=False, fast_path=True)
         messages = build_messages(query, [c.span for c in rules.constraints if c.span])
         start = time.perf_counter()
         try:
