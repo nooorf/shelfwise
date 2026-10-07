@@ -48,4 +48,6 @@ Reviewing is faster than grading but anchors the reviewer on the suggestion, so 
 | --- | --- | --- | --- | --- |
 | 201 (2026-10-07) | author, lookup only | 98.5% | 0.98 | 0.97 |
 
+**First review (2026-10-07):** the reviewer changed 14 of 1,920 suggestions (0.7%): 11 in one adversarial query, where the suggestions had broken the rule above for nonexistent books, plus 3 judgement calls. The review also surfaced 14 transcription errors in the suggestions themselves (grades shifted by one row within 3 queries, e.g. a romance novel graded 3 for "horror novels"); those were fixed in `prelabels.csv` before import. A low change rate after review is not evidence of accuracy on its own: anchoring makes reviewers accept suggestions.
+
 The independent overlap so far covers only near-mechanical categories; a sample of the subjective ones (vague, discovery, negation, similarity) still needs independent human grades before the pre-label agreement can be quoted for them.
