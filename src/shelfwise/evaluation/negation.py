@@ -179,12 +179,13 @@ def human_tags(
     judge: str,
     aliases: Mapping[str, str] | None = None,
 ) -> dict[str, dict[str, str | None]]:
-    """{work_key: {tag: value}} from one judge's answers in both files. None means "asked, can't
-    tell", so the book isn't asked again. A one-tag answer overrides the full label."""
+    """{work_key: {tag: value}} from one judge's answers in both files, including the labels they
+    reviewed ("<judge>-review"). None means "asked, can't tell", so the book isn't asked again. A
+    one-tag answer overrides the full label."""
     aliases = aliases or {}
     tags: dict[str, dict[str, str | None]] = {}
     for row in facet_labels:
-        if row.judge == judge:
+        if row.judge in (judge, f"{judge}-review"):
             tags.setdefault(aliases.get(row.work_key, row.work_key), {}).update(row.labels)
     for label in violation_labels:
         if label.judge == judge:

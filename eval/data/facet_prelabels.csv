@@ -1,0 +1,201 @@
+work_key,judge,fiction,audience,darkness,romance,violence,pace,supernatural,historical_setting,reading_level,setting_period,title,note
+9780385513531,claude,no,adult,1,0,1,medium,no,,none,,The Lost City of Z: A Tale of Deadly Obsession in the Amazon,narrative nonfiction; reads like an adventure but nonfiction defaults to medium pace
+9781292472553,claude,no,adult,0,0,0,medium,no,,intermediate,,Artificial Intelligence,university AI textbook; assumes programming and some maths
+9780786888764,claude,no,adult,1,1,0,medium,no,,none,,The Tender Bar,
+9780736423120,claude,yes,children,0,0,1,medium,no,no,,,The Three Little Pigs,talking animals counted as not supernatural; the wolf is mild peril
+9780312966201,claude,no,adult,1,1,0,medium,no,,none,,The Lord God Made Them All,"Herriot's memoir stories: nonfiction despite the 'classics, humor' genres"
+9781484226032,claude,no,adult,0,0,0,medium,no,,intro,,Blockchain Basics,"""non-technical introduction"" in the subtitle"
+9780345410085,claude,no,adult,2,0,2,medium,no,,none,,Hell's Angels: A Strange and Terrible Saga,gang violence reported on the page; Thompson himself is beaten
+9780141035444,claude,yes,adult,2,0,2,medium,no,yes,,"1888, with an 1875 American flashback",The Valley of Fear,set 26+ years before it was written (1914)
+9780694507719,claude,yes,adult,3,0,1,medium,yes,yes,,mythic Greece,Medea,the killings happen offstage (Greek drama); Medea is a sorceress
+9780553265958,claude,yes,adult,3,0,1,slow,no,no,,,Darkness at Noon,"set 1936–38, written 1938–40: under 20 years, so not historical"
+9781608196104,claude,no,adult,0,0,0,medium,no,,none,,The grid,
+9780316175678,claude,yes,adult,1,1,1,slow,,yes,,1920s Alaska,The Snow Child,whether the girl is magical is deliberately left open
+9780618982509,claude,no,adult,1,0,0,slow,no,,none,,Are You My Mother?,graphic memoir: memoirs are nonfiction
+9780060888626,claude,yes,adult,2,1,3,fast,no,yes,,9th-century Northumbria,Lords of the North,Cornwell's battles are graphic
+9780671728687,claude,no,adult,3,0,2,slow,no,,none,,The Rise and Fall of the Third Reich: A History of Nazi Germany,"1,600 dense pages: clearly slow even for nonfiction"
+9780451412355,claude,yes,adult,2,3,2,fast,yes,no,,,Lover Revealed,
+9780836213126,claude,yes,adult,0,0,0,medium,no,no,,,There's Treasure Everywhere: A Calvin and Hobbes Collection,"a newspaper strip written for a general (adult) readership, though children love it"
+9780534362980,claude,no,adult,0,0,0,medium,no,,intro,,"Calculus, Early Transcendentals",first-year university calculus
+9780143035749,claude,no,adult,2,0,1,medium,no,,none,,The Liars' Club,
+9780316166294,claude,yes,adult,2,1,2,fast,no,no,,,The Brass Verdict,
+9780142412145,claude,yes,ya,0,3,0,medium,no,no,,,Let It Snow: Three Holiday Romances,three holiday romances
+9780345816023,claude,no,adult,1,0,0,medium,no,,none,,12 Rules for Life,
+9780876851913,claude,no,adult,2,1,1,medium,no,,none,,"Burning in Water, Drowning in Flame",poetry collection: nonfiction under the poetry rule
+9781491946251,claude,no,adult,0,0,0,medium,no,,intermediate,,Fluent Python,for programmers who already know Python
+9781250301710,claude,yes,adult,2,1,2,fast,no,no,,,Silent Patient,
+9781312394650,claude,no,adult,0,0,0,medium,no,,none,,Concise Psychology of Money,
+9780988393509,claude,yes,adult,0,3,0,fast,no,no,,,Losing It,new adult romance
+9780316234474,claude,yes,ya,2,2,2,fast,no,no,,,The 100,
+9781957240732,claude,no,adult,0,0,0,medium,no,,none,,Richest Man in Babylon,"parables, but a personal-finance book"
+9781921640803,claude,yes,adult,1,1,1,medium,no,no,,,War Dances,stories and poems
+9780385340540,claude,yes,adult,1,1,1,medium,no,no,,,The Broker,
+9781250040152,claude,no,adult,3,0,2,medium,no,,none,,My Story,"abduction and rape, told by the survivor"
+9780470446546,claude,no,adult,1,0,1,medium,no,,intro,,World History for Dummies,"a ""for Dummies"" primer"
+9780394805726,claude,yes,children,1,0,0,medium,no,no,,,There's A Boy in the Girls' Bathroom,
+9780965925075,claude,no,adult,1,0,0,medium,no,,none,,Shadow Divers,
+9781449369415,claude,no,adult,0,0,0,medium,no,,intro,,Introduction to Machine Learning with Python,a first book on machine learning for Python users
+9781400078431,claude,no,adult,2,1,0,slow,no,,none,,The Year of Magical Thinking,grief is central
+9780394873336,claude,yes,children,0,0,0,medium,no,no,,,The Berenstain Bears Forget Their Manners,
+9780140422078,claude,yes,adult,1,2,2,slow,yes,yes,,legendary Arthurian age,The Faerie Queene,"a narrative poem tells a story, so counted as fiction"
+9780070310865,claude,no,adult,0,0,0,medium,no,,intermediate,,Database system concepts,comprehensive university databases textbook
+9780099511656,claude,yes,adult,3,1,2,slow,yes,yes,,post-Civil War Ohio,Beloved,a ghost is central
+9780192123176,claude,yes,adult,1,0,1,medium,no,no,,,The Return of Sherlock Holmes,"set 1894–1901, written 1903–04: under 20 years, so not historical"
+9780140443332,claude,yes,adult,3,0,1,slow,yes,yes,,mythic Argos,The Oresteia,gods and Furies; the murders are offstage
+9780439829113,claude,yes,ya,2,1,2,fast,no,no,,,The Dead of Night,
+9781566195027,claude,no,adult,0,0,0,medium,no,,none,,To engineer is human,
+9780312360283,claude,yes,ya,2,2,1,fast,yes,no,,,Betrayed,
+9780345496201,claude,yes,ya,1,2,0,medium,no,no,,,"Kitchen Princess, Vol. 01",shojo manga for tween and teen girls; borderline children/ya
+9780312370831,claude,yes,adult,3,1,1,medium,no,yes,,"Paris, 1942",Sarah's Key,dual timeline: half in 2002
+9781416591054,claude,no,adult,2,0,3,medium,no,,none,,"Empire of the Summer Moon: Quanah Parker and the Rise and Fall of the Comanches, the Most Powerful Indian Tribe in American History",raids and torture described in detail
+9780515136814,claude,yes,adult,2,3,2,medium,yes,no,,,Cerulean Sins,
+9780061051586,claude,yes,adult,1,1,1,medium,yes,no,,,Carpe Jugulum,"Discworld is an invented world, so not a historical setting"
+9780060441074,claude,no,adult,0,0,0,medium,no,,intro,,The calculus of a single variable with analytic geometry,first calculus course
+9780060596996,claude,no,adult,2,1,0,medium,no,,none,,Lit,alcoholism and a suicide attempt are central
+9780316159784,claude,yes,adult,2,1,2,fast,no,no,,,Beach Road,
+9780810979772,claude,,children,0,0,0,,no,,,,Do-It-Yourself Book,"an activity journal, not a story: fiction and pace don't really apply"
+9780671772468,claude,no,adult,0,0,0,medium,no,,none,,How to win friends and influence people,
+9780473299507,claude,no,adult,0,2,0,medium,no,,none,,Dirty Pretty Things,poetry collection: nonfiction under the poetry rule
+9781306813099,claude,no,adult,0,0,0,medium,no,,intro,,Python for Data Analysis,the description calls it an introduction; it does assume basic Python
+9781116629019,claude,yes,adult,2,0,2,medium,no,no,,,Oliver Twist,written for adult readers of the 1830s; set in its own time
+9781605090917,claude,no,adult,0,0,0,medium,no,,none,,Eat That Frog! C. 21,
+9780380820856,claude,yes,adult,1,3,0,medium,no,yes,,Regency England,"To Sir Phillip, With Love",
+9780399256776,claude,yes,ya,2,2,2,fast,no,no,,,Champion,
+9781949759440,claude,no,adult,1,0,0,medium,no,,none,,"When You're Ready, This Is How You Heal",
+9780876855966,claude,yes,adult,2,1,1,medium,no,no,,,Hot Water Music,short stories
+9780525953494,claude,yes,adult,2,2,2,fast,no,no,,,Missing You,
+9780385534253,claude,no,adult,2,0,2,medium,no,,none,,Killers of the Flower Moon: The Osage Murders and the Birth of the FBI,
+9780395083628,claude,no,adult,3,0,1,slow,no,,none,,Mein Kampf,antisemitic propaganda: disturbing content
+9781416940906,claude,yes,ya,3,1,1,fast,no,no,,,Glass,a verse novel about meth addiction
+9781876175702,claude,no,adult,0,1,0,medium,no,,none,,The Motorcycle Diaries: Notes on a Latin American Journey,
+9780593734247,claude,no,adult,1,0,0,medium,no,,none,,Nexus,
+9780385522267,claude,no,adult,2,1,2,medium,no,,none,,Where Men Win Glory: The Odyssey of Pat Tillman,
+9780007169955,claude,yes,children,0,0,0,medium,no,no,,,There's a Wocket in My Pocket!,"nonsense creatures, not magic"
+9780140449495,claude,no,adult,0,0,0,slow,no,,intermediate,,The Nicomachean Ethics,read in university philosophy courses
+9780615459813,claude,no,adult,0,0,0,medium,no,,intermediate,,Data Structures and Algorithms Made Easy,interview prep: assumes programming
+9780743255066,claude,no,adult,0,1,0,medium,no,,none,,Autobiography of Benjamin Franklin,
+9780807014271,claude,no,adult,3,0,2,medium,no,,none,,Man's Search for Meaning,concentration camps
+9780062048509,claude,yes,ya,2,2,2,fast,no,no,,,Eve,
+9780872591721,claude,no,adult,0,0,0,medium,no,,intermediate,,The ARRL Handbook for Radio Amateurs,technical reference for radio amateurs
+9781423118244,claude,yes,ya,2,2,2,medium,yes,no,,,The Exiled Queen,invented world
+9780618477944,claude,no,adult,2,1,0,slow,no,,none,,Fun Home: A Family Tragicomic,"graphic memoir: a father's probable suicide, abuse"
+9781596433595,claude,yes,ya,2,1,2,fast,yes,yes,,"China, 1898",Boxers,summoned gods
+9780375759864,claude,no,adult,0,0,0,medium,no,,none,,The Lost Painting,
+9780061020001,claude,yes,ya,2,3,1,fast,yes,no,,,The Awakening,the love triangle is the story
+9780805089257,claude,no,adult,1,1,0,medium,no,,none,,Mennonite in a Little Black Dress: A Memoir of Going Home,
+9780023659508,claude,no,adult,0,0,0,medium,no,,intro,,Introductory linear algebra with applications,
+9780375501951,claude,no,adult,0,2,0,medium,no,,none,,Comfort Me With Apples: More Adventures at the Table,an affair and a new love run through it
+9781594747359,claude,yes,ya,2,1,2,fast,yes,yes,,"1940, wartime Britain",Hollow City,
+9780321965516,claude,no,adult,0,0,0,medium,no,,intro,,"Don't Make Me Think, Revisited",
+9780060527990,claude,yes,adult,2,0,1,medium,no,no,,,The Devil and Miss Prym,"the ""devil"" is a stranger; a reader who has finished it would say nothing supernatural happens"
+9780062015273,claude,no,adult,1,2,0,medium,no,,none,,Collected Poems,poetry collection: nonfiction under the poetry rule
+9780471157120,claude,no,adult,0,0,0,medium,no,,intro,,Introducing Computers,
+9781786810014,claude,yes,adult,2,1,1,fast,no,no,,,The Sister,
+9781949759945,claude,no,adult,0,0,0,medium,no,,none,,The Mountain Is You,
+9781416527268,claude,yes,adult,0,3,0,medium,no,no,,,The Little Lady Agency,
+9781563894459,claude,yes,adult,2,0,3,fast,no,no,,,"Transmetropolitan, Vol. 1: Back on the Street","23rd-century setting: future, so no"
+9781722502058,claude,no,adult,0,0,0,medium,no,,none,,The Science of Getting Rich,
+9780385516686,claude,yes,adult,1,0,0,medium,no,no,,,The Tent,short fictions
+9780425147511,claude,yes,adult,2,2,2,fast,no,no,,,The Key to Midnight,
+9780446546935,claude,no,adult,3,0,3,medium,no,,none,,Columbine,
+9780195067149,claude,no,adult,3,0,3,medium,no,,none,,With the Old Breed: At Peleliu and Okinawa,combat memoir
+9780062875686,claude,yes,ya,2,1,2,medium,no,no,,,The Hate U Give Movie Tie-in Edition,a police shooting on the page
+9780865477636,claude,no,adult,1,1,1,medium,no,,none,,West with the Night,
+9781108569323,claude,no,adult,0,0,0,medium,no,,intermediate,,Mathematics for Machine Learning,"university maths for ML; ""minimum prerequisites"" still means some"
+9781476731902,claude,no,adult,2,1,1,medium,no,,none,,The Short and Tragic Life of Robert Peace: A Brilliant Young Man Who Left Newark for the Ivy League,
+9780810918689,claude,,children,0,0,0,,no,,,,Animalia,"an alphabet picture book, not a story"
+9780140714791,claude,yes,adult,1,2,0,medium,no,no,,,Measure for Measure,
+9781804615348,claude,no,adult,0,0,0,medium,no,,intermediate,,Solutions Architect's Handbook,
+9780393322231,claude,no,adult,3,0,3,medium,no,,none,,Helter Skelter: The True Story of the Manson Murders,
+9781292374062,claude,no,adult,0,0,0,medium,no,,intro,,"Computer Networks, Global Edition","the description calls it ""the ideal introduction"""
+9780062392176,claude,yes,ya,0,3,0,medium,no,no,,,The Crown,
+9780471727491,claude,no,adult,0,0,0,medium,no,,intermediate,,Control Systems Engineering,engineering course textbook
+9781444778519,claude,yes,ya,2,2,2,fast,yes,no,,,Angelfall,
+9781563893414,claude,yes,adult,2,0,3,fast,no,no,,,Batman: The Dark Knight Returns,"Superman's powers are alien (science fiction), not supernatural"
+9780312144074,claude,yes,adult,1,1,0,slow,no,yes,,"Japan, 1937–38",The Samurai's Garden,
+9781594202438,claude,no,adult,2,0,1,medium,no,,none,,The Poisoner's Handbook: Murder and the Birth of Forensic Medicine in Jazz Age New York,
+9781406311525,claude,yes,ya,2,0,1,medium,,no,,,A Monster Calls,"the monster may be real or imagined; a 13-year-old narrator, read as YA"
+9780312422271,claude,no,adult,2,1,0,medium,no,,none,,Running with Scissors,abuse framed as dark comedy
+9780321390530,claude,no,adult,0,0,0,medium,no,,intermediate,,Mathematical Proofs,"""transition to advanced mathematics"""
+9781558743663,claude,no,adult,3,0,3,medium,no,,none,,"A Child Called ""It""",graphic child abuse; often read by teens but written for adults
+9781423116387,claude,yes,ya,1,2,1,fast,no,no,,,Don't Judge a Girl by Her Cover,
+9780060086244,claude,yes,adult,1,2,0,medium,no,no,,,Last Chance Saloon,
+9781973869474,claude,no,adult,0,0,0,medium,no,,none,,As a Man Thinketh,
+9780871401526,claude,no,adult,0,1,0,medium,no,,none,,"Complete Poems, 1904-1962",poetry collection: nonfiction under the poetry rule
+9781617292231,claude,no,adult,0,0,0,medium,no,,intro,,Grokking Algorithms,
+9781693224188,claude,yes,adult,2,0,2,medium,no,no,,,The Invisible Man,"a serum: science fiction, not supernatural"
+9781454940289,claude,no,adult,0,0,0,medium,no,,none,,Think and Grow Rich,
+9780330446884,claude,yes,ya,0,2,0,medium,no,no,,,After Eight,
+9780316068048,claude,yes,adult,1,2,1,slow,no,no,,,The Host,written and marketed for adults despite the YA genre tag; aliens are science fiction
+9780306924644,claude,no,adult,0,0,0,medium,no,,none,,Compound Effect,
+9780425133545,claude,yes,adult,2,1,2,medium,no,no,,,The Sum of All Fears,
+9781400080663,claude,no,adult,2,1,1,medium,no,,none,,Thunderstruck,
+9780679763970,claude,yes,adult,2,2,3,slow,no,yes,,"Cephalonia, WWII",Corelli's Mandolin,the massacre is graphic
+9780142401118,claude,yes,children,0,0,1,slow,no,no,,,My Side of the Mountain,hunting and trapping
+9780767913737,claude,no,adult,2,0,1,medium,no,,none,,The River of Doubt: Theodore Roosevelt's Darkest Journey,
+9781491962299,claude,no,adult,0,0,0,medium,no,,intermediate,,Hands-On Machine Learning with Scikit-Learn and TensorFlow,
+9780140446746,claude,no,adult,2,1,0,slow,no,,none,,The Letters of Vincent van Gogh,mental illness throughout
+9780061906220,claude,yes,children,0,0,0,medium,no,no,,,Pete the Cat: I Love My White Shoes,
+9780192835871,claude,no,adult,1,2,0,medium,no,,none,,The Complete Poems,poetry collection: nonfiction under the poetry rule
+9780135809440,claude,no,adult,0,0,0,medium,no,,intermediate,,Microcomputer systems,
+9781840187168,claude,no,adult,0,1,0,fast,no,,none,,Catch Me If You Can: The True Story of a Real Fake,
+9780062048547,claude,yes,ya,2,2,2,fast,no,no,,,Once,
+9781543660630,claude,no,adult,0,0,0,medium,no,,none,,A Crack in Creation,
+9781598160246,claude,yes,ya,1,2,0,medium,yes,no,,,"Fruits Basket, Vol. 16",the zodiac curse
+9781563891052,claude,yes,adult,2,1,1,medium,yes,yes,,various historical periods,Fables & Reflections,a collection; several tales are set in clearly past eras
+9780062009494,claude,yes,ya,1,1,1,medium,no,yes,,Victorian London,Dodger,
+9780226458083,claude,no,adult,0,0,0,slow,no,,intermediate,,The Structure of Scientific Revolutions,academic philosophy of science
+9781416509875,claude,yes,adult,2,3,2,medium,yes,no,,,A Hunger Like No Other,
+9780061944383,claude,yes,children,0,0,0,fast,no,no,,,Big Nate on a Roll,
+9780131437401,claude,no,adult,0,0,0,medium,no,,intro,,Introductory Linear Algebra,"""an applied first course"""
+9780312342029,claude,no,adult,2,0,1,medium,no,,none,,A Wolf at the Table,"an abusive, menacing father"
+9780808553038,claude,yes,children,1,0,1,medium,no,no,,,The Egypt Game,the strange events are explained by the end
+9780099908401,claude,yes,adult,1,0,1,slow,no,no,,,The Old Man and the Sea,
+9780811200073,claude,no,adult,2,1,0,slow,no,,none,,Paris Spleen,poetry collection: nonfiction under the poetry rule
+9780471597568,claude,no,adult,0,0,0,medium,no,,intermediate,,Applied cryptography,"for programmers; reviewers call it an introduction, but it's comprehensive"
+9781250122469,claude,yes,adult,2,1,1,fast,no,no,,,The Breakdown,
+9781452615516,claude,no,adult,0,0,0,medium,no,,none,,You are a badass,
+9781476753188,claude,yes,adult,2,3,0,medium,no,no,,,Ugly Love,a grief backstory
+9781471118104,claude,yes,ya,2,1,2,fast,no,no,,,UnSouled,
+9781497316928,claude,no,adult,0,0,0,medium,no,,none,,Art of Money Getting,
+9780671681555,claude,yes,adult,2,1,2,fast,no,no,,,Sahara,
+9781101902769,claude,no,adult,3,0,1,medium,no,,none,,A Mother's Reckoning: Living in the Aftermath of Tragedy,
+9780140277449,claude,no,adult,3,0,3,medium,no,,none,,The Rape of Nanking,
+9780679879251,claude,yes,ya,2,1,2,medium,yes,no,,,The Subtle Knife,
+9780743492829,claude,no,adult,2,0,3,medium,no,,none,,Between a Rock and a Hard Place,the self-amputation is described in detail
+9780262337588,claude,no,adult,0,0,0,medium,no,,intro,,Machine Learning,a short overview for general readers
+9780375756788,claude,no,adult,0,1,1,slow,no,,none,,The Rise of Theodore Roosevelt,
+9780688213855,claude,yes,children,0,0,0,medium,no,no,,,Henry Huggins,
+9780679732457,claude,yes,adult,2,1,0,slow,no,no,,,The Notebooks of Malte Laurids Brigge,Rilke's only novel; preoccupied with death
+9780470278826,claude,no,adult,0,0,0,medium,no,,intro,,Linux For Dummies,
+9781932287165,claude,yes,adult,2,1,2,medium,yes,yes,,legendary medieval Denmark,"The Tragedie of Hamlet, Prince of Denmarke",the ghost; written c. 1600 about a legendary earlier Denmark
+9780765329585,claude,yes,ya,2,2,2,fast,no,no,,,Article 5,
+9780795326998,claude,no,adult,0,0,0,slow,no,,none,,On photography,cultural criticism for general readers
+9780763660406,claude,yes,children,0,0,0,medium,yes,no,,,Flora and Ulysses: The Illuminated Adventures,a squirrel gains superpowers: counted as magic
+9789812692368,claude,yes,ya,1,2,0,medium,yes,no,,,"Fruits Basket, Vol. 20",
+9780062120397,claude,yes,adult,3,1,3,slow,no,yes,,"Texas, 1849 to the early 1900s",The Son,
+9780385418492,claude,no,adult,0,0,1,medium,no,,none,,How the Irish Saved Civilization,
+9781607060765,claude,yes,adult,3,1,3,fast,yes,no,,,"The Walking Dead, Compendium 1",zombies counted as supernatural; the outbreak is never explained
+9780833554536,claude,yes,adult,0,0,0,medium,no,no,,,Calvin and Hobbes,same reading as the other Calvin and Hobbes collection
+9780618068524,claude,no,adult,0,0,0,medium,no,,intro,,Calculus,
+9780807014295,claude,no,adult,3,0,2,medium,no,,none,,Man's Search for Meaning,another edition of Man's Search for Meaning
+9780545060455,claude,yes,children,1,0,1,fast,no,no,,,The Black Circle,
+9781416980087,claude,yes,children,0,1,0,fast,no,no,,,Tales from a Not-So-Popular Party Girl,
+9780811213264,claude,no,adult,1,0,1,slow,no,,none,,The Cantos,poetry collection: nonfiction under the poetry rule
+9780596001674,claude,no,adult,0,0,0,medium,no,,intermediate,,Python cookbook,
+9780893753573,claude,yes,adult,2,0,2,medium,no,no,,,The Strange Case of Dr. Jekyll and Mr. Hyde,"a chemical draught: science, not magic (like the Invisible Man's serum)"
+9780671632588,claude,no,adult,0,0,0,medium,no,,none,,Psycho Cybernetics,
+9780385721790,claude,yes,adult,2,2,2,slow,no,yes,,England 1935 and WWII,Atonement,"the love story matters, but the book is about guilt"
+9780689839054,claude,yes,children,2,0,1,fast,no,no,,,Among the Betrayed,middle-grade series
+9780340280942,claude,yes,adult,0,0,0,fast,no,no,,,"Not a Penny More, Not a Penny Less",
+9780061715198,claude,no,adult,3,0,2,medium,no,,none,,"Stolen Innocence: My Story Of Growing Up In A Polygamous Sect, Becoming A Teenage Bride, And Breaking Free Of Warren Jeffs",
+9780684815251,claude,no,adult,2,0,3,medium,no,,none,,"Citizen Soldiers: The U.S. Army from the Normandy Beaches to the Bulge to the Surrender of Germany -- June 7, 1944-May 7, 1945",
+9780316011273,claude,yes,ya,1,1,0,medium,no,no,,,Luna,
+9780786706211,claude,no,adult,1,0,0,medium,no,,none,,Endurance: Shackleton's Incredible Voyage,
+9781101946596,claude,no,adult,0,0,0,medium,no,,none,,Life 3.0,
+9780679456728,claude,no,adult,1,2,1,medium,no,,none,,Catherine the Great: Portrait of a Woman,her lovers are a major thread
+9781859855423,claude,yes,children,0,0,0,medium,no,no,,,You Are Special,"living wooden people, read like talking animals: not counted as magic"
+9780413771001,claude,yes,adult,1,2,0,slow,no,no,,,The Seagull,ends in a suicide
+9780780311190,claude,no,adult,0,0,0,medium,no,,advanced,,Distributed operating systems,upper-level course text
+9781451629187,claude,no,adult,3,0,2,medium,no,,none,,A Stolen Life,
+9780062014535,claude,yes,ya,2,2,2,fast,no,no,,,Requiem,

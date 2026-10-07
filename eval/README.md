@@ -31,6 +31,8 @@ One row per (book, labeller), written by `make label-tags JUDGE=<initials>`. Boo
 
 The ideal parse of each query: intent, lookup, seed books, constraints, and which words must (`keep`) or must not (`drop`) reach the semantic query. Every set A query has one; set B adds about 100 more (refinements, follow-ups, hedges, negations) that carry their own text, category and source. Constraints are one line each, `[not] field op value hard|soft`; [PARSING.md](PARSING.md) has the vocabulary and the rules. `make eval-parser` scores a parser against it: intent accuracy, per-field precision/recall/F1 (strict, and ignoring strength), exact match, keep recall and the negation leak rate. Relative dates resolve against the file's `today`, so scores don't drift with the calendar. `make test` validates the file.
 
+`data/facet_prelabels.csv` holds Claude's suggested tags for the same sample, with a note where a tag needed judgement; they become labels only once reviewed (`make tags-doc`, then `make import-tags JUDGE=<initials>`, which saves them as `<initials>-review`). See [TAGGING.md](TAGGING.md#pre-labels-and-review).
+
 ## `data/negation_queries.csv` and `data/negation_pairs.csv` — the negation study
 
 40 pairs of queries for the negation study (design doc §40.1 B): a base request and the same request with one thing ruled out, covering supernatural, romance, violence, darkness, pace and audience. `negation_queries.csv` has the same columns as `queries.csv`; each pair shares a family, so both halves land in the same split. They're pooled and graded like set A (`make pool`, `make label` and `make grades-doc` read both files), but `make eval` scores set A only.
