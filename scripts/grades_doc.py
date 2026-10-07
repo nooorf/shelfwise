@@ -90,6 +90,8 @@ def export(doc: Path, qrels: Path) -> None:
     by_query: dict[str, dict[str, tuple[int, str, bool]]] = {}
     for j in judgments:
         key = current(j.work_key)
+        if key not in books:
+            continue  # removed from the catalog
         suggestion = suggested.get((j.query_id, key))
         if j.grade is not None and not j.judge.endswith("-review"):
             reason = f"Claude: {suggestion.grade}" if suggestion else ""

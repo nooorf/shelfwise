@@ -3,7 +3,7 @@
     uv run python scripts/import_isbns.py data/seed/isbns.csv --source seed
 
 The CSV needs an `isbn13` (or `isbn`) column; ISBN-10s are converted. Re-running is safe.
-Rejected rows (invalid ISBN, not found, not English) go to the ingest_error table. Approved merges
+Rejected rows (invalid ISBN, not found, not English; see shelfwise/ingest/language.py) go to the ingest_error table. Approved merges
 in data/seed/work_merges.csv are applied afterwards (`make review-duplicates` to decide new ones).
 """
 
@@ -16,6 +16,7 @@ from sqlalchemy import insert
 from shelfwise.catalog import schema
 from shelfwise.catalog.db import make_engine
 from shelfwise.ingest.cluster import cluster_editions
+from shelfwise.ingest.language import load_excluded, non_english_reason
 from shelfwise.ingest.load import load_clusters
 from shelfwise.ingest.merges import apply_merges, find_candidates, load_decisions
 from shelfwise.ingest.normalize import normalize_isbn
@@ -36,6 +37,7 @@ def main() -> None:
     raw_isbns = raw_isbns[: args.limit]
 
     client = OpenLibraryClient(args.cache_dir)
+    excluded = load_excluded()
     records: list[EditionRecord] = []
     errors: list[dict[str, str]] = []
     for i, raw in enumerate(raw_isbns, start=1):
@@ -46,6 +48,8 @@ def main() -> None:
             errors.append({"record_ref": isbn13, "reason": "not found on Open Library"})
         elif record.language != "en":
             errors.append({"record_ref": isbn13, "reason": f"language {record.language}"})
+        elif reason := non_english_reason(record.title, record.description, [isbn13], excluded):
+            errors.append({"record_ref": isbn13, "reason": f"not English: {reason.split(':')[0]}"})
         else:
             records.append(record)
         if i % 25 == 0 or i == len(raw_isbns):

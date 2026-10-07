@@ -77,6 +77,13 @@ def test_grades_under_a_merged_works_old_key_still_count() -> None:
     assert qrels_by_query(rows, aliases) == {"M01": {"978A": 3}}  # the higher grade wins
 
 
+def test_grades_for_books_no_longer_in_the_catalog_are_ignored() -> None:
+    aliases = {"978A": "978A"}  # 978B was removed
+    rows = [Judgment("M01", "978A", 2, "NF"), Judgment("M01", "978B", 3, "NF")]
+
+    assert qrels_by_query(rows, aliases) == {"M01": {"978A": 2}}
+
+
 def test_pooling_a_merged_work_again_adds_no_duplicate() -> None:
     aliases = {"978A": "978A", "978B": "978A"}
     existing = [Judgment("M01", "978B", 2, "NF")]

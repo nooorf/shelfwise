@@ -162,13 +162,16 @@ def qrels_by_query(
     """Graded judgments only, as {query_id: {work_key: grade}}, keys resolved through `aliases`.
 
     Two grades for one book (graded as separate works before a merge) keep the higher one: any
-    edition of the right book deserves the same grade (GRADING.md).
+    edition of the right book deserves the same grade (GRADING.md). With `aliases`, books no
+    longer in the catalog are left out: no system can return them, so they would only lower
+    every score.
     """
-    aliases = aliases or {}
     qrels: dict[str, dict[str, int]] = defaultdict(dict)
     for j in judgments:
         if j.grade is not None:
-            key = aliases.get(j.work_key, j.work_key)
+            if aliases is not None and j.work_key not in aliases:
+                continue
+            key = aliases.get(j.work_key, j.work_key) if aliases is not None else j.work_key
             qrels[j.query_id][key] = max(j.grade, qrels[j.query_id].get(key, 0))
     return dict(qrels)
 

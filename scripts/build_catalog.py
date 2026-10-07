@@ -5,8 +5,9 @@
     uv run python scripts/build_catalog.py                   # ~5,000 works
     uv run python scripts/build_catalog.py --total 8000
 
-Per genre subset, keeps the most-rated works that pass the quality checks (English, ISBN, page
-count, description, not audio), one edition per work, each work counted in one subset only.
+Per genre subset, keeps the most-rated works that pass the quality checks (English code, ISBN,
+page count, description, not audio; then an English-language check on the chosen ones, see
+shelfwise/ingest/language.py), one edition per work, each work counted in one subset only.
 Additive and safe to re-run: books already in the catalog (same ISBN, or same title and first
 author) are reused. Then run `make embed`, `make simulate` and `make tag`.
 """
@@ -21,14 +22,17 @@ from shelfwise.catalog.db import make_engine
 from shelfwise.ingest.cluster import cluster_editions
 from shelfwise.ingest.goodreads import (
     SUBSETS,
+    clean_description,
     file_name,
     iter_json_gz,
     quotas,
     rejection,
     to_record,
 )
+from shelfwise.ingest.language import load_excluded, non_english_reason
 from shelfwise.ingest.load import load_clusters
 from shelfwise.ingest.merges import apply_merges, find_candidates, load_decisions
+from shelfwise.ingest.normalize import normalize_isbn
 from shelfwise.ingest.records import EditionRecord
 
 RAW = Path("data/raw/goodreads")
@@ -94,6 +98,7 @@ def main() -> None:
             if 1000 <= (year := _int(work.get("original_publication_year"))) <= LATEST_YEAR:
                 first_year[wid] = year
 
+    excluded = load_excluded()
     chosen: dict[str, dict[str, Any]] = {}
     per_subset: dict[str, int] = {}
     for subset, quota in quotas(args.total).items():
@@ -102,9 +107,21 @@ def main() -> None:
             (wid for wid in found if wid not in chosen),
             key=lambda wid: (work_ratings.get(wid, found[wid][0]), wid),
             reverse=True,
-        )[:quota]
-        chosen |= {wid: found[wid][1] for wid in ranked}
-        per_subset[subset] = len(ranked)
+        )
+        taken = 0
+        for wid in ranked:  # most-rated first, skipping non-English until the quota is full
+            if taken == quota:
+                break
+            book = found[wid][1]
+            isbns = [i for i in (normalize_isbn(book.get("isbn13") or ""),
+                                 normalize_isbn(book.get("isbn") or "")) if i]  # fmt: skip
+            description = clean_description(book.get("description"))
+            if reason := non_english_reason(book["title"], description, isbns, excluded):
+                rejected[f"non-English ({reason.split(':')[0]})"] += 1
+                continue
+            chosen[wid] = book
+            taken += 1
+        per_subset[subset] = taken
 
     author_ids = {a["author_id"] for book in chosen.values() for a in book["authors"]}
     author_names = {

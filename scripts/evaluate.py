@@ -52,8 +52,13 @@ def main() -> None:
         for q in load_queries(args.queries)
         if args.split == "all" or split_of(q.family) == args.split
     ]
+    judgments = load_judgments(args.qrels)
     with make_engine().connect() as conn:
-        qrels = qrels_by_query(load_judgments(args.qrels), key_aliases(conn))
+        aliases = key_aliases(conn)
+    qrels = qrels_by_query(judgments, aliases)
+    gone = sum(j.grade is not None and j.work_key not in aliases for j in judgments)
+    if gone:
+        print(f"note: {gone} grades are for books no longer in the catalog; ignored")
     scored = [q for q in queries if any(g >= 2 for g in qrels.get(q.id, {}).values())]
     no_relevant = [q.id for q in queries if q not in scored]
     if not scored:

@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label grades-doc import-grades eval api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label grades-doc import-grades eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -21,6 +21,9 @@ import-seed:  ## Import data/seed/isbns.csv (cached lookups; safe to re-run)
 
 GOODREADS_URL := https://mcauleylab.ucsd.edu/public_datasets/gdrive/goodreads
 GOODREADS_SUBSETS := mystery_thriller_crime fantasy_paranormal history_biography romance young_adult children comics_graphic poetry
+
+drop-non-english:  ## List non-English books; APPLY=1 removes them (stop `make tag` first)
+	uv run python scripts/drop_non_english.py $(if $(APPLY),--apply,)
 
 download-goodreads:  ## Download the UCSD Book Graph subsets (~1.6 GB, academic use only; resumable)
 	mkdir -p data/raw/goodreads

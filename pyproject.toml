@@ -20,6 +20,7 @@ dependencies = [
     "pystemmer>=2.2",
     "numpy>=1.26",
     "sentence-transformers>=3.3",
+    "langdetect>=1.0.9",
 ]
 
 [dependency-groups]
