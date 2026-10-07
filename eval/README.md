@@ -1,6 +1,6 @@
 # Evaluation data
 
-Grading rules for `data/qrels.csv`: [GRADING.md](GRADING.md). Book-tag rules for `data/facet_labels.csv`: [TAGGING.md](TAGGING.md).
+Grading rules for `data/qrels.csv`: [GRADING.md](GRADING.md). Book-tag rules for `data/facet_labels.csv`: [TAGGING.md](TAGGING.md). Parser gold rules for `data/parser_gold.yaml`: [PARSING.md](PARSING.md).
 
 ## `data/queries.csv` — query set A
 
@@ -26,3 +26,7 @@ Rules of thumb:
 ## `data/facet_labels.csv` — human book tags
 
 One row per (book, labeller), written by `make label-tags JUDGE=<initials>`. Books are keyed by `work_key` (lowest ISBN-13), like `qrels.csv`, so labels survive catalog rebuilds. A blank cell means "can't tell". `make score-tags` compares the LLM's tags with these: per-tag accuracy and Cohen's kappa (quadratic-weighted for ordered scales), against a majority-answer baseline.
+
+## `data/parser_gold.yaml` — parser gold set B
+
+The ideal parse of each query: intent, lookup, seed books, constraints, and which words must (`keep`) or must not (`drop`) reach the semantic query. Every set A query has one; set B adds about 100 more (refinements, follow-ups, hedges, negations) that carry their own text, category and source. Constraints are one line each, `[not] field op value hard|soft`; [PARSING.md](PARSING.md) has the vocabulary and the rules. `make eval-parser` scores a parser against it: intent accuracy, per-field precision/recall/F1 (strict, and ignoring strength), exact match, keep recall and the negation leak rate. Relative dates resolve against the file's `today`, so scores don't drift with the calendar. `make test` validates the file.
