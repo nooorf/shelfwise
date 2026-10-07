@@ -3,8 +3,9 @@
     uv run python scripts/pool.py                 # depth 10, all pool systems
     uv run python scripts/pool.py --depth 15
 
-Existing rows and grades are never changed; only new (query, book) pairs are appended with a
-blank grade. Re-run after adding queries or systems, then label the blanks (scripts/label.py).
+Grades are never changed or removed; new (query, book) pairs are appended with a blank grade, and
+blank pairs that no system returns any more are dropped (--keep-stale keeps them). Re-run after
+adding queries, systems or books, then label the blanks (scripts/label.py).
 """
 
 import argparse
@@ -17,6 +18,7 @@ from shelfwise.catalog.db import make_engine
 from shelfwise.config import get_settings
 from shelfwise.evaluation.judgments import (
     Judgment,
+    drop_stale,
     key_aliases,
     load_judgments,
     merge_pool,
@@ -37,6 +39,7 @@ def main() -> None:
     parser.add_argument("--queries", type=Path, default=QUERIES)
     parser.add_argument("--embedding-model", default=get_settings().embedding_model)
     parser.add_argument("--qrels", type=Path, default=QRELS)
+    parser.add_argument("--keep-stale", action="store_true", help="keep blanks no system returns")
     args = parser.parse_args()
 
     queries = load_queries(args.queries)
@@ -65,8 +68,13 @@ def main() -> None:
                 pooled.append(Judgment(q.id, keys[work_id], title=title, author=author))
 
     merged = merge_pool(existing, pooled, aliases)
-    save_judgments(args.qrels, merged)
     added = len(merged) - len(existing)
+    if not args.keep_stale:
+        kept = drop_stale(merged, pooled, aliases)
+        if dropped := len(merged) - len(kept):
+            print(f"dropped {dropped} ungraded pairs that no system returns any more")
+        merged = kept
+    save_judgments(args.qrels, merged)
     blanks = Counter(j.query_id for j in merged if j.grade is None)
     print(
         f"{added} new pairs pooled; {sum(blanks.values())} still to label across {len(blanks)} queries"

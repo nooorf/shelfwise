@@ -68,3 +68,18 @@ def test_reloading_the_same_isbns_is_idempotent(conn: Connection) -> None:
     assert (stats.works_created, stats.works_reused, stats.editions_created) == (0, 2, 0)
     assert count(conn, schema.work) == 2
     assert count(conn, schema.edition) == 3
+
+
+def test_same_book_from_another_source_joins_the_existing_work(conn: Connection) -> None:
+    load_clusters(conn, cluster_editions(RECORDS), source="seed")
+    goodreads = EditionRecord(
+        isbn13="9780307588364",
+        title="Gone Girl",
+        authors=["Flynn, Gillian"],
+        source_work_key="goodreads:19288043",
+    )
+
+    stats = load_clusters(conn, cluster_editions([goodreads]), source="import")
+
+    assert (stats.works_created, stats.works_reused, stats.editions_created) == (0, 1, 1)
+    assert count(conn, schema.work) == 2

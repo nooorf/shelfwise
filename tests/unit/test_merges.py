@@ -2,7 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from shelfwise.ingest.merges import MergeDecision, load_decisions, save_decisions
+from shelfwise.ingest.merges import (
+    MergeDecision,
+    load_decisions,
+    save_decisions,
+    title_similarity,
+)
 
 
 def test_round_trip(tmp_path: Path) -> None:
@@ -27,3 +32,35 @@ def test_unknown_decision_is_reported_with_line_number(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="line 2: decision must be merge or separate"):
         load_decisions(path)
+
+
+@pytest.mark.parametrize(
+    ("a", "b"),
+    [
+        ("Elon Musk", "Elon Musk: Inventing the Future"),
+        ("The Stand", "The Stand (Turtleback School & Library Binding Edition)"),
+        ("Calculus", "Calculus, Early Transcendentals"),
+        ("Haunting Adeline", "Hunting Adeline"),
+    ],
+)
+def test_titles_worth_asking_about(a: str, b: str) -> None:
+    assert title_similarity(a, b) is not None
+
+
+@pytest.mark.parametrize(
+    ("a", "b"),
+    [
+        ("Fruits Basket, Vol. 4", "Fruits Basket, Vol. 6"),
+        ("Hannibal", "Hannibal Rising"),
+        ("After", "After We Collided"),
+        ("Clockwork Prince", "Clockwork Princess"),
+        ("Batman: Year One", "Batman: Hush"),
+        ("Never Never: Part Two", "Never Never: Part Three"),
+        (
+            "Fundamentals of Data Structures in C++ 2nd Edition",
+            "Fundamentals of Data Structures in C",
+        ),
+    ],
+)
+def test_sequels_and_other_volumes_are_not_candidates(a: str, b: str) -> None:
+    assert title_similarity(a, b) is None

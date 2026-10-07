@@ -5,6 +5,7 @@ import pytest
 
 from shelfwise.evaluation.judgments import (
     Judgment,
+    drop_stale,
     load_judgments,
     merge_pool,
     qrels_by_query,
@@ -66,6 +67,18 @@ def test_pooling_a_merged_work_again_adds_no_duplicate() -> None:
     existing = [Judgment("M01", "978B", 2, "NF")]
 
     assert merge_pool(existing, [Judgment("M01", "978A")], aliases) == existing
+
+
+def test_stale_blanks_are_dropped_but_grades_kept() -> None:
+    rows = [
+        Judgment("M01", "978A", None),  # still returned
+        Judgment("M01", "978B", None),  # no system returns it any more
+        Judgment("M01", "978C", 2, "NF"),  # graded: always kept
+    ]
+
+    kept = drop_stale(rows, [Judgment("M01", "978A")])
+
+    assert kept == [rows[0], rows[2]]
 
 
 def test_set_grade_records_and_clears_the_judge() -> None:

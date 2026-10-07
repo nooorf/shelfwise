@@ -8,6 +8,7 @@ decides each pair once, the decision is kept in `data/seed/work_merges.csv` keye
 """
 
 import csv
+import re
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from itertools import combinations
@@ -19,10 +20,13 @@ from sqlalchemy import Connection, text
 
 from shelfwise.catalog.availability import refresh_availability_view
 from shelfwise.catalog.meta import bump_catalog_version
+from shelfwise.ingest.normalize import title_norm
 
 MERGES = Path("data/seed/work_merges.csv")
 COLUMNS = ("keep_isbn", "other_isbn", "decision", "keep_title", "other_title")
-FUZZY_THRESHOLD = 92  # rapidfuzz token_set_ratio of normalized titles, same first author
+NEAR_IDENTICAL = 95  # rapidfuzz ratio of normalized full titles ("Haunting" / "Hunting Adeline")
+_SUBTITLE = re.compile(r":|,|\s\(|\s-\s")
+_NUMBER = re.compile(r"\d+")
 
 type Decision = Literal["merge", "separate"]
 
@@ -86,6 +90,24 @@ def save_decisions(path: Path, decisions: Iterable[MergeDecision]) -> None:
     tmp.replace(path)
 
 
+def title_similarity(a: str, b: str) -> float | None:
+    """How likely two titles by one author name the same book (0-100), or None if unlikely.
+
+    Same main title ("Elon Musk" / "Elon Musk: Inventing the Future", "The Stand (Library
+    Edition)") or near-identical full titles count. Different numbers never do: "Vol. 4" / "Vol. 6"
+    are different books, and so are two different subtitles of one franchise ("Batman: Hush" /
+    "Batman: Year One"). Sequels that extend a title ("Hannibal" / "Hannibal Rising") don't count.
+    """
+    if set(_NUMBER.findall(a)) != set(_NUMBER.findall(b)):
+        return None
+    parts_a, parts_b = _SUBTITLE.split(a, maxsplit=1), _SUBTITLE.split(b, maxsplit=1)
+    one_subtitle = len(parts_a) == 1 or len(parts_b) == 1  # "Batman: Hush" / "Batman: Year One"
+    if one_subtitle and title_norm(parts_a[0]) == title_norm(parts_b[0]):
+        return 100.0
+    score = fuzz.ratio(title_norm(a), title_norm(b))
+    return score if score >= NEAR_IDENTICAL else None
+
+
 def _work_of_isbn(conn: Connection) -> dict[str, int]:
     rows = conn.execute(text("SELECT isbn13, work_id FROM edition WHERE isbn13 IS NOT NULL"))
     return {r.isbn13: r.work_id for r in rows}
@@ -93,7 +115,7 @@ def _work_of_isbn(conn: Connection) -> dict[str, int]:
 
 _WORKS_SQL = text(
     """
-    SELECT w.work_id, w.title, w.title_norm, a.name_norm AS author_key, a.display AS author,
+    SELECT w.work_id, w.title, a.name_norm AS author_key, a.display AS author,
            (SELECT min(e.isbn13) FROM edition e WHERE e.work_id = w.work_id) AS isbn
     FROM work w
     JOIN work_author wa ON wa.work_id = w.work_id AND wa.position = 1
@@ -116,7 +138,7 @@ def find_candidates(conn: Connection, decisions: Sequence[MergeDecision]) -> lis
         for group in by_author.values()
         for a, b in combinations(group, 2)
         if frozenset((a.work_id, b.work_id)) not in decided
-        and (score := fuzz.token_set_ratio(a.title_norm, b.title_norm)) >= FUZZY_THRESHOLD
+        and (score := title_similarity(a.title, b.title)) is not None
     ]
 
 

@@ -88,6 +88,25 @@ def merge_pool(
     return existing + added
 
 
+def drop_stale(
+    judgments: list[Judgment],
+    pooled: list[Judgment],
+    aliases: Mapping[str, str] | None = None,
+) -> list[Judgment]:
+    """Remove ungraded pairs that no system returns any more (e.g. after the catalog grew).
+
+    Grades are never removed: a graded book that has dropped out of every top 10 can climb back
+    with a better system, and its grade is still a valid judgment.
+    """
+    aliases = aliases or {}
+    current = {(j.query_id, aliases.get(j.work_key, j.work_key)) for j in pooled}
+    return [
+        j
+        for j in judgments
+        if j.grade is not None or (j.query_id, aliases.get(j.work_key, j.work_key)) in current
+    ]
+
+
 def qrels_by_query(
     judgments: list[Judgment], aliases: Mapping[str, str] | None = None
 ) -> dict[str, dict[str, int]]:

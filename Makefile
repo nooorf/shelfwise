@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label eval api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -18,6 +18,20 @@ seed-sample:  ## Regenerate data/seed/isbns.csv from Open Library searches
 
 import-seed:  ## Import data/seed/isbns.csv (cached lookups; safe to re-run)
 	uv run python scripts/import_isbns.py data/seed/isbns.csv --source seed
+
+GOODREADS_URL := https://mcauleylab.ucsd.edu/public_datasets/gdrive/goodreads
+GOODREADS_SUBSETS := mystery_thriller_crime fantasy_paranormal history_biography romance young_adult children comics_graphic poetry
+
+download-goodreads:  ## Download the UCSD Book Graph subsets (~1.6 GB, academic use only; resumable)
+	mkdir -p data/raw/goodreads
+	for f in goodreads_book_authors goodreads_book_works; do \
+		curl -fL -C - --retry 3 -o data/raw/goodreads/$$f.json.gz $(GOODREADS_URL)/$$f.json.gz || exit 1; done
+	for s in $(GOODREADS_SUBSETS); do \
+		curl -fL -C - --retry 3 -o data/raw/goodreads/goodreads_books_$$s.json.gz \
+			$(GOODREADS_URL)/byGenre/goodreads_books_$$s.json.gz || exit 1; done
+
+build-catalog:  ## Import ~5,000 works from the Goodreads subsets (TOTAL=8000 for more)
+	uv run python scripts/build_catalog.py $(if $(TOTAL),--total $(TOTAL),)
 
 review-duplicates:  ## Decide which near-duplicate works are one book (approved ones are merged)
 	uv run python scripts/review_duplicates.py

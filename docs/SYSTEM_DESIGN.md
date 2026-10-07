@@ -339,7 +339,7 @@ A catalog of **5,000–20,000 works** is the sweet spot: large enough that retri
 | Author normalization | "Christie, Agatha" → "Agatha Christie"; strip dates "(1890-1976)" | Rules + `rapidfuzz` against known authors | Ambiguous → new author row, flagged |
 | Genre normalization | Map raw subjects/shelves to \~40 controlled genres | Hand-written mapping dict; embedding nearest-neighbor suggestion for unmapped strings, human-approved | Unmapped → kept as tag only |
 | Edition dedup | Same ISBN-13 → same edition | Exact key | Same ISBN, different titles → data-entry error, review queue |
-| Work clustering | Same `title_norm` + primary author → same work; fuzzy match (token-set ratio ≥ 92 and same author) → candidate | `rapidfuzz` | Candidates go to a review CSV; never auto-merge fuzzy matches |
+| Work clustering | Same `title_norm` + primary author → same work; same author with the same main title or a near-identical title (and the same numbers) → candidate | `rapidfuzz` | Candidates go to a review CSV; never auto-merge fuzzy matches |
 | Enrichment | Fill missing descriptions and subjects from Open Library by ISBN | `httpx` + on-disk cache | Still missing → `description_source='none'` |
 | Facet extraction | LLM reads description + subjects, emits facets JSON | Ollama, JSON schema output | Invalid JSON twice → facets left null |
 | Text build + hash | Render `search_text`, compute `content_hash` | Jinja template | — |
