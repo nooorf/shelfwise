@@ -1,4 +1,5 @@
 from collections import Counter
+from itertools import pairwise
 from pathlib import Path
 
 import pytest
@@ -113,3 +114,16 @@ def test_loader_needs_a_reference_date(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="today"):
         load_gold(path, QUERIES)
+
+
+def test_set_a_rows_show_their_query_text() -> None:
+    """Each set A row has its query as a comment above it, so a reviewer reads them together.
+    If a query's text changes in queries.csv, update the comment and re-check its gold parse."""
+    texts = {q.id: q.text for q in load_queries(QUERIES)}
+    lines = GOLD.read_text(encoding="utf-8").splitlines()
+    shown = {}
+    for above, line in pairwise(lines):
+        if line.startswith("  - id: ") and (query_id := line.removeprefix("  - id: ")) in texts:
+            shown[query_id] = above.removeprefix("  # ") if above.startswith("  # ") else None
+
+    assert shown == texts
