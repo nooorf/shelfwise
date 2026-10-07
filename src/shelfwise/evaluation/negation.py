@@ -19,7 +19,7 @@ from pathlib import Path
 
 from shelfwise.evaluation.judgments import Judgment
 from shelfwise.evaluation.queries import Query
-from shelfwise.tagging.labels import FACET_BY_NAME, FacetLabel, Labels
+from shelfwise.tagging.labels import FACET_BY_NAME, FacetLabel
 
 COLUMNS = ("pair", "attribute", "violation", "base", "negated")
 _SPEC = re.compile(r"^(?P<facet>[a-z_]+)(?P<op>>=|=)(?P<value>[a-z0-9]+)$")
@@ -46,7 +46,7 @@ class Violation:
             raise ValueError(f"{spec!r}: >= only works on 0-3 scales")
         return cls(facet, op, value)
 
-    def check(self, labels: Labels) -> bool | None:
+    def check(self, labels: Mapping[str, str | None]) -> bool | None:
         """Does a book with these labels violate the negation? None: not labelled, or unclear."""
         label = labels.get(self.facet)
         if label is None or label == "unclear":

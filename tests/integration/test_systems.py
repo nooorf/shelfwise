@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import date
 
 import pytest
@@ -5,6 +6,8 @@ from sqlalchemy import Connection, insert, update
 
 from shelfwise.catalog import schema
 from shelfwise.evaluation.judgments import work_keys
+from shelfwise.evaluation.negation import Violation
+from shelfwise.evaluation.negation_study import facet_filter
 from shelfwise.evaluation.systems import (
     SYSTEMS,
     SearchContext,
@@ -106,3 +109,20 @@ def test_a_named_author_outranks_titles_that_only_resemble_a_query_word(
         "Gone Girl",
         "Sharp Objects",
     ]
+
+
+def test_extra_constraints_filter_every_query(conn: Connection, ctx: SearchContext) -> None:
+    hill_house = next(w for w, t in work_titles(conn).items() if t == "The Haunting of Hill House")
+    conn.execute(
+        insert(schema.work_facets).values(work_id=hill_house, supernatural="yes", source="llm")
+    )
+    no_ghosts = replace(ctx, extra_constraints=(facet_filter(Violation.parse("supernatural=yes")),))
+
+    assert "The Haunting of Hill House" in titles(conn, SYSTEMS["bm25"](ctx, "haunting dark", 10))
+    found = titles(conn, SYSTEMS["bm25"](no_ghosts, "haunting dark", 10))
+    assert "The Haunting of Hill House" not in found
+    assert found  # untagged books stay
+
+
+def work_titles(conn: Connection) -> dict[int, str]:
+    return {r.work_id: r.title for r in conn.execute(schema.work.select())}

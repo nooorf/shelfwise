@@ -14,6 +14,7 @@ import numpy as np
 from sqlalchemy import Connection, text
 
 from shelfwise.embed.encoder import Embedder
+from shelfwise.query.constraints import Constraint
 from shelfwise.query.rules import parse_rules
 from shelfwise.ranking.rerank import CachedReranker, rerank
 from shelfwise.retrieval.dense import DenseIndex
@@ -37,6 +38,8 @@ class SearchContext:
     reranker: CachedReranker | None = None
     texts: dict[int, str] | None = None  # search_text per work, what the reranker reads
     rerank_depth: int = RERANK_DEPTH
+    # Hard constraints added to every query's own, e.g. a facet filter under study.
+    extra_constraints: tuple[Constraint, ...] = ()
 
     @classmethod
     def build(
@@ -65,7 +68,8 @@ class SearchContext:
 
     def mask(self, query: str) -> tuple[np.ndarray, str]:
         parse = parse_rules(query, self.today)
-        return allowed_mask(self.conn, parse.constraints, self.index.work_ids), parse.residual
+        constraints = [*parse.constraints, *self.extra_constraints]
+        return allowed_mask(self.conn, constraints, self.index.work_ids), parse.residual
 
     def require_reranker(self) -> tuple[CachedReranker, dict[int, str]]:
         if self.reranker is None or self.texts is None:
