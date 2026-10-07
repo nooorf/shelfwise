@@ -3,7 +3,8 @@
     uv run python scripts/import_isbns.py data/seed/isbns.csv --source seed
 
 The CSV needs an `isbn13` (or `isbn`) column; ISBN-10s are converted. Re-running is safe.
-Rejected rows (invalid ISBN, not found, not English) go to the ingest_error table.
+Rejected rows (invalid ISBN, not found, not English) go to the ingest_error table. Approved merges
+in data/seed/work_merges.csv are applied afterwards (`make review-duplicates` to decide new ones).
 """
 
 import argparse
@@ -16,6 +17,7 @@ from shelfwise.catalog import schema
 from shelfwise.catalog.db import make_engine
 from shelfwise.ingest.cluster import cluster_editions
 from shelfwise.ingest.load import load_clusters
+from shelfwise.ingest.merges import apply_merges, find_candidates, load_decisions
 from shelfwise.ingest.normalize import normalize_isbn
 from shelfwise.ingest.openlibrary import OpenLibraryClient
 from shelfwise.ingest.records import EditionRecord
@@ -49,7 +51,8 @@ def main() -> None:
         if i % 25 == 0 or i == len(raw_isbns):
             print(f"looked up {i}/{len(raw_isbns)}")
 
-    clusters, candidates = cluster_editions(records)
+    clusters = cluster_editions(records)
+    decisions = load_decisions()
     with make_engine().begin() as conn:
         if errors:
             conn.execute(
@@ -57,6 +60,8 @@ def main() -> None:
                 [{"source": f"isbn:{args.csv_path.name}", **e} for e in errors],
             )
         stats = load_clusters(conn, clusters, source=args.source)
+        merged = apply_merges(conn, decisions)
+        candidates = find_candidates(conn, decisions)
 
     print(
         f"\n{len(records)} editions -> {len(clusters)} works "
@@ -66,8 +71,10 @@ def main() -> None:
     )
     for reason in sorted({e["reason"] for e in errors}):
         print(f"  rejected ({reason}): {sum(e['reason'] == reason for e in errors)}")
-    for c in candidates:
-        print(f"  review: possible duplicate works by {c.author}: {c.title_a!r} / {c.title_b!r}")
+    if merged:
+        print(f"  merged {merged} works as approved in data/seed/work_merges.csv")
+    if candidates:
+        print(f"  {len(candidates)} possible duplicate works to review: `make review-duplicates`")
 
 
 if __name__ == "__main__":

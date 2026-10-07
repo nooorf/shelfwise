@@ -34,7 +34,7 @@ def count(conn: Connection, table: Table) -> int:
 
 
 def test_load_creates_works_editions_and_authors(conn: Connection) -> None:
-    clusters, _ = cluster_editions(RECORDS)
+    clusters = cluster_editions(RECORDS)
     version_before = get_catalog_version(conn)
 
     stats = load_clusters(conn, clusters, source="seed")
@@ -60,7 +60,7 @@ def test_load_creates_works_editions_and_authors(conn: Connection) -> None:
 
 
 def test_reloading_the_same_isbns_is_idempotent(conn: Connection) -> None:
-    clusters, _ = cluster_editions(RECORDS)
+    clusters = cluster_editions(RECORDS)
     load_clusters(conn, clusters, source="seed")
 
     stats = load_clusters(conn, clusters, source="seed")

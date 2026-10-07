@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed simulate tick embed llm llm-pull tag label-tags score-tags pool label eval api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -18,6 +18,9 @@ seed-sample:  ## Regenerate data/seed/isbns.csv from Open Library searches
 
 import-seed:  ## Import data/seed/isbns.csv (cached lookups; safe to re-run)
 	uv run python scripts/import_isbns.py data/seed/isbns.csv --source seed
+
+review-duplicates:  ## Decide which near-duplicate works are one book (approved ones are merged)
+	uv run python scripts/review_duplicates.py
 
 simulate:  ## Shelve every book and simulate 12 months of circulation (replaces copies/loans)
 	uv run python scripts/simulate_library.py

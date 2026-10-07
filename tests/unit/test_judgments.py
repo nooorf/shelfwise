@@ -53,6 +53,21 @@ def test_qrels_only_include_graded_pairs() -> None:
     assert qrels_by_query(judgments) == {"M01": {"a": 3}, "M02": {"c": 0}}
 
 
+def test_grades_under_a_merged_works_old_key_still_count() -> None:
+    # 978A and 978B were graded as separate works, then merged into one keyed 978A.
+    aliases = {"978A": "978A", "978B": "978A"}
+    rows = [Judgment("M01", "978A", 1, "NF"), Judgment("M01", "978B", 3, "NF")]
+
+    assert qrels_by_query(rows, aliases) == {"M01": {"978A": 3}}  # the higher grade wins
+
+
+def test_pooling_a_merged_work_again_adds_no_duplicate() -> None:
+    aliases = {"978A": "978A", "978B": "978A"}
+    existing = [Judgment("M01", "978B", 2, "NF")]
+
+    assert merge_pool(existing, [Judgment("M01", "978A")], aliases) == existing
+
+
 def test_set_grade_records_and_clears_the_judge() -> None:
     graded = set_grade([Judgment("M01", "a")], 0, 2, "NF")
     cleared = set_grade(graded, 0, None, "NF")

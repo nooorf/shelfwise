@@ -17,7 +17,12 @@ from pathlib import Path
 from shelfwise.catalog.db import make_engine
 from shelfwise.catalog.meta import get_catalog_version
 from shelfwise.config import get_settings
-from shelfwise.evaluation.judgments import load_judgments, qrels_by_query, work_keys
+from shelfwise.evaluation.judgments import (
+    key_aliases,
+    load_judgments,
+    qrels_by_query,
+    work_keys,
+)
 from shelfwise.evaluation.metrics import bootstrap_ci, mean, query_metrics
 from shelfwise.evaluation.queries import load_queries
 from shelfwise.evaluation.reports import git_version, report_path
@@ -45,7 +50,8 @@ def main() -> None:
         for q in load_queries(args.queries)
         if args.split == "all" or split_of(q.family) == args.split
     ]
-    qrels = qrels_by_query(load_judgments(args.qrels))
+    with make_engine().connect() as conn:
+        qrels = qrels_by_query(load_judgments(args.qrels), key_aliases(conn))
     scored = [q for q in queries if any(g >= 2 for g in qrels.get(q.id, {}).values())]
     no_relevant = [q.id for q in queries if q not in scored]
     if not scored:

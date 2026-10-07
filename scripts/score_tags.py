@@ -17,6 +17,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from shelfwise.catalog.db import make_engine
+from shelfwise.evaluation.judgments import key_aliases
 from shelfwise.evaluation.reports import git_version, report_path
 from shelfwise.tagging.labels import Labels, agreement_by_tag, llm_labels, load_labels
 
@@ -40,9 +41,12 @@ def main() -> None:
     args = parser.parse_args()
 
     rows = load_labels(args.labels)
+    with make_engine().connect() as conn:
+        aliases = key_aliases(conn)  # a merged work's old key -> its current one
+        llm = llm_labels(conn)
     by_judge: dict[str, dict[str, Labels]] = {}
     for r in rows:
-        by_judge.setdefault(r.judge, {})[r.work_key] = r.labels
+        by_judge.setdefault(r.judge, {})[aliases.get(r.work_key, r.work_key)] = r.labels
     if not by_judge:
         raise SystemExit(f"No labels in {args.labels} yet: run `make label-tags JUDGE=<initials>`.")
 
@@ -62,8 +66,6 @@ def main() -> None:
         if judge not in by_judge:
             raise SystemExit(f"No labels by {judge} in {args.labels}.")
         reference = by_judge[judge]
-        with make_engine().connect() as conn:
-            llm = llm_labels(conn)
         other = {key: labels for key, (_, labels) in llm.items()}
         versions = Counter(llm[key][0] for key in reference if key in llm)
         report["compared"] = f"{judge} vs llm"

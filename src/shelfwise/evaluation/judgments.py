@@ -2,11 +2,15 @@
 
 Books are identified by `work_key` (their lowest ISBN-13), not by database id, because rebuilding
 the catalog renumbers ids while ISBNs stay put. A blank grade means "pooled, not yet judged".
+
+Merging two works (merges.py) can change the merged work's key. Saved grades are never rewritten;
+readers resolve old keys through `key_aliases` instead.
 """
 
 import csv
 import hashlib
 from collections import defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from pathlib import Path
 
@@ -74,19 +78,30 @@ def save_judgments(path: Path, judgments: list[Judgment]) -> None:
     tmp.replace(path)  # atomic: a crash mid-write never corrupts the file
 
 
-def merge_pool(existing: list[Judgment], pooled: list[Judgment]) -> list[Judgment]:
+def merge_pool(
+    existing: list[Judgment], pooled: list[Judgment], aliases: Mapping[str, str] | None = None
+) -> list[Judgment]:
     """Add newly pooled (query, book) pairs; never touch existing rows or their grades."""
-    seen = {(j.query_id, j.work_key) for j in existing}
+    aliases = aliases or {}
+    seen = {(j.query_id, aliases.get(j.work_key, j.work_key)) for j in existing}
     added = [j for j in pooled if (j.query_id, j.work_key) not in seen]
     return existing + added
 
 
-def qrels_by_query(judgments: list[Judgment]) -> dict[str, dict[str, int]]:
-    """Graded judgments only, as {query_id: {work_key: grade}}."""
+def qrels_by_query(
+    judgments: list[Judgment], aliases: Mapping[str, str] | None = None
+) -> dict[str, dict[str, int]]:
+    """Graded judgments only, as {query_id: {work_key: grade}}, keys resolved through `aliases`.
+
+    Two grades for one book (graded as separate works before a merge) keep the higher one: any
+    edition of the right book deserves the same grade (GRADING.md).
+    """
+    aliases = aliases or {}
     qrels: dict[str, dict[str, int]] = defaultdict(dict)
     for j in judgments:
         if j.grade is not None:
-            qrels[j.query_id][j.work_key] = j.grade
+            key = aliases.get(j.work_key, j.work_key)
+            qrels[j.query_id][key] = max(j.grade, qrels[j.query_id].get(key, 0))
     return dict(qrels)
 
 
@@ -110,3 +125,12 @@ def work_keys(conn: Connection) -> dict[int, str]:
         r.work_id: r.isbn or "t:" + hashlib.sha1(r.title_norm.encode()).hexdigest()[:12]
         for r in rows
     }
+
+
+def key_aliases(conn: Connection) -> dict[str, str]:
+    """Every edition's ISBN-13, and every current key, -> the current key of its work."""
+    keys = work_keys(conn)
+    aliases = {key: key for key in keys.values()}
+    for r in conn.execute(text("SELECT isbn13, work_id FROM edition WHERE isbn13 IS NOT NULL")):
+        aliases[r.isbn13] = keys[r.work_id]
+    return aliases

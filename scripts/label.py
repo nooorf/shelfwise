@@ -14,7 +14,13 @@ from pathlib import Path
 from sqlalchemy import text
 
 from shelfwise.catalog.db import make_engine
-from shelfwise.evaluation.judgments import load_judgments, save_judgments, set_grade, work_keys
+from shelfwise.evaluation.judgments import (
+    key_aliases,
+    load_judgments,
+    save_judgments,
+    set_grade,
+    work_keys,
+)
 from shelfwise.evaluation.queries import load_queries
 
 QUERIES = Path("eval/data/queries.csv")
@@ -45,12 +51,19 @@ def main() -> None:
     judgments = load_judgments(args.qrels)
     with make_engine().connect() as conn:
         key_of = work_keys(conn)
+        aliases = key_aliases(conn)
         books = {key_of[r.work_id]: r for r in conn.execute(_BOOK_SQL)}
 
+    def current(key: str) -> str:
+        return aliases.get(key, key)  # a merged work's old key -> its current one
+
+    graded = {(j.query_id, current(j.work_key)) for j in judgments if j.grade is not None}
     todo = [
         i
         for i, j in enumerate(judgments)
-        if j.grade is None and (args.query is None or j.query_id == args.query)
+        if j.grade is None
+        and (j.query_id, current(j.work_key)) not in graded  # graded under its other edition
+        and (args.query is None or j.query_id == args.query)
     ]
     print(f"{len(todo)} to label. Keys: 0-3 grade, s skip, b back, q quit.\n")
     history: list[int] = []
@@ -59,7 +72,7 @@ def main() -> None:
         i = todo[position]
         j = judgments[i]
         q = queries.get(j.query_id)
-        book = books.get(j.work_key)
+        book = books.get(current(j.work_key))
         print("=" * 78)
         print(
             f"[{position + 1}/{len(todo)}]  {j.query_id} ({q.category if q else '?'}):  {q.text if q else '?'}"

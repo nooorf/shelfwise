@@ -7,7 +7,7 @@ def edition(isbn: str, title: str, author: str = "Alex Michaelides", **kw: objec
 
 
 def test_same_source_work_key_groups_editions() -> None:
-    clusters, _ = cluster_editions(
+    clusters = cluster_editions(
         [
             edition("9781250301697", "The Silent Patient", source_work_key="/works/W1"),
             edition("9781409181620", "Silent Patient", source_work_key="/works/W1"),
@@ -19,7 +19,7 @@ def test_same_source_work_key_groups_editions() -> None:
 
 
 def test_same_title_and_author_groups_across_work_keys() -> None:
-    clusters, _ = cluster_editions(
+    clusters = cluster_editions(
         [
             edition("9781250301697", "The Silent Patient", source_work_key="/works/W1"),
             edition("9781250301710", "The silent patient", source_work_key="/works/W2"),
@@ -30,7 +30,7 @@ def test_same_title_and_author_groups_across_work_keys() -> None:
 
 
 def test_grouping_is_transitive() -> None:
-    clusters, _ = cluster_editions(
+    clusters = cluster_editions(
         [
             edition("9780000000019", "Dune", "Frank Herbert", source_work_key="/works/A"),
             edition("9780000000026", "Dune", "Frank Herbert", source_work_key="/works/B"),
@@ -42,7 +42,7 @@ def test_grouping_is_transitive() -> None:
 
 
 def test_different_authors_stay_separate() -> None:
-    clusters, _ = cluster_editions(
+    clusters = cluster_editions(
         [
             edition("9780000000019", "Rebecca", "Daphne du Maurier"),
             edition("9780000000026", "Rebecca", "Someone Else"),
@@ -52,8 +52,8 @@ def test_different_authors_stay_separate() -> None:
     assert len(clusters) == 2
 
 
-def test_near_duplicates_are_reported_not_merged() -> None:
-    clusters, candidates = cluster_editions(
+def test_near_duplicate_titles_are_not_merged() -> None:
+    clusters = cluster_editions(
         [
             edition("9780000000019", "The Maidens", source_work_key="/works/A"),
             edition("9780000000026", "The Maidens: A Novel", source_work_key="/works/B"),
@@ -61,11 +61,10 @@ def test_near_duplicates_are_reported_not_merged() -> None:
     )
 
     assert len(clusters) == 2
-    assert [(c.title_a, c.title_b) for c in candidates] == [("The Maidens", "The Maidens: A Novel")]
 
 
 def test_work_fields_come_from_the_richest_edition() -> None:
-    clusters, _ = cluster_editions(
+    clusters = cluster_editions(
         [
             edition("9780000000019", "Dune", "Frank Herbert", pub_year=2005),
             edition(

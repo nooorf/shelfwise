@@ -2,18 +2,13 @@
 
 Two editions belong to the same work if they share a source work key (Open Library already groups
 editions) or the same normalized title + primary author. Near-identical titles by the same author
-are *reported* as candidates for human review, never merged automatically.
+are never merged here: a person reviews them (see merges.py).
 """
 
 from dataclasses import dataclass, field
-from itertools import combinations
-
-from rapidfuzz import fuzz
 
 from shelfwise.ingest.normalize import normalize_author, title_norm
 from shelfwise.ingest.records import EditionRecord
-
-FUZZY_THRESHOLD = 92
 
 
 @dataclass
@@ -60,21 +55,13 @@ class WorkCluster:
         return [e.isbn13 for e in self.editions]
 
 
-@dataclass(frozen=True)
-class FuzzyCandidate:
-    title_a: str
-    title_b: str
-    author: str
-    score: float
-
-
 def _author_key(record: EditionRecord) -> str:
     return normalize_author(record.authors[0])[1] if record.authors else ""
 
 
 def cluster_editions(
     records: list[EditionRecord],
-) -> tuple[list[WorkCluster], list[FuzzyCandidate]]:
+) -> list[WorkCluster]:
     parent = list(range(len(records)))
 
     def find(i: int) -> int:
@@ -97,16 +84,4 @@ def cluster_editions(
     groups: dict[int, WorkCluster] = {}
     for i, record in enumerate(records):
         groups.setdefault(find(i), WorkCluster()).editions.append(record)
-    clusters = list(groups.values())
-
-    by_author: dict[str, list[WorkCluster]] = {}
-    for cluster in clusters:
-        by_author.setdefault(_author_key(cluster.editions[0]), []).append(cluster)
-    candidates = [
-        FuzzyCandidate(a.title, b.title, author, score)
-        for author, group in by_author.items()
-        if author
-        for a, b in combinations(group, 2)
-        if (score := fuzz.token_set_ratio(a.title_norm, b.title_norm)) >= FUZZY_THRESHOLD
-    ]
-    return clusters, candidates
+    return list(groups.values())

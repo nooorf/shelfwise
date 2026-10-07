@@ -17,6 +17,7 @@ from shelfwise.catalog.db import make_engine
 from shelfwise.config import get_settings
 from shelfwise.evaluation.judgments import (
     Judgment,
+    key_aliases,
     load_judgments,
     merge_pool,
     save_judgments,
@@ -43,6 +44,7 @@ def main() -> None:
     with make_engine().connect() as conn:
         ctx = load_context(conn, args.embedding_model)
         keys = work_keys(conn)
+        aliases = key_aliases(conn)
         info = {
             r.work_id: (r.title, r.author or "")
             for r in conn.execute(
@@ -62,7 +64,7 @@ def main() -> None:
                 title, author = info[work_id]
                 pooled.append(Judgment(q.id, keys[work_id], title=title, author=author))
 
-    merged = merge_pool(existing, pooled)
+    merged = merge_pool(existing, pooled, aliases)
     save_judgments(args.qrels, merged)
     added = len(merged) - len(existing)
     blanks = Counter(j.query_id for j in merged if j.grade is None)

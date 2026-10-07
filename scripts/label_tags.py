@@ -18,7 +18,7 @@ from typing import Any, Literal
 from sqlalchemy import Row, text
 
 from shelfwise.catalog.db import make_engine
-from shelfwise.evaluation.judgments import work_keys
+from shelfwise.evaluation.judgments import key_aliases, work_keys
 from shelfwise.tagging.labels import (
     FACETS,
     FacetLabel,
@@ -114,9 +114,10 @@ def main() -> None:
     rows = load_labels(args.labels)
     with make_engine().connect() as conn:
         key_of = work_keys(conn)
+        aliases = key_aliases(conn)
         books = {key_of[r.work_id]: r for r in conn.execute(_BOOK_SQL)}
     order = labelling_order({key: (b.genres or ["none"])[0] for key, b in books.items()})
-    done = {r.work_key for r in rows if r.judge == args.judge}
+    done = {aliases.get(r.work_key, r.work_key) for r in rows if r.judge == args.judge}
     todo = [key for key in order[: args.target] if key not in done]
     print(f"{len(done)} labelled by {args.judge}, {len(todo)} to go (target {args.target}).")
     print("Keys: option letter/number · ? can't tell · b back · s skip book · q quit\n")
