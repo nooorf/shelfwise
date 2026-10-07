@@ -92,3 +92,17 @@ def test_work_keys_fall_back_when_no_isbn(conn: Connection, ctx: SearchContext) 
 
     assert all(k.startswith("t:") for k in keys.values())
     assert len(set(keys.values())) == len(keys)
+
+
+def test_a_named_author_outranks_titles_that_only_resemble_a_query_word(
+    conn: Connection, ctx: SearchContext
+) -> None:
+    # "Flynne" is one typo away from the author's surname, like "Christy" vs "Christie".
+    lookalike = add_work(conn, "Flynne", first_pub_year=2001, genres=["romance"])
+    add_copy(conn, add_edition(conn, lookalike, isbn13=None), "available")
+    ctx = SearchContext.build(conn, today=date(2026, 10, 6))
+
+    assert titles(conn, bm25_lookup(ctx, "anything by gillian flynn", 3))[:2] == [
+        "Gone Girl",
+        "Sharp Objects",
+    ]

@@ -86,3 +86,42 @@ def test_index_built_from_database_includes_authors(
     index = build_lexical_index(conn)
 
     assert [h.work_id for h in index.search("herbert")] == [catalog["Dune"]]
+
+
+def test_a_longer_title_that_explains_the_whole_query_beats_short_fragments(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    for title in ("Half-Blood", "The Prince"):
+        add_work(conn, title)
+    add_work(conn, "Harry Potter and the Half-Blood Prince")
+
+    assert titles_found(conn, "harry poter half blood prince")[0] == (
+        "Harry Potter and the Half-Blood Prince"
+    )
+
+
+def test_a_title_matching_one_word_of_a_longer_request_is_not_a_lookup(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    add_work(conn, "Home")
+    add_work(conn, "Night")
+
+    assert titles_found(conn, "thrillers i can take home today") == []
+    assert titles_found(conn, "what horror books are available right now") == []
+
+
+def test_a_surname_that_is_also_a_common_word_needs_the_first_name(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    young = add_work(conn, "Before Jamaica Lane")
+    conn.execute(
+        insert(schema.work_author).values(
+            work_id=young, author_id=add_author(conn, "Samantha Young")
+        )
+    )
+    for title in ("Letters to a Young Poet", "The Young Elites"):  # "young" is an ordinary word
+        add_work(conn, title)
+
+    assert [a.name for a in find_authors(conn, "available young adult fantasy")] == []
+    assert [a.name for a in find_authors(conn, "books by samantha young")] == ["Samantha Young"]
+    assert [a.name for a in find_authors(conn, "works by dickens")] == ["Charles Dickens"]

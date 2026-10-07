@@ -86,12 +86,17 @@ def _allowed_ids(ctx: SearchContext, mask: np.ndarray) -> set[int]:
 
 
 def _known_items(ctx: SearchContext, query: str) -> list[int]:
-    """ISBN hits, then title matches, then each matched author's books by popularity."""
+    """ISBN hits, then title and author matches merged by match score, an author's books by
+    popularity. Merging by score means an author named in full ("agatha christie", 1.0) outranks
+    titles that only resemble one query word (*Christy*); ties keep titles first."""
     popularity = dict(zip(ctx.index.work_ids.tolist(), ctx.popularity.tolist(), strict=True))
-    found = find_by_isbn(ctx.conn, query) + [m.work_id for m in find_titles(ctx.conn, query)]
-    for author in find_authors(ctx.conn, query):
-        found += sorted(author.work_ids, key=lambda w: -popularity.get(w, 0.0))
-    return found
+    matches = [(m.score, [m.work_id]) for m in find_titles(ctx.conn, query)]
+    matches += [
+        (a.score, sorted(a.work_ids, key=lambda w: -popularity.get(w, 0.0)))
+        for a in find_authors(ctx.conn, query)
+    ]
+    matches.sort(key=lambda m: -m[0])  # stable
+    return find_by_isbn(ctx.conn, query) + [w for _, ids in matches for w in ids]
 
 
 def _semantic_text(query: str, residual: str) -> str:
