@@ -21,9 +21,8 @@ from shelfwise.evaluation.judgments import (
     set_grade,
     work_keys,
 )
-from shelfwise.evaluation.queries import load_queries
+from shelfwise.evaluation.queries import QUERY_FILES, load_query_files
 
-QUERIES = Path("eval/data/queries.csv")
 QRELS = Path("eval/data/qrels.csv")
 
 _BOOK_SQL = text(
@@ -43,11 +42,11 @@ def main() -> None:
     )
     parser.add_argument("--judge", required=True, help="your initials, recorded with each grade")
     parser.add_argument("--query", help="only label this query id")
-    parser.add_argument("--queries", type=Path, default=QUERIES)
+    parser.add_argument("--queries", type=Path, nargs="+", default=list(QUERY_FILES))
     parser.add_argument("--qrels", type=Path, default=QRELS)
     args = parser.parse_args()
 
-    queries = {q.id: q for q in load_queries(args.queries)}
+    queries = {q.id: q for q in load_query_files(args.queries)}
     judgments = load_judgments(args.qrels)
     with make_engine().connect() as conn:
         key_of = work_keys(conn)

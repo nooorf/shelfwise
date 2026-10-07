@@ -1,6 +1,7 @@
 """Evaluation query set A (design doc §27). Loaded from a hand-edited CSV and validated strictly."""
 
 import csv
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -22,6 +23,9 @@ PERSONAS = ("student", "casual", "researcher", "librarian", "visitor")
 # synthetic: generated from a book record. Metrics are reported per source.
 SOURCES = ("llm-draft", "persona", "real", "synthetic")
 COLUMNS = ("id", "category", "persona", "family", "source", "text", "notes")
+# Every file of queries that gets pooled and graded: set A, and the negation study's pairs.
+# The retrieval benchmark (evaluate.py) scores set A unless told otherwise.
+QUERY_FILES = (Path("eval/data/queries.csv"), Path("eval/data/negation_queries.csv"))
 
 
 @dataclass(frozen=True)
@@ -68,4 +72,17 @@ def load_queries(path: Path) -> list[Query]:
 
     if problems:
         raise ValueError(f"{path}:\n  " + "\n  ".join(problems))
+    return queries
+
+
+def load_query_files(paths: Iterable[Path]) -> list[Query]:
+    """Several query files as one list; ids must be unique across all of them."""
+    queries: list[Query] = []
+    where: dict[str, Path] = {}
+    for path in paths:
+        for q in load_queries(path):
+            if q.id in where:
+                raise ValueError(f"query id {q.id} is in both {where[q.id]} and {path}")
+            where[q.id] = path
+            queries.append(q)
     return queries

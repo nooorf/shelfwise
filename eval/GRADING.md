@@ -27,6 +27,7 @@ A book counts as **relevant** in the metrics at grade 2 or 3.
 | --- | --- |
 | lookup ("do you have X") | The requested book in any edition: **3**. An adaptation of it (graphic novel, abridged): **2**. Same author or same series: **1**. Anything else: **0** |
 | author | Books by that author: **3**. If the query excludes one ("other than 1984"), that book is **0** |
+| negation ("nothing supernatural", "no romance", "not for kids") | Grade the whole request, negation included. A book that clearly has what was ruled out: **0**, however well it fits the rest. A minor or late element of it ("a supernatural reveal" in the last chapter): at most **1**. "Not too X" allows a little X |
 | similarity ("like X") | X itself: **0** (they've read it). Shares what makes X appealing: **3** or **2** |
 | learning (course / technical) | Weigh topic **and** level **and** goal. A beginner asking, and an advanced reference: **1**. The right level and topic: **3** |
 | vague ("something good", "surprise me") | A well-liked book most readers would enjoy: **2**. Otherwise: **1**. Rarely 3 |

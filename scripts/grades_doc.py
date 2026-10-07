@@ -26,9 +26,8 @@ from shelfwise.evaluation.judgments import (
     set_grade,
     work_keys,
 )
-from shelfwise.evaluation.queries import load_queries
+from shelfwise.evaluation.queries import QUERY_FILES, load_query_files
 
-QUERIES = Path("eval/data/queries.csv")
 QRELS = Path("eval/data/qrels.csv")
 PRELABELS = Path("eval/data/prelabels.csv")
 DOC = Path("eval/grades_review.md")
@@ -76,7 +75,7 @@ def _cell(value: str) -> str:
 
 
 def export(doc: Path, qrels: Path) -> None:
-    queries = {q.id: q for q in load_queries(QUERIES)}
+    queries = {q.id: q for q in load_query_files(QUERY_FILES)}
     judgments = load_judgments(qrels)
     with make_engine().connect() as conn:
         key_of = work_keys(conn)
