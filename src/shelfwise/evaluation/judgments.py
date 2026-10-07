@@ -3,6 +3,9 @@
 Books are identified by `work_key` (their lowest ISBN-13), not by database id, because rebuilding
 the catalog renumbers ids while ISBNs stay put. A blank grade means "pooled, not yet judged".
 
+Pre-labels (an LLM's suggested grades with a one-line reason) live in their own file and only
+become judgments when a person reviews them; see GRADING.md.
+
 Merging two works (merges.py) can change the merged work's key. Saved grades are never rewritten;
 readers resolve old keys through `key_aliases` instead.
 """
@@ -28,6 +31,52 @@ class Judgment:
     judge: str = ""  # who graded it: a name/initials, or "llm" for pre-labels (Phase 3)
     title: str = ""
     author: str = ""
+
+
+@dataclass(frozen=True)
+class PreLabel:
+    query_id: str
+    work_key: str
+    grade: int
+    judge: str  # who suggested it, e.g. "claude"
+    reason: str = ""
+
+
+PRELABEL_COLUMNS = ("query_id", "work_key", "grade", "judge", "reason")
+
+
+def load_prelabels(path: Path) -> list[PreLabel]:
+    if not path.exists():
+        return []
+    with path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        if tuple(reader.fieldnames or ()) != PRELABEL_COLUMNS:
+            raise ValueError(f"{path}: header must be {','.join(PRELABEL_COLUMNS)}")
+        rows = []
+        for line, row in enumerate(reader, start=2):
+            if row["grade"].strip() not in {str(g) for g in GRADES}:
+                raise ValueError(f"{path}: line {line}: grade must be 0-3")
+            rows.append(
+                PreLabel(
+                    row["query_id"].strip(),
+                    row["work_key"].strip(),
+                    int(row["grade"]),
+                    row["judge"].strip(),
+                    row["reason"] or "",
+                )
+            )
+    return rows
+
+
+def save_prelabels(path: Path, rows: list[PreLabel]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(PRELABEL_COLUMNS)
+        for r in rows:
+            writer.writerow([r.query_id, r.work_key, r.grade, r.judge, r.reason])
+    tmp.replace(path)
 
 
 def load_judgments(path: Path) -> list[Judgment]:

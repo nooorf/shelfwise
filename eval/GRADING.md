@@ -37,3 +37,15 @@ A book counts as **relevant** in the metrics at grade 2 or 3.
 - Grades are made with `scripts/label.py`, one book at a time, without seeing which system retrieved it or its rank.
 - Title, genres and the opening of the description are usually enough. If unsure between two grades, pick the lower one.
 - Each grade records the grader's initials (`judge` column). A second grader grades a sample blind to measure agreement, which bounds how precise any metric can be.
+
+## Pre-labels and review
+
+An LLM (Claude) can pre-grade pooled pairs by these same rules, with a one-line reason where the grade isn't obvious. Pre-labels live in `data/prelabels.csv` and are **not** judgments: they count only after a person reviews them: `make grades-doc` writes every query with its books and suggested grades to one Markdown document, the reviewer corrects grades in place, and `make import-grades` saves the reviewed document. Reviewed grades record the judge as `<initials>-review`, so they can always be separated from independent grades.
+
+Reviewing is faster than grading but anchors the reviewer on the suggestion, so agreement is measured on pairs graded **independently** by both:
+
+| Pairs | Categories | Exact agreement | Weighted κ | Relevant / not κ |
+| --- | --- | --- | --- | --- |
+| 201 (2026-10-07) | author, lookup only | 98.5% | 0.98 | 0.97 |
+
+The independent overlap so far covers only near-mechanical categories; a sample of the subjective ones (vague, discovery, negation, similarity) still needs independent human grades before the pre-label agreement can be quoted for them.

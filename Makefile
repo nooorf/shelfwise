@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label eval api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label grades-doc import-grades eval api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -68,6 +68,13 @@ pool:  ## Add every search system's top 10 per query to eval/data/qrels.csv
 label:  ## Grade pooled books: make label JUDGE=<your initials>
 	@test -n "$(JUDGE)" || (echo "usage: make label JUDGE=<your initials>" && exit 1)
 	uv run python scripts/label.py --judge $(JUDGE)
+
+grades-doc:  ## Write eval/grades_review.md: every query, its books and the suggested grades
+	uv run python scripts/grades_doc.py export
+
+import-grades:  ## Save your reviewed eval/grades_review.md: make import-grades JUDGE=<initials>
+	@test -n "$(JUDGE)" || (echo "usage: make import-grades JUDGE=<your initials>" && exit 1)
+	uv run python scripts/grades_doc.py import --judge $(JUDGE)
 
 eval:  ## Score all systems on the dev split and save a report
 	uv run python scripts/evaluate.py

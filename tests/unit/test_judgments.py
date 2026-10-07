@@ -5,11 +5,14 @@ import pytest
 
 from shelfwise.evaluation.judgments import (
     Judgment,
+    PreLabel,
     drop_stale,
     load_judgments,
+    load_prelabels,
     merge_pool,
     qrels_by_query,
     save_judgments,
+    save_prelabels,
     set_grade,
 )
 from shelfwise.evaluation.splits import split_of
@@ -25,6 +28,18 @@ def test_round_trip_keeps_blanks_and_grades(tmp_path: Path) -> None:
     save_judgments(path, rows)
 
     assert load_judgments(path) == rows
+
+
+def test_prelabels_round_trip_with_reasons(tmp_path: Path) -> None:
+    path = tmp_path / "prelabels.csv"
+    rows = [
+        PreLabel("H01", "9781250301710", 1, "claude", "the real book; no sequel exists"),
+        PreLabel("A01", "9780451119674", 3, "claude"),
+    ]
+
+    save_prelabels(path, rows)
+
+    assert load_prelabels(path) == rows
 
 
 def test_missing_file_means_no_judgments(tmp_path: Path) -> None:

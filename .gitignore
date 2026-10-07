@@ -15,6 +15,9 @@ build/
 # Private to-do list (kept locally, never committed)
 MY_TASKS.md
 
+# Review document, regenerated from prelabels.csv (make grades-doc)
+eval/grades_review.md
+
 # Data (large or licensed; rebuilt by scripts)
 data/raw/
 data/cache/
