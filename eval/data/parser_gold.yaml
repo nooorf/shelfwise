@@ -389,10 +389,8 @@ queries:
   - id: T05
     intent: similar
     seeds: [Operating System Concepts]
-    constraints:
-      - facet.reading_level eq intro soft
-    keep: [operating systems | operating system]
-    notes: '"the dinosaur book" is Silberschatz''s Operating System Concepts; "easier" sets the level'
+    keep: [operating systems | operating system, easier | easy | accessible]
+    notes: '"the dinosaur book" is Silberschatz''s Operating System Concepts; "easier" has no reading-level rule, so it stays in the query'
 
   # Rigorous treatment of linear algebra suitable for a graduate course
   - id: T06
@@ -754,8 +752,6 @@ queries:
   # creepy books for halloween
   - id: S17
     intent: discover
-    constraints:
-      - facet.darkness gte 2 soft
     keep: [creepy, halloween]
 
   # a book about the ocean
@@ -809,8 +805,6 @@ queries:
   # something hopeful about the end of the world
   - id: S26
     intent: discover
-    constraints:
-      - facet.darkness lte 1 soft
     keep: [hopeful, end of the world | apocalypse | apocalyptic]
 
   # a family saga spanning generations
@@ -1043,7 +1037,6 @@ queries:
   - id: N10
     intent: discover
     constraints:
-      - facet.darkness gte 2 soft
       - facet.violence lte 2 hard
     keep: [scary]
     drop: [gory | gore]
@@ -1116,7 +1109,7 @@ queries:
     intent: discover
     constraints:
       - facet.audience eq ya soft
-      - facet.darkness lte 1 hard
+      - facet.darkness lte 2 hard
     drop: [depressing]
 
   # a romance with no love triangle
@@ -1201,8 +1194,8 @@ queries:
     intent: discover
     constraints:
       - genre in [fantasy] soft
-      - popular eq true soft
     keep: [fantasy]
+    notes: bare "best" is not "best ever"
 
   # sci fi on the shelves now
   - id: V14
@@ -1247,9 +1240,8 @@ queries:
   - id: P09
     intent: similar
     seeds: [The Girl on the Train]
-    constraints:
-      - facet.darkness shift -1 soft
     keep: [happier | happy]
+    notes: a happier ending is about the ending, not the book's overall darkness
 
   # like percy jackson but for adults
   - id: P10
@@ -1273,10 +1265,8 @@ queries:
   - id: P13
     intent: similar
     seeds: [Pride and Prejudice]
-    constraints:
-      - year shift 1 soft
     keep: [modern]
-    notes: "\"modern\" may mean a modern setting too; it stays in the query"
+    notes: "bare \"modern\" may mean a modern setting; only \"more modern\" is a year shift"
 
   # if i liked seabiscuit what else should i read
   - id: P14
@@ -1413,6 +1403,8 @@ queries:
   - id: H12
     intent: lookup
     lookup: {author: Stephen King}
+    constraints:
+      - year eq 2027 hard
     notes: no catalog book can match; must not invent one
 
   # list every book in the library
@@ -2239,7 +2231,7 @@ queries:
     intent: discover
     constraints:
       - facet.reading_level eq intro soft
-    keep: [quantum]
+    keep: [quantum physics | quantum mechanics]
 
   - id: BT08
     text: "graduate level probability theory"

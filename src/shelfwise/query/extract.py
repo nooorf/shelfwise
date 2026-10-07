@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field, field_validator
 from shelfwise.ingest.genres import GENRES
 from shelfwise.query.constraints import Constraint
 
-PROMPT_VERSION = "query-v1"
+PROMPT_VERSION = "query-v2"  # v2: only listed mood words map to darkness
 
 NOT_MENTIONED = "not mentioned"
 
@@ -62,11 +62,20 @@ class QueryLLM(BaseModel):
     )
     excluded_genres: list[str] = _genre_list("genres they don't want ('anything except romance')")
     darkness: Literal[
-        "not mentioned", "light", "dark", "very dark", "not too dark", "darker", "lighter"
+        "not mentioned",
+        "light",
+        "dark",
+        "very dark",
+        "not too dark",
+        "not bleak",
+        "darker",
+        "lighter",
     ] = Field(
         default=NOT_MENTIONED,
-        description="light: cozy, uplifting, feel-good, comforting. dark. very dark: disturbing, "
-        "bleak. not too dark: they rule darkness out. darker / lighter: than before",
+        description="light: cozy, lighthearted, uplifting, feel-good, heartwarming, comforting. "
+        "dark. very dark: disturbing, bleak, depressing. not too dark: they rule darkness out. "
+        "not bleak: 'not depressing', 'isn't bleak' (dark is fine, bleak isn't). darker / "
+        "lighter: than before. Other mood words (creepy, scary, hopeful) leave this unset",
     )
     romance: Literal["not mentioned", "wanted", "none or minor", "none at all", "less", "more"] = (
         Field(
@@ -137,6 +146,7 @@ NEGATED_WORDS = {
     "violence": ("violence", "violent", "gore", "gory", "graphic"),
     "supernatural": ("supernatural", "magic", "magical", "paranormal", "ghosts", "ghost"),
     "darkness": ("dark",),
+    "bleak": ("bleak", "depressing", "depressed"),
 }
 
 
@@ -160,6 +170,7 @@ _DARKNESS = {
     "dark": ("gte", 2, "soft"),
     "very dark": ("gte", 3, "soft"),
     "not too dark": ("lte", 1, "hard"),
+    "not bleak": ("lte", 2, "hard"),
     "darker": ("shift", 1, "soft"),
     "lighter": ("shift", -1, "soft"),
 }
@@ -239,6 +250,8 @@ def negated_words(out: QueryLLM) -> list[str]:
         words += NEGATED_WORDS["supernatural"]
     if out.darkness in ("not too dark", "lighter"):
         words += NEGATED_WORDS["darkness"]
+    if out.darkness == "not bleak":
+        words += NEGATED_WORDS["bleak"]
     return words
 
 
@@ -259,12 +272,12 @@ Fields:
 Examples:
 "do you have the name of the wind" -> {{"intent": "lookup", "lookup_title": "the name of the wind"}}
 "a creepy gothic novel, nothing with vampires" -> {{"intent": "discover", "genres": ["gothic"], \
-"darkness": "dark", "fiction": "fiction", "avoid": ["vampires"], "semantic_query": "creepy gothic novel"}}
+"fiction": "fiction", "avoid": ["vampires"], "semantic_query": "creepy gothic novel"}}
 "like station eleven but less bleak" -> {{"intent": "similar", "similar_to": ["station eleven"], \
 "darkness": "lighter"}}
 "only sci fi for teens, no romance" -> {{"intent": "discover", "genres": ["science fiction"], \
 "genres_strict": true, "audience": "ya", "romance": "none or minor", "semantic_query": "sci fi"}}
-"shorter and less gloomy please" -> {{"intent": "refine", "length_change": "shorter", \
+"shorter and less dark please" -> {{"intent": "refine", "length_change": "shorter", \
 "darkness": "lighter"}}
 "beginner guide to rust programming" -> {{"intent": "discover", "reading_level": "intro", \
 "semantic_query": "rust programming guide"}}

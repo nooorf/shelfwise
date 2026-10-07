@@ -58,7 +58,7 @@ X28N,negation,visitor,X28,llm-draft,"a book about life in a small town, nothing 
 X29B,discovery,casual,X29,llm-draft,a coming of age story,negation pair X29 base
 X29N,negation,casual,X29,llm-draft,a coming of age story that isnt sad or dark,negation pair X29: darkness
 X30B,genre,student,X30,llm-draft,a dystopian novel,negation pair X30 base
-X30N,negation,student,X30,llm-draft,a dystopian novel that isnt too depressing,negation pair X30: darkness; the genre is dark by default
+X30N,negation,student,X30,llm-draft,a dystopian novel that isnt too depressing,negation pair X30: darkness (very dark only); the genre is dark by default
 X31B,discovery,casual,X31,llm-draft,a literary novel about a marriage,negation pair X31 base
 X31N,negation,casual,X31,llm-draft,a literary novel about a marriage that isnt slow,negation pair X31: pace
 X32B,genre,casual,X32,llm-draft,an epic fantasy series,negation pair X32 base

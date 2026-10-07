@@ -57,6 +57,7 @@ def found(request) -> set[str]:  # type: ignore[no-untyped-def]
         ({"darkness": "very dark"}, "facet.darkness gte 3 soft"),
         ({"darkness": "light"}, "facet.darkness lte 1 soft"),
         ({"darkness": "not too dark"}, "facet.darkness lte 1 hard"),
+        ({"darkness": "not bleak"}, "facet.darkness lte 2 hard"),
         ({"darkness": "darker"}, "facet.darkness shift 1 soft"),
         ({"romance": "none or minor"}, "facet.romance lte 1 hard"),
         ({"romance": "none at all"}, "facet.romance eq 0 hard"),

@@ -251,6 +251,10 @@ def _years(p: _Parser) -> None:
     )
     p.each(rf"\b{_PUBLISHED}this\s+year\b", lambda m: p.add(m, "year", "gte", p.today.year))
     p.each(
+        r"\b(?:(?:comes|coming|is) out\s+)?next\s+year\b",
+        lambda m: p.add(m, "year", "eq", p.today.year + 1),
+    )
+    p.each(
         r"\b(?:recently published|(?:published|released|written) recently|recent|new releases?|"
         r"newly published|latest|brand new|just came out|came out recently)\b",
         lambda m: p.add(m, "year", "gte", p.today.year - RECENT_YEARS, "soft"),

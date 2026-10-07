@@ -108,6 +108,7 @@ def test_pages(query: str, expected: set[tuple[str, str, object, str]]) -> None:
         ("from the past few years", {("year", "gte", 2021, "hard")}),
         ("something recent", {("year", "gte", 2021, "soft")}),
         ("a mystery published recently", {("year", "gte", 2021, "soft")}),
+        ("the new stephen king that comes out next year", {("year", "eq", 2027, "hard")}),
         ("a novel set in the 1920s", set()),  # setting, not publication
         ("set in 1920", set()),
         ("books like 1984", set()),  # a title, not a year
