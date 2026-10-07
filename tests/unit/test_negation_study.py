@@ -96,3 +96,13 @@ def test_ndcg_uses_the_negated_querys_grades() -> None:
     assert off.ndcg_at_10["X1"] == pytest.approx(7 / (7 + 3 / 1.584962500721156))
     summary = off.summary()
     assert summary["labelled@10"] == 2.0
+
+
+def test_summary_can_be_restricted_to_some_pairs() -> None:
+    cell = study(tagged={1}).cells[Condition("dense", "raw", "off")]
+    cell.violation_at_10["X2"] = 0.0
+    cell.labelled_at_10["X2"] = 4
+
+    assert cell.summary()["violation@10"]["mean"] == 0.5  # type: ignore[index]
+    assert cell.summary({"X1"})["violation@10"]["mean"] == 1.0  # type: ignore[index]
+    assert cell.summary({"X1"})["labelled@10"] == 2.0

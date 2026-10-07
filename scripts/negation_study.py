@@ -88,6 +88,8 @@ def main() -> None:
         result = run_study(pairs, queries, conditions, rank, key_of, tagged_violators, tags, qrels)
         catalog_version = get_catalog_version(conn)
 
+    remove = {p.pair for p in pairs if p.kind == "remove"}
+    lure = {p.pair for p in pairs if p.kind == "lure"}
     cost = result.recall_cost.values()
     relevant = sum(c["relevant"] for c in cost)
     report = {
@@ -99,8 +101,13 @@ def main() -> None:
         "judge": args.judge,
         "pairs": len(pairs),
         "soft_penalty": SOFT_PENALTY,
-        "conditions": {str(c): cell.summary() for c, cell in result.cells.items()},
-        "base_rate": {s: cell.summary() for s, cell in result.base_rate.items()},
+        "conditions": {str(c): cell.summary(remove) for c, cell in result.cells.items()},
+        "base_rate": {s: cell.summary(remove) for s, cell in result.base_rate.items()},
+        "lure": {
+            "pairs": sorted(lure),
+            "conditions": {str(c): cell.summary(lure) for c, cell in result.cells.items()},
+            "base_rate": {s: cell.summary(lure) for s, cell in result.base_rate.items()},
+        },
         "recall_cost": {
             "relevant": relevant,
             "removed": sum(c["removed"] for c in cost),
@@ -114,18 +121,19 @@ def main() -> None:
     out = report_path(report["git"], "negation-study")
     out.write_text(json.dumps(report, indent=2))
 
-    print(f"negation study: {len(pairs)} pairs, violations judged by {args.judge}")
+    print(f"negation study: {len(remove)} remove pairs (table) + {len(lure)} lure pairs (JSON), "
+          f"violations judged by {args.judge}")  # fmt: skip
     header = (
         f"{'condition':30} {'violation@10':>18} {'violation@5':>18} {'NDCG@10':>18} {'lab@10':>6}"
     )
     print(header)
     print("-" * len(header))
     for system, cell in result.base_rate.items():
-        s = cell.summary()
+        s = cell.summary(remove)
         print(f"{system + '/base query':30} {_pct(s['violation@10'])} {_pct(s['violation@5'])} "
               f"{'':>18} {s['labelled@10']:6.1f}")  # fmt: skip
     for condition, cell in result.cells.items():
-        s = cell.summary()
+        s = cell.summary(remove)
         print(f"{condition!s:30} {_pct(s['violation@10'])} {_pct(s['violation@5'])} "
               f"{_pct(s['ndcg@10'])} {s['labelled@10']:6.1f}")  # fmt: skip
     if not tags:

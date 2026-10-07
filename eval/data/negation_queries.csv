@@ -3,30 +3,30 @@ X01B,genre,casual,X01,llm-draft,a dark fantasy with a morally grey hero,negation
 X01N,negation,casual,X01,llm-draft,a dark fantasy with a morally grey hero but no magic,negation pair X01: supernatural
 X02B,discovery,student,X02,llm-draft,a creepy gothic novel,negation pair X02 base
 X02N,negation,student,X02,llm-draft,"a creepy gothic novel with nothing supernatural, the horror should be human",negation pair X02: supernatural
-X03B,discovery,visitor,X03,llm-draft,a mystery in a small english village,negation pair X03 base
+X03B,discovery,visitor,X03,llm-draft,a mystery in a small english village,negation pair X03 base; lure pair: the base rarely has it
 X03N,negation,visitor,X03,llm-draft,"a mystery in a small english village, no ghosts or psychics",negation pair X03: supernatural
-X04B,discovery,student,X04,llm-draft,young adult book about a girl who discovers a family secret,negation pair X04 base
-X04N,negation,student,X04,llm-draft,young adult book about a girl who discovers a family secret but nothing paranormal,negation pair X04: supernatural
+X04B,discovery,student,X04,llm-draft,a ya mystery set in a creepy old house,negation pair X04 base
+X04N,negation,student,X04,llm-draft,a ya mystery set in a creepy old house but nothing paranormal,negation pair X04: supernatural
 X05B,discovery,casual,X05,llm-draft,romance set in new orleans,negation pair X05 base
 X05N,negation,casual,X05,llm-draft,romance set in new orleans without vampires or witches,negation pair X05: supernatural
-X06B,discovery,casual,X06,llm-draft,a haunting story about grief,negation pair X06 base; "haunting" lures ghost stories
+X06B,discovery,casual,X06,llm-draft,a haunting story about grief,"negation pair X06 base; ""haunting"" lures ghost stories"
 X06N,negation,casual,X06,llm-draft,"a story about grief that isnt literally haunted, no ghosts",negation pair X06: supernatural
-X07B,discovery,casual,X07,llm-draft,a thriller about a cult,negation pair X07 base
+X07B,discovery,casual,X07,llm-draft,a thriller about a cult,negation pair X07 base; lure pair: the base rarely has it
 X07N,negation,casual,X07,llm-draft,a thriller about a cult where nothing supernatural actually happens,negation pair X07: supernatural
-X08B,discovery,student,X08,llm-draft,an adventure about a dangerous journey across the mountains,negation pair X08 base
-X08N,negation,student,X08,llm-draft,an adventure about a dangerous journey across the mountains but without dragons or magic,negation pair X08: supernatural
-X09B,discovery,casual,X09,llm-draft,a fantasy quest with a strong female lead,negation pair X09 base
-X09N,negation,casual,X09,llm-draft,a fantasy quest with a strong female lead and no romance subplot,negation pair X09: romance
-X10B,discovery,student,X10,llm-draft,a sci fi novel about first contact with aliens,negation pair X10 base
+X08B,discovery,student,X08,llm-draft,a book about witches,negation pair X08 base
+X08N,negation,student,X08,llm-draft,a book about witches with no actual magic,negation pair X08: supernatural
+X09B,discovery,casual,X09,llm-draft,a fantasy book with a fae prince,negation pair X09 base
+X09N,negation,casual,X09,llm-draft,a fantasy book with a fae prince and no romance subplot,negation pair X09: romance
+X10B,discovery,student,X10,llm-draft,a sci fi novel about first contact with aliens,negation pair X10 base; lure pair: the base rarely has it
 X10N,negation,student,X10,llm-draft,a sci fi novel about first contact with aliens with zero romance,negation pair X10: romance
 X11B,genre,student,X11,llm-draft,a young adult dystopian novel,negation pair X11 base
 X11N,negation,student,X11,llm-draft,a young adult dystopian novel without a love triangle,negation pair X11: romance
 X12B,discovery,researcher,X12,llm-draft,historical fiction set in world war 2,negation pair X12 base
-X12N,negation,researcher,X12,llm-draft,historical fiction set in world war 2 that isnt a love story,negation pair X12: romance
+X12N,negation,researcher,X12,llm-draft,historical fiction set in world war 2 that isnt a love story,negation pair X12: romance (central only)
 X13B,genre,casual,X13,llm-draft,a cozy mystery with a bakery,negation pair X13 base
 X13N,negation,casual,X13,llm-draft,a cozy mystery with a bakery where the sleuth has no love interest,negation pair X13: romance
-X14B,discovery,casual,X14,llm-draft,a book about a road trip,negation pair X14 base
-X14N,negation,casual,X14,llm-draft,"a road trip book, not a romance",negation pair X14: romance
+X14B,discovery,casual,X14,llm-draft,a summer beach read,negation pair X14 base
+X14N,negation,casual,X14,llm-draft,a summer beach read that isnt a romance,negation pair X14: romance (central only)
 X15B,genre,casual,X15,llm-draft,vampire novels,negation pair X15 base
 X15N,negation,casual,X15,llm-draft,vampire novels without the romance,negation pair X15: romance
 X16B,discovery,student,X16,llm-draft,a paranormal mystery for teens,negation pair X16 base
@@ -40,23 +40,23 @@ X19N,negation,student,X19,llm-draft,a fantasy book about a rebellion against an 
 X20B,discovery,casual,X20,llm-draft,a mafia family story,negation pair X20 base
 X20N,negation,casual,X20,llm-draft,a mafia family story without much violence,negation pair X20: violence
 X21B,genre,casual,X21,llm-draft,a scary horror novel,negation pair X21 base
-X21N,negation,casual,X21,llm-draft,"a scary horror novel but not violent, more psychological",negation pair X21: violence
+X21N,negation,casual,X21,llm-draft,a scary horror novel that isnt violent,negation pair X21: violence
 X22B,discovery,student,X22,llm-draft,a dystopian survival story for teens,negation pair X22 base
 X22N,negation,student,X22,llm-draft,a dystopian survival story for teens with no violence,negation pair X22: violence
 X23B,discovery,casual,X23,llm-draft,a book about a heist,negation pair X23 base
 X23N,negation,casual,X23,llm-draft,a heist book where nobody gets hurt,negation pair X23: violence; negation without a negation word
-X24B,discovery,casual,X24,llm-draft,a novel about a family secret,negation pair X24 base
-X24N,negation,casual,X24,llm-draft,"a novel about a family secret, nothing too dark",negation pair X24: darkness
-X25B,discovery,student,X25,llm-draft,a mystery set at a boarding school,negation pair X25 base
-X25N,negation,student,X25,llm-draft,a mystery set at a boarding school thats not dark or depressing,negation pair X25: darkness
-X26B,discovery,student,X26,llm-draft,a novel about mental health,negation pair X26 base
-X26N,negation,student,X26,llm-draft,a novel about mental health that isnt bleak,negation pair X26: darkness (very dark only)
+X24B,discovery,casual,X24,llm-draft,a psychological thriller about a family secret,negation pair X24 base
+X24N,negation,casual,X24,llm-draft,"a psychological thriller about a family secret, nothing too dark",negation pair X24: darkness
+X25B,discovery,student,X25,llm-draft,a murder mystery at a boarding school,negation pair X25 base
+X25N,negation,student,X25,llm-draft,a murder mystery at a boarding school thats not dark or depressing,negation pair X25: darkness
+X26B,discovery,student,X26,llm-draft,a novel about addiction,negation pair X26 base
+X26N,negation,student,X26,llm-draft,a novel about addiction that isnt bleak,negation pair X26: darkness (very dark only)
 X27B,genre,casual,X27,llm-draft,fantasy with fairies,negation pair X27 base
 X27N,negation,casual,X27,llm-draft,"fantasy with fairies but not the dark fae stuff, something gentle",negation pair X27: darkness
-X28B,discovery,visitor,X28,llm-draft,a book about life in a small town,negation pair X28 base
-X28N,negation,visitor,X28,llm-draft,"a book about life in a small town, nothing grim",negation pair X28: darkness
-X29B,discovery,casual,X29,llm-draft,a coming of age story,negation pair X29 base
-X29N,negation,casual,X29,llm-draft,a coming of age story that isnt sad or dark,negation pair X29: darkness
+X28B,genre,visitor,X28,llm-draft,nordic noir,negation pair X28 base
+X28N,negation,visitor,X28,llm-draft,nordic noir that isnt too bleak,negation pair X28: darkness (very dark only)
+X29B,discovery,casual,X29,llm-draft,a coming of age story about grief,negation pair X29 base
+X29N,negation,casual,X29,llm-draft,a coming of age story about grief that isnt sad or dark,negation pair X29: darkness
 X30B,genre,student,X30,llm-draft,a dystopian novel,negation pair X30 base
 X30N,negation,student,X30,llm-draft,a dystopian novel that isnt too depressing,negation pair X30: darkness (very dark only); the genre is dark by default
 X31B,discovery,casual,X31,llm-draft,a literary novel about a marriage,negation pair X31 base
@@ -65,17 +65,17 @@ X32B,genre,casual,X32,llm-draft,an epic fantasy series,negation pair X32 base
 X32N,negation,casual,X32,llm-draft,"an epic fantasy that doesnt drag, no slow buildup",negation pair X32: pace
 X33B,genre,student,X33,llm-draft,a classic novel,negation pair X33 base
 X33N,negation,student,X33,llm-draft,a classic novel that isnt slow paced,negation pair X33: pace
-X34B,discovery,researcher,X34,llm-draft,a historical novel about the tudors,negation pair X34 base
-X34N,negation,researcher,X34,llm-draft,a tudor historical novel thats not a slow read,negation pair X34: pace
-X35B,discovery,student,X35,llm-draft,a science fiction novel about artificial intelligence,negation pair X35 base
-X35N,negation,student,X35,llm-draft,a science fiction novel about artificial intelligence but nothing slow,negation pair X35: pace
+X34B,discovery,researcher,X34,llm-draft,a victorian novel,negation pair X34 base
+X34N,negation,researcher,X34,llm-draft,a victorian novel that isnt slow,negation pair X34: pace
+X35B,genre,student,X35,llm-draft,a hard science fiction novel,negation pair X35 base
+X35N,negation,student,X35,llm-draft,a hard science fiction novel thats not slow paced,negation pair X35: pace
 X36B,discovery,casual,X36,llm-draft,fantasy books about a school for magic,negation pair X36 base
 X36N,negation,casual,X36,llm-draft,"fantasy books about a school for magic, not for kids",negation pair X36: audience (children)
-X37B,discovery,casual,X37,llm-draft,a funny book about a dog,negation pair X37 base
-X37N,negation,casual,X37,llm-draft,"a funny book about a dog, not a childrens book",negation pair X37: audience (children)
-X38B,discovery,casual,X38,llm-draft,a book about witches,negation pair X38 base
-X38N,negation,casual,X38,llm-draft,"a book about witches, not young adult",negation pair X38: audience (ya)
+X37B,discovery,casual,X37,llm-draft,a story about a talking animal,negation pair X37 base
+X37N,negation,casual,X37,llm-draft,"a story about a talking animal, not a kids book",negation pair X37: audience (children)
+X38B,discovery,casual,X38,llm-draft,a dystopian romance,negation pair X38 base
+X38N,negation,casual,X38,llm-draft,a dystopian romance thats not ya,negation pair X38: audience (ya)
 X39B,discovery,student,X39,llm-draft,a coming of age novel about first love,negation pair X39 base
 X39N,negation,student,X39,llm-draft,a coming of age novel about first love but not YA,negation pair X39: audience (ya)
-X40B,genre,researcher,X40,llm-draft,a graphic novel about history,negation pair X40 base
-X40N,negation,researcher,X40,llm-draft,a graphic novel about history that isnt for kids,negation pair X40: audience (children)
+X40B,genre,researcher,X40,llm-draft,fairy tales,negation pair X40 base
+X40N,negation,researcher,X40,llm-draft,fairy tales that arent for kids,negation pair X40: audience (children)

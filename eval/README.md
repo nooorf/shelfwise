@@ -35,7 +35,7 @@ The ideal parse of each query: intent, lookup, seed books, constraints, and whic
 
 40 pairs of queries for the negation study (design doc §40.1 B): a base request and the same request with one thing ruled out, covering supernatural, romance, violence, darkness, pace and audience. `negation_queries.csv` has the same columns as `queries.csv`; each pair shares a family, so both halves land in the same split. They're pooled and graded like set A (`make pool`, `make label` and `make grades-doc` read both files), but `make eval` scores set A only.
 
-`negation_pairs.csv` names, per pair, the tag value that violates the negation, written like `supernatural=yes` or `romance>=2` in the vocabulary of `facet_labels.csv`. Violations are judged from human labels, never from the LLM tags the facet filter uses.
+`negation_pairs.csv` gives each pair a `kind`: `remove` when the ruled-out thing is common in the base query's results (can the system take it out?), `lure` when it's rare there (does naming it drag it in?). The study reports the two separately. It also names, per pair, the tag value that violates the negation, written like `supernatural=yes` or `romance>=2` in the vocabulary of `facet_labels.csv`. Violations are judged from human labels, never from the LLM tags the facet filter uses.
 
 ## `data/violation_labels.csv` — human answers for the negation study
 

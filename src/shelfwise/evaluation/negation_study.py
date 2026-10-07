@@ -11,6 +11,10 @@ for the negated request and measure:
 Query text: `raw` is the negated query as typed; `stripped` is the pair's base query, which is
 the same request with the negation removed: perfect stripping, an upper bound for the parser.
 
+Pairs come in two kinds that are never averaged together: `remove` (the ruled-out thing is common
+in the base's results) and `lure` (it's rare there, so the question is whether naming it drags it
+in). The overall numbers are over `remove` pairs; `lure` pairs are reported on their own.
+
 Facet handling uses the LLM's tags (what production has): `off`; `soft` moves each book the
 tags say violates down `SOFT_PENALTY` places; `hard` filters them out (NULL-safe: untagged books
 stay). Two references: the **base rate** (violation rate @10 of the base query, raw, facets off:
@@ -89,9 +93,11 @@ class Cell:
     ndcg_at_10: dict[str, float] = field(default_factory=dict)
     ranked: dict[str, list[str]] = field(default_factory=dict)
 
-    def summary(self) -> dict[str, object]:
+    def summary(self, pairs: set[str] | None = None) -> dict[str, object]:
+        """Means and CIs over all pairs, or over `pairs` only (e.g. one kind)."""
+
         def stat(values: dict[str, float]) -> dict[str, object]:
-            v = list(values.values())
+            v = [x for p, x in values.items() if pairs is None or p in pairs]
             return {
                 "mean": mean(v) if v else None,
                 "ci95": bootstrap_ci(v) if v else None,
@@ -101,7 +107,9 @@ class Cell:
         return {
             "violation@5": stat(self.violation_at_5),
             "violation@10": stat(self.violation_at_10),
-            "labelled@10": mean([float(n) for n in self.labelled_at_10.values()]),
+            "labelled@10": mean(
+                [float(n) for p, n in self.labelled_at_10.items() if pairs is None or p in pairs]
+            ),
             "ndcg@10": stat(self.ndcg_at_10),
         }
 

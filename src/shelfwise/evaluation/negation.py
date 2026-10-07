@@ -21,7 +21,10 @@ from shelfwise.evaluation.judgments import Judgment
 from shelfwise.evaluation.queries import Query
 from shelfwise.tagging.labels import FACET_BY_NAME, FacetLabel
 
-COLUMNS = ("pair", "attribute", "violation", "base", "negated")
+COLUMNS = ("pair", "attribute", "violation", "kind", "base", "negated")
+# remove: the ruled-out thing is common in the base's results; can the system take it out?
+# lure: it's rare in the base; does naming it in the negation drag it in (the NevIR failure)?
+KINDS = ("remove", "lure")
 _SPEC = re.compile(r"^(?P<facet>[a-z_]+)(?P<op>>=|=)(?P<value>[a-z0-9]+)$")
 _SCALES = {"darkness", "romance", "violence"}
 
@@ -66,6 +69,7 @@ class NegationPair:
     violation: Violation
     base: str  # query ids
     negated: str
+    kind: str = "remove"
 
 
 def load_pairs(path: Path, queries: dict[str, Query]) -> list[NegationPair]:
@@ -90,6 +94,8 @@ def load_pairs(path: Path, queries: dict[str, Query]) -> list[NegationPair]:
         except ValueError as error:
             problems.append(f"{where}: {error}")
             continue
+        if values["kind"] not in KINDS:
+            problems.append(f"{where}: kind must be one of {', '.join(KINDS)}")
         if violation.facet != values["attribute"]:
             problems.append(
                 f"{where}: violation is about {violation.facet}, not {values['attribute']}"
@@ -103,7 +109,9 @@ def load_pairs(path: Path, queries: dict[str, Query]) -> list[NegationPair]:
         if negated.category != "negation":
             problems.append(f"{where}: {negated.id} must have category negation")
         pairs.append(
-            NegationPair(values["pair"], values["attribute"], violation, base.id, negated.id)
+            NegationPair(
+                values["pair"], values["attribute"], violation, base.id, negated.id, values["kind"]
+            )
         )
 
     if problems:

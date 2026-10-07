@@ -40,6 +40,9 @@ def test_committed_pairs_are_valid_and_cover_the_facets() -> None:
         "audience",
     }
     assert min(per_attribute.values()) >= 5
+    assert sum(p.kind == "remove" for p in pairs) >= 0.9 * len(
+        pairs
+    )  # lure pairs are the exception
 
 
 @pytest.mark.parametrize(
@@ -92,10 +95,10 @@ def test_pairs_must_match_their_queries(tmp_path: Path) -> None:
     )
     pairs = tmp_path / "pairs.csv"
     pairs.write_text(
-        "pair,attribute,violation,base,negated\n"
-        "Y1,romance,romance>=2,Y1B,Y1N\n"
-        "Y2,romance,supernatural=yes,Y1B,Y3N\n"
-        "Y3,romance,romance>=2,Y9B,Y3N\n",
+        "pair,attribute,violation,kind,base,negated\n"
+        "Y1,romance,romance>=2,remove,Y1B,Y1N\n"
+        "Y2,romance,supernatural=yes,remove,Y1B,Y3N\n"
+        "Y3,romance,romance>=2,bait,Y9B,Y3N\n",
         encoding="utf-8",
     )
 
@@ -107,6 +110,7 @@ def test_pairs_must_match_their_queries(tmp_path: Path) -> None:
     assert "(Y2): violation is about supernatural, not romance" in message
     assert "(Y2): Y3N must have category negation" in message
     assert "(Y3): unknown query id Y9B" in message
+    assert "(Y3): kind must be one of remove, lure" in message
 
 
 def test_query_ids_are_unique_across_files(tmp_path: Path) -> None:
