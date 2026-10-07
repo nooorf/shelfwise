@@ -1,0 +1,1686 @@
+query_id,work_key,grade,judge,title,author
+L01,9780785764830,0,NF,Insomnia,Stephen King
+L01,9780596553609,0,NF,Active Directory,Joe Richards
+L01,9781590282977,0,NF,Python Programming,John M. Zelle
+L01,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+L01,9780061228742,0,NF,Charlotte's Web,E. B. White
+L01,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+L01,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+L01,9781593276034,0,NF,lol,Eric Matthes
+L01,9780441013593,0,NF,Dune,Frank Herbert
+L01,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+L01,9781250301710,3,NF,Silent Patient,Alex Michaelides
+L01,9781456133085,0,NF,We'll Always Have Summer,Jenny Han
+L01,9781949759945,0,NF,The Mountain Is You,Brianna Wiest
+L01,9781605090917,0,NF,Eat That Frog! C. 21,Brian Tracy
+L01,9781406390742,0,NF,Guess How Much I Love You,Sam McBratney
+L01,9781949759440,0,NF,"When You're Ready, This Is How You Heal",Wiest
+L01,9781593279929,0,NF,Automate the Boring Stuff with Python,Al Sweigart
+L01,9780306924644,0,NF,Compound Effect,Darren Hardy
+L01,9781452615516,0,NF,You are a badass,Jen Sincero
+L01,9780593906101,0,NF,Girl in Pieces Deluxe Edition,Kathleen Glasgow
+L01,9780893753573,0,NF,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+L01,9781624608049,0,NF,Influence,Robert B. Cialdini
+L01,9780553239607,0,NF,The Bell Jar,Sylvia Plath
+L01,9780768487008,0,NF,Art of Persuasion,Bob Burg
+L01,9780143475927,0,NF,Can We Be Strangers Again?,Shrijeet Shandilya
+L01,9781957635101,0,NF,Haunting Adeline,H. D. Carlton
+L01,9781474240338,0,NF,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+L02,9780785764830,0,NF,Insomnia,Stephen King
+L02,9780596553609,0,NF,Active Directory,Joe Richards
+L02,9781590282977,0,NF,Python Programming,John M. Zelle
+L02,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+L02,9780061228742,0,NF,Charlotte's Web,E. B. White
+L02,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+L02,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+L02,9781593276034,0,NF,lol,Eric Matthes
+L02,9780441013593,0,NF,Dune,Frank Herbert
+L02,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+L02,9781974272846,3,NF,Nineteen Eighty-Four,George Orwell
+L02,9781502809193,0,NF,Christmas Carol,Charles Dickens
+L02,9781408888186,0,NF,A Court of Thorns and Roses,Sarah J. Maas
+L02,9780593388013,0,NF,One of Us Is Lying TR 9-Copy Floor Display,Karen M. McManus
+L02,9780575074842,0,NF,Hitch Hiker's Guide to the Galaxy,Douglas Adams
+L02,9781119137863,0,NF,CompTIA a+ Complete Study Guide,Quentin Docter
+L02,9780201006506,0,NF,The Mythical Man-Month,Frederick P. Brooks
+L02,9781444723533,0,NF,The Bachman Books,Stephen King
+L02,9780961408893,0,NF,Introduction to Linear Algebra,Gilbert Strang
+L02,9781861972026,0,NF,The Art of Seduction,Joost Greene Robert; Elffers
+L02,9781607511663,0,NF,Fahrenheit 451,Ray Bradbury
+L02,9781722837273,1,NF,Animal Farm,George Orwell
+L02,9781790777457,0,NF,Time Machine,H. G. Wells
+L02,9780792753216,0,NF,Brave New World,Aldous Huxley
+L02,9781984899668,0,NF,The Handmaid's Tale,Margaret Atwood
+L02,9781559946346,0,NF,Lolita,Vladimir Nabokov
+L02,9780613824224,0,NF,Ender's Game,Orson Scott Card
+L02,9780142427835,0,NF,The Long Walk,Stephen King
+L02,9780748112616,0,NF,Tuesdays with Morrie,Mitch Albom
+L03,9780785764830,0,NF,Insomnia,Stephen King
+L03,9780596553609,0,NF,Active Directory,Joe Richards
+L03,9781590282977,0,NF,Python Programming,John M. Zelle
+L03,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+L03,9780061228742,0,NF,Charlotte's Web,E. B. White
+L03,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+L03,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+L03,9781593276034,0,NF,lol,Eric Matthes
+L03,9780441013593,0,NF,Dune,Frank Herbert
+L03,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+L03,9780573707735,3,NF,Agatha Christie's Murder on the Orient Express,Agatha Christie
+L03,9781405293181,0,NF,A Good Girl's Guide to Murder,Holly Jackson
+L03,9781449302856,0,NF,Programming Python,Mark Lutz
+L03,9780074620380,0,NF,Object-oriented Programming with C++,E. Balagurusamy
+L03,9780596516604,0,NF,Learning Python,Mark Lutz
+L03,9780201544350,0,NF,Object-oriented software engineering,Ivar Jacobson
+L03,9781491946251,0,NF,Fluent Python,Luciano Ramalho
+L03,9781782369219,0,NF,C++,Paul J. Deitel
+L03,9780538798136,0,NF,C++ programming,D. S. Malik
+L03,9780613636315,1,NF,Misterio Del Guia,Agatha Christie
+L03,9780060736330,1,NF,And Then There Were None,Agatha Christie
+L03,9781474240338,0,NF,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+L03,9780679405573,0,NF,Crime and punishment,Fiódor Dostoievski
+L03,9780307275264,0,NF,Kafka on the Shore,村上春樹
+L03,9781250301710,0,NF,Silent Patient,Alex Michaelides
+L03,9780375432309,0,NF,The Da Vinci code,Dan Brown
+L03,9780679410577,0,NF,The Secret History,Donna Tartt
+L03,9781932287165,0,NF,"The Tragedie of Hamlet, Prince of Denmarke",William Shakespeare
+L03,9780593388013,0,NF,One of Us Is Lying TR 9-Copy Floor Display,Karen M. McManus
+L04,9780785764830,0,NF,Insomnia,Stephen King
+L04,9780596553609,0,NF,Active Directory,Joe Richards
+L04,9781590282977,0,NF,Python Programming,John M. Zelle
+L04,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+L04,9780061228742,0,NF,Charlotte's Web,E. B. White
+L04,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+L04,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+L04,9781593276034,0,NF,lol,Eric Matthes
+L04,9780441013593,0,NF,Dune,Frank Herbert
+L04,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+L04,9780192817716,3,NF,A tale of two cities,Charles Dickens
+L04,9781984899668,0,NF,The Handmaid's Tale,Margaret Atwood
+L04,9781456133085,0,NF,We'll Always Have Summer,Jenny Han
+L04,9781406346428,0,NF,The Mortal Instruments,Cassandra Clare
+L04,9781406390742,0,NF,Guess How Much I Love You,Sam McBratney
+L04,9781949759945,0,NF,The Mountain Is You,Brianna Wiest
+L04,9781605090917,0,NF,Eat That Frog! C. 21,Brian Tracy
+L04,9781949759440,0,NF,"When You're Ready, This Is How You Heal",Wiest
+L04,9780593906101,0,NF,Girl in Pieces Deluxe Edition,Kathleen Glasgow
+L04,9780099908401,0,NF,The Old Man and the Sea,Ernest Hemingway
+L04,9781719901550,0,NF,Adventures of Sherlock Holmes,Arthur Conan Doyle
+L04,9781474240338,0,NF,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+L04,9781502809193,1,NF,Christmas Carol,Charles Dickens
+L04,9781959979128,0,NF,Alice's Adventures in Wonderland (Illustrated),Lewis Carroll
+L04,9781932287165,0,NF,"The Tragedie of Hamlet, Prince of Denmarke",William Shakespeare
+L04,9781776710676,0,NF,Te Ruanuku,Hemi Kelly
+L04,9780007323128,0,NF,"The Lion, the Witch and the Wardrobe",C. S. Lewis
+L04,9780241952481,0,NF,Of Mice and Men,John Steinbeck
+L04,9780316014410,0,NF,Twilight 1ST Edition,Stephenie Meyer
+L04,9780887308369,0,NF,The Intelligent Investor: The Classic Bestseller on Value Investing,Benjamin Graham
+L05,9780785764830,0,NF,Insomnia,Stephen King
+L05,9780596553609,0,NF,Active Directory,Joe Richards
+L05,9781590282977,0,NF,Python Programming,John M. Zelle
+L05,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+L05,9780061228742,0,NF,Charlotte's Web,E. B. White
+L05,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+L05,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+L05,9781593276034,0,NF,lol,Eric Matthes
+L05,9780441013593,0,NF,Dune,Frank Herbert
+L05,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+L05,9780557911813,1,NF,Harry Potter and the Prisoner of Azkaban,J. K. Rowling
+L05,9781526618177,1,NF,Harry Potter and the Order of the Phoenix,J. K. Rowling
+L05,9780606415170,1,NF,Harry Potter and the Goblet of Fire,J. K. Rowling
+L05,9780316310314,0,NF,The Cruel Prince (The Folk of the Air),Holly Black
+L05,9781408898093,1,NF,Harry Potter and the Chamber of Secrets - Gryffindor Edition,J. K. Rowling
+L05,9781551927008,1,NF,Harry Potter and the Philosopher's Stone [Adult Edition],J. K. Rowling
+L05,9781932287165,0,NF,"The Tragedie of Hamlet, Prince of Denmarke",William Shakespeare
+L05,9781484441343,0,NF,Lost Hero,Rick Riordan
+L05,9780343960162,0,NF,Il Principe,Niccolò Machiavelli
+L05,9781798293553,0,NF,Anne of Green Gables,Lucy Maud Montgomery
+L05,9781250260185,0,NF,"Red, White & Royal Blue",Casey McQuiston
+L05,9781408888186,0,NF,A Court of Thorns and Roses,Sarah J. Maas
+L05,9781685085391,0,NF,A Court of Mist and Fury (Part 2 of 2) (Dramatized Adaptation),Sarah J. Maas
+L05,9780898458770,0,NF,The Magician's Nephew,C. S. Lewis
+A01,9780785764830,3,NF,Insomnia,Stephen King
+A01,9780596553609,0,NF,Active Directory,Joe Richards
+A01,9781590282977,0,NF,Python Programming,John M. Zelle
+A01,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+A01,9780061228742,0,NF,Charlotte's Web,E. B. White
+A01,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+A01,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+A01,9781593276034,0,NF,lol,Eric Matthes
+A01,9780441013593,0,NF,Dune,Frank Herbert
+A01,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+A01,9780340798737,3,NF,On Writing Poster King,Stephen King
+A01,9781444700879,3,NF,Cujo,Stephen King
+A01,9780743412278,3,NF,Pet sematary,Stephen King
+A01,9780451119674,3,NF,The Shining,Stephen King
+A01,9780142427835,3,NF,The Long Walk,Stephen King
+A01,9781473666948,3,NF,It,Stephen King
+A01,9780965002691,3,NF,The Green Mile,Stephen King
+A01,9781848941113,3,NF,Waste Lands,Stephen King
+A01,9780606038591,3,NF,Misery,Stephen King
+A01,9780606256155,3,NF,The Stand (Turtleback School & Library Binding Edition),Stephen King
+A01,9780451071125,3,NF,Salem's Lot,Stephen King
+A01,9780816156887,3,NF,Carrie,Stephen King
+A02,9780785764830,0,NF,Insomnia,Stephen King
+A02,9780596553609,0,NF,Active Directory,Joe Richards
+A02,9781590282977,0,NF,Python Programming,John M. Zelle
+A02,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+A02,9780061228742,0,NF,Charlotte's Web,E. B. White
+A02,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+A02,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+A02,9781593276034,0,NF,lol,Eric Matthes
+A02,9780441013593,0,NF,Dune,Frank Herbert
+A02,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+A02,9780573707735,3,NF,Agatha Christie's Murder on the Orient Express,Agatha Christie
+A02,9780060736330,3,NF,And Then There Were None,Agatha Christie
+A02,9780613636315,0,NF,Misterio Del Guia,Agatha Christie
+A02,9781456133085,0,NF,We'll Always Have Summer,Jenny Han
+A02,9781949759945,0,NF,The Mountain Is You,Brianna Wiest
+A02,9781593279929,0,NF,Automate the Boring Stuff with Python,Al Sweigart
+A02,9781452615516,0,NF,You are a badass,Jen Sincero
+A02,9781605090917,0,NF,Eat That Frog! C. 21,Brian Tracy
+A02,9781406390742,0,NF,Guess How Much I Love You,Sam McBratney
+A02,9780306924644,0,NF,Compound Effect,Darren Hardy
+A02,9781474240338,0,NF,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+A02,9781405293181,0,NF,A Good Girl's Guide to Murder,Holly Jackson
+A02,9781719901550,0,NF,Adventures of Sherlock Holmes,Arthur Conan Doyle
+A02,9781541050822,0,NF,Secret Garden,Frances Hodgson Burnett
+A02,9781250191786,0,NF,Rogue protocol,Martha Wells
+A02,9781250186935,0,NF,Artificial Condition,Martha Wells
+A02,9781472158666,0,NF,Where the Crawdads Sing,Delia Owens
+A02,9781786892720,0,NF,The Midnight Library,Matt Haig
+A02,9781980021711,0,NF,Network Effect,Martha Wells
+A03,9780785764830,0,NF,Insomnia,Stephen King
+A03,9780596553609,0,NF,Active Directory,Joe Richards
+A03,9781590282977,0,NF,Python Programming,John M. Zelle
+A03,9780130220059,0,NF,Algorithms and data structures,Niklaus Wirth
+A03,9780061228742,0,NF,Charlotte's Web,E. B. White
+A03,9781497316928,0,NF,Art of Money Getting,P. T. Barnum
+A03,9780070577275,0,NF,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+A03,9781593276034,0,NF,lol,Eric Matthes
+A03,9780441013593,0,NF,Dune,Frank Herbert
+A03,9780575082410,0,NF,The Moon is a Harsh Mistress,Robert A. Heinlein
+A03,9781974272846,0,NF,Nineteen Eighty-Four,George Orwell
+A03,9781722837273,,,Animal Farm,George Orwell
+A03,9781534467637,,,Better Than the Movies,Lynn Painter
+A03,9781957240732,,,Richest Man in Babylon,George S. Clason
+A03,9780736695930,,,A Game of Thrones,George R. R. Martin
+A03,9781617292231,,,Grokking Algorithms,Aditya Y. Bhargava
+A03,9781409191148,,,Qualityland,Marc-Uwe Kling
+A03,9781693224188,,,The Invisible Man,H. G. Wells
+A03,9780201529296,,,Calculus and analytic geometry,George Brinton Thomas
+A03,9780792753216,,,Brave New World,Aldous Huxley
+A03,9781607511663,,,Fahrenheit 451,Ray Bradbury
+A03,9780142427835,,,The Long Walk,Stephen King
+A03,9781790777457,,,Time Machine,H. G. Wells
+A03,9780748112616,,,Tuesdays with Morrie,Mitch Albom
+A03,9780593311295,,,Klara and the Sun,Kazuo Ishiguro
+A03,9780613074049,,,A Brief History Of Time,Stephen Hawking
+A03,9780613922081,,,Hackers,Steven Levy
+A03,9780241952481,,,Of Mice and Men,John Steinbeck
+A03,9780575074842,,,Hitch Hiker's Guide to the Galaxy,Douglas Adams
+A03,9781665182768,,,The 48 Laws of Power,Robert Greene
+A03,9781101946596,,,Life 3.0,Max Tegmark
+A04,9781987514384,,,Kama Sutra of Vatsyayana,Vatsyāyana
+A04,9781693224188,,,The Invisible Man,H. G. Wells
+A04,9781116629019,,,Oliver Twist,Charles Dickens
+A04,9781103479740,,,Autobiography of Benjamin Franklin,Benjamin Franklin
+A04,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+A04,9781092633550,,,Pride and Prejudice,Noteable Publishing
+A04,9780679405573,,,Crime and punishment,Fiódor Dostoievski
+A04,9781959979128,,,Alice's Adventures in Wonderland (Illustrated),Lewis Carroll
+A04,9780192817716,,,A tale of two cities,Charles Dickens
+A04,9781562762506,,,How computers work,Ron White
+A04,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+A04,9781407149073,,,To All The Boys I've Loved Before,Jenny Han
+A04,9781502809193,,,Christmas Carol,Charles Dickens
+A04,9781098121228,,,Python Data Science Handbook,Jake VanderPlas
+A04,9781526618177,,,Harry Potter and the Order of the Phoenix,J. K. Rowling
+A04,9780792753216,,,Brave New World,Aldous Huxley
+G01,9780785764830,,,Insomnia,Stephen King
+G01,9780596553609,,,Active Directory,Joe Richards
+G01,9781590282977,,,Python Programming,John M. Zelle
+G01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+G01,9780061228742,,,Charlotte's Web,E. B. White
+G01,9781497316928,,,Art of Money Getting,P. T. Barnum
+G01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+G01,9781593276034,,,lol,Eric Matthes
+G01,9780441013593,,,Dune,Frank Herbert
+G01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+G01,9780307275264,,,Kafka on the Shore,村上春樹
+G01,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+G01,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+G01,9780785934516,,,Anges et Demons,Dan Brown
+G01,9781250301710,,,Silent Patient,Alex Michaelides
+G01,9780375432309,,,The Da Vinci code,Dan Brown
+G01,9780060736330,,,And Then There Were None,Agatha Christie
+G01,9781693224188,,,The Invisible Man,H. G. Wells
+G01,9780613636315,,,Misterio Del Guia,Agatha Christie
+G01,9781444723533,,,The Bachman Books,Stephen King
+G01,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+G01,9781472158666,,,Where the Crawdads Sing,Delia Owens
+G01,9780593388013,,,One of Us Is Lying TR 9-Copy Floor Display,Karen M. McManus
+G01,9780573707735,,,Agatha Christie's Murder on the Orient Express,Agatha Christie
+G01,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+G01,9781250191786,,,Rogue protocol,Martha Wells
+G01,9780307588388,,,Gone Girl,Gillian Flynn
+G02,9780785764830,,,Insomnia,Stephen King
+G02,9780596553609,,,Active Directory,Joe Richards
+G02,9781590282977,,,Python Programming,John M. Zelle
+G02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+G02,9780061228742,,,Charlotte's Web,E. B. White
+G02,9781497316928,,,Art of Money Getting,P. T. Barnum
+G02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+G02,9781593276034,,,lol,Eric Matthes
+G02,9780441013593,,,Dune,Frank Herbert
+G02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+G02,9781250191786,,,Rogue protocol,Martha Wells
+G02,9780789751980,,,C Programming Absolute Beginner's Guide,Greg Perry
+G02,9781535483834,,,Python,Byron Francis
+G02,9781323170564,,,Linear algebra and its applications,David C. Lay
+G02,9781593279929,,,Automate the Boring Stuff with Python,Al Sweigart
+G02,9781562762506,,,How computers work,Ron White
+G02,9780613074049,,,A Brief History Of Time,Stephen Hawking
+G02,9780316246620,,,Ancillary Justice,Ann Leckie
+G02,9781250186935,,,Artificial Condition,Martha Wells
+G02,9781409191148,,,Qualityland,Marc-Uwe Kling
+G02,9781405291767,,,Unravel Me,Tahereh Mafi
+G02,9781980021711,,,Network Effect,Martha Wells
+G02,9781098155438,,,Think Python,Allen Downey
+G03,9780785764830,,,Insomnia,Stephen King
+G03,9780596553609,,,Active Directory,Joe Richards
+G03,9781590282977,,,Python Programming,John M. Zelle
+G03,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+G03,9780061228742,,,Charlotte's Web,E. B. White
+G03,9781497316928,,,Art of Money Getting,P. T. Barnum
+G03,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+G03,9781593276034,,,lol,Eric Matthes
+G03,9780441013593,,,Dune,Frank Herbert
+G03,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+G03,9781444700879,,,Cujo,Stephen King
+G03,9780743412278,,,Pet sematary,Stephen King
+G03,9780142427835,,,The Long Walk,Stephen King
+G03,9780451119674,,,The Shining,Stephen King
+G03,9780061963865,,,The Vampire Diaries ,Lisa Jane Smith
+G03,9781473666948,,,It,Stephen King
+G03,9781693224188,,,The Invisible Man,H. G. Wells
+G03,9780060571528,,,Coraline,Neil Gaiman
+G03,9781444723533,,,The Bachman Books,Stephen King
+G03,9780606038591,,,Misery,Stephen King
+G03,9780451071125,,,Salem's Lot,Stephen King
+G03,9781794593121,,,Dracula,Bram Stoker
+G03,9780606256155,,,The Stand (Turtleback School & Library Binding Edition),Stephen King
+G03,9780316032544,,,New Moon,Stephenie Meyer
+G03,9780007436828,,,Flowers in the Attic,V.C. Andrews
+G03,9781862301115,,,House of Leaves,Mark Z. Danielewski
+G04,9780785764830,,,Insomnia,Stephen King
+G04,9780596553609,,,Active Directory,Joe Richards
+G04,9781590282977,,,Python Programming,John M. Zelle
+G04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+G04,9780061228742,,,Charlotte's Web,E. B. White
+G04,9781497316928,,,Art of Money Getting,P. T. Barnum
+G04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+G04,9781593276034,,,lol,Eric Matthes
+G04,9780441013593,,,Dune,Frank Herbert
+G04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+G04,9780061444852,,,Romancing Mister Bridgerton,Julia Quinn
+G04,9780708803318,,,Duke and I,Julia Quinn
+G04,9780898458770,,,The Magician's Nephew,C. S. Lewis
+G04,9781731494047,,,Great Gatsby,F. Scott Fitzgerald
+G04,9781722834920,,,Learn Programming,Antti Salonen
+G04,9781987650075,,,Moby Dick,Herman Melville
+G04,9781306812450,,,Parallel and Concurrent Programming in Haskell,Simon Marlow
+G04,9780349448411,,,Twisted Lies (Collector's Edition),Ana Huang
+G04,9781491929124,,,Site Reliability Engineering,Betsy Beyer
+G04,9780131103306,,,C Programming Language,Brian W. Kernighan
+G04,9781101911600,,,Fifty Shades of Grey,E. L. James
+G04,9781402277825,,,If He Had Been With Me,Laura Nowlin
+G04,9781534467637,,,Better Than the Movies,Lynn Painter
+G04,9781407149073,,,To All The Boys I've Loved Before,Jenny Han
+G04,9781638932925,,,Hunting Adeline,H. D. Carlton
+G04,9781455869886,,,The Fault in Our Stars,John Green
+G04,9780316032544,,,New Moon,Stephenie Meyer
+G04,9780603580659,,,Shatter me,Tahereh Mafi
+G04,9781456133085,,,We'll Always Have Summer,Jenny Han
+G04,9780062085580,,,Ignite Me,Tahereh Mafi
+G04,9781250260185,,,"Red, White & Royal Blue",Casey McQuiston
+G04,9781405291767,,,Unravel Me,Tahereh Mafi
+S01,9780785764830,,,Insomnia,Stephen King
+S01,9780596553609,,,Active Directory,Joe Richards
+S01,9781590282977,,,Python Programming,John M. Zelle
+S01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S01,9780061228742,,,Charlotte's Web,E. B. White
+S01,9781497316928,,,Art of Money Getting,P. T. Barnum
+S01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S01,9781593276034,,,lol,Eric Matthes
+S01,9780441013593,,,Dune,Frank Herbert
+S01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S01,9780582823044,,,Heart of darkness,Joseph Conrad
+S01,9781116629019,,,Oliver Twist,Charles Dickens
+S01,9780349448411,,,Twisted Lies (Collector's Edition),Ana Huang
+S01,9781624608049,,,Influence,Robert B. Cialdini
+S01,9781312394650,,,Concise Psychology of Money,Morgan Housel
+S01,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+S01,9781250301710,,,Silent Patient,Alex Michaelides
+S01,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+S01,9780679410577,,,The Secret History,Donna Tartt
+S01,9781566195027,,,To engineer is human,Henry Petroski
+S01,9781957635101,,,Haunting Adeline,H. D. Carlton
+S01,9780316032544,,,New Moon,Stephenie Meyer
+S01,9781501278907,,,American Psycho,Bret Easton Ellis
+S01,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+S01,9781473666948,,,It,Stephen King
+S01,9781638932925,,,Hunting Adeline,H. D. Carlton
+S01,9781862301115,,,House of Leaves,Mark Z. Danielewski
+S02,9780785764830,,,Insomnia,Stephen King
+S02,9780596553609,,,Active Directory,Joe Richards
+S02,9781590282977,,,Python Programming,John M. Zelle
+S02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S02,9780061228742,,,Charlotte's Web,E. B. White
+S02,9781497316928,,,Art of Money Getting,P. T. Barnum
+S02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S02,9781593276034,,,lol,Eric Matthes
+S02,9780441013593,,,Dune,Frank Herbert
+S02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S02,9781982185848,,,I'm Glad My Mom Died,Jennette McCurdy
+S02,9781532897153,,,Mein Kampf,Adolf Hitler
+S02,9780596004651,,,Head First Java,Kathy Sierra
+S02,9781638932925,,,Hunting Adeline,H. D. Carlton
+S02,9780593641996,,,Punk 57,Penelope Douglas
+S02,9780898458770,,,The Magician's Nephew,C. S. Lewis
+S02,9781250186935,,,Artificial Condition,Martha Wells
+S02,9781250260185,,,"Red, White & Royal Blue",Casey McQuiston
+S02,9780316032544,,,New Moon,Stephenie Meyer
+S02,9781957635101,,,Haunting Adeline,H. D. Carlton
+S02,9780385611466,,,The Book Thief,Markus Zusak
+S02,9780606038591,,,Misery,Stephen King
+S02,9781405291767,,,Unravel Me,Tahereh Mafi
+S02,9780349448411,,,Twisted Lies (Collector's Edition),Ana Huang
+S02,9781473666948,,,It,Stephen King
+S02,9780451119674,,,The Shining,Stephen King
+S02,9780816156887,,,Carrie,Stephen King
+S02,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+S02,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+S02,9780316014410,,,Twilight 1ST Edition,Stephenie Meyer
+S02,9780061444852,,,Romancing Mister Bridgerton,Julia Quinn
+S02,9781588362896,,,Masters of Doom,David Kushner
+S03,9780785764830,,,Insomnia,Stephen King
+S03,9780596553609,,,Active Directory,Joe Richards
+S03,9781590282977,,,Python Programming,John M. Zelle
+S03,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S03,9780061228742,,,Charlotte's Web,E. B. White
+S03,9781497316928,,,Art of Money Getting,P. T. Barnum
+S03,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S03,9781593276034,,,lol,Eric Matthes
+S03,9780441013593,,,Dune,Frank Herbert
+S03,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S03,9780471727491,,,Control Systems Engineering,Norman S. Nise
+S03,9780582256347,,,Mechatronics,W. Bolton
+S03,9781665197052,,,The Art of Deception,Kevin D. Mitnick
+S03,9781974272846,,,Nineteen Eighty-Four,George Orwell
+S03,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+S03,9781593277345,,,Python Playground,Mahesh Venkitachalam
+S03,9780062085580,,,Ignite Me,Tahereh Mafi
+S03,9781501227745,,,Superintelligence,Nick Bostrom
+S03,9781454940289,,,Think and Grow Rich,Napoleon Hill
+S03,9780130351197,,,Computer organization and architecture,William Stallings
+S03,9781607511663,,,Fahrenheit 451,Ray Bradbury
+S03,9780307588388,,,Gone Girl,Gillian Flynn
+S03,9780060564896,,,Prey,Michael Crichton
+S03,9780345412997,,,Airframe,Michael Crichton
+S03,9780613922081,,,Hackers,Steven Levy
+S03,9780142427835,,,The Long Walk,Stephen King
+S03,9781501278907,,,American Psycho,Bret Easton Ellis
+S03,9780679405573,,,Crime and punishment,Fiódor Dostoievski
+S03,9780792753216,,,Brave New World,Aldous Huxley
+S03,9781665182768,,,The 48 Laws of Power,Robert Greene
+S03,9781984899668,,,The Handmaid's Tale,Margaret Atwood
+S03,9780141985428,,,Weapons of Math Destruction,Cathy O'Neil
+S04,9780785764830,,,Insomnia,Stephen King
+S04,9780596553609,,,Active Directory,Joe Richards
+S04,9781590282977,,,Python Programming,John M. Zelle
+S04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S04,9780061228742,,,Charlotte's Web,E. B. White
+S04,9781497316928,,,Art of Money Getting,P. T. Barnum
+S04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S04,9781593276034,,,lol,Eric Matthes
+S04,9780441013593,,,Dune,Frank Herbert
+S04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S04,9781593274245,,,Think like a Programmer,V. Anton Spraul
+S04,9781098155438,,,Think Python,Allen Downey
+S04,9780048231260,,,"The hobbit, or, There and back again",J.R.R. Tolkien
+S04,9781409191148,,,Qualityland,Marc-Uwe Kling
+S04,9781534467637,,,Better Than the Movies,Lynn Painter
+S04,9780765397539,,,All Systems Red,Martha Wells
+S04,9781405291767,,,Unravel Me,Tahereh Mafi
+S04,9781731494047,,,Great Gatsby,F. Scott Fitzgerald
+S04,9780134847993,,,Data Structures and Algorithms in Java,Robert Lafore
+S04,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+S04,9780451119674,,,The Shining,Stephen King
+S04,9781402277825,,,If He Had Been With Me,Laura Nowlin
+S04,9781982185848,,,I'm Glad My Mom Died,Jennette McCurdy
+S04,9781407149073,,,To All The Boys I've Loved Before,Jenny Han
+S04,9780316032544,,,New Moon,Stephenie Meyer
+S04,9781949759440,,,"When You're Ready, This Is How You Heal",Wiest
+S04,9780099511656,,,Beloved,Toni Morrison
+S04,9780606038591,,,Misery,Stephen King
+S04,9781638932925,,,Hunting Adeline,H. D. Carlton
+S04,9780593336823,,,The Love Hypothesis,Ali Hazelwood
+S04,9781668001233,,,It Starts with Us,Colleen Hoover
+S04,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+S04,9780593641996,,,Punk 57,Penelope Douglas
+S05,9780785764830,,,Insomnia,Stephen King
+S05,9780596553609,,,Active Directory,Joe Richards
+S05,9781590282977,,,Python Programming,John M. Zelle
+S05,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S05,9780061228742,,,Charlotte's Web,E. B. White
+S05,9781497316928,,,Art of Money Getting,P. T. Barnum
+S05,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S05,9781593276034,,,lol,Eric Matthes
+S05,9780441013593,,,Dune,Frank Herbert
+S05,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S05,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+S05,9781406390742,,,Guess How Much I Love You,Sam McBratney
+S05,9781406500530,,,The Art of War,孙武
+S05,9781548987848,,,Python for Kids,Jason R. Briggs
+S05,9780099908401,,,The Old Man and the Sea,Ernest Hemingway
+S05,9781417640393,,,The Kite Runner,Khaled Hosseini
+S05,9780307275264,,,Kafka on the Shore,村上春樹
+S05,9781740310000,,,The Internet for Dummies Kit,John R. Levine
+S05,9781402277825,,,If He Had Been With Me,Laura Nowlin
+S05,9781932287165,,,"The Tragedie of Hamlet, Prince of Denmarke",William Shakespeare
+S05,9780593906101,,,Girl in Pieces Deluxe Edition,Kathleen Glasgow
+S05,9781409124627,,,"Child Called ""It""",David J. Pelzer
+S05,9781982185848,,,I'm Glad My Mom Died,Jennette McCurdy
+S05,9781455869886,,,The Fault in Our Stars,John Green
+S05,9780385611466,,,The Book Thief,Markus Zusak
+S05,9781668001233,,,It Starts with Us,Colleen Hoover
+S05,9780099511656,,,Beloved,Toni Morrison
+S05,9780603580659,,,Shatter me,Tahereh Mafi
+S05,9780345816023,,,12 Rules for Life,Jordan B. Peterson
+S05,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+S05,9780748112616,,,Tuesdays with Morrie,Mitch Albom
+S05,9780316310314,,,The Cruel Prince (The Folk of the Air),Holly Black
+S06,9780785764830,,,Insomnia,Stephen King
+S06,9780596553609,,,Active Directory,Joe Richards
+S06,9781590282977,,,Python Programming,John M. Zelle
+S06,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S06,9780061228742,,,Charlotte's Web,E. B. White
+S06,9781497316928,,,Art of Money Getting,P. T. Barnum
+S06,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S06,9781593276034,,,lol,Eric Matthes
+S06,9780441013593,,,Dune,Frank Herbert
+S06,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S06,9781959979128,,,Alice's Adventures in Wonderland (Illustrated),Lewis Carroll
+S06,9781719901550,,,Adventures of Sherlock Holmes,Arthur Conan Doyle
+S06,9780471417439,,,Operating system concepts,Abraham Silberschatz
+S06,9780713914825,,,Soul of a New Machine,Tracy Kidder
+S06,9780316014410,,,Twilight 1ST Edition,Stephenie Meyer
+S06,9781484441343,,,Lost Hero,Rick Riordan
+S06,9780593336823,,,The Love Hypothesis,Ali Hazelwood
+S06,9780470446546,,,World History for Dummies,Peter Haugen
+S06,9781957240732,,,Richest Man in Babylon,George S. Clason
+S06,9781588362896,,,Masters of Doom,David Kushner
+S06,9780316246620,,,Ancillary Justice,Ann Leckie
+S06,9780349437002,,,Fourth Wing,Rebecca Yarros
+S06,9780603580659,,,Shatter me,Tahereh Mafi
+S06,9781638932925,,,Hunting Adeline,H. D. Carlton
+S06,9781405291767,,,Unravel Me,Tahereh Mafi
+S06,9780385737944,,,The Maze Runner,James Dashner
+S06,9780316310314,,,The Cruel Prince (The Folk of the Air),Holly Black
+S06,9781250191786,,,Rogue protocol,Martha Wells
+S06,9781957635101,,,Haunting Adeline,H. D. Carlton
+S06,9780345412997,,,Airframe,Michael Crichton
+S06,9781406346428,,,The Mortal Instruments,Cassandra Clare
+S06,9781491589250,,,Six of Crows,Leigh Bardugo
+S06,9781467658195,,,The Lightning Thief,Rick Riordan
+S07,9780785764830,,,Insomnia,Stephen King
+S07,9780596553609,,,Active Directory,Joe Richards
+S07,9781590282977,,,Python Programming,John M. Zelle
+S07,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S07,9780061228742,,,Charlotte's Web,E. B. White
+S07,9781497316928,,,Art of Money Getting,P. T. Barnum
+S07,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S07,9781593276034,,,lol,Eric Matthes
+S07,9780441013593,,,Dune,Frank Herbert
+S07,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S07,9781957635101,,,Haunting Adeline,H. D. Carlton
+S07,9781452615516,,,You are a badass,Jen Sincero
+S07,9781406390742,,,Guess How Much I Love You,Sam McBratney
+S07,9781949759440,,,"When You're Ready, This Is How You Heal",Wiest
+S07,9781312394650,,,Concise Psychology of Money,Morgan Housel
+S07,9781949759945,,,The Mountain Is You,Brianna Wiest
+S07,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+S07,9780593388013,,,One of Us Is Lying TR 9-Copy Floor Display,Karen M. McManus
+S07,9780306924644,,,Compound Effect,Darren Hardy
+S07,9780143475927,,,Can We Be Strangers Again?,Shrijeet Shandilya
+S07,9780593906101,,,Girl in Pieces Deluxe Edition,Kathleen Glasgow
+S07,9781417640393,,,The Kite Runner,Khaled Hosseini
+S07,9781408821985,,,The song of Achilles,Madeline Miller
+S07,9780735276475,,,Normal People,Sally Rooney
+S07,9780099511656,,,Beloved,Toni Morrison
+S07,9781455869886,,,The Fault in Our Stars,John Green
+S07,9780593641996,,,Punk 57,Penelope Douglas
+S07,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+S07,9781402277825,,,If He Had Been With Me,Laura Nowlin
+S07,9780241952481,,,Of Mice and Men,John Steinbeck
+S07,9781534467637,,,Better Than the Movies,Lynn Painter
+S08,9780785764830,,,Insomnia,Stephen King
+S08,9780596553609,,,Active Directory,Joe Richards
+S08,9781590282977,,,Python Programming,John M. Zelle
+S08,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+S08,9780061228742,,,Charlotte's Web,E. B. White
+S08,9781497316928,,,Art of Money Getting,P. T. Barnum
+S08,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+S08,9781593276034,,,lol,Eric Matthes
+S08,9780441013593,,,Dune,Frank Herbert
+S08,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+S08,9781406500530,,,The Art of War,孙武
+S08,9780140300765,,,Little Women (Puffin Books),Louisa May Alcott
+S08,9780192817716,,,A tale of two cities,Charles Dickens
+S08,9780613824224,,,Ender's Game,Orson Scott Card
+S08,9781417640393,,,The Kite Runner,Khaled Hosseini
+S08,9781491589250,,,Six of Crows,Leigh Bardugo
+S08,9781408821985,,,The song of Achilles,Madeline Miller
+S08,9780385611466,,,The Book Thief,Markus Zusak
+S08,9780062085580,,,Ignite Me,Tahereh Mafi
+S08,9780736231848,,,Things fall apart,Chinua Achebe
+S08,9780143135692,,,The Color Purple,Alice Walker
+S08,9780349437002,,,Fourth Wing,Rebecca Yarros
+S08,9781408888186,,,A Court of Thorns and Roses,Sarah J. Maas
+S08,9781685085391,,,A Court of Mist and Fury (Part 2 of 2) (Dramatized Adaptation),Sarah J. Maas
+S08,9780807014271,,,Man's Search for Meaning,Viktor Emil Frankl
+S08,9780606256155,,,The Stand (Turtleback School & Library Binding Edition),Stephen King
+S08,9780736695930,,,A Game of Thrones,George R. R. Martin
+M01,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+M01,9781722502058,,,The Science of Getting Rich,Wallace D. Wattles
+M01,9780306924644,,,Compound Effect,Darren Hardy
+M01,9780393357363,,,Hello World,Hannah Fry
+M01,9781548987848,,,Python for Kids,Jason R. Briggs
+M01,9781444968934,,,Heartstopper Volume 1,Alice Oseman
+M01,9781535483834,,,Python,Byron Francis
+M01,9781617292231,,,Grokking Algorithms,Aditya Y. Bhargava
+M01,9780765397539,,,All Systems Red,Martha Wells
+M01,9781491973899,,,The Manager's Path,Camille Fournier
+M01,9780060736330,,,And Then There Were None,Agatha Christie
+M01,9781999579500,,,The hundred-page machine learning book,Andriy Burkov
+M01,9781491589250,,,Six of Crows,Leigh Bardugo
+M01,9781974136117,,,Metamorphosis,Franz Kafka
+M01,9781559946346,,,Lolita,Vladimir Nabokov
+M01,9781092633550,,,Pride and Prejudice,Noteable Publishing
+M01,9780307588388,,,Gone Girl,Gillian Flynn
+M01,9780375432309,,,The Da Vinci code,Dan Brown
+M01,9780582823044,,,Heart of darkness,Joseph Conrad
+M01,9781491962299,,,Hands-On Machine Learning with Scikit-Learn and TensorFlow,Aurélien Géron
+M01,9780573707735,,,Agatha Christie's Murder on the Orient Express,Agatha Christie
+M01,9781250186935,,,Artificial Condition,Martha Wells
+M01,9781250191786,,,Rogue protocol,Martha Wells
+M01,9780997316001,,,Computer Science Distilled,Wladston Ferreira Filho
+M01,9781537579368,,,The Picture Of Dorian Gray,Oscar Wilde
+M01,9781973869474,,,As a Man Thinketh,James Allen
+M01,9781665197052,,,The Art of Deception,Kevin D. Mitnick
+M01,9780262337588,,,Machine Learning,Ethem Alpaydin
+M02,9780785764830,,,Insomnia,Stephen King
+M02,9780596553609,,,Active Directory,Joe Richards
+M02,9781590282977,,,Python Programming,John M. Zelle
+M02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+M02,9780061228742,,,Charlotte's Web,E. B. White
+M02,9781497316928,,,Art of Money Getting,P. T. Barnum
+M02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+M02,9781593276034,,,lol,Eric Matthes
+M02,9780441013593,,,Dune,Frank Herbert
+M02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+M02,9780143475927,,,Can We Be Strangers Again?,Shrijeet Shandilya
+M02,9781693224188,,,The Invisible Man,H. G. Wells
+M02,9780887308369,,,The Intelligent Investor: The Classic Bestseller on Value Investing,Benjamin Graham
+M02,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+M02,9780812439250,,,"I, Robot",Isaac Asimov
+M02,9780140300765,,,Little Women (Puffin Books),Louisa May Alcott
+M02,9781502809193,,,Christmas Carol,Charles Dickens
+M02,9780813812700,,,Analysis of faulted power systems,P. M. Anderson
+M02,9781959979128,,,Alice's Adventures in Wonderland (Illustrated),Lewis Carroll
+M02,9781719901550,,,Adventures of Sherlock Holmes,Arthur Conan Doyle
+M02,9781629920283,,,Calculus Made Easy,Silvanus Phillips Thompson
+M02,9781987514384,,,Kama Sutra of Vatsyayana,Vatsyāyana
+M02,9780679410577,,,The Secret History,Donna Tartt
+M02,9781103479740,,,Autobiography of Benjamin Franklin,Benjamin Franklin
+M02,9780131103306,,,C Programming Language,Brian W. Kernighan
+M02,9781406390742,,,Guess How Much I Love You,Sam McBratney
+M02,9780606069908,,,The Giver,Lois Lowry
+M02,9781731494047,,,Great Gatsby,F. Scott Fitzgerald
+M02,9781740254878,,,Jane Eyre,Charlotte Brontë
+M02,9781092633550,,,Pride and Prejudice,Noteable Publishing
+M02,9780679405573,,,Crime and punishment,Fiódor Dostoievski
+M02,9781790610501,,,Count of Monte Cristo,Alexandre Dumas
+M02,9780241952481,,,Of Mice and Men,John Steinbeck
+M02,9780007323128,,,"The Lion, the Witch and the Wardrobe",C. S. Lewis
+M02,9780099908401,,,The Old Man and the Sea,Ernest Hemingway
+M02,9781537579368,,,The Picture Of Dorian Gray,Oscar Wilde
+M02,9780099511656,,,Beloved,Toni Morrison
+M02,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+M03,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+M03,9781101946596,,,Life 3.0,Max Tegmark
+M03,9781722502058,,,The Science of Getting Rich,Wallace D. Wattles
+M03,9780306924644,,,Compound Effect,Darren Hardy
+M03,9780141979243,,,Master Algorithm,Pedro Domingos
+M03,9780393357363,,,Hello World,Hannah Fry
+M03,9781987650075,,,Moby Dick,Herman Melville
+M03,9781548987848,,,Python for Kids,Jason R. Briggs
+M03,9781444968934,,,Heartstopper Volume 1,Alice Oseman
+M03,9781535483834,,,Python,Byron Francis
+M03,9780613074049,,,A Brief History Of Time,Stephen Hawking
+M03,9780470446546,,,World History for Dummies,Peter Haugen
+M03,9780679410577,,,The Secret History,Donna Tartt
+M03,9780593734247,,,Nexus,Yuval Noah Harari
+M03,9781999579500,,,The hundred-page machine learning book,Andriy Burkov
+M03,9781974136117,,,Metamorphosis,Franz Kafka
+M03,9781417640393,,,The Kite Runner,Khaled Hosseini
+M03,9780262337588,,,Machine Learning,Ethem Alpaydin
+M03,9781092633550,,,Pride and Prejudice,Noteable Publishing
+M03,9781774761052,,,Autobiography of a Yogi (Royal Collector's Edition) (Annotated) (Case Laminate Hardcover with Jacket),Yogananda Paramahansa
+M03,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+M03,9781624608049,,,Influence,Robert B. Cialdini
+M03,9781973869474,,,As a Man Thinketh,James Allen
+M03,9781608196104,,,The grid,Gretchen Anna Bakke
+M03,9781665197052,,,The Art of Deception,Kevin D. Mitnick
+M03,9781982185848,,,I'm Glad My Mom Died,Jennette McCurdy
+M03,9781250191786,,,Rogue protocol,Martha Wells
+M03,9780765397539,,,All Systems Red,Martha Wells
+M03,9780393635829,,,The Alignment Problem,Brian Christian
+M03,9781409191148,,,Qualityland,Marc-Uwe Kling
+M03,9780735276475,,,Normal People,Sally Rooney
+M04,9780785764830,,,Insomnia,Stephen King
+M04,9780596553609,,,Active Directory,Joe Richards
+M04,9781590282977,,,Python Programming,John M. Zelle
+M04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+M04,9780061228742,,,Charlotte's Web,E. B. White
+M04,9781497316928,,,Art of Money Getting,P. T. Barnum
+M04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+M04,9781593276034,,,lol,Eric Matthes
+M04,9780441013593,,,Dune,Frank Herbert
+M04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+M04,9780072472578,,,The Interactive Computing Series,Kenneth C. Laudon
+M04,9780132269933,,,Core Python Programming (2nd Edition) (Core Series),Wesley J. Chun
+M04,9781980021711,,,Network Effect,Martha Wells
+M04,9781408888186,,,A Court of Thorns and Roses,Sarah J. Maas
+M04,9781534467637,,,Better Than the Movies,Lynn Painter
+M04,9781491589250,,,Six of Crows,Leigh Bardugo
+M04,9781484441343,,,Lost Hero,Rick Riordan
+M04,9780349448411,,,Twisted Lies (Collector's Edition),Ana Huang
+M04,9781857239096,,,Wheel Time - Eye of World,Robert Jordan
+M04,9780316310314,,,The Cruel Prince (The Folk of the Air),Holly Black
+M04,9781685085391,,,A Court of Mist and Fury (Part 2 of 2) (Dramatized Adaptation),Sarah J. Maas
+M04,9781406346428,,,The Mortal Instruments,Cassandra Clare
+M04,9780349437002,,,Fourth Wing,Rebecca Yarros
+M04,9780898458770,,,The Magician's Nephew,C. S. Lewis
+M04,9781402277825,,,If He Had Been With Me,Laura Nowlin
+M04,9780060571528,,,Coraline,Neil Gaiman
+M04,9781467658195,,,The Lightning Thief,Rick Riordan
+M04,9780007323128,,,"The Lion, the Witch and the Wardrobe",C. S. Lewis
+M05,9780061228742,,,Charlotte's Web,E. B. White
+M05,9781497316928,,,Art of Money Getting,P. T. Barnum
+M05,9780007323128,,,"The Lion, the Witch and the Wardrobe",C. S. Lewis
+M05,9781987514384,,,Kama Sutra of Vatsyayana,Vatsyāyana
+M05,9780256076295,,,Reconfigurable Processor Array A Bit Sliced Parallel Computer (USA),A. Rushton
+M05,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+M05,9780807014271,,,Man's Search for Meaning,Viktor Emil Frankl
+M05,9780553239607,,,The Bell Jar,Sylvia Plath
+M05,9781722502058,,,The Science of Getting Rich,Wallace D. Wattles
+M05,9780831126995,,,Machinery's Handbook,Franklin Jones
+M05,9781999579500,,,The hundred-page machine learning book,Andriy Burkov
+M05,9781974136117,,,Metamorphosis,Franz Kafka
+M05,9780142427835,,,The Long Walk,Stephen King
+M05,9781444723533,,,The Bachman Books,Stephen King
+M05,9781473666948,,,It,Stephen King
+M05,9781491962299,,,Hands-On Machine Learning with Scikit-Learn and TensorFlow,Aurélien Géron
+M05,9781502809193,,,Christmas Carol,Charles Dickens
+M05,9781492034025,,,Building Microservices,Sam Newman
+M05,9780596551179,,,Hadoop,Tom White
+M05,9781491910290,,,Web Scraping with Python,Ryan Mitchell
+M05,9781537579368,,,The Picture Of Dorian Gray,Oscar Wilde
+M05,9781607511663,,,Fahrenheit 451,Ray Bradbury
+M05,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+M05,9780582823044,,,Heart of darkness,Joseph Conrad
+M05,9780141327655,,,Dog Days,Jeff Kinney
+M05,9781250186935,,,Artificial Condition,Martha Wells
+M05,9781665197052,,,The Art of Deception,Kevin D. Mitnick
+M06,9781497316928,,,Art of Money Getting,P. T. Barnum
+M06,9781593276034,,,lol,Eric Matthes
+M06,9781543660630,,,A Crack in Creation,Jennifer A. Doudna
+M06,9781119149224,,,PHP and MySQL,Jon Duckett
+M06,9780133356724,,,Digital Image Processing,Rafael C. Gonzalez
+M06,9781890774820,,,Murach's MySQL,Joel Murach
+M06,9781402277825,,,If He Had Been With Me,Laura Nowlin
+M06,9781491904398,,,Data Science from Scratch,Joel Grus
+M06,9781783555147,,,Python Machine Learning,Sebastian Raschka
+M06,9781101946596,,,Life 3.0,Max Tegmark
+M06,9780142427835,,,The Long Walk,Stephen King
+M06,9780132100670,,,Pragmatic Programmer,Andrew Hunt
+M06,9780593734247,,,Nexus,Yuval Noah Harari
+M06,9781491910290,,,Web Scraping with Python,Ryan Mitchell
+M06,9780061963865,,,The Vampire Diaries ,Lisa Jane Smith
+M06,9780538798136,,,C++ programming,D. S. Malik
+M06,9781250301710,,,Silent Patient,Alex Michaelides
+M06,9780394756820,,,"Godel, Escher, Bach",Douglas R. Hofstadter
+M06,9781444723533,,,The Bachman Books,Stephen King
+M06,9780307588388,,,Gone Girl,Gillian Flynn
+M06,9781537579368,,,The Picture Of Dorian Gray,Oscar Wilde
+M06,9781794593121,,,Dracula,Bram Stoker
+M06,9781597805742,,,Windup Girl,Paolo Bacigalupi
+M06,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+M06,9781491589250,,,Six of Crows,Leigh Bardugo
+M06,9781790777457,,,Time Machine,H. G. Wells
+M06,9781974272846,,,Nineteen Eighty-Four,George Orwell
+M06,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+M06,9780573707735,,,Agatha Christie's Murder on the Orient Express,Agatha Christie
+M06,9780735276475,,,Normal People,Sally Rooney
+M06,9781987650075,,,Moby Dick,Herman Melville
+M06,9781250191786,,,Rogue protocol,Martha Wells
+N01,9780785764830,,,Insomnia,Stephen King
+N01,9780596553609,,,Active Directory,Joe Richards
+N01,9781590282977,,,Python Programming,John M. Zelle
+N01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+N01,9780061228742,,,Charlotte's Web,E. B. White
+N01,9781497316928,,,Art of Money Getting,P. T. Barnum
+N01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+N01,9781593276034,,,lol,Eric Matthes
+N01,9780441013593,,,Dune,Frank Herbert
+N01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+N01,9781624608049,,,Influence,Robert B. Cialdini
+N01,9781312394650,,,Concise Psychology of Money,Morgan Housel
+N01,9780816156887,,,Carrie,Stephen King
+N01,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+N01,9780593906101,,,Girl in Pieces Deluxe Edition,Kathleen Glasgow
+N01,9781409124627,,,"Child Called ""It""",David J. Pelzer
+N01,9780061963865,,,The Vampire Diaries ,Lisa Jane Smith
+N01,9780061444852,,,Romancing Mister Bridgerton,Julia Quinn
+N01,9780060571528,,,Coraline,Neil Gaiman
+N01,9780451119674,,,The Shining,Stephen King
+N01,9781794593121,,,Dracula,Bram Stoker
+N01,9781501278907,,,American Psycho,Bret Easton Ellis
+N01,9780743412278,,,Pet sematary,Stephen King
+N01,9780671632588,,,Psycho Cybernetics,Maxwell Maltz
+N01,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+N01,9780807014271,,,Man's Search for Meaning,Viktor Emil Frankl
+N01,9781473666948,,,It,Stephen King
+N01,9781973869474,,,As a Man Thinketh,James Allen
+N01,9780345816023,,,12 Rules for Life,Jordan B. Peterson
+N02,9780785764830,,,Insomnia,Stephen King
+N02,9780596553609,,,Active Directory,Joe Richards
+N02,9781590282977,,,Python Programming,John M. Zelle
+N02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+N02,9780061228742,,,Charlotte's Web,E. B. White
+N02,9781497316928,,,Art of Money Getting,P. T. Barnum
+N02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+N02,9781593276034,,,lol,Eric Matthes
+N02,9780441013593,,,Dune,Frank Herbert
+N02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+N02,9780061444852,,,Romancing Mister Bridgerton,Julia Quinn
+N02,9780768487008,,,Art of Persuasion,Bob Burg
+N02,9781405291767,,,Unravel Me,Tahereh Mafi
+N02,9780061963865,,,The Vampire Diaries ,Lisa Jane Smith
+N02,9780062085580,,,Ignite Me,Tahereh Mafi
+N02,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+N02,9781406346428,,,The Mortal Instruments,Cassandra Clare
+N02,9781101946596,,,Life 3.0,Max Tegmark
+N02,9781502809193,,,Christmas Carol,Charles Dickens
+N02,9781957635101,,,Haunting Adeline,H. D. Carlton
+N02,9780316310314,,,The Cruel Prince (The Folk of the Air),Holly Black
+N02,9781484441343,,,Lost Hero,Rick Riordan
+N02,9781408888186,,,A Court of Thorns and Roses,Sarah J. Maas
+N02,9780898458770,,,The Magician's Nephew,C. S. Lewis
+N02,9781987514384,,,Kama Sutra of Vatsyayana,Vatsyāyana
+N02,9781101911600,,,Fifty Shades of Grey,E. L. James
+N02,9780007323128,,,"The Lion, the Witch and the Wardrobe",C. S. Lewis
+N02,9780349437002,,,Fourth Wing,Rebecca Yarros
+N02,9781685085391,,,A Court of Mist and Fury (Part 2 of 2) (Dramatized Adaptation),Sarah J. Maas
+N02,9780736695930,,,A Game of Thrones,George R. R. Martin
+N02,9780316032544,,,New Moon,Stephenie Meyer
+N03,9780785764830,,,Insomnia,Stephen King
+N03,9780596553609,,,Active Directory,Joe Richards
+N03,9781590282977,,,Python Programming,John M. Zelle
+N03,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+N03,9780061228742,,,Charlotte's Web,E. B. White
+N03,9781497316928,,,Art of Money Getting,P. T. Barnum
+N03,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+N03,9781593276034,,,lol,Eric Matthes
+N03,9780441013593,,,Dune,Frank Herbert
+N03,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+N03,9781472158666,,,Where the Crawdads Sing,Delia Owens
+N03,9780316014410,,,Twilight 1ST Edition,Stephenie Meyer
+N03,9780061963865,,,The Vampire Diaries ,Lisa Jane Smith
+N03,9781250191786,,,Rogue protocol,Martha Wells
+N03,9780307275264,,,Kafka on the Shore,村上春樹
+N03,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+N03,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+N03,9780785934516,,,Anges et Demons,Dan Brown
+N03,9781250301710,,,Silent Patient,Alex Michaelides
+N03,9780375432309,,,The Da Vinci code,Dan Brown
+N03,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+N03,9780613636315,,,Misterio Del Guia,Agatha Christie
+N03,9780573707735,,,Agatha Christie's Murder on the Orient Express,Agatha Christie
+N03,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+N03,9781862301115,,,House of Leaves,Mark Z. Danielewski
+N03,9781638932925,,,Hunting Adeline,H. D. Carlton
+N03,9781250186935,,,Artificial Condition,Martha Wells
+N03,9780060736330,,,And Then There Were None,Agatha Christie
+N04,9780785764830,,,Insomnia,Stephen King
+N04,9780596553609,,,Active Directory,Joe Richards
+N04,9781590282977,,,Python Programming,John M. Zelle
+N04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+N04,9780061228742,,,Charlotte's Web,E. B. White
+N04,9781497316928,,,Art of Money Getting,P. T. Barnum
+N04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+N04,9781593276034,,,lol,Eric Matthes
+N04,9780441013593,,,Dune,Frank Herbert
+N04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+N04,9781250191786,,,Rogue protocol,Martha Wells
+N04,9781593279929,,,Automate the Boring Stuff with Python,Al Sweigart
+N04,9781323170564,,,Linear algebra and its applications,David C. Lay
+N04,9780470274262,,,Matrices and tensors in physics,A. W. Joshi
+N04,9781790777457,,,Time Machine,H. G. Wells
+N04,9780133214314,,,Advanced engineering mathematics,Michael D. Greenberg
+N04,9780961408893,,,Introduction to Linear Algebra,Gilbert Strang
+N04,9780812439250,,,"I, Robot",Isaac Asimov
+N04,9780316246620,,,Ancillary Justice,Ann Leckie
+N04,9781980021711,,,Network Effect,Martha Wells
+N04,9780613074049,,,A Brief History Of Time,Stephen Hawking
+N04,9781101946596,,,Life 3.0,Max Tegmark
+N04,9780575074842,,,Hitch Hiker's Guide to the Galaxy,Douglas Adams
+N04,9780062469670,,,Elon Musk,Ashlee Vance
+N04,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+N04,9780593311295,,,Klara and the Sun,Kazuo Ishiguro
+N04,9780613824224,,,Ender's Game,Orson Scott Card
+N04,9781722502058,,,The Science of Getting Rich,Wallace D. Wattles
+N05,9780785764830,,,Insomnia,Stephen King
+N05,9780596553609,,,Active Directory,Joe Richards
+N05,9781590282977,,,Python Programming,John M. Zelle
+N05,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+N05,9780061228742,,,Charlotte's Web,E. B. White
+N05,9781497316928,,,Art of Money Getting,P. T. Barnum
+N05,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+N05,9781593276034,,,lol,Eric Matthes
+N05,9780441013593,,,Dune,Frank Herbert
+N05,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+N05,9781406500530,,,The Art of War,孙武
+N05,9781408821985,,,The song of Achilles,Madeline Miller
+N05,9780807014271,,,Man's Search for Meaning,Viktor Emil Frankl
+N05,9780099511656,,,Beloved,Toni Morrison
+N05,9780470446546,,,World History for Dummies,Peter Haugen
+N05,9780613824224,,,Ender's Game,Orson Scott Card
+N05,9780062085580,,,Ignite Me,Tahereh Mafi
+N05,9780743412278,,,Pet sematary,Stephen King
+N05,9780349437002,,,Fourth Wing,Rebecca Yarros
+N05,9781491589250,,,Six of Crows,Leigh Bardugo
+N05,9780385611466,,,The Book Thief,Markus Zusak
+N05,9781455869886,,,The Fault in Our Stars,John Green
+N05,9781417640393,,,The Kite Runner,Khaled Hosseini
+N05,9780606038591,,,Misery,Stephen King
+N05,9781409124627,,,"Child Called ""It""",David J. Pelzer
+N05,9781731494047,,,Great Gatsby,F. Scott Fitzgerald
+N05,9780060736330,,,And Then There Were None,Agatha Christie
+N05,9780140300765,,,Little Women (Puffin Books),Louisa May Alcott
+N05,9780603580659,,,Shatter me,Tahereh Mafi
+V01,9780785764830,,,Insomnia,Stephen King
+V01,9780596553609,,,Active Directory,Joe Richards
+V01,9781590282977,,,Python Programming,John M. Zelle
+V01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+V01,9780061228742,,,Charlotte's Web,E. B. White
+V01,9781497316928,,,Art of Money Getting,P. T. Barnum
+V01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+V01,9781593276034,,,lol,Eric Matthes
+V01,9780441013593,,,Dune,Frank Herbert
+V01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+V01,9780143475927,,,Can We Be Strangers Again?,Shrijeet Shandilya
+V01,9781250301710,,,Silent Patient,Alex Michaelides
+V01,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+V01,9781098155438,,,Think Python,Allen Downey
+V01,9780792753216,,,Brave New World,Aldous Huxley
+V01,9781281740809,,,Wealth of Networks,Yochai Benkler
+V01,9781957635101,,,Haunting Adeline,H. D. Carlton
+V01,9781408821985,,,The song of Achilles,Madeline Miller
+V01,9780593641996,,,Punk 57,Penelope Douglas
+V01,9781534467637,,,Better Than the Movies,Lynn Painter
+V01,9781444723533,,,The Bachman Books,Stephen King
+V01,9780307588388,,,Gone Girl,Gillian Flynn
+V01,9780007436828,,,Flowers in the Attic,V.C. Andrews
+V01,9781501278907,,,American Psycho,Bret Easton Ellis
+V01,9780679410577,,,The Secret History,Donna Tartt
+V01,9781537579368,,,The Picture Of Dorian Gray,Oscar Wilde
+V01,9780785934516,,,Anges et Demons,Dan Brown
+V01,9780061963865,,,The Vampire Diaries ,Lisa Jane Smith
+V01,9780375432309,,,The Da Vinci code,Dan Brown
+V01,9780816156887,,,Carrie,Stephen King
+V01,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+V01,9781794593121,,,Dracula,Bram Stoker
+V01,9781862301115,,,House of Leaves,Mark Z. Danielewski
+V01,9780060564896,,,Prey,Michael Crichton
+V01,9780613636315,,,Misterio Del Guia,Agatha Christie
+V02,9780785764830,,,Insomnia,Stephen King
+V02,9780596553609,,,Active Directory,Joe Richards
+V02,9781590282977,,,Python Programming,John M. Zelle
+V02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+V02,9780061228742,,,Charlotte's Web,E. B. White
+V02,9781497316928,,,Art of Money Getting,P. T. Barnum
+V02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+V02,9781593276034,,,lol,Eric Matthes
+V02,9780441013593,,,Dune,Frank Herbert
+V02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+V02,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+V02,9781848941113,,,Waste Lands,Stephen King
+V02,9780898458770,,,The Magician's Nephew,C. S. Lewis
+V02,9781794593121,,,Dracula,Bram Stoker
+V02,9780316014410,,,Twilight 1ST Edition,Stephenie Meyer
+V02,9780603580659,,,Shatter me,Tahereh Mafi
+V02,9781306810647,,,Pthreads Programming,Dick Buttlar
+V02,9780671772468,,,How to win friends and influence people,Dale Carnegie
+V02,9781480560406,,,Algorithms to Live By,Brian Christian
+V02,9781693224188,,,The Invisible Man,H. G. Wells
+V02,9780340798737,,,On Writing Poster King,Stephen King
+V02,9781444700879,,,Cujo,Stephen King
+V02,9780743412278,,,Pet sematary,Stephen King
+V02,9781638932925,,,Hunting Adeline,H. D. Carlton
+V02,9780451119674,,,The Shining,Stephen King
+V02,9780451071125,,,Salem's Lot,Stephen King
+V02,9780606256155,,,The Stand (Turtleback School & Library Binding Edition),Stephen King
+V02,9781473666948,,,It,Stephen King
+V02,9780316032544,,,New Moon,Stephenie Meyer
+V02,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+V02,9780007436828,,,Flowers in the Attic,V.C. Andrews
+V03,9780785764830,,,Insomnia,Stephen King
+V03,9780596553609,,,Active Directory,Joe Richards
+V03,9781590282977,,,Python Programming,John M. Zelle
+V03,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+V03,9780061228742,,,Charlotte's Web,E. B. White
+V03,9781497316928,,,Art of Money Getting,P. T. Barnum
+V03,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+V03,9781593276034,,,lol,Eric Matthes
+V03,9780441013593,,,Dune,Frank Herbert
+V03,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+V03,9781551927008,,,Harry Potter and the Philosopher's Stone [Adult Edition],J. K. Rowling
+V03,9780553296983,,,Anne Frank,Anne Frank
+V03,9780606069908,,,The Giver,Lois Lowry
+V03,9781444700879,,,Cujo,Stephen King
+V03,9780708803318,,,Duke and I,Julia Quinn
+V03,9781406346428,,,The Mortal Instruments,Cassandra Clare
+V03,9780748112616,,,Tuesdays with Morrie,Mitch Albom
+V03,9781491589250,,,Six of Crows,Leigh Bardugo
+V03,9780060571528,,,Coraline,Neil Gaiman
+V03,9780439023481,,,The Hunger Games,Suzanne Collins
+V03,9781862301115,,,House of Leaves,Mark Z. Danielewski
+V03,9781957635101,,,Haunting Adeline,H. D. Carlton
+V03,9780349437002,,,Fourth Wing,Rebecca Yarros
+V03,9780316310314,,,The Cruel Prince (The Folk of the Air),Holly Black
+V03,9781408888186,,,A Court of Thorns and Roses,Sarah J. Maas
+V03,9780898458770,,,The Magician's Nephew,C. S. Lewis
+V03,9781786892720,,,The Midnight Library,Matt Haig
+V03,9781685085391,,,A Court of Mist and Fury (Part 2 of 2) (Dramatized Adaptation),Sarah J. Maas
+V03,9781467658195,,,The Lightning Thief,Rick Riordan
+V03,9781484441343,,,Lost Hero,Rick Riordan
+V04,9780785764830,,,Insomnia,Stephen King
+V04,9780596553609,,,Active Directory,Joe Richards
+V04,9781590282977,,,Python Programming,John M. Zelle
+V04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+V04,9780061228742,,,Charlotte's Web,E. B. White
+V04,9781497316928,,,Art of Money Getting,P. T. Barnum
+V04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+V04,9781593276034,,,lol,Eric Matthes
+V04,9780441013593,,,Dune,Frank Herbert
+V04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+V04,9780451119674,,,The Shining,Stephen King
+V04,9780451071125,,,Salem's Lot,Stephen King
+V04,9780471082712,,,"Calculus, with analytic geometry",Howard Anton
+V04,9780898458770,,,The Magician's Nephew,C. S. Lewis
+V04,9781407149073,,,To All The Boys I've Loved Before,Jenny Han
+V04,9780816156887,,,Carrie,Stephen King
+V04,9780394756820,,,"Godel, Escher, Bach",Douglas R. Hofstadter
+V04,9780141327655,,,Dog Days,Jeff Kinney
+V04,9781250260185,,,"Red, White & Royal Blue",Casey McQuiston
+V04,9780606069908,,,The Giver,Lois Lowry
+V04,9781949759440,,,"When You're Ready, This Is How You Heal",Wiest
+V04,9781848941113,,,Waste Lands,Stephen King
+V04,9781444700879,,,Cujo,Stephen King
+V04,9780316032544,,,New Moon,Stephenie Meyer
+V04,9780099511656,,,Beloved,Toni Morrison
+V04,9781957635101,,,Haunting Adeline,H. D. Carlton
+V04,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+V04,9780593641996,,,Punk 57,Penelope Douglas
+P01,9780785764830,,,Insomnia,Stephen King
+P01,9780596553609,,,Active Directory,Joe Richards
+P01,9781590282977,,,Python Programming,John M. Zelle
+P01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+P01,9780061228742,,,Charlotte's Web,E. B. White
+P01,9781497316928,,,Art of Money Getting,P. T. Barnum
+P01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+P01,9781593276034,,,lol,Eric Matthes
+P01,9780441013593,,,Dune,Frank Herbert
+P01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+P01,9780307588388,,,Gone Girl,Gillian Flynn
+P01,9780061444852,,,Romancing Mister Bridgerton,Julia Quinn
+P01,9781597805742,,,Windup Girl,Paolo Bacigalupi
+P01,9781593274245,,,Think like a Programmer,V. Anton Spraul
+P01,9780593906101,,,Girl in Pieces Deluxe Edition,Kathleen Glasgow
+P01,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+P01,9780553296983,,,Anne Frank,Anne Frank
+P01,9780593641996,,,Punk 57,Penelope Douglas
+P01,9781098155438,,,Think Python,Allen Downey
+P01,9780898458770,,,The Magician's Nephew,C. S. Lewis
+P01,9780735276475,,,Normal People,Sally Rooney
+P01,9781534467637,,,Better Than the Movies,Lynn Painter
+P01,9781402277825,,,If He Had Been With Me,Laura Nowlin
+P01,9780349448411,,,Twisted Lies (Collector's Edition),Ana Huang
+P01,9781638932925,,,Hunting Adeline,H. D. Carlton
+P01,9781101911600,,,Fifty Shades of Grey,E. L. James
+P01,9781407149073,,,To All The Boys I've Loved Before,Jenny Han
+P01,9780603580659,,,Shatter me,Tahereh Mafi
+P01,9781731494047,,,Great Gatsby,F. Scott Fitzgerald
+P02,9780785764830,,,Insomnia,Stephen King
+P02,9780596553609,,,Active Directory,Joe Richards
+P02,9781590282977,,,Python Programming,John M. Zelle
+P02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+P02,9780061228742,,,Charlotte's Web,E. B. White
+P02,9781497316928,,,Art of Money Getting,P. T. Barnum
+P02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+P02,9781593276034,,,lol,Eric Matthes
+P02,9780441013593,,,Dune,Frank Herbert
+P02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+P02,9781593274245,,,Think like a Programmer,V. Anton Spraul
+P02,9781098155438,,,Think Python,Allen Downey
+P02,9780262510875,,,Structure and Interpretation of Computer Programs,Harold Abelson
+P02,9781974272846,,,Nineteen Eighty-Four,George Orwell
+P02,9781534467637,,,Better Than the Movies,Lynn Painter
+P02,9780765397539,,,All Systems Red,Martha Wells
+P02,9781405291767,,,Unravel Me,Tahereh Mafi
+P02,9781731494047,,,Great Gatsby,F. Scott Fitzgerald
+P02,9780134847993,,,Data Structures and Algorithms in Java,Robert Lafore
+P02,9780792753216,,,Brave New World,Aldous Huxley
+P02,9781607511663,,,Fahrenheit 451,Ray Bradbury
+P02,9780735276475,,,Normal People,Sally Rooney
+P02,9780142427835,,,The Long Walk,Stephen King
+P02,9780613922081,,,Hackers,Steven Levy
+P02,9780603580659,,,Shatter me,Tahereh Mafi
+P02,9780606256155,,,The Stand (Turtleback School & Library Binding Edition),Stephen King
+P02,9781790777457,,,Time Machine,H. G. Wells
+P02,9781665182768,,,The 48 Laws of Power,Robert Greene
+P02,9780316032544,,,New Moon,Stephenie Meyer
+P02,9780385737944,,,The Maze Runner,James Dashner
+P02,9781668001233,,,It Starts with Us,Colleen Hoover
+P02,9780593641996,,,Punk 57,Penelope Douglas
+P03,9780785764830,,,Insomnia,Stephen King
+P03,9780596553609,,,Active Directory,Joe Richards
+P03,9781590282977,,,Python Programming,John M. Zelle
+P03,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+P03,9780061228742,,,Charlotte's Web,E. B. White
+P03,9781497316928,,,Art of Money Getting,P. T. Barnum
+P03,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+P03,9781593276034,,,lol,Eric Matthes
+P03,9780441013593,,,Dune,Frank Herbert
+P03,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+P03,9780439023481,,,The Hunger Games,Suzanne Collins
+P03,9780613824224,,,Ender's Game,Orson Scott Card
+P03,9780593336823,,,The Love Hypothesis,Ali Hazelwood
+P03,9781407149073,,,To All The Boys I've Loved Before,Jenny Han
+P03,9780736695930,,,A Game of Thrones,George R. R. Martin
+P03,9781406390742,,,Guess How Much I Love You,Sam McBratney
+P03,9780603580659,,,Shatter me,Tahereh Mafi
+P03,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+P03,9781668001233,,,It Starts with Us,Colleen Hoover
+P03,9781588362896,,,Masters of Doom,David Kushner
+P03,9780099511656,,,Beloved,Toni Morrison
+P03,9781534467637,,,Better Than the Movies,Lynn Painter
+P03,9780385737944,,,The Maze Runner,James Dashner
+P03,9781405291767,,,Unravel Me,Tahereh Mafi
+P03,9780062085580,,,Ignite Me,Tahereh Mafi
+P03,9780349437002,,,Fourth Wing,Rebecca Yarros
+P03,9781402277825,,,If He Had Been With Me,Laura Nowlin
+P03,9781406346428,,,The Mortal Instruments,Cassandra Clare
+P03,9780593641996,,,Punk 57,Penelope Douglas
+P03,9781456133085,,,We'll Always Have Summer,Jenny Han
+P04,9780785764830,,,Insomnia,Stephen King
+P04,9780596553609,,,Active Directory,Joe Richards
+P04,9781590282977,,,Python Programming,John M. Zelle
+P04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+P04,9780061228742,,,Charlotte's Web,E. B. White
+P04,9781497316928,,,Art of Money Getting,P. T. Barnum
+P04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+P04,9781593276034,,,lol,Eric Matthes
+P04,9780441013593,,,Dune,Frank Herbert
+P04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+P04,9780375432309,,,The Da Vinci code,Dan Brown
+P04,9781593274245,,,Think like a Programmer,V. Anton Spraul
+P04,9780471597568,,,Applied cryptography,Bruce Schneier
+P04,9781098155438,,,Think Python,Allen Downey
+P04,9781848941113,,,Waste Lands,Stephen King
+P04,9781617292231,,,Grokking Algorithms,Aditya Y. Bhargava
+P04,9780765397539,,,All Systems Red,Martha Wells
+P04,9781543057386,,,Distributed Systems,Maarten van Steen
+P04,9780789751980,,,C Programming Absolute Beginner's Guide,Greg Perry
+P04,9780134847993,,,Data Structures and Algorithms in Java,Robert Lafore
+P04,9780785934516,,,Anges et Demons,Dan Brown
+P04,9780679410577,,,The Secret History,Donna Tartt
+P04,9780343960162,,,Il Principe,Niccolò Machiavelli
+P04,9781250191786,,,Rogue protocol,Martha Wells
+P04,9781501227745,,,Superintelligence,Nick Bostrom
+P04,9781250186935,,,Artificial Condition,Martha Wells
+P04,9781551927008,,,Harry Potter and the Philosopher's Stone [Adult Edition],J. K. Rowling
+P04,9780385737944,,,The Maze Runner,James Dashner
+P04,9780345374912,,,Jurassic Park,Michael Crichton
+P04,9781405291767,,,Unravel Me,Tahereh Mafi
+P04,9781588362896,,,Masters of Doom,David Kushner
+P04,9781638932925,,,Hunting Adeline,H. D. Carlton
+P04,9781101946596,,,Life 3.0,Max Tegmark
+P05,9780785764830,,,Insomnia,Stephen King
+P05,9780596553609,,,Active Directory,Joe Richards
+P05,9781590282977,,,Python Programming,John M. Zelle
+P05,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+P05,9780061228742,,,Charlotte's Web,E. B. White
+P05,9781497316928,,,Art of Money Getting,P. T. Barnum
+P05,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+P05,9781593276034,,,lol,Eric Matthes
+P05,9780441013593,,,Dune,Frank Herbert
+P05,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+P05,9781551927008,,,Harry Potter and the Philosopher's Stone [Adult Edition],J. K. Rowling
+P05,9780557911813,,,Harry Potter and the Prisoner of Azkaban,J. K. Rowling
+P05,9781526618177,,,Harry Potter and the Order of the Phoenix,J. K. Rowling
+P05,9780606415170,,,Harry Potter and the Goblet of Fire,J. K. Rowling
+P05,9781408898093,,,Harry Potter and the Chamber of Secrets - Gryffindor Edition,J. K. Rowling
+P05,9780060571528,,,Coraline,Neil Gaiman
+P05,9781593279929,,,Automate the Boring Stuff with Python,Al Sweigart
+P05,9781406346428,,,The Mortal Instruments,Cassandra Clare
+P05,9780060736330,,,And Then There Were None,Agatha Christie
+P05,9781471116179,,,Perks of Being a Wallflower,Stephen Chbosky
+P05,9780898458770,,,The Magician's Nephew,C. S. Lewis
+P05,9780316310314,,,The Cruel Prince (The Folk of the Air),Holly Black
+P05,9781534467637,,,Better Than the Movies,Lynn Painter
+P05,9780349437002,,,Fourth Wing,Rebecca Yarros
+P05,9781402277825,,,If He Had Been With Me,Laura Nowlin
+P05,9781668001233,,,It Starts with Us,Colleen Hoover
+P05,9781250260185,,,"Red, White & Royal Blue",Casey McQuiston
+U01,9780785764830,,,Insomnia,Stephen King
+U01,9780596553609,,,Active Directory,Joe Richards
+U01,9781590282977,,,Python Programming,John M. Zelle
+U01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+U01,9780061228742,,,Charlotte's Web,E. B. White
+U01,9781497316928,,,Art of Money Getting,P. T. Barnum
+U01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+U01,9781593276034,,,lol,Eric Matthes
+U01,9780441013593,,,Dune,Frank Herbert
+U01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+U01,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+U01,9781587990809,,,Just for fun,Linus Torvalds
+U01,9781731494047,,,Great Gatsby,F. Scott Fitzgerald
+U01,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+U01,9781409191148,,,Qualityland,Marc-Uwe Kling
+U01,9781722502058,,,The Science of Getting Rich,Wallace D. Wattles
+U01,9780807014271,,,Man's Search for Meaning,Viktor Emil Frankl
+U01,9781452615516,,,You are a badass,Jen Sincero
+U01,9781473666948,,,It,Stephen King
+U02,9780785764830,,,Insomnia,Stephen King
+U02,9780596553609,,,Active Directory,Joe Richards
+U02,9781590282977,,,Python Programming,John M. Zelle
+U02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+U02,9780061228742,,,Charlotte's Web,E. B. White
+U02,9781497316928,,,Art of Money Getting,P. T. Barnum
+U02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+U02,9781593276034,,,lol,Eric Matthes
+U02,9780441013593,,,Dune,Frank Herbert
+U02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+U02,9780603580659,,,Shatter me,Tahereh Mafi
+U02,9780062085580,,,Ignite Me,Tahereh Mafi
+U02,9781402277825,,,If He Had Been With Me,Laura Nowlin
+U02,9781405291767,,,Unravel Me,Tahereh Mafi
+U02,9781638932925,,,Hunting Adeline,H. D. Carlton
+U02,9780593641996,,,Punk 57,Penelope Douglas
+U02,9780201168938,,,Engineering design graphics,James H. Earle
+U02,9780321965516,,,"Don't Make Me Think, Revisited",Steve Krug
+U02,9781957635101,,,Haunting Adeline,H. D. Carlton
+U02,9781444968934,,,Heartstopper Volume 1,Alice Oseman
+U02,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+U02,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+U02,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+U02,9780143475927,,,Can We Be Strangers Again?,Shrijeet Shandilya
+U02,9781407149073,,,To All The Boys I've Loved Before,Jenny Han
+U02,9780898458770,,,The Magician's Nephew,C. S. Lewis
+U02,9780593336823,,,The Love Hypothesis,Ali Hazelwood
+U02,9780385737944,,,The Maze Runner,James Dashner
+U03,9780785764830,,,Insomnia,Stephen King
+U03,9780596553609,,,Active Directory,Joe Richards
+U03,9781590282977,,,Python Programming,John M. Zelle
+U03,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+U03,9780061228742,,,Charlotte's Web,E. B. White
+U03,9781497316928,,,Art of Money Getting,P. T. Barnum
+U03,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+U03,9781593276034,,,lol,Eric Matthes
+U03,9780441013593,,,Dune,Frank Herbert
+U03,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+U03,9781982185848,,,I'm Glad My Mom Died,Jennette McCurdy
+U03,9781532897153,,,Mein Kampf,Adolf Hitler
+U03,9781638932925,,,Hunting Adeline,H. D. Carlton
+U03,9780593641996,,,Punk 57,Penelope Douglas
+U03,9780898458770,,,The Magician's Nephew,C. S. Lewis
+U03,9780141327655,,,Dog Days,Jeff Kinney
+U03,9781408898093,,,Harry Potter and the Chamber of Secrets - Gryffindor Edition,J. K. Rowling
+U03,9780316032544,,,New Moon,Stephenie Meyer
+U03,9781957635101,,,Haunting Adeline,H. D. Carlton
+U03,9781774761052,,,Autobiography of a Yogi (Royal Collector's Edition) (Annotated) (Case Laminate Hardcover with Jacket),Yogananda Paramahansa
+U03,9780007323128,,,"The Lion, the Witch and the Wardrobe",C. S. Lewis
+U03,9781405291767,,,Unravel Me,Tahereh Mafi
+U03,9781502809193,,,Christmas Carol,Charles Dickens
+U03,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+U03,9781402277825,,,If He Had Been With Me,Laura Nowlin
+U03,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+U03,9781587990809,,,Just for fun,Linus Torvalds
+U03,9780316014410,,,Twilight 1ST Edition,Stephenie Meyer
+U04,9780785764830,,,Insomnia,Stephen King
+U04,9780596553609,,,Active Directory,Joe Richards
+U04,9781590282977,,,Python Programming,John M. Zelle
+U04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+U04,9780061228742,,,Charlotte's Web,E. B. White
+U04,9781497316928,,,Art of Money Getting,P. T. Barnum
+U04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+U04,9781593276034,,,lol,Eric Matthes
+U04,9780441013593,,,Dune,Frank Herbert
+U04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+U04,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+U04,9780898458770,,,The Magician's Nephew,C. S. Lewis
+U04,9780603580659,,,Shatter me,Tahereh Mafi
+U04,9781405293181,,,A Good Girl's Guide to Murder,Holly Jackson
+U04,9781480560406,,,Algorithms to Live By,Brian Christian
+U04,9780593163269,,,The Singularity Is Near,Ray Kurzweil
+U04,9781452615516,,,You are a badass,Jen Sincero
+U04,9781597805742,,,Windup Girl,Paolo Bacigalupi
+U04,9780309102384,,,Glut,Alex Wright
+U04,9780316014410,,,Twilight 1ST Edition,Stephenie Meyer
+U04,9781587990809,,,Just for fun,Linus Torvalds
+U04,9781250260185,,,"Red, White & Royal Blue",Casey McQuiston
+U04,9781456133085,,,We'll Always Have Summer,Jenny Han
+U04,9780099511656,,,Beloved,Toni Morrison
+U04,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+U04,9781402277825,,,If He Had Been With Me,Laura Nowlin
+U04,9780593641996,,,Punk 57,Penelope Douglas
+U04,9781101946596,,,Life 3.0,Max Tegmark
+U04,9781608196104,,,The grid,Gretchen Anna Bakke
+H01,9780785764830,,,Insomnia,Stephen King
+H01,9780596553609,,,Active Directory,Joe Richards
+H01,9781590282977,,,Python Programming,John M. Zelle
+H01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+H01,9780061228742,,,Charlotte's Web,E. B. White
+H01,9781497316928,,,Art of Money Getting,P. T. Barnum
+H01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+H01,9781593276034,,,lol,Eric Matthes
+H01,9780441013593,,,Dune,Frank Herbert
+H01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+H01,9781250301710,,,Silent Patient,Alex Michaelides
+H01,9781456133085,,,We'll Always Have Summer,Jenny Han
+H01,9781949759945,,,The Mountain Is You,Brianna Wiest
+H01,9781605090917,,,Eat That Frog! C. 21,Brian Tracy
+H01,9781406390742,,,Guess How Much I Love You,Sam McBratney
+H01,9781949759440,,,"When You're Ready, This Is How You Heal",Wiest
+H01,9781593279929,,,Automate the Boring Stuff with Python,Al Sweigart
+H01,9780306924644,,,Compound Effect,Darren Hardy
+H01,9781452615516,,,You are a badass,Jen Sincero
+H01,9780593906101,,,Girl in Pieces Deluxe Edition,Kathleen Glasgow
+H01,9780893753573,,,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+H01,9781250191786,,,Rogue protocol,Martha Wells
+H01,9781474240338,,,Curious Incident of the Dog in the Night-Time GCSE Student Edition,Simon Stephens
+H01,9780679410577,,,The Secret History,Donna Tartt
+H01,9780060736330,,,And Then There Were None,Agatha Christie
+H01,9780143475927,,,Can We Be Strangers Again?,Shrijeet Shandilya
+H01,9781786892720,,,The Midnight Library,Matt Haig
+H01,9781541050822,,,Secret Garden,Frances Hodgson Burnett
+H01,9781957635101,,,Haunting Adeline,H. D. Carlton
+H01,9781980021711,,,Network Effect,Martha Wells
+H01,9780553239607,,,The Bell Jar,Sylvia Plath
+H01,9781668001233,,,It Starts with Us,Colleen Hoover
+H02,9781638932925,,,Hunting Adeline,H. D. Carlton
+H02,9781633436589,,,"Deep Learning with Python, Third Edition",Francois Chollet
+H02,9780143475927,,,Can We Be Strangers Again?,Shrijeet Shandilya
+H02,9781999579500,,,The hundred-page machine learning book,Andriy Burkov
+H02,9780307275264,,,Kafka on the Shore,村上春樹
+H02,9781799920915,,,Before the Coffee Gets Cold,川口俊和
+H02,9781491910290,,,Web Scraping with Python,Ryan Mitchell
+H02,9781491962299,,,Hands-On Machine Learning with Scikit-Learn and TensorFlow,Aurélien Géron
+H02,9781492034025,,,Building Microservices,Sam Newman
+H02,9780262306164,,,Machine Learning,Kevin P. Murphy
+H02,9780399506437,,,Lord of the Flies,William Golding
+H02,9780596551179,,,Hadoop,Tom White
+H02,9781617292019,,,Elixir in action,Sas̄a Jurić
+H03,9781999579500,,,The hundred-page machine learning book,Andriy Burkov
+H03,9781491962299,,,Hands-On Machine Learning with Scikit-Learn and TensorFlow,Aurélien Géron
+H03,9781492034025,,,Building Microservices,Sam Newman
+H03,9780596551179,,,Hadoop,Tom White
+H03,9781491910290,,,Web Scraping with Python,Ryan Mitchell
+H03,9781433606380,,,NKJV Study Bible,Holman Bible Staff
+H03,9781974136117,,,Metamorphosis,Franz Kafka
+H03,9780471089872,,,Anton Elementary Linear Algebra,Howard Anton
+H03,9781548955489,,,JavaScript,David Flanagan
+H03,9781722837273,,,Animal Farm,George Orwell
+H04,9780785764830,,,Insomnia,Stephen King
+H04,9780596553609,,,Active Directory,Joe Richards
+H04,9781590282977,,,Python Programming,John M. Zelle
+H04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+H04,9780061228742,,,Charlotte's Web,E. B. White
+H04,9781497316928,,,Art of Money Getting,P. T. Barnum
+H04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+H04,9781593276034,,,lol,Eric Matthes
+H04,9780441013593,,,Dune,Frank Herbert
+H04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+H04,9780557911813,,,Harry Potter and the Prisoner of Azkaban,J. K. Rowling
+H04,9781526618177,,,Harry Potter and the Order of the Phoenix,J. K. Rowling
+H04,9780606415170,,,Harry Potter and the Goblet of Fire,J. K. Rowling
+H04,9781408898093,,,Harry Potter and the Chamber of Secrets - Gryffindor Edition,J. K. Rowling
+H04,9781551927008,,,Harry Potter and the Philosopher's Stone [Adult Edition],J. K. Rowling
+H04,9781402277825,,,If He Had Been With Me,Laura Nowlin
+H04,9780306924644,,,Compound Effect,Darren Hardy
+H04,9780603580659,,,Shatter me,Tahereh Mafi
+H04,9780062085580,,,Ignite Me,Tahereh Mafi
+H04,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+H04,9781405291767,,,Unravel Me,Tahereh Mafi
+H04,9781847941497,,,Never Split the Difference,Chris Voss
+H04,9781722834920,,,Learn Programming,Antti Salonen
+H04,9780898458770,,,The Magician's Nephew,C. S. Lewis
+H04,9780385737944,,,The Maze Runner,James Dashner
+H04,9780007323128,,,"The Lion, the Witch and the Wardrobe",C. S. Lewis
+H04,9781957635101,,,Haunting Adeline,H. D. Carlton
+H04,9781638932925,,,Hunting Adeline,H. D. Carlton
+T01,9780785764830,,,Insomnia,Stephen King
+T01,9780596553609,,,Active Directory,Joe Richards
+T01,9781590282977,,,Python Programming,John M. Zelle
+T01,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T01,9780061228742,,,Charlotte's Web,E. B. White
+T01,9781497316928,,,Art of Money Getting,P. T. Barnum
+T01,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T01,9781593276034,,,lol,Eric Matthes
+T01,9780441013593,,,Dune,Frank Herbert
+T01,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T01,9780471417439,,,Operating system concepts,Abraham Silberschatz
+T01,9781098122461,,,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",Aurélien Géron
+T01,9780471727491,,,Control Systems Engineering,Norman S. Nise
+T01,9780262035613,,,Deep Learning,Ian Goodfellow
+T01,9780132217354,,,Systems engineering and analysis,Benjamin S. Blanchard
+T01,9780201168938,,,Engineering design graphics,James H. Earle
+T01,9780136169390,,,Signals and systems,Alan V. Oppenheim
+T01,9781292061429,,,Modern Operating Systems,Andrew S. Tanenbaum
+T01,9781491929124,,,Site Reliability Engineering,Betsy Beyer
+T01,9780131984615,,,Software engineering,Shari Lawrence Pfleeger
+T01,9780385611466,,,The Book Thief,Markus Zusak
+T01,9781804615348,,,Solutions Architect's Handbook,Saurabh Shrivastava
+T01,9780470313114,,,Security Engineering,Ross J. Anderson
+T01,9781491973899,,,The Manager's Path,Camille Fournier
+T01,9781491903117,,,Designing Data-Intensive Applications,Martin Kleppmann
+T01,9780141979243,,,Master Algorithm,Pedro Domingos
+T01,9781566195027,,,To engineer is human,Henry Petroski
+T01,9781543057386,,,Distributed Systems,Maarten van Steen
+T02,9780785764830,,,Insomnia,Stephen King
+T02,9780596553609,,,Active Directory,Joe Richards
+T02,9781590282977,,,Python Programming,John M. Zelle
+T02,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T02,9780061228742,,,Charlotte's Web,E. B. White
+T02,9781497316928,,,Art of Money Getting,P. T. Barnum
+T02,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T02,9781593276034,,,lol,Eric Matthes
+T02,9780441013593,,,Dune,Frank Herbert
+T02,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T02,9781098122461,,,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",Aurélien Géron
+T02,9781668001233,,,It Starts with Us,Colleen Hoover
+T02,9781306810647,,,Pthreads Programming,Dick Buttlar
+T02,9781456133085,,,We'll Always Have Summer,Jenny Han
+T02,9780603580659,,,Shatter me,Tahereh Mafi
+T02,9780593641996,,,Punk 57,Penelope Douglas
+T02,9781722834920,,,Learn Programming,Antti Salonen
+T02,9780062085580,,,Ignite Me,Tahereh Mafi
+T02,9780262035613,,,Deep Learning,Ian Goodfellow
+T02,9781484200766,,,Pro Git,Scott Chacon
+T02,9780123814722,,,Programming massively parallel processors hands-on with CUDA,David Kirk
+T02,9781292061429,,,Modern Operating Systems,Andrew S. Tanenbaum
+T02,9780132199087,,,Distributed operating systems,Andrew S. Tanenbaum
+T02,9780697268518,,,Linear Algebra With Applications,Gareth Williams
+T02,9780471417439,,,Operating system concepts,Abraham Silberschatz
+T02,9780789719034,,,Upgrading and repairing PCs,Scott Mueller
+T02,9781108569323,,,Mathematics for Machine Learning,Marc Peter Deisenroth
+T02,9780141979243,,,Master Algorithm,Pedro Domingos
+T02,9780201498387,,,Distributed operating systems & algorithms,Randy Chow
+T02,9781783555147,,,Python Machine Learning,Sebastian Raschka
+T02,9780961408893,,,Introduction to Linear Algebra,Gilbert Strang
+T02,9780262337588,,,Machine Learning,Ethem Alpaydin
+T02,9780262012119,,,Introduction to machine learning,Ethem Alpaydin
+T03,9780785764830,,,Insomnia,Stephen King
+T03,9780596553609,,,Active Directory,Joe Richards
+T03,9781590282977,,,Python Programming,John M. Zelle
+T03,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T03,9780061228742,,,Charlotte's Web,E. B. White
+T03,9781497316928,,,Art of Money Getting,P. T. Barnum
+T03,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T03,9781593276034,,,lol,Eric Matthes
+T03,9780441013593,,,Dune,Frank Herbert
+T03,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T03,9780134847993,,,Data Structures and Algorithms in Java,Robert Lafore
+T03,9780201000238,,,Data structures and algorithms,Alfred V. Aho
+T03,9780070131514,,,"Introduction to Algorithms, Second Edition",Thomas H. Cormen
+T03,9780131997462,,,Data structures using C,Aaron M. Tenenbaum
+T03,9780615459813,,,Data Structures and Algorithms Made Easy,Narasimha Karumanchi
+T03,9780805354409,,,Data structures and algorithm analysis in C,Mark Allen Weiss
+T03,9781118290279,,,Data Structures and Algorithms in Python,Michael T. Goodrich
+T03,9780130224187,,,Algorithms + data structures=programs,Niklaus Wirth
+T03,9780141979243,,,Master Algorithm,Pedro Domingos
+T03,9780534951238,,,Data structures,Richard F. Gilberg
+T03,9780929306377,,,Fundamentals of Data Structures in C++ 2nd Edition,Ellis Horowitz
+T03,9780201591187,,,"Data structures, algorithms, and software principles in C",Thomas A. Standish
+T03,9780070651579,,,An introduction to data structures with applications,Jean-Paul Tremblay
+T04,9780785764830,,,Insomnia,Stephen King
+T04,9780596553609,,,Active Directory,Joe Richards
+T04,9781590282977,,,Python Programming,John M. Zelle
+T04,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T04,9780061228742,,,Charlotte's Web,E. B. White
+T04,9781497316928,,,Art of Money Getting,P. T. Barnum
+T04,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T04,9781593276034,,,lol,Eric Matthes
+T04,9780441013593,,,Dune,Frank Herbert
+T04,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T04,9781108569323,,,Mathematics for Machine Learning,Marc Peter Deisenroth
+T04,9781098122461,,,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",Aurélien Géron
+T04,9780262337588,,,Machine Learning,Ethem Alpaydin
+T04,9780262306164,,,Machine Learning,Kevin P. Murphy
+T04,9781783555147,,,Python Machine Learning,Sebastian Raschka
+T04,9781406390742,,,Guess How Much I Love You,Sam McBratney
+T04,9780141985428,,,Weapons of Math Destruction,Cathy O'Neil
+T04,9780393635829,,,The Alignment Problem,Brian Christian
+T04,9780262035613,,,Deep Learning,Ian Goodfellow
+T04,9780262012119,,,Introduction to machine learning,Ethem Alpaydin
+T04,9781491962299,,,Hands-On Machine Learning with Scikit-Learn and TensorFlow,Aurélien Géron
+T04,9780141979243,,,Master Algorithm,Pedro Domingos
+T04,9781449369415,,,Introduction to Machine Learning with Python,Andreas C. Mueller
+T05,9780785764830,,,Insomnia,Stephen King
+T05,9780596553609,,,Active Directory,Joe Richards
+T05,9781590282977,,,Python Programming,John M. Zelle
+T05,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T05,9780061228742,,,Charlotte's Web,E. B. White
+T05,9781497316928,,,Art of Money Getting,P. T. Barnum
+T05,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T05,9781593276034,,,lol,Eric Matthes
+T05,9780441013593,,,Dune,Frank Herbert
+T05,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T05,9780471417439,,,Operating system concepts,Abraham Silberschatz
+T05,9781292061429,,,Modern Operating Systems,Andrew S. Tanenbaum
+T05,9780132199087,,,Distributed operating systems,Andrew S. Tanenbaum
+T05,9780780311190,,,Distributed operating systems,Preeti Sinha Pradeep K. Sinha
+T05,9780136006374,,,A first course in database systems,Jeffrey D. Ullman
+T05,9780071136686,,,Advanced concepts in operating systems,Mukesh Singhal
+T05,9780070854673,,,Operating Systems (Computer Science),Stuart Madnick
+T05,9780201498387,,,Distributed operating systems & algorithms,Randy Chow
+T05,9781534467637,,,Better Than the Movies,Lynn Painter
+T05,9781543057386,,,Distributed Systems,Maarten van Steen
+T05,9780470278826,,,Linux For Dummies,Dee-Ann LeBlanc
+T05,9781593273897,,,The Linux Command Line,William E. Shotts
+T05,9780596001674,,,Python cookbook,Alex Martelli
+T05,9780471157120,,,Introducing Computers,Robert H. Blissmer
+T05,9781119485544,,,Hacking for Dummies,Kevin Beaver
+T06,9780785764830,,,Insomnia,Stephen King
+T06,9780596553609,,,Active Directory,Joe Richards
+T06,9781590282977,,,Python Programming,John M. Zelle
+T06,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T06,9780061228742,,,Charlotte's Web,E. B. White
+T06,9781497316928,,,Art of Money Getting,P. T. Barnum
+T06,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T06,9781593276034,,,lol,Eric Matthes
+T06,9780441013593,,,Dune,Frank Herbert
+T06,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T06,9780961408893,,,Introduction to Linear Algebra,Gilbert Strang
+T06,9780130084514,,,Linear algebra,Stephen H. Friedberg
+T06,9780471089872,,,Anton Elementary Linear Algebra,Howard Anton
+T06,9781323170564,,,Linear algebra and its applications,David C. Lay
+T06,9780131437401,,,Introductory Linear Algebra,Bernard Kolman
+T06,9780697268518,,,Linear Algebra With Applications,Gareth Williams
+T06,9780201824162,,,Introduction to linear algebra,Lee W. Johnson
+T06,9780130337818,,,Linear algebra with applications,Steven J. Leon
+T06,9780155510074,,,Linear algebra and its applications,Gilbert Strang
+T06,9780023659508,,,Introductory linear algebra with applications,Bernard Kolman
+T07,9780785764830,,,Insomnia,Stephen King
+T07,9780596553609,,,Active Directory,Joe Richards
+T07,9781590282977,,,Python Programming,John M. Zelle
+T07,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T07,9780061228742,,,Charlotte's Web,E. B. White
+T07,9781497316928,,,Art of Money Getting,P. T. Barnum
+T07,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T07,9781593276034,,,lol,Eric Matthes
+T07,9780441013593,,,Dune,Frank Herbert
+T07,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T07,9781562762506,,,How computers work,Ron White
+T07,9780131984615,,,Software engineering,Shari Lawrence Pfleeger
+T07,9781593279929,,,Automate the Boring Stuff with Python,Al Sweigart
+T07,9781491903117,,,Designing Data-Intensive Applications,Martin Kleppmann
+T07,9781406390742,,,Guess How Much I Love You,Sam McBratney
+T07,9781949759945,,,The Mountain Is You,Brianna Wiest
+T07,9781306451024,,,SQL for Dummies,Allen G. Taylor
+T07,9781782369219,,,C++,Paul J. Deitel
+T07,9780132702256,,,Java Concurrency in Practice,Tim Peierls
+T07,9781587990809,,,Just for fun,Linus Torvalds
+T07,9780070108295,,,Distributed databases,Stefano Ceri
+T07,9780321884497,,,Database Design for Mere Mortals,Michael J. Hernandez
+T07,9780070310865,,,Database system concepts,Abraham Silberschatz
+T07,9780072465358,,,Database Management Systems,Raghu Ramakrishnan
+T07,9780321122261,,,Fundamentals of Database Systems,Ramez Elmasri
+T07,9780136006374,,,A first course in database systems,Jeffrey D. Ullman
+T07,9780521631242,,,Purely functional data structures,Chris Okasaki
+T08,9780785764830,,,Insomnia,Stephen King
+T08,9780596553609,,,Active Directory,Joe Richards
+T08,9781590282977,,,Python Programming,John M. Zelle
+T08,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T08,9780061228742,,,Charlotte's Web,E. B. White
+T08,9781497316928,,,Art of Money Getting,P. T. Barnum
+T08,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T08,9781593276034,,,lol,Eric Matthes
+T08,9780441013593,,,Dune,Frank Herbert
+T08,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T08,9781119137863,,,CompTIA a+ Complete Study Guide,Quentin Docter
+T08,9780534951238,,,Data structures,Richard F. Gilberg
+T08,9780201591187,,,"Data structures, algorithms, and software principles in C",Thomas A. Standish
+T08,9780131997462,,,Data structures using C,Aaron M. Tenenbaum
+T08,9781593274245,,,Think like a Programmer,V. Anton Spraul
+T08,9780929306377,,,Fundamentals of Data Structures in C++ 2nd Edition,Ellis Horowitz
+T08,9781722834920,,,Learn Programming,Antti Salonen
+T08,9780134389967,,,Concrete Mathematics,Ronald Graham
+T08,9780929306407,,,Fundamentals of Data Structures in C,Ellis Horowitz
+T08,9780471597568,,,Applied cryptography,Bruce Schneier
+T08,9780997316001,,,Computer Science Distilled,Wladston Ferreira Filho
+T09,9780785764830,,,Insomnia,Stephen King
+T09,9780596553609,,,Active Directory,Joe Richards
+T09,9781590282977,,,Python Programming,John M. Zelle
+T09,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T09,9780061228742,,,Charlotte's Web,E. B. White
+T09,9781497316928,,,Art of Money Getting,P. T. Barnum
+T09,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T09,9781593276034,,,lol,Eric Matthes
+T09,9780441013593,,,Dune,Frank Herbert
+T09,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T09,9781292374062,,,"Computer Networks, Global Edition",Andrew S. Tanenbaum
+T09,9780387523804,,,Neural networks,Berndt Müller
+T09,9781456133085,,,We'll Always Have Summer,Jenny Han
+T09,9781292405506,,,Computer Networking EPub [Global Edition],James F. Kurose
+T09,9780593734247,,,Nexus,Yuval Noah Harari
+T09,9781281740809,,,Wealth of Networks,Yochai Benkler
+T09,9781282650398,,,Parallel Programming,Barry Wilkinson
+T09,9780072322040,,,Data Communications and Networking,Behrouz A. Forouzan
+T09,9781937785659,,,Seven Concurrency Models In Seven Weeks,Paul Butcher
+T09,9780593641996,,,Punk 57,Penelope Douglas
+T09,9780140816518,,,Road Ahead,Bill Gates
+T09,9781119485544,,,Hacking for Dummies,Kevin Beaver
+T09,9780471249528,,,Digital Literacy,Paul Gilster
+T09,9781980021711,,,Network Effect,Martha Wells
+T09,9780470278826,,,Linux For Dummies,Dee-Ann LeBlanc
+T09,9780471157120,,,Introducing Computers,Robert H. Blissmer
+T09,9780062390851,,,Everybody lies,Seth Stephens-Davidowitz
+T09,9780613922081,,,Hackers,Steven Levy
+T10,9780785764830,,,Insomnia,Stephen King
+T10,9780596553609,,,Active Directory,Joe Richards
+T10,9781590282977,,,Python Programming,John M. Zelle
+T10,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T10,9780061228742,,,Charlotte's Web,E. B. White
+T10,9781497316928,,,Art of Money Getting,P. T. Barnum
+T10,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T10,9781593276034,,,lol,Eric Matthes
+T10,9780441013593,,,Dune,Frank Herbert
+T10,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T10,9781535483834,,,Python,Byron Francis
+T10,9781593279929,,,Automate the Boring Stuff with Python,Al Sweigart
+T10,9781783555147,,,Python Machine Learning,Sebastian Raschka
+T10,9780072127188,,,Python,Martin C. Brown
+T10,9781118057315,,,Beginning Python,James Payne
+T10,9780596516604,,,Learning Python,Mark Lutz
+T10,9780596528980,,,Python Pocket Reference,Mark Lutz
+T10,9781098122461,,,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",Aurélien Géron
+T10,9780596001674,,,Python cookbook,Alex Martelli
+T10,9781098155438,,,Think Python,Allen Downey
+T10,9781491910290,,,Web Scraping with Python,Ryan Mitchell
+T10,9781722834920,,,Learn Programming,Antti Salonen
+T11,9780785764830,,,Insomnia,Stephen King
+T11,9780596553609,,,Active Directory,Joe Richards
+T11,9781590282977,,,Python Programming,John M. Zelle
+T11,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T11,9780061228742,,,Charlotte's Web,E. B. White
+T11,9781497316928,,,Art of Money Getting,P. T. Barnum
+T11,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T11,9781593276034,,,lol,Eric Matthes
+T11,9780441013593,,,Dune,Frank Herbert
+T11,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T11,9780349139593,,,Steve Jobs,Walter Isaacson
+T11,9781484226032,,,Blockchain Basics,Daniel Drescher
+T11,9781491973899,,,The Manager's Path,Camille Fournier
+T11,9780593734247,,,Nexus,Yuval Noah Harari
+T11,9780241404829,,,Artificial Intelligence,Melanie Mitchell
+T11,9781101946596,,,Life 3.0,Max Tegmark
+T11,9780141985428,,,Weapons of Math Destruction,Cathy O'Neil
+T11,9780262337588,,,Machine Learning,Ethem Alpaydin
+T11,9781782369219,,,C++,Paul J. Deitel
+T11,9780671772468,,,How to win friends and influence people,Dale Carnegie
+T11,9780262035613,,,Deep Learning,Ian Goodfellow
+T11,9780195671544,,,Artificial Intelligence and Intelligent Systems,N. P. Padhy
+T11,9781501227745,,,Superintelligence,Nick Bostrom
+T11,9780141979243,,,Master Algorithm,Pedro Domingos
+T11,9781281740809,,,Wealth of Networks,Yochai Benkler
+T11,9780140816518,,,Road Ahead,Bill Gates
+T12,9780785764830,,,Insomnia,Stephen King
+T12,9780596553609,,,Active Directory,Joe Richards
+T12,9781590282977,,,Python Programming,John M. Zelle
+T12,9780130220059,,,Algorithms and data structures,Niklaus Wirth
+T12,9780061228742,,,Charlotte's Web,E. B. White
+T12,9781497316928,,,Art of Money Getting,P. T. Barnum
+T12,9780070577275,,,Student Solutions Manual to accompany Calculus With Analytic Geometry,George F Simmons
+T12,9781593276034,,,lol,Eric Matthes
+T12,9780441013593,,,Dune,Frank Herbert
+T12,9780575082410,,,The Moon is a Harsh Mistress,Robert A. Heinlein
+T12,9781491903117,,,Designing Data-Intensive Applications,Martin Kleppmann
+T12,9780471722571,,,Systems Analysis and Design,Alan Dennis
+T12,9781098107963,,,Designing Machine Learning Systems,Chip Huyen
+T12,9780132199087,,,Distributed operating systems,Andrew S. Tanenbaum
+T12,9780780311190,,,Distributed operating systems,Preeti Sinha Pradeep K. Sinha
+T12,9781492034025,,,Building Microservices,Sam Newman
+T12,9781543057386,,,Distributed Systems,Maarten van Steen
+T12,9780465072996,,,The Design of Everyday Things,Donald A. Norman
+T12,9781848000698,,,The algorithm design manual,Steven S. Skiena
+T12,9780201168938,,,Engineering design graphics,James H. Earle
+T12,9780070108295,,,Distributed databases,Stefano Ceri
+T12,9780071136686,,,Advanced concepts in operating systems,Mukesh Singhal
+T12,9780201498387,,,Distributed operating systems & algorithms,Randy Chow
+T12,9781282650398,,,Parallel Programming,Barry Wilkinson
+T12,9780470313114,,,Security Engineering,Ross J. Anderson
+T12,9780534951238,,,Data structures,Richard F. Gilberg
