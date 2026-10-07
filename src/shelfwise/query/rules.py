@@ -161,7 +161,8 @@ def _pages(p: _Parser) -> None:
     )
     p.each(short, lambda m: p.add(m, "pages", "lte", SHORT_BOOK_PAGES, "soft"))
     p.each(
-        r"\b(?:epic|doorstopper|chunky|thick|long(?!\s+(?:ago|time)))\b",
+        # "epic fantasy" and "epic poetry" are kinds of book, not lengths.
+        r"\b(?:epic(?!\s+(?:fantasy|poems?|poetry))|doorstopper|chunky|thick|long(?!\s+(?:ago|time)))\b",
         lambda m: p.add(m, "pages", "gte", LONG_BOOK_PAGES, "soft"),
     )
 
@@ -207,13 +208,22 @@ def _years(p: _Parser) -> None:
         start = (
             int(m["d"]) if len(m["d"]) == 4 else (1900 if int(m["d"]) >= 30 else 2000) + int(m["d"])
         )
-        p.add_range(m, "year", start, start + 9)
+        # "the 1800s" is a century; "the 2000s" is usually read as the decade.
+        p.add_range(m, "year", start, start + (99 if start % 100 == 0 and start < 2000 else 9))
+
+    def century(m: re.Match[str]) -> None:
+        start = (int(m["c"]) - 1) * 100  # the 19th century -> 1800-1899, like "the 1800s"
+        p.add_range(m, "year", start, start + 99)
 
     p.each(
         rf"\b{_PUBLISHED}(?:from |in |of )?(?:the\s+)?(?P<d>(?:1[5-9]|20)\d0)'?s\b",
         unless_setting(decade),
     )
     p.each(rf"\b{_PUBLISHED}(?:from |in |of )?the\s+'?(?P<d>[0-9]0)'?s\b", unless_setting(decade))
+    p.each(
+        rf"\b{_PUBLISHED}(?:from |in |of )?the\s+(?P<c>1[6-9]|2[01])(?:th|st)[\s-]+century\b",
+        unless_setting(century),
+    )
 
     def last_n_years(m: re.Match[str]) -> None:
         n = int(m["n"]) if m["n"].isdigit() else _SMALL_NUMBERS[m["n"]]

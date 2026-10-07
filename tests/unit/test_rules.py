@@ -62,6 +62,9 @@ def test_words_to_number(phrase: str, number: int | None) -> None:
         ("not too long please", {("pages", "lte", 250, "soft")}),
         ("something i can finish in a weekend", {("pages", "lte", 250, "soft")}),
         ("a long epic fantasy", {("pages", "gte", 450, "soft")}),
+        ("an epic", {("pages", "gte", 450, "soft")}),
+        ("epic fantasy", set()),  # a subgenre, not a length
+        ("epic poetry", set()),
         ("short stories", set()),  # a genre, not a length
         ("a short horror book under 250 pages", {("pages", "lt", 250, "hard")}),  # hard wins
     ],
@@ -82,6 +85,17 @@ def test_pages(query: str, expected: set[tuple[str, str, object, str]]) -> None:
         ("between 2000 and 2010", {("year", "gte", 2000, "hard"), ("year", "lte", 2010, "hard")}),
         ("from the 2010s", {("year", "gte", 2010, "hard"), ("year", "lte", 2019, "hard")}),
         ("horror from the 90s", {("year", "gte", 1990, "hard"), ("year", "lte", 1999, "hard")}),
+        ("classics from the 1800s", {("year", "gte", 1800, "hard"), ("year", "lte", 1899, "hard")}),
+        (
+            "novels from the 19th century",
+            {("year", "gte", 1800, "hard"), ("year", "lte", 1899, "hard")},
+        ),
+        (
+            "written in the 20th-century",
+            {("year", "gte", 1900, "hard"), ("year", "lte", 1999, "hard")},
+        ),
+        ("music from the 2000s", {("year", "gte", 2000, "hard"), ("year", "lte", 2009, "hard")}),
+        ("a novel set in the 18th century", set()),  # setting, not publication
         ("published in the last 10 years", {("year", "gte", 2016, "hard")}),
         ("from the past few years", {("year", "gte", 2021, "hard")}),
         ("something recent", {("year", "gte", 2021, "soft")}),
@@ -131,6 +145,8 @@ def test_isbn_in_text() -> None:
         ("mystery under 300 pages published after 2015", "mystery"),
         ("thriller from the 2010s, not too long", "thriller"),
         ("thrillers i can take home today", "thrillers"),
+        ("a long epic fantasy series", "epic fantasy series"),
+        ("classic novels from the 19th century", "classic novels"),
         ("short classic novel i can finish in a weekend", "classic novel"),
         (
             "an available 100 page japanese cyberpunk novel written in 2025",
