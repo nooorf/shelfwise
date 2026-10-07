@@ -10,7 +10,6 @@ for those the right behaviour is an honest "no match", which is tested elsewhere
 
 import argparse
 import json
-import subprocess
 from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
@@ -21,26 +20,13 @@ from shelfwise.config import get_settings
 from shelfwise.evaluation.judgments import load_judgments, qrels_by_query, work_keys
 from shelfwise.evaluation.metrics import bootstrap_ci, mean, query_metrics
 from shelfwise.evaluation.queries import load_queries
+from shelfwise.evaluation.reports import git_version, report_path
 from shelfwise.evaluation.splits import split_of
 from shelfwise.evaluation.systems import SYSTEMS, available_systems, load_context
 
 QUERIES = Path("eval/data/queries.csv")
 QRELS = Path("eval/data/qrels.csv")
-REPORTS = Path("eval/reports")
 K = 10
-
-
-def git_version() -> str:
-    try:
-        sha = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, check=True
-        ).stdout.strip()
-        dirty = subprocess.run(
-            ["git", "status", "--porcelain"], capture_output=True, text=True, check=True
-        ).stdout.strip()
-    except (OSError, subprocess.CalledProcessError):
-        return "unknown"
-    return sha + ("-dirty" if dirty else "")
 
 
 def main() -> None:
@@ -98,8 +84,7 @@ def main() -> None:
                 "per_query": per_query,
             }
 
-    REPORTS.mkdir(parents=True, exist_ok=True)
-    out = REPORTS / f"{datetime.now():%Y%m%d-%H%M%S}_{report['git']}_{args.split}.json"
+    out = report_path(report["git"], args.split)
     out.write_text(json.dumps(report, indent=2))
 
     print(

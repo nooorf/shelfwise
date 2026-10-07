@@ -1,6 +1,6 @@
 # Evaluation data
 
-Grading rules for `data/qrels.csv`: [GRADING.md](GRADING.md).
+Grading rules for `data/qrels.csv`: [GRADING.md](GRADING.md). Book-tag rules for `data/facet_labels.csv`: [TAGGING.md](TAGGING.md).
 
 ## `data/queries.csv` — query set A
 
@@ -22,3 +22,7 @@ Rules of thumb:
 - Keep `llm-draft` + `synthetic` to at most ~30% of the final set; metrics are reported per source.
 - Rewriting a draft query in your own words? Change its `source` to `persona`.
 - Adding a paraphrase of an existing query? Give it the same `family`.
+
+## `data/facet_labels.csv` — human book tags
+
+One row per (book, labeller), written by `make label-tags JUDGE=<initials>`. Books are keyed by `work_key` (lowest ISBN-13), like `qrels.csv`, so labels survive catalog rebuilds. A blank cell means "can't tell". `make score-tags` compares the LLM's tags with these: per-tag accuracy and Cohen's kappa (quadratic-weighted for ordered scales), against a majority-answer baseline.
