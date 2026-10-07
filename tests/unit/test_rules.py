@@ -96,9 +96,18 @@ def test_pages(query: str, expected: set[tuple[str, str, object, str]]) -> None:
         ),
         ("music from the 2000s", {("year", "gte", 2000, "hard"), ("year", "lte", 2009, "hard")}),
         ("a novel set in the 18th century", set()),  # setting, not publication
+        (
+            "horror novels from the eighties",
+            {("year", "gte", 1980, "hard"), ("year", "lte", 1989, "hard")},
+        ),
+        ("nineties sci fi", {("year", "gte", 1990, "hard"), ("year", "lte", 1999, "hard")}),
+        ("a story set in the sixties", set()),
+        ("dark fantasy from the last decade", {("year", "gte", 2016, "hard")}),
+        ("published in the past decade", {("year", "gte", 2016, "hard")}),
         ("published in the last 10 years", {("year", "gte", 2016, "hard")}),
         ("from the past few years", {("year", "gte", 2021, "hard")}),
         ("something recent", {("year", "gte", 2021, "soft")}),
+        ("a mystery published recently", {("year", "gte", 2021, "soft")}),
         ("a novel set in the 1920s", set()),  # setting, not publication
         ("set in 1920", set()),
         ("books like 1984", set()),  # a title, not a year
@@ -117,6 +126,9 @@ def test_years(query: str, expected: set[tuple[str, str, object, str]]) -> None:
         "available young adult fantasy on the shelf",
         "anything not checked out",
         "something i could borrow today",
+        "is anything by stephen king in right now",
+        "i want a thriller today, whatever is in",
+        "what's in at the moment?",
     ],
 )
 def test_availability_phrases(query: str) -> None:
@@ -129,6 +141,10 @@ def test_availability_phrases(query: str) -> None:
         "i don't care if it's available",
         "even if it's not available right now",
         "is the shining checked out",
+        "a novel set in today's world",
+        "a book set in now times",
+        "is nineteen eighty four in",  # a title lookup: copy status is shown anyway
+        "what is in the box",
     ],
 )
 def test_no_availability_filter(query: str) -> None:

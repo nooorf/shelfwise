@@ -39,6 +39,11 @@ _NOT_REALLY = re.compile(
     r"\b(don'?t|do not|doesn'?t|does not)\s+(care|mind|matter)\s+(if|whether)\b|"
     r"\b(even if|regardless of|whether or not)\b"
 )
+# "The twenties" is left out: in 2026 it's as likely to mean the 2020s as the 1920s.
+_DECADE_WORDS = {
+    "thirties": 1930, "forties": 1940, "fifties": 1950, "sixties": 1960, "seventies": 1970,
+    "eighties": 1980, "nineties": 1990,
+}  # fmt: skip
 _SMALL_NUMBERS = {"two": 2, "three": 3, "four": 4, "five": 5, "ten": 10, "few": 5, "couple": 2}
 _CONNECTORS = {
     "and", "or", "but", "with", "that", "which", "is", "are", "was", "published", "written",
@@ -224,6 +229,12 @@ def _years(p: _Parser) -> None:
         rf"\b{_PUBLISHED}(?:from |in |of )?the\s+(?P<c>1[6-9]|2[01])(?:th|st)[\s-]+century\b",
         unless_setting(century),
     )
+    p.each(
+        rf"\b{_PUBLISHED}(?:from |in |of )?(?:the\s+)?(?P<w>{'|'.join(_DECADE_WORDS)})\b",
+        unless_setting(
+            lambda m: p.add_range(m, "year", _DECADE_WORDS[m["w"]], _DECADE_WORDS[m["w"]] + 9)
+        ),
+    )
 
     def last_n_years(m: re.Match[str]) -> None:
         n = int(m["n"]) if m["n"].isdigit() else _SMALL_NUMBERS[m["n"]]
@@ -234,10 +245,14 @@ def _years(p: _Parser) -> None:
         rf"(?:a\s+)?(?P<n>\d{{1,2}}|{'|'.join(_SMALL_NUMBERS)})\s+years?\b",
         last_n_years,
     )
+    p.each(
+        rf"\b{_PUBLISHED}(?:in|from|within|over|during)?\s*(?:the\s+)?(?:last|past)\s+decade\b",
+        lambda m: p.add(m, "year", "gte", p.today.year - 10),
+    )
     p.each(rf"\b{_PUBLISHED}this\s+year\b", lambda m: p.add(m, "year", "gte", p.today.year))
     p.each(
-        r"\b(?:recently published|recent|new releases?|newly published|latest|brand new|"
-        r"just came out|came out recently)\b",
+        r"\b(?:recently published|(?:published|released|written) recently|recent|new releases?|"
+        r"newly published|latest|brand new|just came out|came out recently)\b",
         lambda m: p.add(m, "year", "gte", p.today.year - RECENT_YEARS, "soft"),
     )
 
@@ -249,10 +264,15 @@ def _availability(p: _Parser) -> None:
         r"(?:(?:that|which)\s+)?(?:i\s+)?(?:can|could)\s+(?:i\s+)?(?:take|borrow|check out|get|grab)"
         r"(?:\s+\w+){0,3}?\s+"
         r"(?:home\s+)?(?:today|now|right now|tonight)|"
-        r"take (?:it )?home (?:today|now|tonight)|borrow (?:today|now|right now))\b"
+        r"take (?:it )?home (?:today|now|tonight)|borrow (?:today|now|right now)|"
+        # "is anything by king in right now", "whatever is in" (at the end of the message)
+        r"in (?:right now|now|today|at the moment)(?!['\u2019])|"
+        r"(?:whatever|what|anything that|that|which)(?:['\u2019]s| is| are) in(?=\W*$))\b"
     )
 
     def handle(m: re.Match[str]) -> None:
+        if _SETTING.search(p.text[max(0, m.start() - 20) : m.end()]):
+            return  # "set in today's london" describes the story
         if _NOT_REALLY.search(p.text[max(0, m.start() - 40) : m.start()]):
             p._consume(*m.span())
             return
