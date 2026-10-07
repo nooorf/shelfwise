@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     embedding_model: str = "bge-base"  # see shelfwise.embed.models.MODELS
     # Hybrid (keyword + embedding) search in the API. Off: keyword-only, no model in memory.
     search_dense: bool = True
+    # Cross-encoder reranker for the API (shelfwise.ranking.rerank.MODELS), off until the
+    # benchmark shows it helps: e.g. SHELFWISE_RERANK_MODEL=minilm
+    rerank_model: str | None = None
     # Local LLM served by Ollama. Mac (8 GB): qwen3:4b; RTX 4090: qwen3:8b or qwen3:14b.
     llm_model: str = "qwen3:4b"
     log_level: str = "INFO"

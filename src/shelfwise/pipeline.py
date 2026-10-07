@@ -22,9 +22,10 @@ from shelfwise.catalog.availability import AvailabilityState, fetch_live_availab
 from shelfwise.catalog.meta import get_catalog_version
 from shelfwise.embed.encoder import Embedder
 from shelfwise.evaluation.judgments import work_keys
-from shelfwise.evaluation.systems import SearchContext, bm25_lookup, hybrid_lookup
+from shelfwise.evaluation.systems import SearchContext, bm25_lookup, hybrid_lookup, hybrid_rerank
 from shelfwise.query.constraints import contradictions
 from shelfwise.query.rules import parse_rules
+from shelfwise.ranking.rerank import CachedReranker
 from shelfwise.retrieval.filters import relaxations
 
 MAX_RELAXATIONS = 3
@@ -118,8 +119,10 @@ class SearchService:
         self,
         embedder: Embedder | None = None,
         today: Callable[[], date] = date.today,
+        reranker: CachedReranker | None = None,
     ) -> None:
         self.embedder = embedder
+        self.reranker = reranker
         self.today = today
         self._ctx: SearchContext | None = None
         self._version: int | None = None
@@ -129,7 +132,9 @@ class SearchService:
         version = get_catalog_version(conn)
         with self._lock:
             if self._ctx is None or version != self._version:
-                self._ctx = SearchContext.build(conn, embedder=self.embedder)
+                self._ctx = SearchContext.build(
+                    conn, embedder=self.embedder, reranker=self.reranker
+                )
                 self._version = version
             ctx = self._ctx
         return replace(ctx, conn=conn, today=self.today())  # per-request connection and date
@@ -149,7 +154,10 @@ class SearchService:
         parse = parse_rules(request.query, ctx.today)
         conflicts = contradictions(parse.constraints)
         lap("parse")
-        system = hybrid_lookup if ctx.dense is not None else bm25_lookup
+        if ctx.dense is None:
+            system = bm25_lookup
+        else:
+            system = hybrid_rerank if ctx.reranker is not None else hybrid_lookup
         ids = [] if conflicts else system(ctx, request.query, request.limit)
         lap("retrieve")
         results = self._details(conn, ids, ctx.today)
@@ -215,8 +223,11 @@ class SearchService:
         return results
 
 
-def build_service(embedding_model: str | None, conn: Connection) -> SearchService:
-    """Hybrid search when `embedding_model` has stored embeddings; keyword-only otherwise."""
+def build_service(
+    embedding_model: str | None, conn: Connection, rerank_model: str | None = None
+) -> SearchService:
+    """Hybrid search when `embedding_model` has stored embeddings, keyword-only otherwise; the
+    reranker only on top of hybrid."""
     if embedding_model:
         stored = conn.execute(
             text("SELECT count(*) FROM work_embedding WHERE model_name = :m"),
@@ -224,6 +235,8 @@ def build_service(embedding_model: str | None, conn: Connection) -> SearchServic
         ).scalar_one()
         if stored:
             from shelfwise.embed.encoder import load_embedder
+            from shelfwise.ranking.rerank import load_reranker
 
-            return SearchService(embedder=load_embedder(embedding_model))
+            reranker = load_reranker(rerank_model) if rerank_model else None
+            return SearchService(embedder=load_embedder(embedding_model), reranker=reranker)
     return SearchService()

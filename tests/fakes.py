@@ -2,6 +2,7 @@
 
 import hashlib
 import re
+from collections.abc import Sequence
 
 import numpy as np
 
@@ -49,3 +50,19 @@ class FakeLLM:
             raise output
         stats = GenerationStats(self.model, 100, 40, 50.0, 0.0, 1)
         return StructuredResult(schema.model_validate(output), stats)
+
+
+class FakeReranker:
+    """Scores a document by the share of query words it contains; records every call."""
+
+    def __init__(self, name: str = "fake-reranker") -> None:
+        self.name = name
+        self.calls: list[tuple[str, list[str]]] = []
+
+    def score(self, query: str, documents: Sequence[str]) -> list[float]:
+        self.calls.append((query, list(documents)))
+        words = set(re.findall(r"[a-z]+", query.lower()))
+        return [
+            len(words & set(re.findall(r"[a-z]+", doc.lower()))) / max(len(words), 1)
+            for doc in documents
+        ]

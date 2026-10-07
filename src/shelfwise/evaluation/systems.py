@@ -2,7 +2,7 @@
 
 Each takes a query and returns ranked work ids. New systems register here, and the pooling and
 evaluation scripts pick them up by name. Dense systems need an embedding model loaded into the
-context (`SearchContext.build(..., embedder=...)`).
+context (`SearchContext.build(..., embedder=...)`), rerank systems a reranker as well.
 """
 
 import random
@@ -15,6 +15,7 @@ from sqlalchemy import Connection, text
 
 from shelfwise.embed.encoder import Embedder
 from shelfwise.query.rules import parse_rules
+from shelfwise.ranking.rerank import CachedReranker, rerank
 from shelfwise.retrieval.dense import DenseIndex
 from shelfwise.retrieval.filters import allowed_mask
 from shelfwise.retrieval.fusion import rrf
@@ -22,6 +23,7 @@ from shelfwise.retrieval.lexical import LexicalIndex, build_lexical_index
 from shelfwise.retrieval.lookup import find_authors, find_by_isbn, find_titles
 
 CANDIDATES = 100  # per channel, before fusion (design doc §13.2)
+RERANK_DEPTH = 50  # default until the depth sweep picks one (design doc §14.2)
 
 
 @dataclass
@@ -32,10 +34,17 @@ class SearchContext:
     today: date
     embedder: Embedder | None = None
     dense: DenseIndex | None = None
+    reranker: CachedReranker | None = None
+    texts: dict[int, str] | None = None  # search_text per work, what the reranker reads
+    rerank_depth: int = RERANK_DEPTH
 
     @classmethod
     def build(
-        cls, conn: Connection, today: date | None = None, embedder: Embedder | None = None
+        cls,
+        conn: Connection,
+        today: date | None = None,
+        embedder: Embedder | None = None,
+        reranker: CachedReranker | None = None,
     ) -> "SearchContext":
         index = build_lexical_index(conn)
         pop = {
@@ -44,11 +53,24 @@ class SearchContext:
         }
         popularity = np.array([pop.get(int(w), 0.0) for w in index.work_ids], dtype=np.float64)
         dense_index = DenseIndex.load(conn, embedder.name, index.work_ids) if embedder else None
-        return cls(conn, index, popularity, today or date.today(), embedder, dense_index)
+        texts: dict[int, str] | None = None
+        if reranker is not None:
+            rows = conn.execute(
+                text("SELECT work_id, coalesce(search_text, title) AS body FROM work")
+            )
+            texts = {r.work_id: r.body for r in rows}
+        return cls(
+            conn, index, popularity, today or date.today(), embedder, dense_index, reranker, texts
+        )
 
     def mask(self, query: str) -> tuple[np.ndarray, str]:
         parse = parse_rules(query, self.today)
         return allowed_mask(self.conn, parse.constraints, self.index.work_ids), parse.residual
+
+    def require_reranker(self) -> tuple[CachedReranker, dict[int, str]]:
+        if self.reranker is None or self.texts is None:
+            raise RuntimeError("this system needs a reranker: pass --reranker")
+        return self.reranker, self.texts
 
     def require_dense(self) -> tuple[Embedder, DenseIndex]:
         if self.embedder is None or self.dense is None:
@@ -126,6 +148,20 @@ def hybrid_lookup(ctx: SearchContext, query: str, k: int) -> list[int]:
     return [w for w in dict.fromkeys(ranked) if w in allowed][:k]
 
 
+def hybrid_rerank(ctx: SearchContext, query: str, k: int) -> list[int]:
+    """Known-item lookups first, then the top `rerank_depth` hybrid results reordered by the
+    cross-encoder. Lookups stay on top: a reranker shouldn't bury the exact book asked for."""
+    reranker, texts = ctx.require_reranker()
+    mask, residual = ctx.mask(query)
+    hybrid_ranked = _hybrid_ranking(ctx, query, mask, residual)
+    reranked = rerank(
+        reranker, _semantic_text(query, residual), hybrid_ranked, texts, ctx.rerank_depth
+    )
+    allowed = _allowed_ids(ctx, mask)
+    ranked = _known_items(ctx, query) + [w for w, _ in reranked]
+    return [w for w in dict.fromkeys(ranked) if w in allowed][:k]
+
+
 def popular(ctx: SearchContext, query: str, k: int) -> list[int]:
     """Most-borrowed works that pass the hard filters; ignores the query's meaning."""
     mask, _ = ctx.mask(query)
@@ -149,22 +185,38 @@ SYSTEMS: dict[str, System] = {
     "dense": dense,
     "hybrid": hybrid,
     "hybrid_lookup": hybrid_lookup,
+    "hybrid_rerank": hybrid_rerank,
 }
-DENSE_SYSTEMS = ("dense", "hybrid", "hybrid_lookup")
+DENSE_SYSTEMS = ("dense", "hybrid", "hybrid_lookup", "hybrid_rerank")
+RERANK_SYSTEMS = ("hybrid_rerank",)
 # Systems whose results go into the judging pool. Random adds labeling cost for little value.
-POOL_SYSTEMS = ("popular", "bm25_raw", "bm25", "bm25_lookup", *DENSE_SYSTEMS)
+POOL_SYSTEMS = ("popular", "bm25_raw", "bm25", "bm25_lookup", *DENSE_SYSTEMS)  # incl. rerank
 
 
 def available_systems(ctx: SearchContext, names: list[str]) -> list[str]:
-    """Drop dense systems when no embedding model is loaded."""
-    return [n for n in names if ctx.dense is not None or n not in DENSE_SYSTEMS]
+    """Drop dense systems when no embedding model is loaded, rerank ones without a reranker."""
+    return [
+        n
+        for n in names
+        if (ctx.dense is not None or n not in DENSE_SYSTEMS)
+        and (ctx.reranker is not None or n not in RERANK_SYSTEMS)
+    ]
 
 
 def load_context(
-    conn: Connection, embedding_model: str | None, today: date | None = None
+    conn: Connection,
+    embedding_model: str | None,
+    today: date | None = None,
+    reranker_model: str | None = None,
 ) -> SearchContext:
     """Search context with the dense index when embeddings exist for the model; otherwise
-    lexical-only, with a note (so scripts still run before `make embed`)."""
+    lexical-only, with a note (so scripts still run before `make embed`). A reranker is loaded
+    only when named: it is the slowest model in the pipeline."""
+    reranker = None
+    if reranker_model:
+        from shelfwise.ranking.rerank import load_reranker
+
+        reranker = load_reranker(reranker_model)
     if embedding_model:
         stored = conn.execute(
             text("SELECT count(*) FROM work_embedding WHERE model_name = :m"),
@@ -173,8 +225,10 @@ def load_context(
         if stored:
             from shelfwise.embed.encoder import load_embedder
 
-            return SearchContext.build(conn, today, embedder=load_embedder(embedding_model))
+            return SearchContext.build(
+                conn, today, embedder=load_embedder(embedding_model), reranker=reranker
+            )
         print(
             f"note: no {embedding_model!r} embeddings yet (run `make embed`); dense systems skipped"
         )
-    return SearchContext.build(conn, today)
+    return SearchContext.build(conn, today, reranker=reranker)

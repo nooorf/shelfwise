@@ -39,7 +39,7 @@ class _Resources:
         with self._lock:
             if self._service is None:
                 dense = self.settings.embedding_model if self.settings.search_dense else None
-                self._service = build_service(dense, conn)
+                self._service = build_service(dense, conn, self.settings.rerank_model)
             return self._service
 
 

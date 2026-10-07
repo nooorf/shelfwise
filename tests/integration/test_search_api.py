@@ -11,8 +11,9 @@ from shelfwise.catalog.meta import bump_catalog_version
 from shelfwise.config import Settings
 from shelfwise.embed.store import embed_missing, refresh_search_text
 from shelfwise.pipeline import SearchRequest, SearchService
+from shelfwise.ranking.rerank import CachedReranker
 
-from ..fakes import FakeEmbedder
+from ..fakes import FakeEmbedder, FakeReranker
 from .factories import add_author, add_copy, add_edition, add_work
 
 TODAY = date(2026, 10, 7)
@@ -133,6 +134,23 @@ def test_hybrid_search_when_an_embedder_is_loaded(
 
     assert response.system == "hybrid_lookup"
     assert {r.title for r in response.results} == {t for t, *_ in BOOKS}
+
+
+def test_reranker_reorders_hybrid_results_when_configured(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    embedder = FakeEmbedder()
+    refresh_search_text(conn)
+    embed_missing(conn, embedder)
+    inner = FakeReranker()
+    service = SearchService(embedder=embedder, today=lambda: TODAY, reranker=CachedReranker(inner))
+
+    response = search(conn, "something like sharp objects", service, limit=3)
+
+    assert response.system == "hybrid_rerank"
+    assert response.results[0].title == "Sharp Objects"  # also a title lookup: stays first
+    assert inner.calls and inner.calls[0][0] == "something like sharp objects"
+    assert all("Title:" in doc for doc in inner.calls[0][1])  # it reads each book's search text
 
 
 @pytest.fixture

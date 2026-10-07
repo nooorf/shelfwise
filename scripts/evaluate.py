@@ -42,6 +42,8 @@ def main() -> None:
     parser.add_argument("--systems", nargs="+", default=list(SYSTEMS), choices=list(SYSTEMS))
     parser.add_argument("--queries", type=Path, default=QUERIES)
     parser.add_argument("--embedding-model", default=get_settings().embedding_model)
+    parser.add_argument("--reranker", help="cross-encoder for hybrid_rerank, e.g. minilm")
+    parser.add_argument("--rerank-depth", type=int, help="books reranked per query (default 50)")
     parser.add_argument("--qrels", type=Path, default=QRELS)
     args = parser.parse_args()
 
@@ -69,7 +71,9 @@ def main() -> None:
     with make_engine().connect() as conn:
         report["catalog_version"] = get_catalog_version(conn)
         report["embedding_model"] = args.embedding_model
-        ctx = load_context(conn, args.embedding_model)
+        ctx = load_context(conn, args.embedding_model, reranker_model=args.reranker)
+        if args.rerank_depth:
+            ctx.rerank_depth = args.rerank_depth
         key_of = work_keys(conn)
         for name in available_systems(ctx, args.systems):
             per_query = {}

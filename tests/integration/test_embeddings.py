@@ -6,10 +6,19 @@ from sqlalchemy import Connection, func, insert, select, update
 
 from shelfwise.catalog import schema
 from shelfwise.embed.store import embed_missing, refresh_search_text
-from shelfwise.evaluation.systems import SearchContext, dense, hybrid, hybrid_lookup
+from shelfwise.evaluation.systems import (
+    SYSTEMS,
+    SearchContext,
+    available_systems,
+    dense,
+    hybrid,
+    hybrid_lookup,
+    hybrid_rerank,
+)
+from shelfwise.ranking.rerank import CachedReranker
 from shelfwise.retrieval.dense import DenseIndex
 
-from ..fakes import FakeEmbedder
+from ..fakes import FakeEmbedder, FakeReranker
 from .factories import add_author, add_copy, add_edition, add_work
 
 BOOKS = [
@@ -124,3 +133,22 @@ def test_dense_systems_need_an_embedder(conn: Connection, catalog: dict[str, int
 
     with pytest.raises(RuntimeError, match="embedding model"):
         dense(lexical_only, "anything", 3)
+
+
+def test_rerank_respects_filters_and_needs_a_reranker(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    embedder = FakeEmbedder()
+    refresh_search_text(conn)
+    embed_missing(conn, embedder)
+    plain = SearchContext.build(conn, today=date(2026, 10, 6), embedder=embedder)
+    with_reranker = SearchContext.build(
+        conn, today=date(2026, 10, 6), embedder=embedder, reranker=CachedReranker(FakeReranker())
+    )
+
+    assert "hybrid_rerank" not in available_systems(plain, list(SYSTEMS))
+    with pytest.raises(RuntimeError, match="reranker"):
+        hybrid_rerank(plain, "anything", 3)
+    top = hybrid_rerank(with_reranker, "dark psychological story under 300 pages", 4)
+    assert set(top) == {catalog["Sharp Objects"], catalog["Murder at the Vicarage"]}  # < 300 pp
+    assert top[0] == catalog["Sharp Objects"]  # the reranker prefers the dark psychological one

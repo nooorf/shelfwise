@@ -38,6 +38,8 @@ def main() -> None:
     parser.add_argument("--systems", nargs="+", default=list(POOL_SYSTEMS), choices=list(SYSTEMS))
     parser.add_argument("--queries", type=Path, default=QUERIES)
     parser.add_argument("--embedding-model", default=get_settings().embedding_model)
+    parser.add_argument("--reranker", help="cross-encoder for hybrid_rerank, e.g. minilm")
+    parser.add_argument("--rerank-depth", type=int, help="books reranked per query (default 50)")
     parser.add_argument("--qrels", type=Path, default=QRELS)
     parser.add_argument("--keep-stale", action="store_true", help="keep blanks no system returns")
     args = parser.parse_args()
@@ -45,7 +47,9 @@ def main() -> None:
     queries = load_queries(args.queries)
     existing = load_judgments(args.qrels)
     with make_engine().connect() as conn:
-        ctx = load_context(conn, args.embedding_model)
+        ctx = load_context(conn, args.embedding_model, reranker_model=args.reranker)
+        if args.rerank_depth:
+            ctx.rerank_depth = args.rerank_depth
         keys = work_keys(conn)
         aliases = key_aliases(conn)
         info = {
@@ -69,7 +73,11 @@ def main() -> None:
 
     merged = merge_pool(existing, pooled, aliases)
     added = len(merged) - len(existing)
-    if not args.keep_stale:
+    skipped = set(args.systems) - set(systems)
+    if skipped and not args.keep_stale:
+        # Their books still count as pooled; dropping them would undo earlier pooling.
+        print(f"kept stale blanks: {', '.join(sorted(skipped))} couldn't run (see --help)")
+    elif not args.keep_stale:
         kept = drop_stale(merged, pooled, aliases)
         if dropped := len(merged) - len(kept):
             print(f"dropped {dropped} ungraded pairs that no system returns any more")
