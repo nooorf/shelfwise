@@ -36,3 +36,7 @@ The ideal parse of each query: intent, lookup, seed books, constraints, and whic
 40 pairs of queries for the negation study (design doc §40.1 B): a base request and the same request with one thing ruled out, covering supernatural, romance, violence, darkness, pace and audience. `negation_queries.csv` has the same columns as `queries.csv`; each pair shares a family, so both halves land in the same split. They're pooled and graded like set A (`make pool`, `make label` and `make grades-doc` read both files), but `make eval` scores set A only.
 
 `negation_pairs.csv` names, per pair, the tag value that violates the negation, written like `supernatural=yes` or `romance>=2` in the vocabulary of `facet_labels.csv`. Violations are judged from human labels, never from the LLM tags the facet filter uses.
+
+## `data/violation_labels.csv` — human answers for the negation study
+
+One row per (book, tag, labeller), written by `make label-violations JUDGE=<initials>`: for every book pooled for either query of a pair, the one tag that pair is about (e.g. "Supernatural?"). Same definitions as [TAGGING.md](TAGGING.md); a blank value means "can't tell". Books already labelled in full in `facet_labels.csv` by the same person aren't asked again. Kept separate from `facet_labels.csv`, whose books are a genre-balanced sample for scoring the tagger.

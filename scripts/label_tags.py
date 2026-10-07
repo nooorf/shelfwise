@@ -11,13 +11,11 @@ At each question: the option key · ? can't tell · b back · s skip book · q q
 """
 
 import argparse
-import textwrap
 from pathlib import Path
-from typing import Any, Literal
-
-from sqlalchemy import Row, text
+from typing import Literal
 
 from shelfwise.catalog.db import make_engine
+from shelfwise.evaluation.book_card import BOOK_SQL, show
 from shelfwise.evaluation.judgments import key_aliases, work_keys
 from shelfwise.tagging.labels import (
     FACETS,
@@ -30,33 +28,6 @@ from shelfwise.tagging.labels import (
 )
 
 LABELS = Path("eval/data/facet_labels.csv")
-MAX_SUBJECTS = 15
-MAX_DESCRIPTION = 1200
-
-_BOOK_SQL = text(
-    """
-    SELECT w.work_id, w.title, w.subtitle, w.first_pub_year, w.genres, w.tags, w.description,
-           (SELECT string_agg(a.display, ', ' ORDER BY wa.position) FROM work_author wa
-              JOIN author a USING (author_id) WHERE wa.work_id = w.work_id) AS authors,
-           (SELECT max(e.pages) FROM edition e WHERE e.work_id = w.work_id) AS pages
-    FROM work w
-    """
-)
-
-
-def show(book: Row[Any], position: int, total: int) -> None:
-    title = book.title + (f": {book.subtitle}" if book.subtitle else "")
-    print("\n" + "=" * 78)
-    print(f"[{position}/{total}]  {title}")
-    print(f"   {book.authors or 'unknown author'} · {book.first_pub_year or '?'} · "
-          f"{book.pages or '?'} pages · {', '.join(book.genres) or 'no genres'}")  # fmt: skip
-    if book.tags:
-        subjects = "subjects: " + ", ".join(book.tags[:MAX_SUBJECTS])
-        print(textwrap.fill(subjects, 77, initial_indent="   ", subsequent_indent="   "))
-    print("-" * 78)
-    description = (book.description or "(no description)")[:MAX_DESCRIPTION]
-    print(textwrap.indent(textwrap.fill(description, 74), "   "))
-    print("-" * 78)
 
 
 def prompt(spec: FacetSpec) -> str:
@@ -115,7 +86,7 @@ def main() -> None:
     with make_engine().connect() as conn:
         key_of = work_keys(conn)
         aliases = key_aliases(conn)
-        books = {key_of[r.work_id]: r for r in conn.execute(_BOOK_SQL)}
+        books = {key_of[r.work_id]: r for r in conn.execute(BOOK_SQL)}
     order = labelling_order({key: (b.genres or ["none"])[0] for key, b in books.items()})
     done = {aliases.get(r.work_key, r.work_key) for r in rows if r.judge == args.judge}
     todo = [key for key in order[: args.target] if key not in done]

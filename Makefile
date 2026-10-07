@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags score-tags pool label grades-doc import-grades eval eval-parser api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags label-violations score-tags pool label grades-doc import-grades eval eval-parser api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -58,6 +58,10 @@ tag:  ## Tag untagged books with the local LLM (resumable; needs `make llm`), th
 label-tags:  ## Hand-label book tags: make label-tags JUDGE=<your initials>
 	@test -n "$(JUDGE)" || (echo "usage: make label-tags JUDGE=<your initials>" && exit 1)
 	uv run python scripts/label_tags.py --judge $(JUDGE)
+
+label-violations:  ## Negation study: one tag question per pooled book, make label-violations JUDGE=<initials>
+	@test -n "$(JUDGE)" || (echo "usage: make label-violations JUDGE=<your initials>" && exit 1)
+	uv run python scripts/label_violations.py --judge $(JUDGE)
 
 score-tags:  ## Score the LLM's book tags against the hand labels
 	uv run python scripts/score_tags.py
