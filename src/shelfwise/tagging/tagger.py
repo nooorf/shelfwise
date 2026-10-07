@@ -7,14 +7,12 @@ validation twice is logged to `ingest_error` and skipped.
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Protocol
 
-from pydantic import BaseModel
 from sqlalchemy import Connection, Engine, insert, text, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from shelfwise.catalog import schema
-from shelfwise.llm.client import LLMInvalidOutput, StructuredResult
+from shelfwise.llm.client import LLMInvalidOutput, StructuredLLM
 from shelfwise.tagging.facets import (
     BookFacets,
     BookFacetsLLM,
@@ -24,14 +22,6 @@ from shelfwise.tagging.facets import (
     model_version,
     normalize_themes,
 )
-
-
-class StructuredLLM(Protocol):
-    model: str
-
-    def chat_structured[T: BaseModel](
-        self, messages: list[dict[str, str]], schema: type[T], **kwargs: object
-    ) -> StructuredResult[T]: ...
 
 
 @dataclass

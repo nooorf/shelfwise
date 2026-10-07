@@ -82,8 +82,9 @@ import-grades:  ## Save your reviewed eval/grades_review.md: make import-grades 
 eval:  ## Score all systems on the dev split and save a report (RERANKER=minilm adds hybrid_rerank)
 	uv run python scripts/evaluate.py $(if $(RERANKER),--reranker $(RERANKER),)
 
-eval-parser:  ## Score the query parser against gold set B (PARSER=rules, SPLIT=dev|test|all, ERRORS=1)
-	uv run python scripts/eval_parser.py --parser $(or $(PARSER),rules) --split $(or $(SPLIT),dev) $(if $(ERRORS),--errors,)
+eval-parser:  ## Score the query parser against gold set B (PARSER=rules|cascade, SPLIT=dev|test|all, ERRORS=1)
+	uv run python scripts/eval_parser.py --parser $(or $(PARSER),rules) --split $(or $(SPLIT),dev) \
+		$(if $(MODEL),--model $(MODEL),) $(if $(ERRORS),--errors,)
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload

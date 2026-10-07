@@ -36,7 +36,8 @@ class ParsedRequest(BaseModel):
     intent: Intent
     semantic_query: str = ""  # mood and topic words; negated words and filter phrases removed
     lookup: LookupSpec | None = None
-    seed_titles: list[str] = Field(default_factory=list)  # "like Gone Girl"; linked to works later
+    seed_titles: list[str] = Field(default_factory=list)  # "like Gone Girl", catalog spelling
+    seed_work_ids: list[int] = Field(default_factory=list)  # the seeds found in the catalog
     constraints: list[Constraint] = Field(default_factory=list)
 
 

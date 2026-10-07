@@ -12,7 +12,7 @@ answer, which structured extraction doesn't need.
 import json
 import time
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Protocol
 
 import httpx2
 from pydantic import BaseModel, ValidationError
@@ -50,6 +50,24 @@ class StructuredResult[T: BaseModel]:
 
 
 Message = dict[str, str]
+
+
+class StructuredLLM(Protocol):
+    """What callers need from an LLM; `OllamaClient` and the test fake both provide it."""
+
+    model: str
+
+    def chat_structured[T: BaseModel](
+        self,
+        messages: list[Message],
+        schema: type[T],
+        *,
+        temperature: float = ...,
+        num_ctx: int = ...,
+        max_tokens: int = ...,
+        seed: int = ...,
+        think: bool = ...,
+    ) -> StructuredResult[T]: ...
 
 
 class OllamaClient:

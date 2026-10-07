@@ -1,0 +1,226 @@
+from datetime import date
+
+import pytest
+
+from shelfwise.ingest.genres import GENRES
+from shelfwise.llm.client import LLMInvalidOutput, LLMUnavailable
+from shelfwise.query.cascade import CascadeParser, Link, strip_words
+from shelfwise.query.extract import QueryLLM, build_messages, to_constraints
+from shelfwise.query.request import constraint_problems
+from tests.fakes import FakeLLM
+
+TODAY = date(2026, 10, 7)
+
+
+TITLES = {
+    "gone girl": Link("Gone Girl", 11),
+    "the kite runner": Link("The Kite Runner", 13),
+}
+AUTHORS = {"stephen king": Link("Stephen King"), "dickens": Link("Charles Dickens")}
+
+
+class FakeLinker:
+    """Knows a few catalog spellings; anything else is "not in the catalog"."""
+
+    def title(self, text: str) -> Link | None:
+        return TITLES.get(text.lower())
+
+    def author(self, text: str) -> Link | None:
+        return AUTHORS.get(text.lower())
+
+
+def parse(query: str, **llm_output: object):  # type: ignore[no-untyped-def]
+    llm = FakeLLM(llm_output)
+    result = CascadeParser(llm, FakeLinker()).parse(query, TODAY)
+    return result.request, llm
+
+
+def found(request) -> set[str]:  # type: ignore[no-untyped-def]
+    return {
+        f"{'not ' if c.polarity == 'exclude' else ''}{c.field} {c.op} {c.value} {c.strength}"
+        for c in request.constraints
+    }
+
+
+@pytest.mark.parametrize(
+    ("form", "expected"),
+    [
+        ({"genres": ["mystery"]}, "genre in ['mystery'] soft"),
+        ({"genres": ["mystery"], "genres_strict": True}, "genre in ['mystery'] hard"),
+        ({"excluded_genres": ["romance"]}, "not genre in ['romance'] hard"),
+        ({"darkness": "dark"}, "facet.darkness gte 2 soft"),
+        ({"darkness": "very dark"}, "facet.darkness gte 3 soft"),
+        ({"darkness": "light"}, "facet.darkness lte 1 soft"),
+        ({"darkness": "not too dark"}, "facet.darkness lte 1 hard"),
+        ({"darkness": "darker"}, "facet.darkness shift 1 soft"),
+        ({"romance": "none or minor"}, "facet.romance lte 1 hard"),
+        ({"romance": "none at all"}, "facet.romance eq 0 hard"),
+        ({"romance": "less"}, "facet.romance shift -1 soft"),
+        ({"violence": "no gore"}, "facet.violence lte 2 hard"),
+        ({"violence": "not too violent"}, "facet.violence lte 1 hard"),
+        ({"pace": "fast"}, "facet.pace eq fast soft"),
+        ({"supernatural": "excluded"}, "not facet.supernatural eq yes hard"),
+        ({"supernatural": "wanted"}, "facet.supernatural eq yes soft"),
+        ({"historical_setting": True}, "facet.historical_setting eq yes soft"),
+        ({"audience": "ya"}, "facet.audience eq ya soft"),
+        ({"fiction": "nonfiction"}, "facet.fiction eq False soft"),
+        ({"reading_level": "intro"}, "facet.reading_level eq intro soft"),
+        ({"length_change": "shorter"}, "pages shift -1 soft"),
+        ({"year_change": "newer"}, "year shift 1 soft"),
+        ({"popular": True}, "popular eq True soft"),
+        ({"avoid": ["Unreliable  Narrator"]}, "not theme eq unreliable narrator soft"),
+    ],
+)
+def test_form_choices_follow_the_parsing_conventions(form: dict, expected: str) -> None:
+    constraints = to_constraints(QueryLLM.model_validate({"intent": "discover", **form}))
+
+    (c,) = constraints
+    assert (
+        f"{'not ' if c.polarity == 'exclude' else ''}{c.field} {c.op} {c.value} {c.strength}"
+        == expected
+    )
+    assert constraint_problems(c.field, c.op, c.value) == []
+    assert c.source == "llm"
+
+
+def test_schema_only_allows_catalog_genres() -> None:
+    schema = QueryLLM.model_json_schema()
+
+    assert schema["properties"]["genres"]["items"]["enum"] == list(GENRES)
+    assert QueryLLM.model_validate({"intent": "discover", "genres": ["mystery", "spy"]}).genres == [
+        "mystery"
+    ]
+
+
+def test_rules_keep_numbers_and_the_llm_adds_the_rest() -> None:
+    request, llm = parse(
+        "mystery under 300 pages published after 2015, nothing supernatural",
+        intent="discover",
+        genres=["mystery"],
+        supernatural="excluded",
+        semantic_query="mystery nothing supernatural",
+    )
+
+    assert found(request) == {
+        "pages lt 300 hard",
+        "year gt 2015 hard",
+        "genre in ['mystery'] soft",
+        "not facet.supernatural eq yes hard",
+    }
+    assert request.semantic_query == "mystery"  # the negated word is stripped
+    assert "under 300 pages; published after 2015" in llm.calls[0][1]["content"]  # rule hints
+
+
+def test_title_lookup_is_linked_and_drops_availability() -> None:
+    request, _ = parse(
+        "is the kite runner available", intent="lookup", lookup_title="the kite runner"
+    )
+
+    assert request.intent == "lookup"
+    assert request.lookup is not None and request.lookup.title == "The Kite Runner"
+    assert found(request) == set()
+
+
+def test_author_lookup_keeps_availability() -> None:
+    request, _ = parse(
+        "stephen king books available now", intent="lookup", lookup_author="stephen king"
+    )
+
+    assert request.lookup is not None and request.lookup.author == "Stephen King"
+    assert found(request) == {"available_now eq True hard"}
+
+
+def test_unknown_books_keep_the_written_name() -> None:
+    request, _ = parse("do you have harry potter 8", intent="lookup", lookup_title="harry potter 8")
+
+    assert request.lookup is not None and request.lookup.title == "harry potter 8"
+
+
+def test_seeds_are_linked_with_their_work_ids() -> None:
+    request, _ = parse(
+        "like gone girl but less romance",
+        intent="similar",
+        similar_to=["gone girl"],
+        romance="less",
+        semantic_query="less romance",
+    )
+
+    assert request.seed_titles == ["Gone Girl"]
+    assert request.seed_work_ids == [11]
+    assert found(request) == {"facet.romance shift -1 soft"}
+    assert request.semantic_query == ""
+
+
+@pytest.mark.parametrize(
+    ("form", "intent"),
+    [
+        ({"intent": "lookup"}, "discover"),  # nothing to look up
+        ({"intent": "similar"}, "discover"),  # no seed
+        ({"intent": "discover", "similar_to": ["gone girl"]}, "similar"),
+        ({"intent": "similar", "lookup_title": "gone girl"}, "similar"),  # seed in the wrong slot
+    ],
+)
+def test_intent_is_made_consistent_with_what_was_found(form: dict, intent: str) -> None:
+    request, _ = parse("query", **form)
+
+    assert request.intent == intent
+    if intent == "similar":
+        assert request.seed_titles == ["Gone Girl"]
+        assert request.seed_work_ids == [11]
+        assert request.lookup is None
+
+
+def test_isbn_is_always_a_lookup() -> None:
+    request, _ = parse("9781250301697", intent="discover")
+
+    assert request.intent == "lookup"
+    assert found(request) == {"isbn in ['9781250301697'] hard"}
+
+
+def test_llm_cannot_override_rule_fields() -> None:
+    request, _ = parse("thrillers", intent="discover", genres=["thriller"])
+    request_with_rules, _ = parse(
+        "something shorter than that, under 200 pages", intent="refine", length_change="shorter"
+    )
+
+    assert found(request) == {"genre in ['thriller'] soft"}
+    assert found(request_with_rules) == {"pages lt 200 hard", "pages shift -1 soft"}
+
+
+@pytest.mark.parametrize("error", [LLMUnavailable("down"), LLMInvalidOutput("bad json")])
+def test_falls_back_to_rules_when_the_llm_fails(error: Exception) -> None:
+    result = CascadeParser(FakeLLM(error), FakeLinker()).parse("horror under 250 pages", TODAY)
+
+    assert not result.used_llm
+    assert result.error is not None
+    assert found(result.request) == {"pages lt 250 hard"}
+    assert result.request.semantic_query == "horror"
+
+
+def test_empty_semantic_query_falls_back_to_the_rule_residual() -> None:
+    request, _ = parse("cozy mystery under 300 pages", intent="discover", genres=["mystery"])
+
+    assert request.semantic_query == "cozy mystery"
+
+
+@pytest.mark.parametrize(
+    ("text", "words", "expected"),
+    [
+        ("psychological, nothing supernatural", ["supernatural"], "psychological"),
+        ("data structures in C++, no self-help", ["self help"], "data structures in C++"),
+        ("dogs where the dog dies", ["die", "dies"], "dogs where the dog"),
+        ("not just theory, practical", [], "not just theory, practical"),  # nothing negated
+    ],
+)
+def test_strip_words(text: str, words: list[str], expected: str) -> None:
+    assert strip_words(text, words) == expected
+
+
+def test_prompt_lists_every_field_and_the_rule_hints() -> None:
+    system, user = build_messages("a query", ["under 300 pages"])
+
+    for name in QueryLLM.model_fields:
+        assert f"- {name}:" in system["content"]
+    assert user["content"].endswith(
+        "Already handled (leave out of semantic_query): under 300 pages"
+    )
