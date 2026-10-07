@@ -181,13 +181,16 @@ def set_grade(
     return updated
 
 
-def work_keys(conn: Connection) -> dict[int, str]:
-    """work_id -> stable key: the lowest ISBN-13 among its editions (or a title hash fallback)."""
+def work_keys(conn: Connection, work_ids: list[int] | None = None) -> dict[int, str]:
+    """work_id -> stable key: the lowest ISBN-13 among its editions (or a title hash fallback).
+    All works, or only `work_ids`."""
+    where = "" if work_ids is None else "WHERE w.work_id = ANY(:ids) "
     rows = conn.execute(
         text(
             "SELECT w.work_id, w.title_norm, min(e.isbn13) AS isbn "
-            "FROM work w LEFT JOIN edition e USING (work_id) GROUP BY w.work_id"
-        )
+            f"FROM work w LEFT JOIN edition e USING (work_id) {where}GROUP BY w.work_id"
+        ),
+        {"ids": work_ids},
     )
     return {
         r.work_id: r.isbn or "t:" + hashlib.sha1(r.title_norm.encode()).hexdigest()[:12]
