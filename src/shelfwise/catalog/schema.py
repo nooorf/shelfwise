@@ -28,6 +28,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import ARRAY, CHAR, ENUM, JSONB
 
+from shelfwise.ingest.records import MAX_PAGES, MIN_PAGES
+
 metadata = MetaData()
 
 COPY_STATUSES = (
@@ -116,7 +118,9 @@ edition = Table(
     Column("language", Text, nullable=False, server_default=text("'en'")),
     Column("pages", Integer),
     Column("format", Text),
-    CheckConstraint("pages > 0", name="ck_edition_pages_positive"),
+    CheckConstraint(
+        f"pages BETWEEN {MIN_PAGES} AND {MAX_PAGES}", name="ck_edition_pages_plausible"
+    ),
 )
 Index("ix_edition_work_id", edition.c.work_id)
 

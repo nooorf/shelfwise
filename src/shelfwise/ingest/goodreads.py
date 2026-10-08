@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 
 from shelfwise.ingest.normalize import normalize_isbn
-from shelfwise.ingest.records import EditionRecord
+from shelfwise.ingest.records import MAX_PAGES, MIN_PAGES, EditionRecord
 
 BASE_URL = "https://mcauleylab.ucsd.edu/public_datasets/gdrive/goodreads"
 
@@ -36,7 +36,6 @@ SUBSETS: dict[str, float] = {
 
 ENGLISH = frozenset({"eng", "en", "en-US", "en-GB", "en-CA"})
 MIN_DESCRIPTION_CHARS = 150
-MIN_PAGES, MAX_PAGES = 10, 3000
 MAX_AUTHORS = 3
 MAX_SHELVES = 15
 SHELF_SHARE = 0.2  # keep shelves used at least this often relative to the top meaningful shelf

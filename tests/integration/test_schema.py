@@ -24,11 +24,12 @@ def test_extensions_and_catalog_version_seeded(conn: Connection) -> None:
     assert version == "0"
 
 
-def test_pages_must_be_positive(conn: Connection) -> None:
+@pytest.mark.parametrize("pages", [0, 9, 3001])
+def test_implausible_page_counts_are_refused(conn: Connection, pages: int) -> None:
     work_id = add_work(conn)
 
-    with pytest.raises(IntegrityError, match="ck_edition_pages_positive"):
-        add_edition(conn, work_id, pages=0)
+    with pytest.raises(IntegrityError, match="ck_edition_pages_plausible"):
+        add_edition(conn, work_id, pages=pages)
 
 
 def test_isbn_is_unique(conn: Connection) -> None:

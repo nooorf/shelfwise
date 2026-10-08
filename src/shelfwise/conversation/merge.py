@@ -152,7 +152,7 @@ def describe(c: Constraint) -> str | None:
         words = _EQ_WORDS[(c.field, c.value)]
         return f"not {words}" if negate else words
     if c.field == "genre" and c.op == "in":
-        names = " or ".join(c.value if isinstance(c.value, list) else [c.value])
+        names = " or ".join(str(v) for v in (c.value if isinstance(c.value, list) else [c.value]))
         return f"no {names}" if negate else names
     if c.field == "theme":
         return f"no {c.value}" if negate else str(c.value)

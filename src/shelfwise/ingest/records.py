@@ -1,5 +1,8 @@
 from pydantic import BaseModel, Field
 
+# Page counts outside this range are data errors (a "1-page" novel), stored as unknown.
+MIN_PAGES, MAX_PAGES = 10, 3000
+
 
 class EditionRecord(BaseModel):
     """One edition as delivered by a source, already normalized. Grouped into works later."""

@@ -92,10 +92,14 @@ def test_falls_back_to_work_authors(tmp_path: Path) -> None:
     assert record is not None and record.authors == ["Alex Michaelides"]
 
 
-def test_bad_page_counts_are_dropped(tmp_path: Path) -> None:
+@pytest.mark.parametrize("pages", [0, 1, 9, 3001])
+def test_implausible_page_counts_are_dropped(tmp_path: Path, pages: int) -> None:
     responses = {
         **RESPONSES,
-        "/isbn/9781250301697.json": {**RESPONSES["/isbn/9781250301697.json"], "number_of_pages": 0},
+        "/isbn/9781250301697.json": {
+            **RESPONSES["/isbn/9781250301697.json"],
+            "number_of_pages": pages,
+        },
     }
     record = make_client(tmp_path, FakeFetch(responses)).lookup_isbn("9781250301697")
 

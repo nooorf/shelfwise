@@ -17,7 +17,7 @@ import httpx2
 
 from shelfwise import __version__
 from shelfwise.ingest.normalize import normalize_text, split_title
-from shelfwise.ingest.records import EditionRecord
+from shelfwise.ingest.records import MAX_PAGES, MIN_PAGES, EditionRecord
 
 BASE_URL = "https://openlibrary.org"
 USER_AGENT = f"Shelfwise/{__version__} (library search portfolio project)"
@@ -130,7 +130,7 @@ class OpenLibraryClient:
         language_code = language_key.rsplit("/", 1)[-1]
         covers = [c for c in work.get("covers", edition.get("covers", [])) if c and c > 0]
         pages = edition.get("number_of_pages")
-        pages = pages if isinstance(pages, int) and 0 < pages < 5000 else None
+        pages = pages if isinstance(pages, int) and MIN_PAGES <= pages <= MAX_PAGES else None
 
         return EditionRecord(
             isbn13=isbn13,
