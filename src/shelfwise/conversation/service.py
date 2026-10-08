@@ -35,6 +35,7 @@ from shelfwise.conversation.merge import (
     apply_turn,
     label,
     record_results,
+    remove_chip,
     undo_reset,
 )
 from shelfwise.conversation.state import ConversationState, Offer, ShownBook, new_state
@@ -79,6 +80,15 @@ class Chip(BaseModel):
     strength: str
     polarity: str
     turn: int
+
+
+class ChipRemoval(BaseModel):
+    """The chip to take away, as the response showed it: its field and label."""
+
+    field: str
+    label: str
+    limit: int = Field(default=5, ge=1, le=20)
+    narrate: bool = True
 
 
 class TurnResponse(BaseModel):
@@ -384,6 +394,28 @@ class ConversationService:
         return self._respond(
             conn, ctx, restored, "undo", "search", "refine", None, system, ids,
             ["Back to your previous search."], {}, start, 0.0, said if narrate else None,
+        )  # fmt: skip
+
+    def remove_chip(self, conn: Connection, session_id: str, removal: ChipRemoval) -> TurnResponse:
+        """The reader removed a chip: drop its constraints and search again. No parsing."""
+        start = time.perf_counter()
+        state = self._load(session_id)
+        ctx = self.search.context(conn)
+        update = remove_chip(state, removal.field, removal.label, self.now())
+        if update is None:
+            return self._respond(
+                conn, ctx, state, "remove", "chat", "refine", None, None, [],
+                ["That filter is already gone."], {}, start, 0.0, None,
+            )  # fmt: skip
+        state = update.state
+        system, ids = self.search.retrieve(
+            ctx, state.semantic_query or "books", state_request(state, "refine"), True,
+            removal.limit,
+        )  # fmt: skip
+        said = f'without "{removal.label}"'
+        return self._respond(
+            conn, ctx, state, "remove", "search", "refine", None, system, ids,
+            [f'Removed "{removal.label}".'], {}, start, 0.0, said if removal.narrate else None,
         )  # fmt: skip
 
     def _reference(

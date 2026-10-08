@@ -83,7 +83,9 @@ _FIELD_WORDS = {
     "facet.audience": r"audience|ya|teens?|kids|children|adults?",
 }
 
-TurnKind = Literal["new_search", "refine", "new_topic", "start_over", "reference", "chat", "relax"]
+TurnKind = Literal[
+    "new_search", "refine", "new_topic", "start_over", "reference", "chat", "relax", "remove"
+]
 
 
 @dataclass(frozen=True)
@@ -428,6 +430,27 @@ def answer_turn(
     offer = offers[answer]
     state.constraints = [a for a in state.constraints if a.constraint not in offer.constraints]
     return TurnUpdate(state, "relax", dropped=[offer.label])
+
+
+def remove_chip(
+    state: ConversationState, field_name: str, chip_label: str, now: datetime
+) -> TurnUpdate | None:
+    """The state without the chip the reader removed (every constraint behind it: "between
+    150 and 200 pages" is two bounds, one chip). None if no such chip is active."""
+    gone = [
+        a for a in state.constraints
+        if a.constraint.field == field_name and label(a.constraint) == chip_label
+    ]  # fmt: skip
+    if not gone:
+        return None
+    state = state.model_copy(deep=True)
+    state.turn += 1
+    state.last_active = now
+    turns = [*state.recent_turns, Turn(text=f'remove "{chip_label}"', intent="refine")]
+    state.recent_turns = turns[-MAX_RECENT_TURNS:]
+    state.offers = []
+    state.constraints = [a for a in state.constraints if a not in gone]
+    return TurnUpdate(state, "remove", dropped=[chip_label])
 
 
 def undo_reset(state: ConversationState, now: datetime) -> ConversationState | None:

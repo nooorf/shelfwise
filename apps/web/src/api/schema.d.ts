@@ -103,6 +103,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/sessions/{session_id}/chips/remove": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Remove Chip
+         * @description The reader tapped a chip's remove button: its constraints go, and the search runs
+         *     again on what is left.
+         */
+        post: operations["remove_chip_api_v1_sessions__session_id__chips_remove_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/sessions/{session_id}": {
         parameters: {
             query?: never;
@@ -182,6 +203,26 @@ export interface components {
             polarity: string;
             /** Turn */
             turn: number;
+        };
+        /**
+         * ChipRemoval
+         * @description The chip to take away, as the response showed it: its field and label.
+         */
+        ChipRemoval: {
+            /** Field */
+            field: string;
+            /** Label */
+            label: string;
+            /**
+             * Limit
+             * @default 5
+             */
+            limit: number;
+            /**
+             * Narrate
+             * @default true
+             */
+            narrate: boolean;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -527,6 +568,41 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_chip_api_v1_sessions__session_id__chips_remove_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChipRemoval"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

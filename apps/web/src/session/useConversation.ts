@@ -4,12 +4,14 @@ import { useCallback, useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 
 import { endSession, socketUrl, startSession } from '../api/client'
+import type { Chip } from '../api/types'
 import { SessionSocket } from './socket'
 import { useSession } from './store'
 
 export interface Conversation {
   ask: (text: string) => void
   undo: () => void
+  removeChip: (chip: Chip) => void
   cancel: () => void
   newVisitor: () => Promise<void>
 }
@@ -59,6 +61,11 @@ export function useConversation(): Conversation {
     socket.current?.send({ type: 'undo' })
   }, [])
 
+  const removeChip = useCallback((chip: Chip) => {
+    useSession.getState().said(`Remove "${chip.label}"`)
+    socket.current?.send({ type: 'remove_chip', field: chip.field, label: chip.label })
+  }, [])
+
   const cancel = useCallback(() => socket.current?.send({ type: 'cancel' }), [])
 
   const newVisitor = useCallback(async () => {
@@ -68,5 +75,5 @@ export function useConversation(): Conversation {
     await openSession(socket)
   }, [sessionId])
 
-  return { ask, undo, cancel, newVisitor }
+  return { ask, undo, removeChip, cancel, newVisitor }
 }

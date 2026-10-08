@@ -5,6 +5,7 @@ import pytest
 from shelfwise.conversation.merge import (
     apply_turn,
     record_results,
+    remove_chip,
     removed_fields,
     resolve_shift,
     undo_reset,
@@ -454,3 +455,19 @@ def test_a_bare_ordinal_is_a_reference_even_if_the_parser_says_small_talk() -> N
     update = turn(state, "the second one", parsed("other"))
 
     assert (update.kind, update.targets) == ("reference", [2])
+
+
+def test_removing_a_chip_drops_everything_behind_it() -> None:
+    state = turn(new_state("s", NOW), "x",
+                 parsed("discover", "thrillers",
+                        c("pages", "gte", 150, "hard", span="between 150 and 200 pages"),
+                        c("pages", "lte", 200, "hard", span="between 150 and 200 pages"),
+                        c("available_now", "eq", True, "hard"))).state  # fmt: skip
+
+    update = remove_chip(state, "pages", "between 150 and 200 pages", NOW)
+
+    assert update is not None and update.kind == "remove"
+    assert update.dropped == ["between 150 and 200 pages"]
+    assert active(update.state) == {"available_now eq True hard"}
+    assert update.state.semantic_query == "thrillers" and update.state.turn == state.turn + 1
+    assert remove_chip(update.state, "pages", "between 150 and 200 pages", NOW) is None

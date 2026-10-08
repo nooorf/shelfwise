@@ -179,6 +179,56 @@
         }
       }
     },
+    "/api/v1/sessions/{session_id}/chips/remove": {
+      "post": {
+        "summary": "Remove Chip",
+        "description": "The reader tapped a chip's remove button: its constraints go, and the search runs\nagain on what is left.",
+        "operationId": "remove_chip_api_v1_sessions__session_id__chips_remove_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChipRemoval"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/sessions/{session_id}": {
       "delete": {
         "summary": "End Session",
@@ -393,6 +443,37 @@
         ],
         "title": "Chip",
         "description": "An active constraint as the UI shows it; removable by naming its field."
+      },
+      "ChipRemoval": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 5
+          },
+          "narrate": {
+            "type": "boolean",
+            "title": "Narrate",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "label"
+        ],
+        "title": "ChipRemoval",
+        "description": "The chip to take away, as the response showed it: its field and label."
       },
       "HTTPValidationError": {
         "properties": {

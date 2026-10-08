@@ -23,4 +23,5 @@ export type ServerEvent =
 export type ClientMessage =
   | { type: 'text'; text: string; limit?: number; narrate?: boolean }
   | { type: 'undo' }
+  | { type: 'remove_chip'; field: string; label: string; narrate?: boolean }
   | { type: 'cancel' }

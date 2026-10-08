@@ -12,6 +12,7 @@ from sqlalchemy import Connection, Engine
 from shelfwise import __version__
 from shelfwise.config import Settings, get_settings
 from shelfwise.conversation.service import (
+    ChipRemoval,
     ConversationService,
     SessionNotFound,
     TurnRequest,
@@ -145,6 +146,20 @@ def create_app(
         except SessionNotFound:
             raise HTTPException(404, "session not found or expired: start a new one") from None
 
+    @v1.post("/sessions/{session_id}/chips/remove")
+    def remove_chip(
+        session_id: str,
+        removal: ChipRemoval,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> TurnResponse:
+        """The reader tapped a chip's remove button: its constraints go, and the search runs
+        again on what is left."""
+        try:
+            return conversation.remove_chip(conn, session_id, removal)
+        except SessionNotFound:
+            raise HTTPException(404, "session not found or expired: start a new one") from None
+
     @v1.delete("/sessions/{session_id}", status_code=204)
     def end_session(
         session_id: str,
@@ -162,7 +177,7 @@ def create_app(
     ) -> None:
         """One socket per session (design doc §20.5, text events). Client -> server:
         {"type": "text", "text": ..., "limit"?, "narrate"?}, {"type": "undo"},
-        {"type": "cancel"}. Server -> client, per turn: "turn" (cards, chips, notes: everything
+        {"type": "remove_chip", "field": ..., "label": ...}, {"type": "cancel"}. Server -> client, per turn: "turn" (cards, chips, notes: everything
         but the narration, as soon as retrieval is done), then "reply" when the narration is
         ready, then "done". A new message or "cancel" while narration runs drops it
         ("cancelled"): the server half of barge-in."""
@@ -202,7 +217,7 @@ def create_app(
                 if kind == "cancel":
                     await drop_narration()
                     continue
-                if kind not in ("text", "undo"):
+                if kind not in ("text", "undo", "remove_chip"):
                     await websocket.send_json({"type": "error", "message": f"unknown {kind!r}"})
                     continue
                 await drop_narration()  # a new message barges in
@@ -218,6 +233,16 @@ def create_app(
                             conversation.turn, conn, session_id, request
                         )
                         said = request.message
+                    elif kind == "remove_chip":
+                        removal = ChipRemoval.model_validate(
+                            {k: v for k, v in message.items() if k != "type"}
+                        )
+                        wants_reply = removal.narrate
+                        response = await asyncio.to_thread(
+                            conversation.remove_chip, conn, session_id,
+                            removal.model_copy(update={"narrate": False}),
+                        )  # fmt: skip
+                        said = f'without "{removal.label}"'
                     else:
                         wants_reply = bool(message.get("narrate", True))
                         response = await asyncio.to_thread(

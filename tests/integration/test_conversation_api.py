@@ -338,3 +338,33 @@ def test_availability_is_read_live_when_a_shown_book_comes_up_again(
     assert asked["route"] == "explain"
     assert asked["results"][0]["availability"]["state"] == "borrowed"
     assert asked["results"][0]["availability"]["next_due"] == "2026-10-20"
+
+
+def test_removing_a_chip_searches_again_without_it(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    say(client, session, "psychological thrillers")
+    narrowed = say(client, session, "under 300 pages")
+    chip = next(c for c in narrowed["chips"] if c["field"] == "pages")
+
+    url = f"/api/v1/sessions/{session}/chips/remove"
+    removed = client.post(url, json={"field": "pages", "label": chip["label"]}).json()
+    again = client.post(url, json={"field": "pages", "label": chip["label"]}).json()
+
+    assert (removed["kind"], removed["route"]) == ("remove", "search")
+    assert "pages lt 300" not in chips(removed)
+    assert len(removed["results"]) > len(narrowed["results"])
+    assert removed["semantic_query"] == "psychological thrillers"
+    assert (again["route"], again["notes"]) == ("chat", ["That filter is already gone."])
+
+
+def test_a_chip_can_be_removed_over_the_socket(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    narrowed = say(client, session, "psychological thrillers under 300 pages")
+    chip = next(c for c in narrowed["chips"] if c["field"] == "pages")
+    with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+        ws.send_json({"type": "remove_chip", "field": "pages", "label": chip["label"],
+                      "narrate": False})  # fmt: skip
+        events = events_until_done(ws)
+
+    assert [e["type"] for e in events] == ["turn", "done"]
+    assert events[0]["kind"] == "remove" and "pages lt 300" not in chips(events[0])
