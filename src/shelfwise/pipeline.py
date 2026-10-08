@@ -37,7 +37,7 @@ from shelfwise.evaluation.systems import (
 )
 from shelfwise.llm.client import StructuredLLM
 from shelfwise.query.cascade import CascadeParser, CatalogLinker
-from shelfwise.query.constraints import contradictions
+from shelfwise.query.constraints import Constraint, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest, from_rules
 from shelfwise.query.rules import parse_rules
 from shelfwise.ranking.rerank import CachedReranker
@@ -151,16 +151,48 @@ class SearchService:
         self._version: int | None = None
         self._lock = threading.Lock()
 
-    def _context(self, conn: Connection) -> SearchContext:
+    @property
+    def catalog_version(self) -> int:
+        return self._version or 0
+
+    def context(self, conn: Connection) -> SearchContext:
         version = get_catalog_version(conn)
         with self._lock:
             if self._ctx is None or version != self._version:
                 self._ctx = SearchContext.build(
                     conn, embedder=self.embedder, reranker=self.reranker
                 )
+                self._ctx.signals()  # facets etc. once per catalog version, shared by requests
                 self._version = version
             ctx = self._ctx
         return replace(ctx, conn=conn, today=self.today())  # per-request connection and date
+
+    def retrieve(
+        self, ctx: SearchContext, query: str, parsed: ParsedRequest, use_parse: bool, limit: int
+    ) -> tuple[str, list[int]]:
+        """Which system answers and its ranked work ids. `use_parse`: retrieve from `parsed`
+        (`parsed_hybrid`); otherwise from the raw `query` with the rules-era systems, which
+        find known items a rules-only parse can't name (see the module docstring)."""
+        if contradictions(parsed.constraints):
+            return "none", []
+        if ctx.dense is None:
+            system = bm25_lookup
+        elif use_parse:
+            system = parsed_hybrid
+            ctx = replace(ctx, parser=lambda _query, _today: parsed, _parses={})
+        else:
+            system = hybrid_rerank if ctx.reranker is not None else hybrid_lookup
+        return system.__name__, system(ctx, query, limit)
+
+    def relax(self, conn: Connection, constraints: list[Constraint]) -> list[Relaxation]:
+        """When nothing matched: which hard constraint to drop, and how many books that gives."""
+        if not any(c.strength == "hard" for c in constraints) or contradictions(constraints):
+            return []
+        return [
+            Relaxation(drop=r.label, count=r.count)
+            for r in relaxations(conn, constraints)[:MAX_RELAXATIONS]
+            if r.count
+        ]
 
     def search(self, conn: Connection, request: SearchRequest) -> SearchResponse:
         timings: dict[str, float] = {}
@@ -172,36 +204,24 @@ class SearchService:
             timings[stage] = round((now - clock) * 1000, 1)
             clock = now
 
-        ctx = self._context(conn)
+        ctx = self.context(conn)
         lap("index")
-        parsed, parse_error = self._parse(conn, request.query, ctx)
+        parsed, parse_error = self.parse(conn, request.query, ctx)
         constraints = parsed.constraints
         conflicts = contradictions(constraints)
         lap("parse")
-        if ctx.dense is None:
-            system = bm25_lookup
-        elif parse_error is None and self.llm is not None:
-            system = parsed_hybrid
-            ctx = replace(ctx, parser=lambda _query, _today: parsed, _parses={})
-        else:
-            system = hybrid_rerank if ctx.reranker is not None else hybrid_lookup
-        ids = [] if conflicts else system(ctx, request.query, request.limit)
+        use_parse = parse_error is None and self.llm is not None
+        system, ids = self.retrieve(ctx, request.query, parsed, use_parse, request.limit)
         lap("retrieve")
-        results = self._details(conn, ids, ctx.today)
+        results = self.details(conn, ids, ctx.today)
         lap("details")
-        relaxed = []
-        if not ids and not conflicts and any(c.strength == "hard" for c in constraints):
-            relaxed = [
-                Relaxation(drop=r.label, count=r.count)
-                for r in relaxations(conn, constraints)[:MAX_RELAXATIONS]
-                if r.count
-            ]
-            lap("relax")
+        relaxed = [] if ids else self.relax(conn, constraints)
+        lap("relax")
         timings["total"] = round((time.perf_counter() - start) * 1000, 1)
 
         return SearchResponse(
             query=request.query,
-            system=system.__name__,
+            system=system,
             parser="rules" if parse_error is not None or self.llm is None else "cascade",
             parse_error=parse_error,
             intent=parsed.intent,
@@ -219,7 +239,7 @@ class SearchService:
             timings_ms=timings,
         )
 
-    def _parse(
+    def parse(
         self, conn: Connection, query: str, ctx: SearchContext
     ) -> tuple[ParsedRequest, str | None]:
         """The cascade's parse, or the rules' with the reason the LLM step didn't count."""
@@ -230,7 +250,7 @@ class SearchService:
         result = CascadeParser(self.llm, CatalogLinker(conn)).parse(query, ctx.today)
         return result.request, result.error
 
-    def _details(self, conn: Connection, ids: list[int], today: date) -> list[BookResult]:
+    def details(self, conn: Connection, ids: list[int], today: date) -> list[BookResult]:
         if not ids:
             return []
         rows = {r.work_id: r for r in conn.execute(_DETAILS_SQL, {"ids": ids})}

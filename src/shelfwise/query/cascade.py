@@ -156,7 +156,10 @@ def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
     elif title:
         constraints = [c for c in constraints if c.field != "available_now"]
 
-    semantic = strip_words(out.semantic_query or rules.residual, negated_words(out))
+    # The residual stands in when the LLM left the topic empty, except for a refinement, whose
+    # words ("something darker") are the change, not a topic.
+    fallback = "" if intent == "refine" else rules.residual
+    semantic = strip_words(out.semantic_query or fallback, negated_words(out))
     return ParsedRequest(
         intent=intent,
         semantic_query=semantic,

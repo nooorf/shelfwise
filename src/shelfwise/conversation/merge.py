@@ -9,6 +9,7 @@
 | "the second one", "the first two"            | resolved to shown books before anything else     |
 | a new topic (new words, a seed, a lookup)    | reset, keeping availability and language; undo   |
 | "start over"                                 | full reset                                       |
+| "hi", "surprise me"                          | nothing (a surprise may add constraints)         |
 
 "Refine" means the turn only adjusts: the parser said `refine`, or the turn carries constraints
 or removals but no topic of its own ("I don't want anything supernatural", "under 300 pages").
@@ -52,6 +53,21 @@ _FORGET = re.compile(
     r"(?: about)?(?: the| my| that)? (.+)$"
 )
 # Words that name a constraint field, for "forget the page limit" and chip removal by voice.
+# A message that is only a comparison ("something darker", "a bit shorter please"): the shift,
+# for when the parse has none (rules-only mode, or the LLM missed it).
+_COMPARATIVES = {
+    r"darker": ("facet.darkness", 1), r"lighter|less dark": ("facet.darkness", -1),
+    r"shorter": ("pages", -1), r"longer": ("pages", 1),
+    r"newer|more (?:recent|modern)": ("year", 1), r"older": ("year", -1),
+    r"faster(?: paced)?": ("facet.pace", 1), r"slower(?: paced)?": ("facet.pace", -1),
+    r"more roman(?:ce|tic)": ("facet.romance", 1), r"less roman(?:ce|tic)": ("facet.romance", -1),
+    r"more violen(?:ce|t)": ("facet.violence", 1), r"less violen(?:ce|t)": ("facet.violence", -1),
+}  # fmt: skip
+_FILLER = re.compile(
+    r"\b(?:something|smth|anything|one|ones|a|an|the|bit|little|lot|much|way|even|slightly"
+    r"|maybe|please|pls|and|but|make it|can you|could you|i want|i d like|show me|ok|okay"
+    r"|let s|lets|now|instead|actually|go|book|books|than that|than those|than these)\b"
+)
 _LIKE = re.compile(r"\b(?:like|similar to|more of|in the style of)\b")
 _FIELD_WORDS = {
     "pages": r"pages?|page (?:limit|count)|length|long|short",
@@ -66,7 +82,7 @@ _FIELD_WORDS = {
     "facet.audience": r"audience|ya|teens?|kids|children|adults?",
 }
 
-TurnKind = Literal["new_search", "refine", "new_topic", "start_over", "reference"]
+TurnKind = Literal["new_search", "refine", "new_topic", "start_over", "reference", "chat"]
 
 
 @dataclass(frozen=True)
@@ -79,8 +95,22 @@ class TurnUpdate:
     unresolved: list[str] = field(default_factory=list)  # shifts with nothing to shift from
 
 
-def _label(c: Constraint) -> str:
-    return c.span or f"{'not ' if c.polarity == 'exclude' else ''}{c.field} {c.op} {c.value}"
+_SHIFT_WORDS = {
+    ("pages", -1): "shorter", ("pages", 1): "longer", ("year", 1): "newer", ("year", -1): "older",
+    ("facet.darkness", 1): "darker", ("facet.darkness", -1): "lighter",
+    ("facet.romance", 1): "more romance", ("facet.romance", -1): "less romance",
+    ("facet.violence", 1): "more violence", ("facet.violence", -1): "less violence",
+    ("facet.pace", 1): "faster", ("facet.pace", -1): "slower",
+}  # fmt: skip
+
+
+def label(c: Constraint) -> str:
+    """How a constraint reads on a chip: its words when known, else a readable fallback."""
+    if c.span:
+        return c.span
+    if c.op == "shift" and (words := _SHIFT_WORDS.get((c.field, c.value))):
+        return words
+    return f"{'not ' if c.polarity == 'exclude' else ''}{c.field} {c.op} {c.value}"
 
 
 def _slot(c: Constraint) -> tuple[object, ...]:
@@ -117,42 +147,56 @@ def resolve_shift(c: Constraint, shown: list[ShownBook]) -> Constraint | None:
     if c.op != "shift":
         return c
     up = isinstance(c.value, int | float) and c.value > 0
-    span = c.span or ""
+    span = c.span or _SHIFT_WORDS.get((c.field, 1 if up else -1), "")
 
-    def made(field_: str, op: str, value: object, words: str) -> Constraint:
-        return c.model_copy(
-            update={"field": field_, "op": op, "value": value, "source": "state",
-                    "span": span or words}
-        )  # fmt: skip
+    def made(field_: str, op: str, value: object) -> Constraint:
+        update = {"field": field_, "op": op, "value": value, "source": "state", "span": span}
+        return c.model_copy(update=update)
 
     if c.field in _SCALES:
         median = _median([v for b in shown if (v := getattr(b, c.field[6:])) is not None])
         if median is None:
             return None
-        name = c.field.removeprefix("facet.")
         if up:
-            return made(c.field, "gte", min(3, int(median) + 1), f"more {name}")
+            return made(c.field, "gte", min(3, int(median) + 1))
         # Strictly past the median: "darker" than 2.5 is 3+, "lighter" is 2 or less.
-        return made(c.field, "lte", max(0, math.ceil(median) - 1), f"less {name}")
+        return made(c.field, "lte", max(0, math.ceil(median) - 1))
     if c.field == "facet.pace":
         paces = [_PACE.index(b.pace) for b in shown if b.pace in _PACE]
         if not paces:
             return None
         step = min(2, max(0, round(statistics.median(paces)) + (1 if up else -1)))
-        return made(c.field, "eq", _PACE[step], "faster" if up else "slower")
+        return made(c.field, "eq", _PACE[step])
     if c.field == "pages":
         median = _median([b.pages for b in shown if b.pages])
         if median is None:
             return None
         if up:
-            return made("pages", "gt", round(median * LONGER), "longer")
-        return made("pages", "lt", round(median * SHORTER), "shorter")
+            return made("pages", "gt", round(median * LONGER))
+        return made("pages", "lt", round(median * SHORTER))
     if c.field == "year":
         median = _median([b.year for b in shown if b.year])
         if median is None:
             return None
-        return made("year", "gt" if up else "lt", int(median), "newer" if up else "older")
+        return made("year", "gt" if up else "lt", int(median))
     return None
+
+
+def only_content(text: str) -> str:
+    """`text` without filler words: "" when nothing of substance is left."""
+    return " ".join(_FILLER.sub(" ", text).split())
+
+
+def comparison_shifts(text: str) -> list[Constraint]:
+    """The shifts of a message that is only a comparison; [] if it says anything else."""
+    shifts, rest = [], text
+    for pattern, (field_, step) in _COMPARATIVES.items():
+        if re.search(rf"\b(?:{pattern})\b", rest):
+            rest = re.sub(rf"\b(?:{pattern})\b", " ", rest)
+            shifts.append(
+                Constraint(field=field_, op="shift", value=step, strength="soft", source="rule")
+            )
+    return shifts if shifts and not only_content(rest) else []
 
 
 def removed_fields(message: str) -> list[str]:
@@ -179,9 +223,24 @@ def apply_turn(
         fresh = new_state(state.session_id, now).model_copy(
             update={"mode": state.mode, "turn": state.turn, "recent_turns": state.recent_turns}
         )
-        if not (parsed.semantic_query or parsed.seed_work_ids or parsed.lookup):
+        # Decided on the message, not the parse: the rules may have taken "over" for a number.
+        if not only_content(_START_OVER.sub(" ", text)):
             return TurnUpdate(fresh, "start_over")
+        topic = only_content(_START_OVER.sub(" ", fold_text(parsed.semantic_query)))
         state = fresh  # "start over: something funny" is a new search on a clean slate
+        parsed = parsed.model_copy(update={"semantic_query": topic})
+
+    if not any(c.op == "shift" for c in parsed.constraints) and (shifts := comparison_shifts(text)):
+        parsed = parsed.model_copy(
+            update={"intent": "refine", "semantic_query": "",
+                    "constraints": [*parsed.constraints, *shifts]}
+        )  # fmt: skip
+
+    if parsed.intent in ("other", "surprise"):  # "hi", "surprise me": the topic stays as it is
+        if parsed.intent == "surprise":  # "surprise me, something i can borrow today"
+            plain = [c for c in parsed.constraints if c.op != "shift"]
+            state.constraints = merge_constraints(state.constraints, plain, state.turn)
+        return TurnUpdate(state, "chat")
 
     shown = [b.work_id for b in state.last_results]
     targets = resolve_references(message, shown)
@@ -204,7 +263,7 @@ def apply_turn(
     for c in parsed.constraints:
         absolute = resolve_shift(c, state.last_results)
         if absolute is None:
-            unresolved.append(_label(c))
+            unresolved.append(label(c))
         else:
             constraints.append(absolute)
 
@@ -233,7 +292,7 @@ def apply_turn(
         if kind == "new_topic":
             state.before_reset = state.snapshot()
             state.constraints = [a for a in state.constraints if a.constraint.field in USER_FIELDS]
-            kept = [_label(a.constraint) for a in state.constraints]
+            kept = [label(a.constraint) for a in state.constraints]
         state.semantic_query = parsed.semantic_query
         state.lookup = parsed.lookup
         state.seed_titles = list(parsed.seed_titles)

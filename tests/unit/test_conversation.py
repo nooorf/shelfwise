@@ -138,7 +138,7 @@ def test_a_shift_with_nothing_to_compare_is_reported_not_guessed() -> None:
 
     update = turn(state, "shorter please", parsed("refine", "", c("pages", "shift", -1)))
 
-    assert update.unresolved == ["pages shift -1"]
+    assert update.unresolved == ["shorter"]
     assert active(update.state) == set()
 
 
@@ -201,7 +201,7 @@ def test_start_over_clears_everything_but_can_start_a_new_search() -> None:
 
     assert cleared.kind == "start_over" and not cleared.state.has_search
     assert fresh.kind == "new_search" and active(fresh.state) == set()
-    assert fresh.state.semantic_query == "something funny"
+    assert fresh.state.semantic_query == "funny"  # the start-over words and filler are gone
 
 
 def test_more_like_a_shown_book_reseeds_and_keeps_the_rest() -> None:
@@ -285,3 +285,62 @@ def test_memory_store_expires_idle_sessions() -> None:
     assert store.get("kiosk") is not None
     now[0] = 121.0
     assert store.get("kiosk") is None
+
+
+def test_routing_helpers() -> None:
+    from shelfwise.conversation.merge import TurnUpdate
+    from shelfwise.conversation.service import ConversationService, notes_for, state_request
+
+    state = turn(new_state("s", NOW), "x", parsed("discover", "horror")).state
+    state = record_results(state, shown({}, {}, {}))
+    route = ConversationService._reference
+
+    assert route(None, state, "explain", [2]) == ("explain", [2])  # type: ignore[arg-type]
+    assert route(None, state, "compare", []) == ("compare", [1, 2, 3])  # type: ignore[arg-type]
+    assert route(None, state, "explain", []) == ("clarify", [])  # type: ignore[arg-type]
+    assert route(None, state, "discover", [1, 3]) == ("compare", [1, 3])  # type: ignore[arg-type]
+
+    seeded = state.model_copy(update={"seed_work_ids": [7], "seed_titles": ["Dune"]})
+    assert state_request(seeded, "refine").intent == "similar"
+    assert state_request(state, "refine").intent == "discover"
+    authored = state.model_copy(update={"lookup": LookupSpec(author="Stephen King")})
+    assert state_request(authored, "lookup").intent == "lookup"
+
+    notes = notes_for(TurnUpdate(state, "new_topic", kept=["borrow today"], removed=["pages"],
+                                 unresolved=["shorter"]))  # fmt: skip
+    assert notes == [
+        "New search (kept: borrow today).",
+        "Dropped the page limit.",
+        'I can\'t tell what "shorter" compares to yet: search for something first.',
+    ]
+
+
+@pytest.mark.parametrize(
+    ("message", "expected"),
+    [
+        ("something darker", ["facet.darkness shift 1"]),
+        ("a bit shorter please", ["pages shift -1"]),
+        ("shorter and less romantic", ["pages shift -1", "facet.romance shift -1"]),
+        ("darker fantasy with dragons", []),  # a topic of its own
+        ("dragons", []),
+    ],
+)
+def test_comparison_only_messages(message: str, expected: list[str]) -> None:
+    from shelfwise.conversation.merge import comparison_shifts
+
+    assert [f"{x.field} {x.op} {x.value}" for x in comparison_shifts(message)] == expected
+
+
+def test_rules_only_refinements_and_start_over() -> None:
+    """Without the LLM the parse of "something darker" is just its words (the rules' residual);
+    the merge still sees a refinement. "start over" alone is not a search for "start over"."""
+    state = turn(new_state("s", NOW), "x", parsed("discover", "dark fantasy")).state
+    state = record_results(state, shown({"darkness": 1}, {"darkness": 2}, {"darkness": 2}))
+
+    darker = turn(state, "something darker", parsed("discover", "something darker"))
+    over = turn(darker.state, "start over", parsed("discover", "start"))  # rules took "over"
+
+    assert darker.kind == "refine"
+    assert darker.state.semantic_query == "dark fantasy"
+    assert active(darker.state) == {"facet.darkness gte 3 soft"}
+    assert over.kind == "start_over" and not over.state.has_search
