@@ -23,6 +23,10 @@ Rules of thumb:
 - Rewriting a draft query in your own words? Change its `source` to `persona`.
 - Adding a paraphrase of an existing query? Give it the same `family`.
 
+## `data/blind_sample.csv` — the agreement sample
+
+160 Claude-graded (query, book) pairs, drawn by `scripts/blind.py draw` for a person to grade without seeing Claude's grades (`make label-blind JUDGE=<initials>`). Same columns as `qrels.csv`; the person's grades stay here, and `make agreement JUDGE=<initials>` compares them with `prelabels.csv`. See [GRADING.md](GRADING.md#from-round-2-claudes-grades-checked-on-a-blind-sample).
+
 ## `data/facet_labels.csv` — human book tags
 
 One row per (book, labeller), written by `make label-tags JUDGE=<initials>`. Books are keyed by `work_key` (lowest ISBN-13), like `qrels.csv`, so labels survive catalog rebuilds. A blank cell means "can't tell". `make score-tags` compares the LLM's tags with these: per-tag accuracy and Cohen's kappa (quadratic-weighted for ordered scales), against a majority-answer baseline.
