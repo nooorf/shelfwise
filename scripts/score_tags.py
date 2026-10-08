@@ -82,7 +82,7 @@ def main() -> None:
     report["books"] = sum(key in other for key in reference)
     report["tags"] = agreement_by_tag(reference, other)
     out = report_path(report["git"], "tags")
-    out.write_text(json.dumps(report, indent=2))
+    out.write_text(json.dumps(report, indent=2) + "\n")
 
     print(f"{report['compared']}: {report['books']} books labelled by both")
     header = f"{'tag':20} {'n':>4} {'accuracy':>9} {'kappa':>7} {'±1':>6} {'majority':>9}"

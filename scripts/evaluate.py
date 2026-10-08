@@ -100,7 +100,7 @@ def main() -> None:
             }
 
     out = report_path(report["git"], args.split)
-    out.write_text(json.dumps(report, indent=2))
+    out.write_text(json.dumps(report, indent=2) + "\n")
 
     print(
         f"{args.split} split: {len(scored)} queries scored ({len(no_relevant)} without a relevant book)"

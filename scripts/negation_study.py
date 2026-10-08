@@ -119,7 +119,7 @@ def main() -> None:
         },
     }
     out = report_path(report["git"], "negation-study")
-    out.write_text(json.dumps(report, indent=2))
+    out.write_text(json.dumps(report, indent=2) + "\n")
 
     print(f"negation study: {len(remove)} remove pairs (table) + {len(lure)} lure pairs (JSON), "
           f"violations judged by {args.judge}")  # fmt: skip

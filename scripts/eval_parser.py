@@ -138,7 +138,7 @@ def main() -> None:
     }
     out = None if args.only else report_path(report["git"], f"parser-{args.parser}-{args.split}")
     if out:
-        out.write_text(json.dumps(report, indent=2))
+        out.write_text(json.dumps(report, indent=2) + "\n")
 
     print(f"{args.parser} parser, {report['split']} split: {summary.n} queries")
     if report["llm"]:

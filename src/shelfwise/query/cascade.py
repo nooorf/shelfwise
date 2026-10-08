@@ -9,8 +9,10 @@
    dropped rather than trusted: "harry potter 8" must stay itself, not become Azkaban.
 4. Merge: rule constraints win their fields; a title lookup drops `available_now` (status is
    always shown); negated words are removed from the semantic query.
-5. Sanity: intent must fit what was found (a lookup needs something to look up, `similar`
-   needs a seed). If the LLM is down or answers badly twice, the rules-only parse is returned.
+5. Sanity: every choice in the form needs a word in the message behind it (`check_evidence`;
+   a small model fills the whole form on "hi there"), and intent must fit what was found (a
+   lookup needs something to look up, `similar` needs a seed). If the LLM is down or answers
+   badly twice, the rules-only parse is returned.
 """
 
 import re
@@ -27,7 +29,13 @@ from shelfwise.ingest.genres import GENRES
 from shelfwise.ingest.normalize import fold_text, title_norm
 from shelfwise.llm.client import LLMInvalidOutput, LLMUnavailable, StructuredLLM
 from shelfwise.query.constraints import Constraint
-from shelfwise.query.extract import QueryLLM, build_messages, negated_words, to_constraints
+from shelfwise.query.extract import (
+    QueryLLM,
+    build_messages,
+    check_evidence,
+    negated_words,
+    to_constraints,
+)
 from shelfwise.query.request import LookupSpec, ParsedRequest, constraint_problems, from_rules
 from shelfwise.query.rules import RuleParse, parse_rules
 from shelfwise.retrieval.lookup import REQUEST_WORDS, find_authors, find_titles
@@ -104,6 +112,7 @@ def strip_words(text: str, words: list[str]) -> str:
 
 def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
     """Combine the rule parse and the LLM's form into one request (steps 3-5)."""
+    out = check_evidence(out, rules.text)
     llm_constraints = [
         c for c in to_constraints(out) if c.field not in _RULE_FIELDS or c.op == "shift"
     ]

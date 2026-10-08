@@ -209,6 +209,115 @@ def test_empty_semantic_query_falls_back_to_the_rule_residual() -> None:
     assert request.semantic_query == "cozy mystery"
 
 
+# What Qwen3-4B returned for "hi there" (2026-10-08): the whole form, "space" copied from the
+# avoid field's description.
+FILLED_FORM = {
+    "intent": "other",
+    "darkness": "light",
+    "romance": "wanted",
+    "violence": "none at all",
+    "pace": "fast",
+    "supernatural": "wanted",
+    "audience": "ya",
+    "fiction": "fiction",
+    "reading_level": "advanced",
+    "historical_setting": True,
+    "length_change": "shorter",
+    "year_change": "newer",
+    "popular": True,
+    "avoid": ["space"],
+}
+
+
+@pytest.mark.parametrize("query", ["hi there", "what time does the library close", "manga"])
+def test_choices_the_message_gives_no_reason_for_are_dropped(query: str) -> None:
+    request, _ = parse(query, **FILLED_FORM)
+
+    assert found(request) == set()
+
+
+def test_choices_the_message_does_say_are_kept() -> None:
+    request, _ = parse(
+        "a fast paced cozy fantasy with magic for teens, popular, no romance, shorter than that",
+        **FILLED_FORM | {"romance": "none or minor", "darkness": "light", "avoid": []},
+    )
+
+    assert found(request) == {
+        "facet.darkness lte 1 soft",
+        "facet.romance lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "popular eq True soft",
+        "pages shift -1 soft",
+    }
+
+
+@pytest.mark.parametrize(
+    ("query", "form", "expected"),
+    [
+        # Numbers are the rules' job; a shift needs a comparative.
+        ("fantasy under 300 pages", {"length_change": "shorter"}, {"pages lt 300 hard"}),
+        ("dark fantasy from the last decade", {"year_change": "newer"}, {"year gte 2016 hard"}),
+        # A genre the message doesn't name, or names only through a listed synonym.
+        ("cozy mystery", {"genres": ["computer science", "mystery"]}, {"genre in ['mystery'] soft"}),
+        ("some sci fi", {"genres": ["science fiction"]}, {"genre in ['science fiction'] soft"}),
+        ("learn php to build a website", {"genres": ["programming"]},
+         {"genre in ['programming'] soft"}),
+        # The genre already says it.
+        ("romance novels", {"genres": ["romance"], "romance": "wanted"},
+         {"genre in ['romance'] soft"}),
+        ("historical fiction", {"genres": ["historical fiction"], "historical_setting": True},
+         {"genre in ['historical fiction'] soft"}),
+        # ... unless an era is named.
+        ("historical fiction set in ancient rome",
+         {"genres": ["historical fiction"], "historical_setting": True},
+         {"genre in ['historical fiction'] soft", "facet.historical_setting eq yes soft"}),
+        # Reading-level phrasings from the gold set.
+        ("i dont have much previous knowledge of gpus", {"reading_level": "intro"},
+         {"facet.reading_level eq intro soft"}),
+        ("tdd book for a team thats new to testing", {"reading_level": "intro"},
+         {"facet.reading_level eq intro soft"}),
+        ("i know some python already", {"reading_level": "intermediate"},
+         {"facet.reading_level eq intermediate soft"}),
+        ("best sci fi ever", {"popular": True}, {"popular eq True soft"}),
+    ],
+)  # fmt: skip
+def test_unsupported_shifts_and_genres_are_dropped(
+    query: str, form: dict, expected: set[str]
+) -> None:
+    request, _ = parse(query, intent="discover", **form)
+
+    assert found(request) == expected
+
+
+@pytest.mark.parametrize(
+    ("query", "avoid", "expected"),
+    [
+        ("an unreliable narrator thriller", ["unreliable narrator"], set()),  # not ruled out
+        ("a thriller", ["space"], set()),  # not in the message
+        ("not space stuff", ["space"], {"not theme eq space soft"}),
+        ("a creepy gothic novel, nothing with vampires", ["vampires"],
+         {"not theme eq vampires soft"}),  # a theme, not "nothing supernatural"
+        ("stephen king but not horror", ["horror"], {"not genre in ['horror'] hard"}),
+        ("a sad book but no war", ["war"], {"not theme eq war soft"}),  # a topic, not a genre
+        ("a thriller where no children are harmed", ["children harmed"],
+         {"not theme eq children harmed soft"}),  # words spread out in the message
+        ("anything except mysteries", ["mysteries"], {"not genre in ['mystery'] hard"}),
+        ("the hunger games but less violent", ["violence", "violent"],
+         {"facet.violence shift -1 soft"}),
+        ("a mystery that isnt gory", ["gory"], {"facet.violence lte 2 hard"}),
+        ("books for teens that arent depressing", ["depressing"], {"facet.darkness lte 2 hard"}),
+    ],
+)  # fmt: skip
+def test_avoided_phrases_go_where_parsing_md_puts_them(
+    query: str, avoid: list[str], expected: set[str]
+) -> None:
+    request, _ = parse(query, intent="discover", avoid=avoid)
+
+    assert found(request) == expected
+
+
 @pytest.mark.parametrize(
     ("text", "words", "expected"),
     [
