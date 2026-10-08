@@ -28,8 +28,16 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 from sqlalchemy import Connection
 
-from shelfwise.conversation.merge import TurnUpdate, apply_turn, label, record_results, undo_reset
-from shelfwise.conversation.state import ConversationState, ShownBook, new_state
+from shelfwise.conversation.merge import (
+    TurnUpdate,
+    answer_offer,
+    answer_turn,
+    apply_turn,
+    label,
+    record_results,
+    undo_reset,
+)
+from shelfwise.conversation.state import ConversationState, Offer, ShownBook, new_state
 from shelfwise.conversation.store import SessionStore, new_session_id
 from shelfwise.evaluation.systems import SearchContext
 from shelfwise.generation.context import Candidate, descriptions, matched_labels
@@ -39,10 +47,11 @@ from shelfwise.generation.validate import CatalogNames
 from shelfwise.pipeline import BookResult, Relaxation, SearchService
 from shelfwise.query.constraints import Constraint, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
-from shelfwise.retrieval.filters import allowed_mask
+from shelfwise.retrieval.filters import allowed_mask, relaxations
 
 Route = Literal["search", "explain", "compare", "clarify", "surprise", "chat", "start_over"]
 SURPRISE_PICKS = 3
+MAX_OFFERS = 3
 SURPRISE_POPULARITY_FLOOR = 0.3  # percentile: a quality floor (design doc §15.5)
 _FIELD_WORDS = {
     "pages": "the page limit", "year": "the dates", "available_now": "availability",
@@ -135,11 +144,30 @@ def shown_books(results: list[BookResult], facets: dict[int, dict[str, Any]]) ->
 
 
 def chips(state: ConversationState) -> list[Chip]:
+    """One chip per phrase: "between 150 and 200 pages" is two bounds but one thing to remove."""
     fields = {"field", "op", "value", "strength", "polarity"}
-    return [
-        Chip(label=label(a.constraint), turn=a.turn, **a.constraint.model_dump(include=fields))
-        for a in state.constraints
-    ]
+    out: dict[tuple[str, str], Chip] = {}
+    for a in state.constraints:
+        name = label(a.constraint)
+        out.setdefault(
+            (a.constraint.field, name),
+            Chip(label=name, turn=a.turn, **a.constraint.model_dump(include=fields)),
+        )
+    return list(out.values())
+
+
+def offer_note(offers: list[Offer]) -> str:
+    """'Nothing matches everything. Dropping "after 2015" gives 7; dropping "available now"
+    gives 4, the earliest due back Thu 15 Oct. Which should I drop?'"""
+    parts = []
+    for o in offers:
+        part = f'dropping "{o.label}" gives {o.count}'
+        if o.earliest_due:
+            part += f", the earliest due back {o.earliest_due:%a %d %b}"
+        parts.append(part)
+    question = "Shall I?" if len(offers) == 1 else "Which should I drop?"
+    listed = "; ".join(parts)
+    return f"Nothing matches everything. {listed[0].upper()}{listed[1:]}. {question}"
 
 
 def _humanize_field(field: str) -> str:
@@ -235,6 +263,9 @@ class ConversationService:
         start = time.perf_counter()
         state = self._load(session_id)
         ctx = self.search.context(conn)
+        if (answer := answer_offer(request.message, state.offers)) is not None:
+            return self._answer_offer(conn, ctx, state, request, answer, start)
+        state.offers = []  # not an answer: the offers lapse
         parsed, parse_error = self.search.parse(conn, request.message, ctx)
         parse_ms = (time.perf_counter() - start) * 1000
         update = apply_turn(state, request.message, parsed, self.now())
@@ -272,6 +303,41 @@ class ConversationService:
             conn, ctx, state, update.kind, route, parsed.intent, parse_error, system, ids,
             notes, facets, start, parse_ms, request.message if request.narrate else None,
         )  # fmt: skip
+
+    def _answer_offer(
+        self, conn: Connection, ctx: SearchContext, state: ConversationState,
+        request: TurnRequest, answer: int | Literal["decline"], start: float,
+    ) -> TurnResponse:  # fmt: skip
+        """ "Yes" / "drop the year" / "no, keep them": no parsing, no LLM call."""
+        update = answer_turn(state, request.message, answer, self.now())
+        state = update.state
+        message = request.message if request.narrate else None
+        if update.declined:
+            note = "OK, keeping all of them. You could change what you asked for instead."
+            return self._respond(
+                conn, ctx, state, "relax", "chat", "refine", None, None, [], [note], {},
+                start, 0.0, None,
+            )  # fmt: skip
+        system, ids = self.search.retrieve(
+            ctx, state.semantic_query or request.message, state_request(state, "refine"), True,
+            request.limit,
+        )  # fmt: skip
+        return self._respond(
+            conn, ctx, state, "relax", "search", "refine", None, system, ids,
+            [f'Dropped "{update.dropped[0]}".'], {}, start, 0.0, message,
+        )  # fmt: skip
+
+    def _offers(self, conn: Connection, state: ConversationState) -> list[Offer]:
+        """What dropping each hard constraint would give, best first, minus refused ones."""
+        if contradictions(state.active):
+            return []
+        offers = []
+        for r in relaxations(conn, state.active):
+            name = label(r.dropped[0])
+            if r.count and name not in state.declined_relaxations:
+                offers.append(Offer(label=name, constraints=list(r.dropped), count=r.count,
+                                    earliest_due=r.earliest_due))  # fmt: skip
+        return offers[:MAX_OFFERS]
 
     def undo(
         self, conn: Connection, session_id: str, limit: int = 5, narrate: bool = True
@@ -334,14 +400,17 @@ class ConversationService:
     ) -> TurnResponse:  # fmt: skip
         """`message`: what to narrate for (None: no narration)."""
         results = self.search.details(conn, ids, ctx.today)
-        relaxations: list[Relaxation] = []
+        relaxations_out: list[Relaxation] = []
         if route == "search" and not results:
             if conflicts := contradictions(state.active):
                 notes.append("These can't all hold: " + "; ".join(x.message() for x in conflicts))
-            elif relaxations := self.search.relax(conn, state.active):
-                best = relaxations[0]
-                notes.append(f"Nothing matches everything. Without \"{best.drop}\" there are "
-                             f"{best.count}.")  # fmt: skip
+            elif offers := self._offers(conn, state):
+                state = state.model_copy(update={"offers": offers})
+                notes.append(offer_note(offers))
+                relaxations_out = [
+                    Relaxation(drop=o.label, count=o.count, earliest_due=o.earliest_due)
+                    for o in offers
+                ]
             else:
                 notes.append("Nothing in the catalog matches that.")
         if route in ("search", "surprise"):
@@ -368,7 +437,7 @@ class ConversationService:
             results=results,
             reply=reply,
             facets=facets,
-            relaxations=relaxations,
+            relaxations=relaxations_out,
             can_undo=state.before_reset is not None,
             timings_ms={
                 "parse": round(parse_ms, 1),

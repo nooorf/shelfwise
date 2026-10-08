@@ -15,6 +15,7 @@ Rules that keep this honest:
 import operator
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
+from datetime import date
 from typing import Any
 
 import numpy as np
@@ -188,6 +189,8 @@ def allowed_mask(
 class Relaxation:
     dropped: tuple[Constraint, ...]
     count: int
+    # Dropping "available now": when the first of those books is due back (design doc §12.3).
+    earliest_due: date | None = None
 
     @property
     def label(self) -> str:
@@ -210,5 +213,19 @@ def relaxations(conn: Connection, constraints: list[Constraint]) -> list[Relaxat
         count = conn.execute(
             select(func.count()).select_from(filter_query(rest).subquery())
         ).scalar_one()
-        results.append(Relaxation(tuple(group), int(count)))
+        due = earliest_due(conn, rest) if any(c.field == "available_now" for c in group) else None
+        results.append(Relaxation(tuple(group), int(count), due))
     return sorted(results, key=lambda r: -r.count)
+
+
+def earliest_due(conn: Connection, constraints: list[Constraint]) -> date | None:
+    """The soonest due date among borrowed copies of the works matching `constraints`."""
+    allowed = filter_query(constraints).subquery()
+    return conn.execute(
+        select(func.min(schema.copy.c.due_date))
+        .select_from(schema.copy.join(schema.edition))
+        .where(
+            schema.edition.c.work_id.in_(select(allowed.c.work_id)),
+            schema.copy.c.status == "on_loan",
+        )
+    ).scalar_one()

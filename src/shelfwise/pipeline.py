@@ -90,6 +90,7 @@ class BookResult(BaseModel):
 class Relaxation(BaseModel):
     drop: str  # the words of the constraint to drop, e.g. "under 100 pages"
     count: int  # how many books match without it
+    earliest_due: date | None = None  # dropping "available now": the first one back
 
 
 class SearchResponse(BaseModel):
@@ -189,7 +190,7 @@ class SearchService:
         if not any(c.strength == "hard" for c in constraints) or contradictions(constraints):
             return []
         return [
-            Relaxation(drop=r.label, count=r.count)
+            Relaxation(drop=r.label, count=r.count, earliest_due=r.earliest_due)
             for r in relaxations(conn, constraints)[:MAX_RELAXATIONS]
             if r.count
         ]

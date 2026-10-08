@@ -30,6 +30,7 @@ from shelfwise.conversation.state import (
     MAX_RECENT_TURNS,
     ActiveConstraint,
     ConversationState,
+    Offer,
     ShownBook,
     Turn,
     new_state,
@@ -82,7 +83,7 @@ _FIELD_WORDS = {
     "facet.audience": r"audience|ya|teens?|kids|children|adults?",
 }
 
-TurnKind = Literal["new_search", "refine", "new_topic", "start_over", "reference", "chat"]
+TurnKind = Literal["new_search", "refine", "new_topic", "start_over", "reference", "chat", "relax"]
 
 
 @dataclass(frozen=True)
@@ -93,6 +94,8 @@ class TurnUpdate:
     kept: list[str] = field(default_factory=list)  # what a topic reset kept ("available now")
     removed: list[str] = field(default_factory=list)  # fields "forget the ..." took away
     unresolved: list[str] = field(default_factory=list)  # shifts with nothing to shift from
+    dropped: list[str] = field(default_factory=list)  # an accepted relaxation's label
+    declined: list[str] = field(default_factory=list)  # relaxations refused: never re-offered
 
 
 _SHIFT_WORDS = {
@@ -296,7 +299,9 @@ def apply_turn(
                     "constraints": [*parsed.constraints, *shifts]}
         )  # fmt: skip
 
-    if parsed.intent in ("other", "surprise"):  # "hi", "surprise me": the topic stays as it is
+    # "hi", "surprise me": the topic stays as it is. But "drop the year" is a removal even when
+    # the parser calls it small talk (Qwen3-4B did, 2026-10-08).
+    if parsed.intent in ("other", "surprise") and not removed_fields(message):
         if parsed.intent == "surprise":  # "surprise me, something i can borrow today"
             plain = [c for c in parsed.constraints if c.op != "shift"]
             state.constraints = merge_constraints(state.constraints, plain, state.turn)
@@ -317,6 +322,11 @@ def apply_turn(
     removed = removed_fields(message)
     if removed:
         state.constraints = [a for a in state.constraints if a.constraint.field not in removed]
+        if not only_content(_FORGET.sub(" ", text)):  # just "drop the year": no topic of its own
+            parsed = parsed.model_copy(
+                update={"intent": "refine", "semantic_query": "", "seed_work_ids": [],
+                        "seed_titles": [], "lookup": None}
+            )  # fmt: skip
 
     unresolved: list[str] = []
     constraints = []
@@ -359,6 +369,65 @@ def apply_turn(
         state.seed_work_ids = list(parsed.seed_work_ids)
     state.constraints = merge_constraints(state.constraints, constraints, state.turn)
     return TurnUpdate(state, kind, kept=kept, removed=removed, unresolved=unresolved)
+
+
+# Whole-message answers only: "no romance please" is a new request, not a refusal.
+_POLITE = r"(?: (?:please|thanks|thank you|then|sure|ok|okay|do it|go ahead|drop it|drop that))*"
+_YES = re.compile(
+    rf"^(?:yes|yeah|yep|yup|sure|ok|okay|do it|go ahead|please do|fine|alright|sounds good"
+    rf"|why not|drop it|that one){_POLITE}$"
+)
+_KEEP = r"keep (?:it|them|those|everything|all|all of them)|leave (?:it|them)"
+_NO = re.compile(
+    rf"^(?:no|nope|nah|{_KEEP}|don t|never ?mind)(?: (?:no|{_KEEP}|please|thanks|thank you|ok))*$"
+)
+
+
+def answer_offer(message: str, offers: list[Offer]) -> int | Literal["decline"] | None:
+    """Which pending relaxation the message accepts (its index), "decline", or None when it's
+    not an answer at all (a new message: the offers lapse).
+
+    Naming one wins ("no, drop the year instead"); then pointing ("the second one"); then a
+    bare yes, which takes the first offer (the most books), or a no."""
+    if not offers:
+        return None
+    text = fold_text(message)
+    for i, offer in enumerate(offers):
+        if (words := fold_text(offer.label)) and f" {words} " in f" {text} ":
+            return i
+    fields = removed_fields(message) or [
+        f for f, pattern in _FIELD_WORDS.items()
+        if len(text.split()) <= 6 and re.search(rf"\b(?:{pattern})\b", text)
+    ]  # fmt: skip
+    named = [i for i, o in enumerate(offers) if any(c.field in fields for c in o.constraints)]
+    if len(named) == 1:
+        return named[0]
+    if picked := resolve_references(message, list(range(len(offers)))):
+        return picked[0]
+    if _NO.search(text):
+        return "decline"
+    if _YES.search(text):
+        return 0
+    return None
+
+
+def answer_turn(
+    state: ConversationState, message: str, answer: int | Literal["decline"], now: datetime
+) -> TurnUpdate:
+    """The state after the reader answered the pending relaxation offers."""
+    state = state.model_copy(deep=True)
+    state.turn += 1
+    state.last_active = now
+    turns = [*state.recent_turns, Turn(text=message, intent="refine")]
+    state.recent_turns = turns[-MAX_RECENT_TURNS:]
+    offers, state.offers = state.offers, []
+    if answer == "decline":
+        declined = [o.label for o in offers]
+        state.declined_relaxations = list(dict.fromkeys([*state.declined_relaxations, *declined]))
+        return TurnUpdate(state, "relax", declined=declined)
+    offer = offers[answer]
+    state.constraints = [a for a in state.constraints if a.constraint not in offer.constraints]
+    return TurnUpdate(state, "relax", dropped=[offer.label])
 
 
 def undo_reset(state: ConversationState, now: datetime) -> ConversationState | None:

@@ -369,3 +369,79 @@ def test_chips_read_as_plain_words(constraint: Constraint, words: str) -> None:
     from shelfwise.conversation.merge import label
 
     assert label(constraint) == words
+
+
+def offers_for_test():  # type: ignore[no-untyped-def]
+    from datetime import date
+
+    from shelfwise.conversation.state import Offer
+
+    return [
+        Offer(label="after 2015", constraints=[c("year", "gt", 2015, "hard")], count=7),
+        Offer(label="available now", constraints=[c("available_now", "eq", True, "hard")],
+              count=4, earliest_due=date(2026, 10, 15)),
+    ]  # fmt: skip
+
+
+@pytest.mark.parametrize(
+    ("message", "answer"),
+    [
+        ("yes", 0),  # the one with the most books
+        ("ok then", 0),
+        ("sure, drop it", 0),
+        ("drop the year", 0),
+        ("after 2015 can go", 0),
+        ("the second one", 1),
+        ("forget the availability", 1),
+        ("no", "decline"),
+        ("no thanks, keep them", "decline"),
+        ("no romance please", None),  # a new request, not a refusal
+        ("something funny instead", None),
+    ],
+)
+def test_answers_to_relaxation_offers(message: str, answer: object) -> None:
+    from shelfwise.conversation.merge import answer_offer
+
+    assert answer_offer(message, offers_for_test()) == answer
+
+
+def test_accepting_drops_the_constraint_and_declining_is_remembered() -> None:
+    from shelfwise.conversation.merge import answer_turn
+    from shelfwise.conversation.service import offer_note
+
+    state = turn(
+        new_state("s", NOW),
+        "x",
+        parsed(
+            "discover",
+            "mystery",
+            c("year", "gt", 2015, "hard"),
+            c("available_now", "eq", True, "hard"),
+        ),
+    ).state
+    state = state.model_copy(update={"offers": offers_for_test()})  # fmt: skip
+
+    accepted = answer_turn(state, "the second one", 1, NOW)
+    declined = answer_turn(state, "no", "decline", NOW)
+
+    assert accepted.dropped == ["available now"] and accepted.state.offers == []
+    assert active(accepted.state) == {"year gt 2015 hard"}
+    assert declined.state.declined_relaxations == ["after 2015", "available now"]
+    assert active(declined.state) == active(state)
+    assert offer_note(offers_for_test()) == (
+        'Nothing matches everything. Dropping "after 2015" gives 7; dropping "available now" '
+        "gives 4, the earliest due back Thu 15 Oct. Which should I drop?"
+    )
+
+
+def test_a_removal_is_never_small_talk() -> None:
+    state = turn(
+        new_state("s", NOW), "x", parsed("discover", "cyberpunk", c("year", "eq", 2025, "hard"))
+    ).state
+
+    update = turn(state, "drop the year", parsed("other"))
+    worded = turn(state, "drop the year", parsed("discover", "drop the year"))  # fmt: skip
+
+    assert (update.kind, update.removed) == ("refine", ["year"])
+    assert active(update.state) == set()
+    assert (worded.kind, worded.state.semantic_query) == ("refine", "cyberpunk")

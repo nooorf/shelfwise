@@ -5,7 +5,7 @@ last three turns for tone. Everything here is JSON-serializable, so a session su
 process restart in Redis (`conversation.store`).
 """
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -34,6 +34,15 @@ class ActiveConstraint(BaseModel):
     turn: int  # the turn that said it, for the chips and for debugging
 
 
+class Offer(BaseModel):
+    """A relaxation put to the reader: drop these constraints, get `count` books."""
+
+    label: str  # "after 2015"
+    constraints: list[Constraint]  # what dropping it removes (two for "the 2010s")
+    count: int
+    earliest_due: date | None = None  # for "available now": the first copy back
+
+
 class Turn(BaseModel):
     text: str
     intent: Intent
@@ -51,7 +60,8 @@ class ConversationState(BaseModel):
     seed_work_ids: list[int] = Field(default_factory=list)
     last_results: list[ShownBook] = Field(default_factory=list)  # ordered, as shown
     shown_ids: list[int] = Field(default_factory=list)  # everything shown this session
-    declined_relaxations: list[str] = Field(default_factory=list)
+    declined_relaxations: list[str] = Field(default_factory=list)  # labels: never re-offered
+    offers: list[Offer] = Field(default_factory=list)  # awaiting an answer, most results first
     recent_turns: list[Turn] = Field(default_factory=list)  # the last MAX_RECENT_TURNS
     # The state just before a topic reset, so "undo" can bring it back (one level).
     before_reset: "ConversationState | None" = None

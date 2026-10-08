@@ -7,7 +7,7 @@ from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import Connection, insert, update
+from sqlalchemy import Connection, insert, select, update
 
 from shelfwise.api.main import create_app
 from shelfwise.catalog import schema
@@ -219,3 +219,48 @@ def test_narration_can_be_skipped(client: TestClient) -> None:
 
     assert body["results"] and body["reply"] is None
     assert body["timings_ms"]["narrate"] == 0.0
+
+
+def lend(conn: Connection, work_id: int, due: date) -> None:
+    editions = select(schema.edition.c.edition_id).where(schema.edition.c.work_id == work_id)
+    conn.execute(
+        update(schema.copy)
+        .where(schema.copy.c.edition_id.in_(editions))
+        .values(status="on_loan", due_date=due)
+    )
+
+
+def test_no_match_offers_relaxations_and_remembers_the_answer(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    lend(conn, catalog["The Silent Patient"], date(2026, 10, 20))
+    lend(conn, catalog["The Thursday Murder Club"], date(2026, 10, 15))
+    forms = [{"intent": "discover", "semantic_query": "something"}]
+    query = "something available now published after 2018"
+    with make_client(conn, forms) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+
+        empty = say(client, session, query)
+        picked = say(client, session, "the second one")
+        again = say(client, session, query)
+        refused = say(client, session, "no thanks")
+        last = say(client, session, query)
+
+    # The 2019 and 2020 books are both out; everything else is older.
+    assert empty["results"] == []
+    assert [(r["drop"], r["count"], r["earliest_due"]) for r in empty["relaxations"]] == [
+        ("published after 2018", 4, None),
+        ("available now", 2, "2026-10-15"),
+    ]
+    assert empty["notes"][-1].endswith("the earliest due back Thu 15 Oct. Which should I drop?")
+
+    assert (picked["kind"], picked["route"]) == ("relax", "search")
+    assert picked["notes"][0] == 'Dropped "available now".'
+    assert {r["title"] for r in picked["results"]} == {
+        "The Silent Patient", "The Thursday Murder Club"
+    }  # fmt: skip
+
+    assert again["results"] == [] and again["relaxations"]
+    assert (refused["kind"], refused["route"]) == ("relax", "chat")
+    assert last["relaxations"] == []  # refused once, never offered again
+    assert last["notes"][-1] == "Nothing in the catalog matches that."
