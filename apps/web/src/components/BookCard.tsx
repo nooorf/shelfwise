@@ -12,9 +12,10 @@ interface Props {
   note?: ReplyItem
   writing: boolean
   onFeedback?: (book: BookResult, more: boolean) => void
+  onOpen?: (book: BookResult) => void
 }
 
-export function BookCard({ book, position, note, writing, onFeedback }: Props) {
+export function BookCard({ book, position, note, writing, onFeedback, onOpen }: Props) {
   const author = book.authors.join(', ') || 'Unknown author'
   const facts = [book.year, book.pages && `${book.pages} pp`].filter(Boolean).join(' · ')
   return (
@@ -29,7 +30,19 @@ export function BookCard({ book, position, note, writing, onFeedback }: Props) {
         </span>
       </div>
       <div>
-        <h3 className="font-serif text-base leading-tight font-semibold">{book.title}</h3>
+        <h3 className="font-serif text-base leading-tight font-semibold">
+          {onOpen ? (
+            <button
+              type="button"
+              onClick={() => onOpen(book)}
+              className="text-left hover:underline focus-visible:underline"
+            >
+              {book.title}
+            </button>
+          ) : (
+            book.title
+          )}
+        </h3>
         <p className="text-sm text-muted">{author}</p>
         {facts && <p className="text-xs text-muted">{facts}</p>}
       </div>

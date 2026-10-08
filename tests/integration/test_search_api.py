@@ -236,3 +236,25 @@ def test_search_endpoint(client: TestClient) -> None:
 @pytest.mark.parametrize("payload", [{"query": ""}, {"query": "x", "limit": 0}, {}])
 def test_invalid_requests_are_rejected(client: TestClient, payload: dict[str, object]) -> None:
     assert client.post("/api/v1/search", json=payload).status_code == 422
+
+
+def test_book_endpoint_shows_the_record_behind_a_card(
+    client: TestClient, conn: Connection, catalog: dict[str, int]
+) -> None:
+    work_id = catalog["Gone Girl"]
+    edition = conn.execute(
+        schema.edition.select().where(schema.edition.c.work_id == work_id)
+    ).first()
+    assert edition is not None
+    add_copy(conn, edition.edition_id, "available")
+    add_copy(conn, edition.edition_id, "lost")
+
+    book = client.get(f"/api/v1/books/{work_id}").json()
+
+    assert (book["title"], book["authors"]) == ("Gone Girl", ["Gillian Flynn"])
+    assert book["description"] == "Gone Girl: a dark psychological thriller"
+    assert [e["isbn13"] for e in book["editions"]] == ["9780307588371"]
+    assert [c["status"] for c in book["copies"]] == ["available", "on_loan"]  # lost left out
+    assert book["copies"][1]["due_date"] == "2026-10-10"
+    assert book["availability"]["available_copies"] == 1
+    assert client.get("/api/v1/books/999999999").status_code == 404

@@ -66,6 +66,46 @@
         }
       }
     },
+    "/api/v1/books/{work_id}": {
+      "get": {
+        "summary": "Book",
+        "description": "One book for the drawer: the card's facts with live availability, the description,\nits tags, its editions and where every copy is.",
+        "operationId": "book_api_v1_books__work_id__get",
+        "parameters": [
+          {
+            "name": "work_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Work Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/sessions": {
       "post": {
         "summary": "Start Session",
@@ -372,6 +412,120 @@
         ],
         "title": "AvailabilityState"
       },
+      "BookDetail": {
+        "properties": {
+          "work_id": {
+            "type": "integer",
+            "title": "Work Id"
+          },
+          "work_key": {
+            "type": "string",
+            "title": "Work Key"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtitle"
+          },
+          "authors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Authors"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "pages": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pages"
+          },
+          "genres": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Genres"
+          },
+          "availability": {
+            "$ref": "#/components/schemas/Availability"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "tags": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tags"
+          },
+          "editions": {
+            "items": {
+              "$ref": "#/components/schemas/EditionInfo"
+            },
+            "type": "array",
+            "title": "Editions"
+          },
+          "copies": {
+            "items": {
+              "$ref": "#/components/schemas/CopyInfo"
+            },
+            "type": "array",
+            "title": "Copies"
+          }
+        },
+        "type": "object",
+        "required": [
+          "work_id",
+          "work_key",
+          "title",
+          "subtitle",
+          "authors",
+          "year",
+          "pages",
+          "genres",
+          "availability",
+          "description",
+          "tags",
+          "editions",
+          "copies"
+        ],
+        "title": "BookDetail",
+        "description": "Everything the book drawer shows: the card's facts plus the record behind them."
+      },
       "BookFeedback": {
         "properties": {
           "work_id": {
@@ -555,6 +709,129 @@
         ],
         "title": "ChipRemoval",
         "description": "The chip to take away, as the response showed it: its field and label."
+      },
+      "CopyInfo": {
+        "properties": {
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "floor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Floor"
+          },
+          "call_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Call Number"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "due_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "branch",
+          "floor",
+          "call_number",
+          "status",
+          "due_date"
+        ],
+        "title": "CopyInfo"
+      },
+      "EditionInfo": {
+        "properties": {
+          "isbn13": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isbn13"
+          },
+          "publisher": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "pages": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pages"
+          },
+          "format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Format"
+          }
+        },
+        "type": "object",
+        "required": [
+          "isbn13",
+          "publisher",
+          "year",
+          "pages",
+          "format"
+        ],
+        "title": "EditionInfo"
       },
       "HTTPValidationError": {
         "properties": {

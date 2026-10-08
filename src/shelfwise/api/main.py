@@ -20,7 +20,13 @@ from shelfwise.conversation.service import (
     TurnResponse,
 )
 from shelfwise.logging import configure_logging
-from shelfwise.pipeline import SearchRequest, SearchResponse, SearchService, build_service
+from shelfwise.pipeline import (
+    BookDetail,
+    SearchRequest,
+    SearchResponse,
+    SearchService,
+    build_service,
+)
 
 NARRATE_TIMEOUT_S = 60.0  # a whole reply; past it the reply falls back to templates
 
@@ -113,6 +119,19 @@ def create_app(
         """Stateless search: parsed filters, ranked books with live availability, and, when
         nothing matches every hard filter, which one to drop and how many books that gives."""
         return service.search(conn, request)
+
+    @v1.get("/books/{work_id}")
+    def book(
+        work_id: int,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        service: Annotated[SearchService, Depends(search_service)],
+    ) -> BookDetail:
+        """One book for the drawer: the card's facts with live availability, the description,
+        its tags, its editions and where every copy is."""
+        detail = service.book_detail(conn, work_id, service.today())
+        if detail is None:
+            raise HTTPException(404, "no such book")
+        return detail
 
     @v1.post("/sessions", status_code=201)
     def start_session(

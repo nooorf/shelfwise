@@ -87,6 +87,31 @@ class BookResult(BaseModel):
     availability: Availability
 
 
+class EditionInfo(BaseModel):
+    isbn13: str | None
+    publisher: str | None
+    year: int | None
+    pages: int | None
+    format: str | None
+
+
+class CopyInfo(BaseModel):
+    branch: str
+    floor: str | None
+    call_number: str | None
+    status: str  # available, on_loan, on_hold, reference_only, ...
+    due_date: date | None
+
+
+class BookDetail(BookResult):
+    """Everything the book drawer shows: the card's facts plus the record behind them."""
+
+    description: str | None
+    tags: dict[str, Any]  # the book's facet tags (darkness, pace, audience, ...), unknown = None
+    editions: list[EditionInfo]
+    copies: list[CopyInfo]  # lost copies left out
+
+
 class Relaxation(BaseModel):
     drop: str  # the words of the constraint to drop, e.g. "under 100 pages"
     count: int  # how many books match without it
@@ -130,6 +155,33 @@ _LOCATION_SQL = text(
     ORDER BY e.work_id,
              CASE c.status WHEN 'available' THEN 0 WHEN 'reference_only' THEN 1 ELSE 2 END,
              c.call_number
+    """
+)
+
+
+_DRAWER_SQL = text(
+    """
+    SELECT w.description,
+           (SELECT row_to_json(f) FROM (
+              SELECT darkness, romance, violence, pace, supernatural, audience, fiction,
+                     historical_setting, setting_period, reading_level
+              FROM work_facets wf WHERE wf.work_id = w.work_id) f) AS tags
+    FROM work w WHERE w.work_id = :id
+    """
+)
+_EDITIONS_SQL = text(
+    """
+    SELECT isbn13, publisher, pub_year AS year, pages, format FROM edition
+    WHERE work_id = :id ORDER BY pub_year DESC NULLS LAST, isbn13
+    """
+)
+_COPIES_SQL = text(
+    """
+    SELECT c.branch, c.floor, c.call_number, c.status::text AS status, c.due_date
+    FROM copy c JOIN edition e USING (edition_id)
+    WHERE e.work_id = :id AND c.status <> 'lost'
+    ORDER BY CASE c.status WHEN 'available' THEN 0 WHEN 'reference_only' THEN 1 ELSE 2 END,
+             c.due_date NULLS LAST, c.call_number
     """
 )
 
@@ -252,6 +304,21 @@ class SearchService:
             return from_rules(parse_rules(query, ctx.today)), "no embeddings: keyword search only"
         result = CascadeParser(self.llm, CatalogLinker(conn)).parse(query, ctx.today)
         return result.request, result.error
+
+    def book_detail(self, conn: Connection, work_id: int, today: date) -> BookDetail | None:
+        """The drawer's view of one book, or None if it isn't in the catalog."""
+        row = conn.execute(_DRAWER_SQL, {"id": work_id}).one_or_none()
+        if row is None:
+            return None
+        editions = conn.execute(_EDITIONS_SQL, {"id": work_id})
+        copies = conn.execute(_COPIES_SQL, {"id": work_id})
+        return BookDetail(
+            **self.details(conn, [work_id], today)[0].model_dump(),
+            description=row.description,
+            tags=dict(row.tags or {}),
+            editions=[EditionInfo(**r._mapping) for r in editions],
+            copies=[CopyInfo(**r._mapping) for r in copies],
+        )
 
     def details(self, conn: Connection, ids: list[int], today: date) -> list[BookResult]:
         if not ids:

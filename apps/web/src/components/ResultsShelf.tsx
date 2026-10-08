@@ -1,5 +1,8 @@
+import { useState } from 'react'
+
 import type { BookResult, Relaxation, Reply, TurnResponse } from '../api/types'
 import { BookCard } from './BookCard'
+import { BookDrawer } from './BookDrawer'
 
 interface Props {
   shelf: TurnResponse | null
@@ -37,6 +40,7 @@ function Offers({ offers, onAsk }: { offers: Relaxation[]; onAsk: (text: string)
 }
 
 export function ResultsShelf({ shelf, reply, writing, onAsk, onFeedback }: Props) {
+  const [openId, setOpenId] = useState<number | null>(null)
   if (!shelf) {
     return (
       <div className="grid h-full place-items-center p-8 text-center text-muted">
@@ -47,6 +51,7 @@ export function ResultsShelf({ shelf, reply, writing, onAsk, onFeedback }: Props
     )
   }
   const notes = new Map(reply?.items.map((item) => [item.work_id, item]))
+  const open = shelf.results.find((b) => b.work_id === openId)
   return (
     <section aria-label="Books" className="flex flex-col gap-4">
       {reply?.intro && <p className="font-serif text-lg">{reply.intro}</p>}
@@ -60,10 +65,20 @@ export function ResultsShelf({ shelf, reply, writing, onAsk, onFeedback }: Props
             note={notes.get(book.work_id)}
             writing={writing && !reply}
             onFeedback={onFeedback}
+            onOpen={(b) => setOpenId(b.work_id)}
           />
         ))}
       </div>
       {reply?.follow_up && <p className="text-muted italic">{reply.follow_up}</p>}
+      {open && (
+        <BookDrawer
+          key={open.work_id}
+          book={open}
+          note={notes.get(open.work_id)}
+          onClose={() => setOpenId(null)}
+          onFeedback={onFeedback}
+        />
+      )}
     </section>
   )
 }

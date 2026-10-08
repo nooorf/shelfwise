@@ -1,4 +1,5 @@
 // REST calls: sessions are created and ended over HTTP; turns go over the WebSocket.
+import type { BookDetail } from './types'
 
 export async function startSession(): Promise<string> {
   const response = await fetch('/api/v1/sessions', { method: 'POST' })
@@ -15,4 +16,11 @@ export async function endSession(sessionId: string): Promise<void> {
 export function socketUrl(sessionId: string, location: Location = window.location): string {
   const scheme = location.protocol === 'https:' ? 'wss' : 'ws'
   return `${scheme}://${location.host}/api/v1/sessions/${sessionId}/stream`
+}
+
+/** One book for the drawer: the card's facts, the description, tags, editions and copies. */
+export async function getBook(workId: number): Promise<BookDetail> {
+  const response = await fetch(`/api/v1/books/${workId}`)
+  if (!response.ok) throw new Error(`could not load the book (${response.status})`)
+  return (await response.json()) as BookDetail
 }

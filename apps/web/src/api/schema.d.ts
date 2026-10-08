@@ -42,6 +42,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/books/{work_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Book
+         * @description One book for the drawer: the card's facts with live availability, the description,
+         *     its tags, its editions and where every copy is.
+         */
+        get: operations["book_api_v1_books__work_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/sessions": {
         parameters: {
             query?: never;
@@ -186,6 +207,39 @@ export interface components {
          */
         AvailabilityState: "available" | "in_library_only" | "due_soon" | "borrowed" | "unavailable";
         /**
+         * BookDetail
+         * @description Everything the book drawer shows: the card's facts plus the record behind them.
+         */
+        BookDetail: {
+            /** Work Id */
+            work_id: number;
+            /** Work Key */
+            work_key: string;
+            /** Title */
+            title: string;
+            /** Subtitle */
+            subtitle: string | null;
+            /** Authors */
+            authors: string[];
+            /** Year */
+            year: number | null;
+            /** Pages */
+            pages: number | null;
+            /** Genres */
+            genres: string[];
+            availability: components["schemas"]["Availability"];
+            /** Description */
+            description: string | null;
+            /** Tags */
+            tags: {
+                [key: string]: unknown;
+            };
+            /** Editions */
+            editions: components["schemas"]["EditionInfo"][];
+            /** Copies */
+            copies: components["schemas"]["CopyInfo"][];
+        };
+        /**
          * BookFeedback
          * @description "More like this" / "less like this" on a shown book.
          */
@@ -264,6 +318,32 @@ export interface components {
              * @default true
              */
             narrate: boolean;
+        };
+        /** CopyInfo */
+        CopyInfo: {
+            /** Branch */
+            branch: string;
+            /** Floor */
+            floor: string | null;
+            /** Call Number */
+            call_number: string | null;
+            /** Status */
+            status: string;
+            /** Due Date */
+            due_date: string | null;
+        };
+        /** EditionInfo */
+        EditionInfo: {
+            /** Isbn13 */
+            isbn13: string | null;
+            /** Publisher */
+            publisher: string | null;
+            /** Year */
+            year: number | null;
+            /** Pages */
+            pages: number | null;
+            /** Format */
+            format: string | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -529,6 +609,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SearchResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    book_api_v1_books__work_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                work_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookDetail"];
                 };
             };
             /** @description Validation Error */
