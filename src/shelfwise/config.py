@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     rerank_model: str | None = None
     # Local LLM served by Ollama. Mac (8 GB): qwen3:4b; RTX 4090: qwen3:8b or qwen3:14b.
     llm_model: str = "qwen3:4b"
+    # How the API reads queries: "cascade" (rules + the LLM, falling back to the rules when
+    # Ollama is down) or "rules" (no LLM at all).
+    query_parser: Literal["cascade", "rules"] = "cascade"
     log_level: str = "INFO"
     log_json: bool = True
 

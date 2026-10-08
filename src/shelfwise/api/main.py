@@ -39,7 +39,8 @@ class _Resources:
         with self._lock:
             if self._service is None:
                 dense = self.settings.embedding_model if self.settings.search_dense else None
-                self._service = build_service(dense, conn, self.settings.rerank_model)
+                llm = self.settings.llm_model if self.settings.query_parser == "cascade" else None
+                self._service = build_service(dense, conn, self.settings.rerank_model, llm)
             return self._service
 
 

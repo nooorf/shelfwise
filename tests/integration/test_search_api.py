@@ -10,10 +10,11 @@ from shelfwise.catalog import schema
 from shelfwise.catalog.meta import bump_catalog_version
 from shelfwise.config import Settings
 from shelfwise.embed.store import embed_missing, refresh_search_text
+from shelfwise.llm.client import LLMUnavailable
 from shelfwise.pipeline import SearchRequest, SearchService
 from shelfwise.ranking.rerank import CachedReranker
 
-from ..fakes import FakeEmbedder, FakeReranker
+from ..fakes import FakeEmbedder, FakeLLM, FakeReranker
 from .factories import add_author, add_copy, add_edition, add_work
 
 TODAY = date(2026, 10, 7)
@@ -151,6 +152,61 @@ def test_reranker_reorders_hybrid_results_when_configured(
     assert response.results[0].title == "Sharp Objects"  # also a title lookup: stays first
     assert inner.calls and inner.calls[0][0] == "something like sharp objects"
     assert all("Title:" in doc for doc in inner.calls[0][1])  # it reads each book's search text
+
+
+def llm_service(conn: Connection, llm: FakeLLM) -> SearchService:
+    embedder = FakeEmbedder()
+    refresh_search_text(conn)
+    embed_missing(conn, embedder)
+    return SearchService(embedder=embedder, today=lambda: TODAY, llm=llm)
+
+
+def test_the_llm_parse_drives_the_search(conn: Connection, catalog: dict[str, int]) -> None:
+    llm = FakeLLM({
+        "intent": "discover",
+        "genres": ["thriller"],
+        "supernatural": "excluded",
+        "semantic_query": "a dark thriller nothing supernatural",
+    })  # fmt: skip
+
+    response = search(
+        conn, "a dark thriller under 300 pages, nothing supernatural", llm_service(conn, llm)
+    )
+
+    assert (response.parser, response.system, response.parse_error) == (
+        "cascade", "parsed_hybrid", None
+    )  # fmt: skip
+    assert response.intent == "discover"
+    assert response.residual == "a dark thriller"  # the negated word is stripped
+    assert {f"{c.polarity} {c.field} {c.op} {c.value}" for c in response.constraints} == {
+        "include pages lt 300",
+        "include genre in ['thriller']",
+        "exclude facet.supernatural eq yes",
+    }
+    assert [r.title for r in response.results] == ["Sharp Objects"]  # the only one < 300 pp
+
+
+def test_plain_lookups_skip_the_llm(conn: Connection, catalog: dict[str, int]) -> None:
+    llm = FakeLLM(LLMUnavailable("must not be called"))
+
+    response = search(conn, "do you have gone girl", llm_service(conn, llm))
+
+    assert llm.calls == []
+    assert (response.parser, response.intent) == ("cascade", "lookup")
+    assert response.lookup is not None and response.lookup.title == "Gone Girl"
+    assert response.results[0].title == "Gone Girl"
+
+
+def test_falls_back_to_the_rules_when_the_llm_is_down(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    response = search(
+        conn, "a psychological thriller", llm_service(conn, FakeLLM(LLMUnavailable("down")))
+    )
+
+    assert (response.parser, response.system) == ("rules", "hybrid_lookup")
+    assert response.parse_error == "down"
+    assert {r.title for r in response.results} == {t for t, *_ in BOOKS}
 
 
 @pytest.fixture

@@ -1,11 +1,17 @@
 """The stateless search pipeline behind POST /api/v1/search (design doc §8, §20).
 
-parse (rules) -> hard filters -> known-item lookup + hybrid retrieval -> live availability.
+parse (cascade: rules + LLM) -> hard filters -> lookups, seeds, hybrid retrieval, soft-constraint
+nudge (`parsed_hybrid`) -> live availability.
+
+Without an LLM, or when it is down or answers badly, the parse is rules-only and retrieval is the
+rules-era `hybrid_lookup` (or `hybrid_rerank` with a reranker, `bm25_lookup` without embeddings):
+those find known items from the raw query, which a rules-only parse can't name. The response
+says which parser answered and why it fell back.
 
 Indexes live in memory for the life of the process and are rebuilt when `catalog_version` changes,
 so an import or merge shows up without a restart. Availability is always read live from the copy
-table for the books returned, never from the index. Reranking, the LLM parser and narration
-plug in here in later phases.
+table for the books returned, never from the index. Conversation state and narration plug in
+here next (Phase 4).
 """
 
 import threading
@@ -22,13 +28,23 @@ from shelfwise.catalog.availability import AvailabilityState, fetch_live_availab
 from shelfwise.catalog.meta import get_catalog_version
 from shelfwise.embed.encoder import Embedder
 from shelfwise.evaluation.judgments import work_keys
-from shelfwise.evaluation.systems import SearchContext, bm25_lookup, hybrid_lookup, hybrid_rerank
+from shelfwise.evaluation.systems import (
+    SearchContext,
+    bm25_lookup,
+    hybrid_lookup,
+    hybrid_rerank,
+    parsed_hybrid,
+)
+from shelfwise.llm.client import StructuredLLM
+from shelfwise.query.cascade import CascadeParser, CatalogLinker
 from shelfwise.query.constraints import contradictions
+from shelfwise.query.request import Intent, LookupSpec, ParsedRequest, from_rules
 from shelfwise.query.rules import parse_rules
 from shelfwise.ranking.rerank import CachedReranker
 from shelfwise.retrieval.filters import relaxations
 
 MAX_RELAXATIONS = 3
+PARSE_TIMEOUT_S = 20.0  # a slow LLM costs one fallback to the rules, not a hung request
 
 
 class SearchRequest(BaseModel):
@@ -79,9 +95,14 @@ class Relaxation(BaseModel):
 class SearchResponse(BaseModel):
     query: str
     system: str  # which retrieval system answered (changes as the pipeline grows)
+    parser: str  # "cascade" (rules + LLM) or "rules"
+    parse_error: str | None  # why the LLM step was skipped, when it was
+    intent: Intent
+    lookup: LookupSpec | None  # the book or author asked for, catalog spelling
+    seed_titles: list[str]  # "like X": the reference books
     catalog_version: int
     constraints: list[ParsedConstraint]
-    residual: str  # what was searched for after removing filter phrases
+    residual: str  # what was searched for: negated words and filter phrases removed
     contradictions: list[str]
     results: list[BookResult]
     relaxations: list[Relaxation]  # only when nothing matched every hard constraint
@@ -120,9 +141,11 @@ class SearchService:
         embedder: Embedder | None = None,
         today: Callable[[], date] = date.today,
         reranker: CachedReranker | None = None,
+        llm: StructuredLLM | None = None,
     ) -> None:
         self.embedder = embedder
         self.reranker = reranker
+        self.llm = llm
         self.today = today
         self._ctx: SearchContext | None = None
         self._version: int | None = None
@@ -151,11 +174,15 @@ class SearchService:
 
         ctx = self._context(conn)
         lap("index")
-        parse = parse_rules(request.query, ctx.today)
-        conflicts = contradictions(parse.constraints)
+        parsed, parse_error = self._parse(conn, request.query, ctx)
+        constraints = parsed.constraints
+        conflicts = contradictions(constraints)
         lap("parse")
         if ctx.dense is None:
             system = bm25_lookup
+        elif parse_error is None and self.llm is not None:
+            system = parsed_hybrid
+            ctx = replace(ctx, parser=lambda _query, _today: parsed, _parses={})
         else:
             system = hybrid_rerank if ctx.reranker is not None else hybrid_lookup
         ids = [] if conflicts else system(ctx, request.query, request.limit)
@@ -163,10 +190,10 @@ class SearchService:
         results = self._details(conn, ids, ctx.today)
         lap("details")
         relaxed = []
-        if not ids and not conflicts and any(c.strength == "hard" for c in parse.constraints):
+        if not ids and not conflicts and any(c.strength == "hard" for c in constraints):
             relaxed = [
                 Relaxation(drop=r.label, count=r.count)
-                for r in relaxations(conn, parse.constraints)[:MAX_RELAXATIONS]
+                for r in relaxations(conn, constraints)[:MAX_RELAXATIONS]
                 if r.count
             ]
             lap("relax")
@@ -175,17 +202,33 @@ class SearchService:
         return SearchResponse(
             query=request.query,
             system=system.__name__,
+            parser="rules" if parse_error is not None or self.llm is None else "cascade",
+            parse_error=parse_error,
+            intent=parsed.intent,
+            lookup=parsed.lookup,
+            seed_titles=parsed.seed_titles,
             catalog_version=self._version or 0,
             constraints=[
                 ParsedConstraint(**c.model_dump(include=set(ParsedConstraint.model_fields)))
-                for c in parse.constraints
+                for c in constraints
             ],
-            residual=parse.residual,
+            residual=parsed.semantic_query,
             contradictions=[c.message() for c in conflicts],
             results=results,
             relaxations=relaxed,
             timings_ms=timings,
         )
+
+    def _parse(
+        self, conn: Connection, query: str, ctx: SearchContext
+    ) -> tuple[ParsedRequest, str | None]:
+        """The cascade's parse, or the rules' with the reason the LLM step didn't count."""
+        if self.llm is None:
+            return from_rules(parse_rules(query, ctx.today)), None
+        if ctx.dense is None:
+            return from_rules(parse_rules(query, ctx.today)), "no embeddings: keyword search only"
+        result = CascadeParser(self.llm, CatalogLinker(conn)).parse(query, ctx.today)
+        return result.request, result.error
 
     def _details(self, conn: Connection, ids: list[int], today: date) -> list[BookResult]:
         if not ids:
@@ -224,10 +267,14 @@ class SearchService:
 
 
 def build_service(
-    embedding_model: str | None, conn: Connection, rerank_model: str | None = None
+    embedding_model: str | None,
+    conn: Connection,
+    rerank_model: str | None = None,
+    llm_model: str | None = None,
 ) -> SearchService:
     """Hybrid search when `embedding_model` has stored embeddings, keyword-only otherwise; the
-    reranker only on top of hybrid."""
+    reranker only on top of rules-era hybrid; the LLM parser (`llm_model`) only with embeddings.
+    Ollama is contacted per request, so the service starts even when it isn't running."""
     if embedding_model:
         stored = conn.execute(
             text("SELECT count(*) FROM work_embedding WHERE model_name = :m"),
@@ -238,5 +285,12 @@ def build_service(
             from shelfwise.ranking.rerank import load_reranker
 
             reranker = load_reranker(rerank_model) if rerank_model else None
-            return SearchService(embedder=load_embedder(embedding_model), reranker=reranker)
+            llm = None
+            if llm_model:
+                from shelfwise.llm.client import OllamaClient
+
+                llm = OllamaClient(model=llm_model, timeout=PARSE_TIMEOUT_S)
+            return SearchService(
+                embedder=load_embedder(embedding_model), reranker=reranker, llm=llm
+            )
     return SearchService()

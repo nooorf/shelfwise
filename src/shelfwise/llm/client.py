@@ -95,7 +95,8 @@ class OllamaClient:
             ) from exc
         if response.status_code == 404:
             raise LLMUnavailable(f"model {self.model!r} not found; run `ollama pull {self.model}`")
-        response.raise_for_status()
+        if response.is_error:  # e.g. out of memory loading the model: callers fall back
+            raise LLMUnavailable(f"Ollama error {response.status_code}: {response.text[:200]}")
         return response.json()
 
     def available_models(self) -> list[str]:

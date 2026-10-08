@@ -109,3 +109,10 @@ def test_missing_model_and_unreachable_server_are_reported_clearly() -> None:
     )
     with pytest.raises(LLMUnavailable, match="ollama serve"):
         down.chat_structured(MESSAGES, Facets)
+
+
+def test_server_errors_are_unavailable_so_callers_fall_back() -> None:
+    client, _ = client_with(500)
+
+    with pytest.raises(LLMUnavailable, match="Ollama error 500"):
+        client.chat_structured(MESSAGES, Facets)
