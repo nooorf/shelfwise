@@ -217,6 +217,25 @@ class ConversationService:
         self, conn: Connection, ctx: SearchContext, state: ConversationState, route: Route,
         message: str, results: list[BookResult],
     ) -> Reply | None:  # fmt: skip
+        job = self._narration_job(conn, ctx, state, route, message, results)
+        return job() if job else None
+
+    def narration_job(
+        self, conn: Connection, response: TurnResponse, message: str
+    ) -> Callable[[], Reply] | None:
+        """The narration for a turn already answered without it, split in two: the database
+        reads happen now; the returned call only talks to the LLM, so it can run in the
+        background while the connection serves the next turn (the WebSocket does this)."""
+        state = self.store.get(response.session_id)
+        if state is None:
+            return None
+        ctx = self.search.context(conn)
+        return self._narration_job(conn, ctx, state, response.route, message, response.results)
+
+    def _narration_job(
+        self, conn: Connection, ctx: SearchContext, state: ConversationState, route: Route,
+        message: str, results: list[BookResult],
+    ) -> Callable[[], Reply] | None:  # fmt: skip
         task: Task | None = {"search": "recommend", "surprise": "recommend", "explain": "explain",
                              "compare": "compare"}.get(route)  # type: ignore[assignment]  # fmt: skip
         if task is None or not results:
@@ -239,10 +258,15 @@ class ConversationService:
             for r in results
         ]
         said = [state.semantic_query] if state.semantic_query else []
-        return self.narrator.narrate(
-            task, message, books, self._catalog_names(conn), [*said, *(w for w, _ in wishes)],
-            state.seed_titles, state.seed_work_ids,
-        )  # fmt: skip
+        names = self._catalog_names(conn)
+        seeds, seed_ids = list(state.seed_titles), list(state.seed_work_ids)
+
+        def run() -> Reply:
+            return self.narrator.narrate(
+                task, message, books, names, [*said, *(w for w, _ in wishes)], seeds, seed_ids
+            )
+
+        return run
 
     def start(self) -> str:
         session_id = new_session_id()

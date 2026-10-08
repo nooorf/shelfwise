@@ -75,13 +75,17 @@ class NarratingLLM:
 
     model = "fake-narrator"
 
-    def __init__(self) -> None:
+    def __init__(self, delay_s: float = 0.0) -> None:
         self.calls: list[list[dict[str, str]]] = []
+        self.delay_s = delay_s
 
     def chat_structured(self, messages, schema, **kwargs):  # type: ignore[no-untyped-def]
+        import time
+
         from shelfwise.llm.client import GenerationStats, StructuredResult
 
         self.calls.append(messages)
+        time.sleep(self.delay_s)
         prop = schema.model_json_schema()["$defs"]["NarrationItem"]["properties"]["work_id"]
         ids = prop.get("enum") or [prop["const"]]  # one book: a const, not an enum
         value = {"intro": "A few picks.", "items": [{"work_id": i, "why": "A gripping story."}
@@ -91,7 +95,9 @@ class NarratingLLM:
 
 
 @contextmanager
-def make_client(conn: Connection, forms: list[Any]) -> Iterator[TestClient]:
+def make_client(
+    conn: Connection, forms: list[Any], narrator: NarratingLLM | None = None
+) -> Iterator[TestClient]:
     embedder = FakeEmbedder()
     embed_missing(conn, embedder)
     search = SearchService(embedder=embedder, today=lambda: TODAY, llm=FakeLLM(*forms))
@@ -99,7 +105,7 @@ def make_client(conn: Connection, forms: list[Any]) -> Iterator[TestClient]:
         search,
         MemorySessionStore(ttl_s=1800),
         now=lambda: datetime(2026, 10, 8, 12, 0, tzinfo=UTC),
-        narrator=Narrator(NarratingLLM()),
+        narrator=Narrator(narrator or NarratingLLM()),
     )
     app = create_app(
         Settings(profile="cpu", log_json=False), service=search, conversation=conversation
@@ -264,3 +270,71 @@ def test_no_match_offers_relaxations_and_remembers_the_answer(
     assert (refused["kind"], refused["route"]) == ("relax", "chat")
     assert last["relaxations"] == []  # refused once, never offered again
     assert last["notes"][-1] == "Nothing in the catalog matches that."
+
+
+def events_until_done(ws: Any) -> list[dict[str, Any]]:
+    events = []
+    while True:
+        events.append(ws.receive_json())
+        if events[-1]["type"] in ("done", "error"):
+            return events
+
+
+def test_the_socket_sends_cards_first_then_the_reply(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+
+    with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+        ws.send_json({"type": "text", "text": "psychological thrillers"})
+        narrated = events_until_done(ws)
+        ws.send_json({"type": "text", "text": "something darker", "narrate": False})
+        quiet = events_until_done(ws)
+
+    assert [e["type"] for e in narrated] == ["turn", "reply", "done"]
+    turn, reply = narrated[0], narrated[1]
+    assert turn["results"] and turn["reply"] is None  # cards don't wait for the LLM
+    assert [i["work_id"] for i in reply["reply"]["items"]] == [
+        r["work_id"] for r in turn["results"]
+    ]
+    assert [e["type"] for e in quiet] == ["turn", "done"]
+    assert quiet[0]["kind"] == "refine"
+
+
+def test_a_new_message_cancels_the_running_narration(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    forms = [{"intent": "discover", "semantic_query": "thrillers"},
+             {"intent": "discover", "semantic_query": "mysteries"}]  # fmt: skip
+    with make_client(conn, forms, NarratingLLM(delay_s=0.5)) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+            ws.send_json({"type": "text", "text": "thrillers"})
+            first = ws.receive_json()
+            ws.send_json({"type": "text", "text": "actually, mysteries"})
+            rest = events_until_done(ws)
+
+    assert first["type"] == "turn" and first["turn"] == 1
+    assert [(e["type"], e["turn"]) for e in rest] == [
+        ("cancelled", 1), ("turn", 2), ("reply", 2), ("done", 2)
+    ]  # fmt: skip
+
+
+def test_unknown_sessions_are_refused_on_the_socket(client: TestClient) -> None:
+    with client.websocket_connect("/api/v1/sessions/nope/stream") as ws:
+        assert ws.receive_json()["type"] == "error"
+
+
+def test_availability_is_read_live_when_a_shown_book_comes_up_again(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    forms = [{"intent": "discover", "semantic_query": "mysteries"}, {"intent": "explain"}]
+    with make_client(conn, forms) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        shown = say(client, session, "mysteries")
+        second = shown["results"][1]
+        lend(conn, second["work_id"], date(2026, 10, 20))  # borrowed between the two turns
+        asked = say(client, session, "is the second one available")
+
+    assert second["availability"]["state"] == "available"
+    assert asked["route"] == "explain"
+    assert asked["results"][0]["availability"]["state"] == "borrowed"
+    assert asked["results"][0]["availability"]["next_due"] == "2026-10-20"

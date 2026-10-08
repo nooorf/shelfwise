@@ -1,10 +1,12 @@
 """FastAPI application. Routes stay thin; logic lives in the shelfwise package."""
 
+import asyncio
 import threading
 from collections.abc import Iterator
-from typing import Annotated
+from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, FastAPI, HTTPException
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from pydantic import ValidationError
 from sqlalchemy import Connection, Engine
 
 from shelfwise import __version__
@@ -150,6 +152,98 @@ def create_app(
     ) -> None:
         """ "New visitor" / forget me: the state is deleted now, not at expiry."""
         conversation.end(session_id)
+
+    @v1.websocket("/sessions/{session_id}/stream")
+    async def stream(
+        websocket: WebSocket,
+        session_id: str,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> None:
+        """One socket per session (design doc §20.5, text events). Client -> server:
+        {"type": "text", "text": ..., "limit"?, "narrate"?}, {"type": "undo"},
+        {"type": "cancel"}. Server -> client, per turn: "turn" (cards, chips, notes: everything
+        but the narration, as soon as retrieval is done), then "reply" when the narration is
+        ready, then "done". A new message or "cancel" while narration runs drops it
+        ("cancelled"): the server half of barge-in."""
+        await websocket.accept()
+        if conversation.store.get(session_id) is None:
+            await websocket.send_json({"type": "error", "message": "session not found or expired"})
+            await websocket.close(code=4404)
+            return
+        receive: asyncio.Task[Any] = asyncio.create_task(websocket.receive_json())
+        narrating: asyncio.Task[Any] | None = None
+        narrating_turn = 0
+
+        async def drop_narration() -> None:
+            nonlocal narrating
+            if narrating is not None:
+                narrating.cancel()  # its thread finishes on its own; the result is discarded
+                narrating = None
+                await websocket.send_json({"type": "cancelled", "turn": narrating_turn})
+
+        try:
+            while True:
+                waiting = {receive} | ({narrating} if narrating else set())
+                done, _ = await asyncio.wait(waiting, return_when=asyncio.FIRST_COMPLETED)
+                if narrating is not None and narrating in done:
+                    reply = narrating.result()
+                    narrating = None
+                    await websocket.send_json(
+                        {"type": "reply", "turn": narrating_turn,
+                         "reply": reply.model_dump(mode="json")}
+                    )  # fmt: skip
+                    await websocket.send_json({"type": "done", "turn": narrating_turn})
+                if receive not in done:
+                    continue
+                message = receive.result()
+                receive = asyncio.create_task(websocket.receive_json())
+                kind = message.get("type") if isinstance(message, dict) else None
+                if kind == "cancel":
+                    await drop_narration()
+                    continue
+                if kind not in ("text", "undo"):
+                    await websocket.send_json({"type": "error", "message": f"unknown {kind!r}"})
+                    continue
+                await drop_narration()  # a new message barges in
+                try:
+                    if kind == "text":
+                        request = TurnRequest.model_validate(
+                            {k: v for k, v in message.items() if k != "type"}
+                            | {"message": message.get("text", "")}
+                        )
+                        wants_reply = request.narrate
+                        request = request.model_copy(update={"narrate": False})
+                        response = await asyncio.to_thread(
+                            conversation.turn, conn, session_id, request
+                        )
+                        said = request.message
+                    else:
+                        wants_reply = bool(message.get("narrate", True))
+                        response = await asyncio.to_thread(
+                            conversation.undo, conn, session_id, 5, False
+                        )
+                        said = response.semantic_query
+                except SessionNotFound:
+                    await websocket.send_json({"type": "error", "message": "session expired"})
+                    await websocket.close(code=4404)
+                    return
+                except ValidationError as exc:
+                    await websocket.send_json({"type": "error", "message": str(exc)})
+                    continue
+                await websocket.send_json({"type": "turn", **response.model_dump(mode="json")})
+                job = conversation.narration_job(conn, response, said) if wants_reply else None
+                if job is None:
+                    await websocket.send_json({"type": "done", "turn": response.turn})
+                    continue
+                narrating_turn = response.turn
+                narrating = asyncio.create_task(asyncio.to_thread(job))
+        except WebSocketDisconnect:
+            pass
+        finally:
+            receive.cancel()
+            if narrating is not None:
+                narrating.cancel()
 
     app.include_router(v1)
     return app

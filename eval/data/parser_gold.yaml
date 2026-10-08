@@ -361,6 +361,7 @@ queries:
   - id: T01
     intent: discover
     constraints:
+      - genre in [engineering] soft
       - facet.reading_level eq intro soft
     keep: [systems engineering, interview]
 
@@ -1171,6 +1172,7 @@ queries:
   - id: V10
     intent: discover
     constraints:
+      - genre in [war] soft
       - available_now eq true hard
     keep: [world war]
 
