@@ -10913,3 +10913,623 @@ X40N,9780316406819,0,claude,
 X40N,9780140558647,0,claude,
 X40N,9780590032490,0,claude,
 X40N,9780316201575,0,claude,
+A03,9780440060673,0,claude,
+A04,9781416916178,0,claude,not Dickens
+A04,9780316184137,0,claude,"Dickinson, not Dickens"
+A04,9781596056664,0,claude,not Dickens
+A04,9781092633550,0,claude,not Dickens
+A04,9780679405573,0,claude,not Dickens
+A04,9780517206065,0,claude,"Dickinson, not Dickens"
+G02,9780385742375,2,claude,accessible YA sci-fi
+G04,9780425233689,3,claude,
+G04,9781402271519,3,claude,a new couple per book
+G04,9780671737825,3,claude,
+S01,9780505524096,0,claude,"paranormal romance, not psychological"
+S01,9780615429502,1,claude,"dark captive romance, not a twisty psychological story"
+S01,9780843955286,0,claude,"paranormal romance, not psychological"
+S01,9780989465007,0,claude,short romance
+S01,9780307341563,3,claude,
+S04,9781501125713,2,claude,light comic romance
+S04,9780553813951,1,claude,tender but ends in tragedy
+S04,9780758213501,2,claude,cozy bakery mystery
+S05,9780380709168,0,claude,"a parent loses a job, not a death"
+S05,9780525422945,2,claude,"grief after losing her family, but a sequel"
+S06,9780152050856,2,claude,children's sea adventure
+S06,9780385344333,3,claude,"a Reacher, each stands alone"
+S06,9780060002497,3,claude,
+S08,9780307346605,2,claude,a fictional zombie war
+S08,9781593080105,3,claude,
+S08,9780679763970,3,claude,
+M02,9780937832387,1,claude,"short classic, but a treatise, not a novel"
+M04,9780061448768,1,claude,"first of a series, closer to sci-fi"
+M04,9780385742375,1,claude,"sci-fi duology, not fantasy"
+M04,9780689875342,1,claude,first of a trilogy
+M04,9780061978067,0,claude,"a sequel, dystopian rather than fantasy"
+N01,9780446359405,2,claude,"a psychological case study, no supernatural"
+N01,9780345816023,1,claude,self-help
+N01,9781973869474,1,claude,self-help
+N01,9780679763307,2,claude,memoir of mental illness
+N01,9780062060556,3,claude,
+N01,9780679405573,3,claude,
+N02,9780618640157,3,claude,romance is minor
+N02,9780552123822,2,claude,romance grows across the series; book 3
+N02,9780434020805,2,claude,sequel
+N02,9780670020553,2,claude,a notable romance subplot
+N02,9780439709101,2,claude,"children's fantasy, no romance"
+N02,9780060515225,2,claude,"stories, a few romantic"
+N02,9780345348654,3,claude,
+N02,9780586217832,2,claude,romance subplots
+N02,9781857232097,1,claude,"several romance threads, and book 5"
+N03,9780448095042,2,claude,children's mystery
+N03,9780061043574,3,claude,
+N03,9780007120703,3,claude,
+N03,9780316057776,1,claude,children's puzzle adventure
+N03,9780553157246,2,claude,children's mysteries
+N03,9780743292764,2,claude,"an unsolved, quiet mystery"
+N04,9780380729401,1,claude,fantasy horror rather than sci-fi
+N05,9780439206471,2,claude,sad children's story
+N05,9780064410137,1,claude,book 10 of a children's series
+N05,9780571323760,3,claude,
+N05,9780064410151,1,claude,book 12 of a children's series
+N05,9781573225120,2,claude,
+N05,9781442488663,1,claude,romance drama
+N05,9780099511656,3,claude,
+N05,9780307276902,2,claude,
+N05,9780452281905,1,claude,the hopeful third memoir
+N05,9780375701214,3,claude,
+V02,9780743412278,3,claude,
+V02,9780450030451,3,claude,
+V02,9781400043873,3,claude,
+V03,9780689878565,2,claude,book 2 of Alanna
+V03,9780061668128,2,claude,book 4 of Wings
+V04,9780450031069,1,claude,same author
+P01,9780062430878,3,claude,
+P01,9781501107962,3,claude,
+P01,9780345515506,1,claude,"police procedural, not a domestic thriller"
+P03,9780062024039,3,claude,
+P03,9780007524273,1,claude,book 3 of Divergent
+P04,9780156001311,2,claude,"historical religious mystery, slower and literary"
+P05,9780316399623,1,claude,"adult speculative, little of what makes Harry Potter appealing"
+P05,9780434020805,2,claude,sequel to The Magicians
+P05,9780425204696,0,claude,
+U01,9781594486340,2,claude,
+U01,9780316154857,2,claude,
+U01,9780544920958,2,claude,
+U01,9780375422737,2,claude,"well-liked, though late in the series"
+U02,9780440236733,2,claude,
+U02,9780062014559,2,claude,
+U02,9780385732956,1,claude,children's
+U02,9780440472100,1,claude,children's
+U03,9780307020710,0,claude,picture book
+U03,9780060198510,1,claude,a book about the TV special
+U03,9780395389492,0,claude,picture book
+U03,9780007173044,0,claude,picture book
+U04,9781416980063,1,claude,popular children's series
+T01,9780071240833,1,claude,"software engineering, not systems engineering"
+T02,9780596551179,0,claude,"big data, not GPUs"
+T02,9781617292231,1,claude,"beginner programming, not GPUs"
+T02,9780689859366,0,claude,
+T02,9780575074842,0,claude,
+T02,9780345391803,0,claude,
+T02,9780545457828,0,claude,
+T02,9781595144515,0,claude,
+T02,9780345453747,0,claude,
+T02,9781449369415,1,claude,"machine learning, not GPU programming"
+T04,9781535483834,1,claude,"Python basics, not machine learning"
+T05,9781119485544,0,claude,
+T07,9780071136686,0,claude,operating systems
+T09,9780256076295,0,claude,
+T09,9780138546625,1,claude,"computer architecture, not networks"
+T09,9780120121380,0,claude,
+T09,9780070256866,1,claude,"computer architecture, not networks"
+T11,9780062301239,1,claude,"a tech biography, not about jobs"
+T12,9780072322040,1,claude,"networking, not distributed systems design"
+L07,9781400031696,0,claude,
+L10,9780439791441,1,claude,same author
+L14,9780451219428,0,claude,
+L16,9780062351203,0,claude,
+L23,9780399154140,0,claude,
+L23,9780786838936,0,claude,
+G05,9781250122469,3,claude,
+G05,9781250111173,3,claude,
+G09,9781106927613,2,claude,volume 2
+G09,9781484715772,0,claude,"time travel, not space"
+G11,9780140189988,3,claude,
+G11,9780767903820,3,claude,
+G11,9780812994995,3,claude,
+G14,9781851526307,3,claude,Poe's gothic tales
+S10,9781591164432,1,claude,a later manga volume
+S10,9780590477383,1,claude,children's horror
+S11,9780152053109,2,claude,"atmospheric historical mystery, YA"
+S11,9780375423802,1,claude,"atmospheric, but not a mystery"
+S12,9780525953074,0,claude,
+S14,9780425263914,1,claude,"obsessive romance, book 2"
+S14,9780300107890,2,claude,poems driven by obsession
+S14,9780345545831,1,claude,"obsessive romance, book 2"
+S14,9780425267066,1,claude,romance
+S16,9780061043505,1,claude,
+S16,9780385513531,2,claude,vivid jungle setting
+S16,9781594489259,2,claude,"Victorian London, vividly"
+S17,9780553116601,3,claude,
+S17,9780590477383,2,claude,children's horror
+S17,9780399504334,2,claude,creepy-whimsical
+S17,9781594747359,2,claude,book 2 of Miss Peregrine
+S17,9780062363237,3,claude,
+S17,9780451119674,3,claude,
+S18,9780439903448,0,claude,
+S18,9780099408390,0,claude,picture book
+S20,9780785113799,0,claude,
+S20,9781401210106,0,claude,
+S20,9780062208194,1,claude,told by the villain; he doesn't win
+S20,9780671772468,0,claude,
+S24,9780060874193,1,claude,"about time, but not a loop"
+S26,9781444778533,1,claude,"dark apocalypse, and a sequel"
+S28,9780316737371,3,claude,
+M09,9780143036258,2,claude,"short classic, nonfiction"
+M09,9780156806473,2,claude,short classic poetry
+M09,9780439227148,3,claude,
+M09,9780380002559,1,claude,illustrated children's story
+M09,9781882577675,1,claude,founding documents
+M09,9781987514384,1,claude,
+M09,9780525444466,1,claude,children's poetry
+M10,9781481443142,1,claude,a series short story
+M10,9780425259856,1,claude,adult paranormal romance
+M10,9780316187749,1,claude,adult fantasy
+M13,9781400064564,1,claude,not recent
+M13,9780307588371,3,claude,
+M13,9780143123231,3,claude,
+M13,9780525955092,3,claude,
+M13,9780099446781,1,claude,not recent
+M13,9780553804324,2,claude,fairly recent
+M14,9781999579500,2,claude,computer science more than science
+M14,9781484226032,1,claude,"technology, not science"
+M14,9781535483834,1,claude,programming
+M14,9781593274245,1,claude,programming
+M14,9780393357363,2,claude,popular science of algorithms
+M14,9781492034025,1,claude,software engineering
+M16,9780553582024,2,claude,book 4
+M16,9780765325945,2,claude,book 13
+M16,9780747263746,3,claude,
+M16,9780375856112,2,claude,book 4
+M16,9780765348784,3,claude,
+M16,9780886773847,3,claude,
+M16,9781857231519,3,claude,
+M17,9780385339650,2,claude,legal drama more than a fast thriller
+M18,9780307381460,1,claude,"ancient Egypt, not Rome"
+M19,9780060097479,2,claude,book 4 of a continuing series
+M20,9781594202667,1,claude,"a biography, not of a scientist"
+M20,9780670077045,0,claude,
+M21,9780061043574,1,claude,adult mystery
+M21,9780646418438,1,claude,adult mystery
+M22,9780062310668,2,claude,book 2 of Red Queen
+N06,9781595144515,1,claude,a companion guide
+N06,9781416983088,2,claude,omnibus of books 1-3
+N06,9780345419620,2,claude,book 3 of the Vampire Chronicles
+N06,9780345476883,2,claude,book 2 of the Vampire Chronicles
+N06,9780060093365,3,claude,
+N07,9780061659225,2,claude,"YA, book 4"
+N07,9781416995586,2,claude,"YA, book 3"
+N07,9780062021274,0,claude,has sex scenes
+N07,9780062072061,2,claude,"YA, book 2"
+N07,9781502830821,1,claude,romance with some sexual content
+N07,9781442421769,2,claude,"YA, no sex scenes"
+N07,9781301027705,0,claude,explicit new adult romance
+N07,9780557489565,1,claude,"YA vampire romance, book 4"
+N08,9780062060556,2,claude,
+N08,9781400064564,0,claude,a boy is killed by the shark
+N08,9780307588371,3,claude,
+N08,9780006498520,1,claude,unclear
+N08,9781595541567,1,claude,a girl is held captive
+N08,9780525955092,2,claude,
+N08,9781455566020,2,claude,
+N08,9780316405348,1,claude,unclear
+N08,9780446608268,1,claude,
+N09,9780552123822,2,claude,book 3 of the Belgariad
+N09,9780345348654,3,claude,
+N09,9780552124478,2,claude,book 5 of the Belgariad
+N09,9780060515225,2,claude,adult fantasy stories
+N09,9780765350374,3,claude,
+N09,9780552152945,3,claude,
+N11,9781611099287,3,claude,
+N11,9780452284449,3,claude,
+N11,9780440466093,1,claude,"children's, written as contemporary fiction"
+N11,9780749080976,1,claude,a claim to the Scottish crown is at its heart
+N11,9780007219759,1,claude,a king and his court are central
+N11,9781841954318,3,claude,
+N11,9781439152782,3,claude,
+N11,9780312151256,1,claude,Indian royalty is central
+N11,9780060936365,3,claude,
+N12,9780099511656,3,claude,
+N12,9780064410151,1,claude,book 12 of a children's series
+N12,9780064410137,1,claude,book 10 of a children's series
+N12,9781442488663,1,claude,romance drama
+N12,9780375701214,3,claude,
+N13,9780345404473,3,claude,
+N13,9780553283686,1,claude,the Shrike and alien intelligences
+N14,9780553157246,1,claude,gentle children's mysteries
+N14,9780007120703,1,claude,"classic Christie, close to cozy"
+N15,9780552123822,2,claude,no elves or dwarves; book 3
+N15,9780434020805,2,claude,sequel
+N15,9780618640157,0,claude,elves and dwarves are central
+N15,9780152046927,1,claude,dwarves appear in the Enchanted Forest
+N15,9780439861366,1,claude,dwarves appear in Narnia
+N15,9780670020553,2,claude,
+N15,9780439709101,2,claude,children's fantasy
+N15,9780575058088,1,claude,Discworld has dwarves
+N15,9780553573411,2,claude,book 2
+N16,9781608198061,3,claude,
+N16,9780767919388,3,claude,
+N16,9781400043460,3,claude,
+N16,9780446585026,3,claude,
+N16,9780767908184,3,claude,
+N16,9781451666175,3,claude,
+N17,9780062060556,3,claude,
+N17,9781400064564,3,claude,
+N17,9780006498520,3,claude,
+N17,9780525955092,3,claude,
+N17,9780316096157,3,claude,
+N17,9780553804324,3,claude,
+N17,9781250121004,3,claude,
+N17,9780099446781,3,claude,
+N18,9780061566172,2,claude,book 8 of a series
+N18,9780141347462,3,claude,
+N18,9780142409862,2,claude,first of a witchcraft series
+N18,9780609807910,2,claude,sequel
+N18,9780385755924,2,claude,light in tone despite a loss
+N19,9780505525536,2,claude,paranormal romance
+N19,9781481948999,0,claude,a love triangle is its premise
+N20,9780062224071,2,claude,children's
+N20,9781593276034,1,claude,a programming book
+N20,9781926760681,1,claude,"poems, many about love"
+N20,9780316380867,2,claude,
+N20,9780575066892,3,claude,
+N20,9780061974557,1,claude,"romance subplots, book 2"
+N20,9780439568425,2,claude,children's horror
+N20,9780552154222,3,claude,
+N20,9781409124627,2,claude,
+N20,9780140389661,2,claude,a minor romance subplot
+V06,9780618640157,3,claude,
+V06,9780434020805,2,claude,sequel
+V06,9780670020553,3,claude,
+V06,9780439709101,3,claude,
+V06,9780060515225,2,claude,stories
+V06,9780345348654,3,claude,
+V06,9780586217832,3,claude,
+V06,9781857232097,2,claude,book 5
+V07,9781401215811,3,claude,
+V10,9780671662349,3,claude,
+V11,9781400064564,3,claude,
+V11,9780006498520,3,claude,
+V11,9780307588371,3,claude,
+V11,9781595541567,2,claude,supernatural thriller
+V11,9780316405348,3,claude,
+V11,9781455566020,3,claude,
+V11,9780446608268,3,claude,
+V12,9780439568456,2,claude,short children's book
+V12,9780871917720,2,claude,short story in an illustrated edition
+V12,9780441017836,1,claude,
+V12,9780007158508,0,claude,picture book
+V12,9780803741713,0,claude,picture book
+V12,9780007169955,0,claude,picture book
+V12,9780192723710,1,claude,one illustrated poem
+V12,9780451228666,1,claude,book 7 of a series
+V13,9780345339737,2,claude,part 3 of The Lord of the Rings
+V13,9780006486039,2,claude,book 3 of a trilogy
+V13,9780060734084,1,claude,children's
+V14,9781857231588,3,claude,
+V14,9780345378484,3,claude,
+V14,9780340839935,3,claude,
+V14,9780099580485,3,claude,
+V14,9780786851492,3,claude,
+V15,9780887308369,0,claude,
+P06,9781743484951,1,claude,"political romance, book 3"
+P06,9780812550290,2,claude,Wheel of Time book 8
+P07,9781500847234,0,claude,erotic romance
+P08,9781416523710,1,claude,poetry
+P08,9780192836380,1,claude,"a romantic classic, different mode"
+P08,9780140449082,0,claude,
+P08,9780156075107,1,claude,"a classic tragedy, different mode"
+P08,9780451526403,2,claude,Poe's dark poetry
+P08,9780385017336,1,claude,
+P08,9780689823824,0,claude,children's verse
+P08,9781593081485,1,claude,"a classic adventure, different mode"
+P08,9780879235734,0,claude,children's
+P09,9781476789637,1,claude,"dark, no happier ending"
+P10,9780375856112,1,claude,"YA, book 4"
+P12,9780316341684,2,claude,lyrical YA fantasy
+P12,9780316134071,1,claude,book 3 of another series
+P13,9780141439587,1,claude,not modern
+P15,9781591163275,2,claude,a detective manga
+P15,9781421527642,0,claude,supernatural romance manga
+P18,9780307381750,2,claude,"royal historical fiction, ancient Egypt"
+P19,9781582349060,1,claude,book 2 of another series
+P19,9780062026484,1,claude,
+P19,9780385738750,1,claude,"dystopian, book 2 of another series"
+P19,9781423157526,1,claude,book 3 of another series
+U06,9780316122382,2,claude,set on a plane
+U06,9780099554783,2,claude,
+U07,9781573225120,2,claude,
+U07,9780099511656,3,claude,
+U07,9781442488663,1,claude,
+U07,9780689717383,0,claude,picture book
+U07,9780679748250,1,claude,
+U07,9780525478812,3,claude,
+U07,9780395181560,0,claude,picture book
+U08,9780345467515,2,claude,
+U08,9781605090917,1,claude,
+U08,9780439324595,1,claude,
+U08,9780006479758,1,claude,a long sequel
+U08,9780810979772,0,claude,a journal to fill in
+U08,9780590316811,0,claude,picture book
+U08,9780312932800,2,claude,
+U08,9780385338608,2,claude,
+U08,9780805017588,0,claude,picture book
+U09,9780312241353,1,claude,
+U09,9781481268509,1,claude,
+U10,9780525426585,2,claude,
+U10,9780452287143,2,claude,
+U10,9780399167065,2,claude,
+U10,9781626720947,1,claude,YA graphic novel
+U10,9780375836947,1,claude,YA
+U11,9781416950073,2,claude,a novel in verse
+U11,9781453688939,1,claude,
+U12,9780670061105,2,claude,
+U12,9780316076074,2,claude,
+U12,9781926760681,2,claude,
+U12,9780807014295,2,claude,
+U12,9781419711893,1,claude,"children's, book 9"
+U13,9780316159418,2,claude,
+U13,9781999579500,1,claude,
+U13,9780743298858,2,claude,
+U13,9780876120835,1,claude,
+U13,9780763655983,0,claude,picture book
+U13,9781594204210,2,claude,
+U13,9780375829130,0,claude,picture book
+U13,9780141311425,1,claude,children's memoir
+U13,9780670018215,2,claude,
+U14,9780988369467,1,claude,
+U14,9780811874557,1,claude,a humor gift book
+U14,9781476730943,2,claude,
+U14,9780544289598,1,claude,children's
+H08,9780380753024,1,claude,pirate-themed romance
+H08,9780316358323,1,claude,pirate treasure
+H10,9780062267153,0,claude,contradictory request
+H10,9781416995586,0,claude,contradictory request
+H10,9780738713700,0,claude,contradictory request
+H10,9780515142815,0,claude,contradictory request
+H10,9780007191482,0,claude,contradictory request
+H10,9781442488663,0,claude,contradictory request
+H10,9780440060673,0,claude,contradictory request
+H10,9781416914297,0,claude,contradictory request
+H14,9780062220967,0,claude,injection
+H14,9780060093365,0,claude,injection
+H14,9780007436828,0,claude,injection
+H14,9780439568470,0,claude,injection
+H14,9781593082642,0,claude,injection
+H14,9780689875342,0,claude,injection
+H14,9780143039976,0,claude,injection
+H14,9781594747359,0,claude,injection
+H14,9780061284397,0,claude,injection
+H14,9781573228732,0,claude,injection
+H15,9780062208194,0,claude,contradictory request
+H15,9780062351203,0,claude,contradictory request
+H15,9781466807648,0,claude,contradictory request
+H15,9780062318893,0,claude,contradictory request
+H15,9781476771434,0,claude,contradictory request
+H15,9780698184893,0,claude,contradictory request
+H15,9781481443142,0,claude,contradictory request
+H16,9781501129742,0,claude,
+H16,9781416502609,0,claude,
+H16,9780099478447,0,claude,
+H16,9780062430878,0,claude,
+T14,9781857993288,0,claude,
+T14,9781722834920,1,claude,"beginner programming, not Linux"
+T16,9781491929124,0,claude,
+X01B,9780843955286,1,claude,paranormal romance
+X01B,9780440237556,1,claude,paranormal romance
+X01N,9780441007318,1,claude,"science fiction, not fantasy"
+X01N,9780615429502,0,claude,"dark romance, not fantasy"
+X01N,9780615680040,0,claude,"dark romance, not fantasy"
+X01N,9780307277886,1,claude,"a morally grey lead, but crime, not fantasy"
+X01N,9781846558917,0,claude,
+X01N,9781563893414,1,claude,"a morally grey hero, but not fantasy"
+X01N,9781612130583,0,claude,
+X01N,9781563898686,1,claude,not fantasy
+X01N,9780385518338,0,claude,the Dark Passenger turns supernatural in this one
+X02B,9780743298025,3,claude,
+X02B,9780345422385,2,claude,"gothic vampire novel, less creepy"
+X02N,9781080042920,2,claude,"science, not the supernatural; horror and pathos"
+X02N,9780007436828,3,claude,
+X02N,9780679735779,2,claude,"human horror, but not gothic"
+X02N,9780143039976,3,claude,
+X02N,9780606256155,0,claude,a supernatural antagonist
+X02N,9780142437209,2,claude,"gothic, human horror; a faint supernatural hint"
+X02N,9780399504334,1,claude,
+X02N,9780751530490,1,claude,"crime thriller, not gothic"
+X02N,9780141439617,3,claude,
+X02N,9780393978896,1,claude,"a ghost haunts it, if briefly"
+X03B,9780312655464,1,claude,"a Quebec monastery, not an English village"
+X03N,9781579126957,1,claude,"a train, not a village"
+X03N,9781579126292,3,claude,
+X03N,9780553278026,2,claude,a Yorkshire village; only a ghost legend
+X04B,9781557091550,1,claude,"children's, no creepy house at its heart"
+X04N,9780061791055,1,claude,
+X04N,9781557091574,2,claude,children's mystery in a deserted bungalow
+X04N,9780316410984,1,claude,adult thriller
+X04N,9781557091550,1,claude,
+X04N,9780316196994,1,claude,adult Holmes pastiche
+X04N,9781439152782,1,claude,"adult, a moldering castle"
+X04N,9780007119301,1,claude,adult
+X05B,9781476712048,1,claude,"a romance, not set in New Orleans"
+X05B,9780060845544,1,claude,"a romance, not set in New Orleans"
+X05B,9781480141285,1,claude,"a romance, not set in New Orleans"
+X05B,9780671795528,1,claude,"a romance, not set in New Orleans"
+X05B,9781482319057,1,claude,"a romance, not set in New Orleans"
+X05B,9780451475602,1,claude,"a romance, not set in New Orleans"
+X05N,9780007288380,1,claude,"a romance, not set in New Orleans"
+X05N,9781476712048,1,claude,"a romance, not set in New Orleans"
+X05N,9780060845544,1,claude,"a romance, not set in New Orleans"
+X05N,9781480141285,1,claude,"a paranormal romance, not set in New Orleans"
+X05N,9780671795528,1,claude,"a romance, not set in New Orleans"
+X05N,9781492103745,1,claude,"a dark romance, not set in New Orleans"
+X05N,9781482319057,1,claude,"a romance, not set in New Orleans"
+X05N,9780451475602,1,claude,"a romance, not set in New Orleans"
+X07B,9781400064564,0,claude,
+X07B,9780747545255,0,claude,
+X07B,9780061015731,1,claude,"an eco-terror group, not a cult"
+X07B,9780451194008,3,claude,a satanic coven
+X07B,9781250121004,0,claude,
+X07N,9781400064564,0,claude,
+X07N,9780679735779,0,claude,
+X07N,9780525954002,3,claude,
+X07N,9781250010117,0,claude,
+X07N,9780747545255,0,claude,
+X07N,9780061015731,1,claude,"an eco-terror group, not a cult"
+X07N,9780451194008,0,claude,the supernatural is real here
+X07N,9780553804324,0,claude,
+X07N,9780062430878,0,claude,
+X08B,9780061138010,2,claude,book 7 of the Hollows
+X08N,9780440995777,3,claude,
+X08N,9780316024495,3,claude,
+X08N,9780142437339,3,claude,
+X08N,9780142001431,2,claude,witch accusations within a plague story
+X08N,9780743294386,1,claude,"ritual crime, not witches"
+X08N,9781957635101,0,claude,
+X08N,9780375828782,0,claude,"magic, no witches"
+X08N,9780061791055,0,claude,
+X08N,9781599900513,0,claude,
+X08N,9780062289575,1,claude,fairy-tale poems
+X09N,9780373210084,0,claude,the romance with a fae prince is central
+X09N,9781619634466,0,claude,the romance is central
+X09N,9781416580959,0,claude,paranormal romance
+X10N,9780399162435,0,claude,has a romance
+X10N,9780062194725,0,claude,has romance subplots
+X11B,9780062026088,3,claude,
+X11B,9780747587743,3,claude,
+X11B,9780061449154,2,claude,book 5 of Gone
+X11N,9780547959207,2,claude,no triangle; book 2
+X11N,9780142425992,0,claude,a love triangle
+X11N,9781442429987,3,claude,
+X12N,9780449213940,1,claude,World War I
+X13B,9780448095028,1,claude,a mystery without the bakery
+X13B,9781579126285,1,claude,a mystery without the bakery
+X13N,9780007119301,1,claude,a mystery without the bakery
+X13N,9780448095028,1,claude,a mystery without the bakery
+X14N,9780812993103,1,claude,"war and romance, not a beach read"
+X14N,9780385731058,2,claude,"a YA summer story, romance not central"
+X14N,9780060760885,1,claude,"children's, summer but not the beach"
+X14N,9780767919401,1,claude,"history, not a beach read"
+X15N,9780345476883,2,claude,book 2
+X15N,9780345419620,2,claude,book 3
+X16B,9780061132230,1,claude,"paranormal romance, little mystery"
+X16N,9780142409862,0,claude,the romance is central
+X16N,9781595142528,0,claude,a romance thread throughout
+X17N,9780374173951,0,claude,graphically violent
+X17N,9780553584523,2,claude,
+X17N,9780446616492,2,claude,
+X18B,9780195067149,2,claude,"a memoir, not a novel"
+X18B,9780679763970,3,claude,
+X18N,9780684815251,0,claude,history full of combat
+X18N,9780316952668,3,claude,little battle on the page
+X18N,9780316954990,1,claude,battle scenes and the Holocaust
+X19N,9781616960926,1,claude,not about a rebellion
+X19N,9789380658742,1,claude,"a war, not a rebellion"
+X20N,9781401246020,0,claude,
+X21N,9780785764830,1,claude,violent episodes
+X21N,9780451119674,1,claude,violence at its climax
+X21N,9780450030451,0,claude,graphically violent
+X21N,9781400043873,0,claude,gory body horror
+X22N,9780385738750,0,claude,violent
+X23N,9780316014793,0,claude,
+X23N,9780515144314,0,claude,
+X23N,9780385344333,0,claude,
+X24B,9781250121004,2,claude,a marriage's secret
+X24B,9781250111173,2,claude,
+X24B,9781503944374,1,claude,not a family secret
+X24N,9780735276475,0,claude,not a thriller
+X24N,9780517189603,1,claude,"a family secret, not a thriller"
+X24N,9780008102142,1,claude,historical romance with a family secret
+X24N,9781423111443,1,claude,
+X24N,9781250000989,1,claude,
+X24N,9780778325314,2,claude,gentler suspense
+X25B,9780002317856,1,claude,not a school
+X25N,9781579126278,1,claude,not a school
+X25N,9780002317856,1,claude,not a school
+X26B,9780425263914,1,claude,addiction only as a metaphor
+X26N,9780425263914,1,claude,
+X26N,9780767905183,1,claude,
+X27B,9780140367355,2,claude,"children's, a sand fairy"
+X27N,9780140558647,0,claude,picture book
+X27N,9781554682744,2,claude,the Faerie court is shadowy
+X27N,9781405240925,2,claude,"children's, as in the base"
+X27N,9781405230278,2,claude,"children's, as in the base"
+X27N,9780061020612,1,claude,"fairy godmothers, darkly comic"
+X27N,9780316201575,2,claude,
+X27N,9780060734084,1,claude,no fairies
+X28N,9780292764996,0,claude,
+X28N,9780752865331,1,claude,"noir, not Nordic"
+X28N,9780679722632,1,claude,"noir, not Nordic"
+X29N,9781481438865,1,claude,
+X29N,9780803738553,2,claude,
+X29N,9781490916637,1,claude,
+X30N,9780061978067,2,claude,book 2
+X30N,9781408319468,2,claude,
+X30N,9780547248042,1,claude,"bleak, book 3"
+X30N,9780142421710,2,claude,book 2
+X30N,9780547959214,2,claude,book 3
+X30N,9781442430006,2,claude,book 2
+X31N,9781092633550,1,claude,"a courtship, not a marriage"
+X32B,9781619636040,2,claude,book 4
+X32N,9780618640157,1,claude,famously slow to start
+X32N,9780345348654,1,claude,slow to build
+X32N,9780393320978,1,claude,"an epic poem, not a fantasy series"
+X32N,9780751504576,1,claude,"a standalone fairy tale, not epic"
+X33N,9780439227148,3,claude,
+X33N,9780394757681,2,claude,
+X33N,9781416534730,2,claude,
+X33N,9781420925531,3,claude,
+X33N,9780679745587,2,claude,"nonfiction, not a novel"
+X34B,9780749009519,1,claude,a time-slip to the 18th century
+X34N,9780517189603,1,claude,"Edwardian, children's"
+X34N,9780307277770,1,claude,"1920s, not Victorian"
+X35B,9780061015731,1,claude,"a thriller, not hard science fiction"
+X35N,9780765377067,2,claude,"hard SF, but slow in places"
+X35N,9780613824224,1,claude,not hard science fiction
+X35N,9781250191786,1,claude,
+X35N,9780061015731,1,claude,"a thriller, not hard science fiction"
+X35N,9781406310276,1,claude,soft YA science fiction
+X35N,9780792753216,1,claude,
+X35N,9780575074842,1,claude,
+X36B,9781416903437,1,claude,"magic training, but no school"
+X36N,9780765376459,1,claude,no school
+X36N,9780006498858,0,claude,no school
+X36N,9781841493138,3,claude,
+X36N,9780765356154,1,claude,no school
+X36N,9780373802494,2,claude,"a magic school, book 2"
+X37B,9780805053883,0,claude,picture book
+X37B,9780440226703,1,claude,"animals, but they don't talk"
+X37N,9780312965785,1,claude,"animals, but none talk"
+X37N,9780393061727,0,claude,
+X37N,9781444737097,1,claude,"animals, but none talk"
+X37N,9780312330866,1,claude,"animals, but none talk"
+X37N,9780156027328,1,claude,"animals, but none talk"
+X37N,9780618683079,0,claude,
+X38N,9781408319468,0,claude,YA
+X38N,9780525423645,0,claude,YA
+X38N,9780062414090,0,claude,YA
+X38N,9780007442911,0,claude,YA
+X39N,9780312348670,1,claude,"adult romance, not coming of age"
+X39N,9781442413337,0,claude,"YA, no first love"
+X39N,9781482319057,1,claude,
+X39N,9780375704024,3,claude,
+X39N,9780735276475,3,claude,
+X39N,9781451617818,2,claude,
+X40N,9781416936497,1,claude,YA
+X40N,9781599904788,1,claude,YA
+X40N,9780316175678,3,claude,
+X40N,9781845762780,2,claude,volume 7
+X40N,9780345418265,3,claude,
+X40N,9781599900513,1,claude,YA
+X40N,9781599903224,1,claude,YA
+X40N,9780060874162,1,claude,YA
+X40N,9780152052218,1,claude,YA
