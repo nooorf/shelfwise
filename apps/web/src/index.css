@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+/* A reading room, not a chat app (design doc §22): paper, ink, one quiet accent. */
+@theme {
+  --color-paper: #f7f3ec;
+  --color-card: #fffdf8;
+  --color-ink: #23201b;
+  --color-muted: #6b645a;
+  --color-line: #e2dacd;
+  --color-accent: #2f5d50;
+  --color-accent-soft: #dfeae5;
+  --color-ok: #2e6b3a;
+  --color-ok-soft: #e1efe3;
+  --color-soon: #8a5a0b;
+  --color-soon-soft: #f6ead2;
+  --color-out: #9a2f2f;
+  --color-out-soft: #f6e0dd;
+  --color-quiet: #5c5c5c;
+  --color-quiet-soft: #ebebe8;
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #191815;
+    --color-card: #23211d;
+    --color-ink: #ece6dc;
+    --color-muted: #a59d90;
+    --color-line: #3a362f;
+    --color-accent: #8fc2b1;
+    --color-accent-soft: #2a3a35;
+    --color-ok: #8fce9a;
+    --color-ok-soft: #233026;
+    --color-soon: #e7bd6c;
+    --color-soon-soft: #3a3020;
+    --color-out: #ee9d93;
+    --color-out-soft: #3d2623;
+    --color-quiet: #c2c2bd;
+    --color-quiet-soft: #2e2e2b;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+@keyframes orb-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes orb-think {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

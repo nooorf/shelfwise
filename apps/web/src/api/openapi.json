@@ -1,0 +1,1010 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Shelfwise",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Api V1 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search": {
+      "post": {
+        "summary": "Search",
+        "description": "Stateless search: parsed filters, ranked books with live availability, and, when\nnothing matches every hard filter, which one to drop and how many books that gives.",
+        "operationId": "search_api_v1_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions": {
+      "post": {
+        "summary": "Start Session",
+        "description": "A new anonymous conversation; its state expires after `session_ttl_s` idle.",
+        "operationId": "start_session_api_v1_sessions_post",
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Start Session Api V1 Sessions Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{session_id}/turns": {
+      "post": {
+        "summary": "Take Turn",
+        "description": "One message: merged into the session's state, routed by intent, answered with\nbooks (cards from the catalog, never from the LLM) and short template notes.",
+        "operationId": "take_turn_api_v1_sessions__session_id__turns_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TurnRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{session_id}/undo": {
+      "post": {
+        "summary": "Undo Topic Reset",
+        "description": "Back to the search before the last \"new topic\".",
+        "operationId": "undo_topic_reset_api_v1_sessions__session_id__undo_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{session_id}": {
+      "delete": {
+        "summary": "End Session",
+        "description": "\"New visitor\" / forget me: the state is deleted now, not at expiry.",
+        "operationId": "end_session_api_v1_sessions__session_id__delete",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Availability": {
+        "properties": {
+          "state": {
+            "$ref": "#/components/schemas/AvailabilityState"
+          },
+          "available_copies": {
+            "type": "integer",
+            "title": "Available Copies"
+          },
+          "total_copies": {
+            "type": "integer",
+            "title": "Total Copies"
+          },
+          "next_due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Due"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Location"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "state",
+          "available_copies",
+          "total_copies",
+          "next_due",
+          "location"
+        ],
+        "title": "Availability"
+      },
+      "AvailabilityState": {
+        "type": "string",
+        "enum": [
+          "available",
+          "in_library_only",
+          "due_soon",
+          "borrowed",
+          "unavailable"
+        ],
+        "title": "AvailabilityState"
+      },
+      "BookResult": {
+        "properties": {
+          "work_id": {
+            "type": "integer",
+            "title": "Work Id"
+          },
+          "work_key": {
+            "type": "string",
+            "title": "Work Key"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtitle"
+          },
+          "authors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Authors"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "pages": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pages"
+          },
+          "genres": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Genres"
+          },
+          "availability": {
+            "$ref": "#/components/schemas/Availability"
+          }
+        },
+        "type": "object",
+        "required": [
+          "work_id",
+          "work_key",
+          "title",
+          "subtitle",
+          "authors",
+          "year",
+          "pages",
+          "genres",
+          "availability"
+        ],
+        "title": "BookResult"
+      },
+      "Chip": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "op": {
+            "type": "string",
+            "title": "Op"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "strength": {
+            "type": "string",
+            "title": "Strength"
+          },
+          "polarity": {
+            "type": "string",
+            "title": "Polarity"
+          },
+          "turn": {
+            "type": "integer",
+            "title": "Turn"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "field",
+          "op",
+          "value",
+          "strength",
+          "polarity",
+          "turn"
+        ],
+        "title": "Chip",
+        "description": "An active constraint as the UI shows it; removable by naming its field."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Location": {
+        "properties": {
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "floor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Floor"
+          },
+          "call_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Call Number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "branch",
+          "floor",
+          "call_number"
+        ],
+        "title": "Location"
+      },
+      "LookupSpec": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "author": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Author"
+          }
+        },
+        "type": "object",
+        "title": "LookupSpec",
+        "description": "A known item: a title, an author's books, or both. Canonical spellings, not as typed."
+      },
+      "ParsedConstraint": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "op": {
+            "type": "string",
+            "title": "Op"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "strength": {
+            "type": "string",
+            "title": "Strength"
+          },
+          "polarity": {
+            "type": "string",
+            "title": "Polarity"
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "op",
+          "value",
+          "strength",
+          "polarity",
+          "span"
+        ],
+        "title": "ParsedConstraint"
+      },
+      "Relaxation": {
+        "properties": {
+          "drop": {
+            "type": "string",
+            "title": "Drop"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "earliest_due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Earliest Due"
+          }
+        },
+        "type": "object",
+        "required": [
+          "drop",
+          "count"
+        ],
+        "title": "Relaxation"
+      },
+      "Reply": {
+        "properties": {
+          "intro": {
+            "type": "string",
+            "title": "Intro"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReplyItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "follow_up": {
+            "type": "string",
+            "title": "Follow Up",
+            "default": ""
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "llm",
+              "template",
+              "mixed"
+            ],
+            "title": "Source"
+          },
+          "problems": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Problems"
+          },
+          "attempts": {
+            "type": "integer",
+            "title": "Attempts",
+            "default": 0
+          },
+          "ms": {
+            "type": "number",
+            "title": "Ms",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "intro",
+          "items",
+          "source"
+        ],
+        "title": "Reply"
+      },
+      "ReplyItem": {
+        "properties": {
+          "work_id": {
+            "type": "integer",
+            "title": "Work Id"
+          },
+          "why": {
+            "type": "string",
+            "title": "Why"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "llm",
+              "template"
+            ],
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "work_id",
+          "why",
+          "source"
+        ],
+        "title": "ReplyItem"
+      },
+      "SearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Query"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchRequest"
+      },
+      "SearchResponse": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "system": {
+            "type": "string",
+            "title": "System"
+          },
+          "parser": {
+            "type": "string",
+            "title": "Parser"
+          },
+          "parse_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parse Error"
+          },
+          "intent": {
+            "type": "string",
+            "enum": [
+              "lookup",
+              "discover",
+              "similar",
+              "refine",
+              "compare",
+              "explain",
+              "surprise",
+              "other"
+            ],
+            "title": "Intent"
+          },
+          "lookup": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LookupSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "seed_titles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Seed Titles"
+          },
+          "catalog_version": {
+            "type": "integer",
+            "title": "Catalog Version"
+          },
+          "constraints": {
+            "items": {
+              "$ref": "#/components/schemas/ParsedConstraint"
+            },
+            "type": "array",
+            "title": "Constraints"
+          },
+          "residual": {
+            "type": "string",
+            "title": "Residual"
+          },
+          "contradictions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Contradictions"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/BookResult"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "relaxations": {
+            "items": {
+              "$ref": "#/components/schemas/Relaxation"
+            },
+            "type": "array",
+            "title": "Relaxations"
+          },
+          "timings_ms": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Timings Ms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query",
+          "system",
+          "parser",
+          "parse_error",
+          "intent",
+          "lookup",
+          "seed_titles",
+          "catalog_version",
+          "constraints",
+          "residual",
+          "contradictions",
+          "results",
+          "relaxations",
+          "timings_ms"
+        ],
+        "title": "SearchResponse"
+      },
+      "TurnRequest": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Message"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 5
+          },
+          "narrate": {
+            "type": "boolean",
+            "title": "Narrate",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "TurnRequest"
+      },
+      "TurnResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "turn": {
+            "type": "integer",
+            "title": "Turn"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "route": {
+            "type": "string",
+            "enum": [
+              "search",
+              "explain",
+              "compare",
+              "clarify",
+              "surprise",
+              "chat",
+              "start_over"
+            ],
+            "title": "Route"
+          },
+          "intent": {
+            "type": "string",
+            "enum": [
+              "lookup",
+              "discover",
+              "similar",
+              "refine",
+              "compare",
+              "explain",
+              "surprise",
+              "other"
+            ],
+            "title": "Intent"
+          },
+          "parser": {
+            "type": "string",
+            "title": "Parser"
+          },
+          "parse_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parse Error"
+          },
+          "system": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes"
+          },
+          "chips": {
+            "items": {
+              "$ref": "#/components/schemas/Chip"
+            },
+            "type": "array",
+            "title": "Chips"
+          },
+          "semantic_query": {
+            "type": "string",
+            "title": "Semantic Query"
+          },
+          "lookup": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LookupSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "seed_titles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Seed Titles"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/BookResult"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "reply": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Reply"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "facets": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Facets"
+          },
+          "relaxations": {
+            "items": {
+              "$ref": "#/components/schemas/Relaxation"
+            },
+            "type": "array",
+            "title": "Relaxations"
+          },
+          "can_undo": {
+            "type": "boolean",
+            "title": "Can Undo"
+          },
+          "timings_ms": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Timings Ms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "turn",
+          "kind",
+          "route",
+          "intent",
+          "parser",
+          "parse_error",
+          "system",
+          "notes",
+          "chips",
+          "semantic_query",
+          "lookup",
+          "seed_titles",
+          "results",
+          "reply",
+          "facets",
+          "relaxations",
+          "can_undo",
+          "timings_ms"
+        ],
+        "title": "TurnResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

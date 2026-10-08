@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades eval eval-parser eval-conversations api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades eval eval-parser eval-conversations api web web-install web-test web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -106,6 +106,27 @@ eval-conversations:  ## Play conversation set C and score the state after every 
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload
+
+# The web app (apps/web). Node is the official prebuilt LTS in ~/.local/node (Homebrew has no
+# bottle for this macOS and builds it from source); NODE_BIN= points elsewhere if you have one.
+NODE_BIN ?= $(HOME)/.local/node/bin
+WEB = cd apps/web && PATH="$(NODE_BIN):$$PATH"
+
+web:  ## Run the web app at http://localhost:5173 (needs `make api` in another terminal)
+	$(WEB) npm run dev
+
+web-install:  ## Install the web app's packages exactly as locked
+	$(WEB) npm ci
+
+web-test:  ## Run the web app's tests
+	$(WEB) npx vitest run
+
+web-build:  ## Type-check and build the web app into apps/web/dist
+	$(WEB) npm run build
+
+web-types:  ## Regenerate the web app's API types after the API changes
+	uv run python scripts/export_openapi.py apps/web/src/api/openapi.json
+	$(WEB) npx --yes openapi-typescript@7 src/api/openapi.json -o src/api/schema.d.ts
 
 test:  ## Unit tests only (no services needed)
 	uv run pytest -m "not integration and not llm"
