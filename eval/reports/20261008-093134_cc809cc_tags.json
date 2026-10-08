@@ -1,0 +1,83 @@
+{
+  "created": "2026-10-08T04:31:34+00:00",
+  "git": "cc809cc",
+  "compared": "NF-review vs llm",
+  "model_versions": {
+    "facets-v2/qwen3:4b": 200
+  },
+  "books": 200,
+  "tags": {
+    "fiction": {
+      "n": 198,
+      "accuracy": 0.9343434343434344,
+      "kappa": 0.8674698795180723,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.5252525252525253
+    },
+    "audience": {
+      "n": 200,
+      "accuracy": 0.905,
+      "kappa": 0.7132291902497925,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.785
+    },
+    "darkness": {
+      "n": 200,
+      "accuracy": 0.585,
+      "kappa": 0.6334851442203426,
+      "kappa_weights": "quadratic",
+      "within_one": 0.865,
+      "majority": 0.38
+    },
+    "romance": {
+      "n": 200,
+      "accuracy": 0.575,
+      "kappa": 0.5052386495925494,
+      "kappa_weights": "quadratic",
+      "within_one": 0.915,
+      "majority": 0.56
+    },
+    "violence": {
+      "n": 200,
+      "accuracy": 0.605,
+      "kappa": 0.4167226531484761,
+      "kappa_weights": "quadratic",
+      "within_one": 0.88,
+      "majority": 0.51
+    },
+    "pace": {
+      "n": 198,
+      "accuracy": 0.48484848484848486,
+      "kappa": 0.4728877679697352,
+      "kappa_weights": "quadratic",
+      "within_one": null,
+      "majority": 0.6919191919191919
+    },
+    "supernatural": {
+      "n": 198,
+      "accuracy": 0.9545454545454546,
+      "kappa": 0.784156976744186,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8939393939393939
+    },
+    "historical_setting": {
+      "n": 94,
+      "accuracy": 0.7021276595744681,
+      "kappa": 0.12962962962962965,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8085106382978723
+    },
+    "reading_level": {
+      "n": 104,
+      "accuracy": 0.04807692307692308,
+      "kappa": -0.0058616647127782695,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.7019230769230769
+    }
+  }
+}

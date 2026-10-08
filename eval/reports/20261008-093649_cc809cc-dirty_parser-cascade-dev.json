@@ -1,0 +1,6932 @@
+{
+  "created": "2026-10-08T04:36:49+00:00",
+  "git": "cc809cc-dirty",
+  "parser": "cascade",
+  "split": "dev",
+  "today": "2026-10-07",
+  "llm": {
+    "model": "qwen3:4b",
+    "prompt_version": "query-v2",
+    "fallbacks": [],
+    "fast_path": 18,
+    "ms_p50": 1124.615624999933,
+    "ms_p95": 5901.071666000007
+  },
+  "summary": {
+    "n": 184,
+    "intent_accuracy": 0.9076,
+    "exact_match": 0.4946,
+    "lookup_accuracy": 0.8235,
+    "seed_accuracy": 0.8333,
+    "constraints_strict": {
+      "tp": 153,
+      "fp": 200,
+      "fn": 62,
+      "precision": 0.4334,
+      "recall": 0.7116,
+      "f1": 0.5387
+    },
+    "constraints_lenient": {
+      "tp": 154,
+      "fp": 199,
+      "fn": 61,
+      "precision": 0.4363,
+      "recall": 0.7163,
+      "f1": 0.5423
+    },
+    "per_field": {
+      "available_now": {
+        "tp": 11,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1.0,
+        "recall": 0.9167,
+        "f1": 0.9565
+      },
+      "facet.audience": {
+        "tp": 11,
+        "fp": 15,
+        "fn": 1,
+        "precision": 0.4231,
+        "recall": 0.9167,
+        "f1": 0.5789
+      },
+      "facet.darkness": {
+        "tp": 10,
+        "fp": 19,
+        "fn": 3,
+        "precision": 0.3448,
+        "recall": 0.7692,
+        "f1": 0.4762
+      },
+      "facet.fiction": {
+        "tp": 2,
+        "fp": 15,
+        "fn": 8,
+        "precision": 0.1176,
+        "recall": 0.2,
+        "f1": 0.1481
+      },
+      "facet.historical_setting": {
+        "tp": 2,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667
+      },
+      "facet.pace": {
+        "tp": 2,
+        "fp": 13,
+        "fn": 0,
+        "precision": 0.1333,
+        "recall": 1.0,
+        "f1": 0.2353
+      },
+      "facet.reading_level": {
+        "tp": 10,
+        "fp": 17,
+        "fn": 0,
+        "precision": 0.3704,
+        "recall": 1.0,
+        "f1": 0.5405
+      },
+      "facet.romance": {
+        "tp": 2,
+        "fp": 15,
+        "fn": 0,
+        "precision": 0.1176,
+        "recall": 1.0,
+        "f1": 0.2105
+      },
+      "facet.supernatural": {
+        "tp": 1,
+        "fp": 13,
+        "fn": 2,
+        "precision": 0.0714,
+        "recall": 0.3333,
+        "f1": 0.1176
+      },
+      "facet.violence": {
+        "tp": 0,
+        "fp": 13,
+        "fn": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "genre": {
+        "tp": 30,
+        "fp": 6,
+        "fn": 41,
+        "precision": 0.8333,
+        "recall": 0.4225,
+        "f1": 0.5607
+      },
+      "isbn": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "pages": {
+        "tp": 29,
+        "fp": 26,
+        "fn": 0,
+        "precision": 0.5273,
+        "recall": 1.0,
+        "f1": 0.6905
+      },
+      "popular": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "theme": {
+        "tp": 16,
+        "fp": 24,
+        "fn": 2,
+        "precision": 0.4,
+        "recall": 0.8889,
+        "f1": 0.5517
+      },
+      "title": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "year": {
+        "tp": 24,
+        "fp": 22,
+        "fn": 0,
+        "precision": 0.5217,
+        "recall": 1.0,
+        "f1": 0.6857
+      }
+    },
+    "keep_recall": 0.9416,
+    "negation_leak_rate": 0.1481,
+    "intent_confusions": {
+      "discover -> other": 8,
+      "discover -> lookup": 2,
+      "lookup -> discover": 2,
+      "similar -> discover": 1,
+      "lookup -> other": 1,
+      "discover -> refine": 1,
+      "similar -> refine": 1,
+      "compare -> refine": 1
+    },
+    "per_category": {
+      "adversarial": {
+        "n": 11,
+        "exact_match": 0.2727,
+        "intent_accuracy": 0.6364
+      },
+      "author": {
+        "n": 15,
+        "exact_match": 0.6667,
+        "intent_accuracy": 0.8
+      },
+      "availability": {
+        "n": 14,
+        "exact_match": 0.5,
+        "intent_accuracy": 0.9286
+      },
+      "discovery": {
+        "n": 21,
+        "exact_match": 0.6667,
+        "intent_accuracy": 1.0
+      },
+      "followup": {
+        "n": 2,
+        "exact_match": 0.5,
+        "intent_accuracy": 0.5
+      },
+      "genre": {
+        "n": 16,
+        "exact_match": 0.1875,
+        "intent_accuracy": 0.8125
+      },
+      "learning": {
+        "n": 15,
+        "exact_match": 0.7333,
+        "intent_accuracy": 0.9333
+      },
+      "lookup": {
+        "n": 15,
+        "exact_match": 0.8667,
+        "intent_accuracy": 0.9333
+      },
+      "multi_constraint": {
+        "n": 25,
+        "exact_match": 0.04,
+        "intent_accuracy": 1.0
+      },
+      "negation": {
+        "n": 19,
+        "exact_match": 0.4737,
+        "intent_accuracy": 1.0
+      },
+      "other": {
+        "n": 3,
+        "exact_match": 0.0,
+        "intent_accuracy": 1.0
+      },
+      "refinement": {
+        "n": 4,
+        "exact_match": 0.75,
+        "intent_accuracy": 1.0
+      },
+      "similarity": {
+        "n": 17,
+        "exact_match": 0.7059,
+        "intent_accuracy": 0.9412
+      },
+      "vague": {
+        "n": 7,
+        "exact_match": 0.5714,
+        "intent_accuracy": 0.7143
+      }
+    }
+  },
+  "per_query": {
+    "L01": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "Silent Patient",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L05": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "Harry Potter and the Half-Blood Prince",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L06": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "isbn",
+            "op": "in",
+            "value": [
+              "9781250301697"
+            ],
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "A01": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "Stephen King"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "A02": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "Agatha Christie"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "G01": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [mystery] soft",
+        "facet.darkness lte 1 soft"
+      ],
+      "extra": [
+        "genre in [computer science] soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "cozy mystery",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "computer science"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "G04": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [romance] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "romance books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S02": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "book that will mess with my head",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S03": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "facet.fiction eq true soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "surveillance government control novels",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S04": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "cozy comforting warm hug",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "S05": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "grief and losing a parent",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S08": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [war] soft",
+        "facet.fiction eq true soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "war fiction",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "M02": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [classics] soft",
+        "facet.fiction eq true soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "classic novel",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "short"
+          }
+        ]
+      }
+    },
+    "M03": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft",
+        "year shift 1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "nonfiction about history",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 400,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 400 pages"
+          },
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 2016,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published in the last 10 years"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "history"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": false,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M04": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy for teens standalone a",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "series",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M05": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft",
+        "not theme eq under 250 pages soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "horror book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 250,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 250 pages"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "horror"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "under 250 pages",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M06": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [thriller] soft"
+      ],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "year shift 1 soft",
+        "not theme eq long soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "thriller",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "not too long"
+          },
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 2010,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the 2010s"
+          },
+          {
+            "field": "year",
+            "op": "lte",
+            "value": 2019,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the 2010s"
+          },
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "long",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N01": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "not facet.supernatural eq yes hard"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "psychological",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "N03": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [mystery] soft",
+        "facet.violence lte 1 hard"
+      ],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "not theme eq gory soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "mystery",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "gory",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N04": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "sci fi but stuff",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "science fiction"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "space",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N05": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "facet.darkness gte 2 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "sad book but",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "gte",
+            "value": 2,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "war",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "V01": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [thriller] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "thrillers",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "i can take home today"
+          }
+        ]
+      }
+    },
+    "V02": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [horror] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "horror books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "available right now"
+          }
+        ]
+      }
+    },
+    "V04": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "The Shining",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "P02": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "books like 1984",
+        "lookup": null,
+        "seed_titles": [
+          "1984"
+        ],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "P03": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "i loved the hunger games what next",
+        "lookup": null,
+        "seed_titles": [
+          "The Hunger Games"
+        ],
+        "seed_work_ids": [
+          48
+        ],
+        "constraints": []
+      }
+    },
+    "P05": {
+      "exact": false,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "similar to harry potter but for adults",
+        "lookup": null,
+        "seed_titles": [
+          "Harry Potter and the Prisoner of Azkaban"
+        ],
+        "seed_work_ids": [
+          53
+        ],
+        "constraints": [
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "adult",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "U01": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq vampires soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "good",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "vampires",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "U03": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "holiday book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "H01": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "do you have the sequel to the silent patient",
+        "lookup": {
+          "title": "Silent Patient",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "H03": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 300,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 300 pages"
+          },
+          {
+            "field": "pages",
+            "op": "gt",
+            "value": 500,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "over 500 pages"
+          }
+        ]
+      }
+    },
+    "T01": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "systems engineering from scratch interview ready",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "T02": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "gpu kernels custom kernels beginner guide",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "T04": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "machine learning beginner guide",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "too much math",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "T05": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "facet.reading_level eq intro soft",
+        "not theme eq dinosaur book soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "operating systems course easier to read",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "dinosaur book",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "T06": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "linear algebra graduate course",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "advanced",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "T09": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "computer networks midterm study material",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "T11": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "not theme eq technical soft"
+      ],
+      "extra": [],
+      "leaked": [
+        "technical"
+      ],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "ai jobs change non technical book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L07": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "Big Little Lies",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L08": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "frankenstien",
+        "lookup": {
+          "title": "frankenstien",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L09": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "The Way of Kings",
+          "author": "Brandon Sanderson"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L11": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "The Girl on the Train",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L15": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "where would i find out of africa",
+        "lookup": {
+          "title": "Out of Africa",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L19": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "seabiscuit",
+        "lookup": {
+          "title": "seabiscuit",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "L20": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "isbn",
+            "op": "in",
+            "value": [
+              "9780765326355"
+            ],
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "L23": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq advanced soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq the painted veil soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "painted veil",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "advanced",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "the painted veil",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "L24": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "The Girl on the Train",
+          "author": "Paula Hawkins"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "A05": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "James Patterson"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "A08": {
+      "exact": false,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "something by neil gaiman for kids",
+        "lookup": {
+          "title": null,
+          "author": "Neil Gaiman"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "children",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "A10": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "not genre in [horror] hard"
+      ],
+      "extra": [
+        "not theme eq horror soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "stephen king non",
+        "lookup": {
+          "title": null,
+          "author": "Stephen King"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "horror",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "A11": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "Roald Dahl"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "A12": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "books written by william shakespeare",
+        "lookup": {
+          "title": null,
+          "author": "William Shakespeare"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "A13": {
+      "exact": false,
+      "intent": "lookup",
+      "missing": [
+        "genre in [thriller] soft",
+        "available_now eq true hard"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "harlan coben thrillers",
+        "lookup": {
+          "title": "harlan coben thrillers",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "A15": {
+      "exact": false,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "jim butcher dresden files",
+        "lookup": {
+          "title": "jim butcher dresden files",
+          "author": "Jim Butcher"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "G05": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "psychological thrillers",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "psychological thriller"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "G06": {
+      "exact": false,
+      "intent": "other",
+      "missing": [
+        "genre in [graphic novels] soft"
+      ],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq children soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq manga soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "children",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "manga",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "G07": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [true crime] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "true crime books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "G10": {
+      "exact": false,
+      "intent": "other",
+      "missing": [
+        "genre in [poetry] soft"
+      ],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq children soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq poetry collections soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "children",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "poetry collections",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "G12": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [memoir] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "good memoir",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "G13": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "urban fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "G15": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [self-help] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "self help books that actually help",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "G16": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [mystery] soft",
+        "facet.darkness lte 1 soft"
+      ],
+      "extra": [
+        "genre in [computer science] soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "cozy mysteries",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "computer science"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "S11": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "slow burn mystery with a lot of atmosphere",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "mystery"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "slow",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "S13": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "facet.fiction eq true soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "animal perspective story",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S16": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "strong sense of place city smell",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S18": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "ocean book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S20": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "villain wins",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S22": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "genre in [literary fiction] soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "dark academia",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "literary fiction"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.darkness",
+            "op": "gte",
+            "value": 2,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "S24": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "time loop book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S25": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "not theme eq unreliable narrator soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "thriller",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "thriller"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "unreliable narrator",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "S27": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "family saga spanning generations",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S29": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [thriller] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "twisty thriller that keeps you guessing",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "S30": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "mind bending book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "M09": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [classics] soft"
+      ],
+      "extra": [
+        "facet.audience eq adult soft",
+        "pages shift -1 soft",
+        "year shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "classic before 1950",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "short"
+          },
+          {
+            "field": "year",
+            "op": "lt",
+            "value": 1950,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "before 1950"
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "adult",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M10": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [fantasy] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 2010,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published between 2010 and 2015"
+          },
+          {
+            "field": "year",
+            "op": "lte",
+            "value": 2015,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published between 2010 and 2015"
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M12": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "facet.fiction eq true soft"
+      ],
+      "extra": [
+        "facet.audience eq adult soft",
+        "year shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "horror novels",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 1980,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the eighties"
+          },
+          {
+            "field": "year",
+            "op": "lte",
+            "value": 1989,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the eighties"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "horror"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "adult",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M13": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [thriller] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "thriller",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 350,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 350 pages"
+          },
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 2021,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "recent"
+          }
+        ]
+      }
+    },
+    "M14": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [science] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "science",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 300,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 300 pages"
+          },
+          {
+            "field": "year",
+            "op": "gt",
+            "value": 2010,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published after 2010"
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": false,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M16": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [fantasy] soft",
+        "facet.fiction eq true soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "long fantasy novel",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "gte",
+            "value": 600,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "at least 600 pages"
+          }
+        ]
+      }
+    },
+    "M18": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "year shift 1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "historical fiction set in ancient rome",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 2021,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "recent"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "historical fiction"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.historical_setting",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M19": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [humor] soft"
+      ],
+      "extra": [
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "funny book for teens",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 250,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 250 pages"
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M21": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [mystery] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "mystery",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "short"
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "children",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M22": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "year shift 1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "dark fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 2016,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the last decade"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.darkness",
+            "op": "gte",
+            "value": 2,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "M23": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "romance",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "approx",
+            "value": 200,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "200 page"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "romance"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N06": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "facet.supernatural eq yes soft",
+        "not title eq Twilight hard"
+      ],
+      "extra": [
+        "genre in [fantasy] soft",
+        "not theme eq twilight soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "vampire book that",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "twilight",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N08": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [thriller] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "thriller",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "children harmed",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N09": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "not facet.audience eq ya hard"
+      ],
+      "extra": [
+        "not theme eq ya soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy thats",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N11": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "historical fiction about",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "historical fiction"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "royalty",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N15": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy or",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "elves",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "dwarves",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N18": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "facet.darkness lte 2 hard"
+      ],
+      "extra": [
+        "not theme eq depressing soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "teens books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "depressing",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "N20": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "something",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "V07": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [graphic novels] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "graphic novels",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "available today"
+          }
+        ]
+      }
+    },
+    "V08": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [romance] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "romance",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "i could check out tonight"
+          }
+        ]
+      }
+    },
+    "V10": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "world war 2",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "available"
+          }
+        ]
+      }
+    },
+    "V11": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "thriller",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "whatever is in"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "thriller"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "V12": {
+      "exact": false,
+      "intent": "refine",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft",
+        "not theme eq checked out soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "refine",
+        "semantic_query": "books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "short"
+          },
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "not checked out"
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "checked out",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "V13": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [fantasy] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "best fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "V15": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "The Hobbit",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "V16": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "poetry books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "in stock"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "poetry"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "P06": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "books like the way of kings",
+        "lookup": null,
+        "seed_titles": [
+          "The Way of Kings"
+        ],
+        "seed_work_ids": [
+          1430
+        ],
+        "constraints": []
+      }
+    },
+    "P07": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "something similar to big little lies",
+        "lookup": null,
+        "seed_titles": [
+          "Big Little Lies"
+        ],
+        "seed_work_ids": [
+          430
+        ],
+        "constraints": []
+      }
+    },
+    "P08": {
+      "exact": false,
+      "intent": "similar",
+      "missing": [
+        "genre in [classics] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "classics",
+        "lookup": null,
+        "seed_titles": [
+          "Frankenstein"
+        ],
+        "seed_work_ids": [
+          65
+        ],
+        "constraints": []
+      }
+    },
+    "P09": {
+      "exact": false,
+      "intent": "similar",
+      "missing": [],
+      "extra": [
+        "facet.darkness shift -1 soft",
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "more books like the girl on the train but with a happier ending",
+        "lookup": null,
+        "seed_titles": [
+          "The Girl on the Train"
+        ],
+        "seed_work_ids": [
+          420
+        ],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "P11": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "time travel",
+        "lookup": null,
+        "seed_titles": [
+          "11/22/63"
+        ],
+        "seed_work_ids": [
+          2163
+        ],
+        "constraints": []
+      }
+    },
+    "P12": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "books like the dream thieves",
+        "lookup": null,
+        "seed_titles": [
+          "The Dream Thieves"
+        ],
+        "seed_work_ids": [
+          1576
+        ],
+        "constraints": []
+      }
+    },
+    "P13": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "modern pride and prejudice",
+        "lookup": null,
+        "seed_titles": [
+          "Pride and Prejudice"
+        ],
+        "seed_work_ids": [
+          72
+        ],
+        "constraints": []
+      }
+    },
+    "P17": {
+      "exact": false,
+      "intent": "refine",
+      "missing": [
+        "facet.violence shift -1 soft"
+      ],
+      "extra": [
+        "pages shift -1 soft",
+        "not theme eq violence soft"
+      ],
+      "leaked": [
+        "violent | violence"
+      ],
+      "predicted": {
+        "intent": "refine",
+        "semantic_query": "hunger games violent",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "violence",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "P18": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "something like the white queen",
+        "lookup": null,
+        "seed_titles": [
+          "The White Queen"
+        ],
+        "seed_work_ids": [
+          2218
+        ],
+        "constraints": []
+      }
+    },
+    "P19": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "next book after catching fire",
+        "lookup": null,
+        "seed_titles": [
+          "Catching Fire"
+        ],
+        "seed_work_ids": [
+          3721
+        ],
+        "constraints": []
+      }
+    },
+    "U05": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "good book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "U07": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence eq 0 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq sad soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "eq",
+            "value": 0,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "sad",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "U08": {
+      "exact": true,
+      "intent": "surprise",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "surprise",
+        "semantic_query": "something to do",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "U10": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "book for mom",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "U12": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "facet.reading_level eq intro soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "quick read",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "quick read"
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "H05": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "do you have harry potter and the cursed throne",
+        "lookup": {
+          "title": "harry potter and the cursed throne",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "H07": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 50,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 50 pages"
+          },
+          {
+            "field": "year",
+            "op": "lt",
+            "value": 1500,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published before 1500"
+          }
+        ]
+      }
+    },
+    "H09": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq advanced soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq space soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "asdfghjkl",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "advanced",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "space",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "H10": {
+      "exact": false,
+      "intent": "other",
+      "missing": [
+        "genre in [romance] soft",
+        "not genre in [romance] hard"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "romance that is also not a romance",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "H11": {
+      "exact": false,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "book with the blue cover i read in school",
+        "lookup": {
+          "title": "the book with the blue cover i read in school",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "H12": {
+      "exact": false,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "do you have the new stephen king",
+        "lookup": {
+          "title": "the new stephen king",
+          "author": "Stephen King"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "eq",
+            "value": 2027,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "comes out next year"
+          }
+        ]
+      }
+    },
+    "H13": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq space soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "list every book in the library",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "space",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "H15": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "novella",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "approx",
+            "value": 1000,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "1000 page"
+          },
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "novella"
+          }
+        ]
+      }
+    },
+    "T13": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "test driven development book for a team new to testing",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "T14": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "linux beginners guide",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "T16": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "facet.reading_level eq intro soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "php mysql website building",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BL07": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": "Fourth Wing",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BL08": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "i need a copy of to kill a mocking bird for english class",
+        "lookup": {
+          "title": "to kill a mocking bird",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BL10": {
+      "exact": false,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "atomic habits james clear",
+        "lookup": {
+          "title": "atomic habits james clear",
+          "author": null
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BA01": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "Neil Gaiman"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BA02": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "Brandon Sanderson"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 400,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 400 pages"
+          }
+        ]
+      }
+    },
+    "BA03": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "Stephen King"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "short"
+          }
+        ]
+      }
+    },
+    "BA04": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "agatha christie but",
+        "lookup": {
+          "title": null,
+          "author": "Agatha Christie"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "poirot",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BA05": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "i liked kazuo ishiguro anything else by him",
+        "lookup": {
+          "title": null,
+          "author": "Kazuo Ishiguro"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BA07": {
+      "exact": true,
+      "intent": "lookup",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "lookup",
+        "semantic_query": "",
+        "lookup": {
+          "title": null,
+          "author": "Toni Morrison"
+        },
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 1970,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the 70s"
+          },
+          {
+            "field": "year",
+            "op": "lte",
+            "value": 1979,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the 70s"
+          }
+        ]
+      }
+    },
+    "BG01": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [mystery] hard"
+      ],
+      "extra": [
+        "genre in [mystery] soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "mystery",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "mystery"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BG02": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [graphic novels] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "graphic novels",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BG03": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [poetry] soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "good poetry",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BG04": {
+      "exact": false,
+      "intent": "other",
+      "missing": [
+        "genre in [true crime] soft"
+      ],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq children soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq true crime soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "children",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "true crime",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BG05": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [memoir, biography] soft"
+      ],
+      "extra": [
+        "facet.fiction eq false soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "memoir or biography",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": false,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BG06": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "dystopian ya",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "dystopian"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BS01": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "dark disturbing",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "gte",
+            "value": 3,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BS05": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "historical fiction set in victorian london",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "historical fiction"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.historical_setting",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BS06": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "feel good found family book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BS07": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "page turner with lots of plot twists",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BS08": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "romantic book that will make me swoon",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.romance",
+            "op": "gte",
+            "value": 2,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM01": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 300,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 300 pages"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM04": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "facet.fiction eq true soft"
+      ],
+      "extra": [
+        "facet.historical_setting eq yes soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "classic novels",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 1800,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the 1800s"
+          },
+          {
+            "field": "year",
+            "op": "lte",
+            "value": 1899,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "from the 1800s"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "classics"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.historical_setting",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM06": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "cozy fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 300,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 300 pages"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM07": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [romance] soft"
+      ],
+      "extra": [
+        "facet.romance gte 2 soft",
+        "year shift 1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "romance thats",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gt",
+            "value": 2020,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published after 2020"
+          },
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "available"
+          },
+          {
+            "field": "facet.romance",
+            "op": "gte",
+            "value": 2,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM10": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "facet.fiction eq false soft"
+      ],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "nonfiction space",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 250,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 250 pages"
+          }
+        ]
+      }
+    },
+    "BM11": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [romance] soft"
+      ],
+      "extra": [
+        "facet.fiction eq true soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "ya romance",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "gte",
+            "value": 300,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "at least 300 pages"
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM12": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "year shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "thriller",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gt",
+            "value": 1980,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "after 1980"
+          },
+          {
+            "field": "year",
+            "op": "lt",
+            "value": 2000,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "written before 2000"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "thriller"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM13": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "year shift 1 soft",
+        "not theme eq short soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "dark fantasy preferably",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "short"
+          },
+          {
+            "field": "year",
+            "op": "gte",
+            "value": 2021,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published in the last five years"
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.darkness",
+            "op": "gte",
+            "value": 2,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "short",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BM14": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [humor] soft"
+      ],
+      "extra": [
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "funny for kids",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "approx",
+            "value": 200,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "about 200 pages"
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "children",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BN02": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BN03": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "horror book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "horror"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "ghosts",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BN08": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "not theme eq dog dies | dog death | death of a dog soft"
+      ],
+      "extra": [],
+      "leaked": [
+        "die | dies | death"
+      ],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "dogs book where dog doesn't die",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BN09": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "not genre in [historical fiction] hard",
+        "facet.historical_setting eq yes soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "but about",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "historical fiction"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "historical fiction"
+            ],
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          },
+          {
+            "field": "facet.historical_setting",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "world war 2",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BN11": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [romance] soft"
+      ],
+      "extra": [
+        "facet.romance lte 1 hard"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "too",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "explicit",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BN12": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "psychological thriller please",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "psychological thriller"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "unreliable narrator",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BN13": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "something uplifting",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "tragedy",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BN14": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy that part of a",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "fantasy"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "series",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BV02": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [
+        "genre in [fantasy] soft"
+      ],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq adult soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq advanced soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq borrow today soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "fantasy",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "i can borrow today"
+          },
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "adult",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "advanced",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "borrow today",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BV03": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "best sci fi ever",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "genre",
+            "op": "in",
+            "value": [
+              "science fiction"
+            ],
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "popular",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BV05": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "short books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lte",
+            "value": 250,
+            "strength": "soft",
+            "source": "rule",
+            "polarity": "include",
+            "span": "short"
+          },
+          {
+            "field": "available_now",
+            "op": "eq",
+            "value": true,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "i could take home tonight"
+          }
+        ]
+      }
+    },
+    "BP03": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "i want another book like the secret history maybe darker",
+        "lookup": null,
+        "seed_titles": [
+          "The Secret History"
+        ],
+        "seed_work_ids": [
+          31
+        ],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BP04": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "similar vibes to the night circus",
+        "lookup": null,
+        "seed_titles": [
+          "The Night Circus"
+        ],
+        "seed_work_ids": [
+          1338
+        ],
+        "constraints": []
+      }
+    },
+    "BP06": {
+      "exact": true,
+      "intent": "similar",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "like the hobbit but for adults",
+        "lookup": null,
+        "seed_titles": [
+          "The Hobbit"
+        ],
+        "seed_work_ids": [
+          1307
+        ],
+        "constraints": [
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "adult",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BP07": {
+      "exact": false,
+      "intent": "similar",
+      "missing": [
+        "facet.violence shift -1 soft"
+      ],
+      "extra": [
+        "facet.darkness shift -1 soft"
+      ],
+      "leaked": [
+        "violent | violence"
+      ],
+      "predicted": {
+        "intent": "similar",
+        "semantic_query": "like the girl on the train but violent",
+        "lookup": null,
+        "seed_titles": [
+          "The Girl on the Train"
+        ],
+        "seed_work_ids": [
+          420
+        ],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BT02": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "compilers textbook",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "advanced",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BT03": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "javascript book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "gt",
+            "value": 2018,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "published after 2018"
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BT04": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "python clean code",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intermediate",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BT05": {
+      "exact": false,
+      "intent": "discover",
+      "missing": [],
+      "extra": [
+        "facet.reading_level eq intro soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "deep learning beginner guide",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "math heavy",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BT08": {
+      "exact": true,
+      "intent": "discover",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "discover",
+        "semantic_query": "probability theory",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "advanced",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BR01": {
+      "exact": true,
+      "intent": "refine",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "refine",
+        "semantic_query": "something shorter",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BR04": {
+      "exact": false,
+      "intent": "refine",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "refine",
+        "semantic_query": "actually make it",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "lt",
+            "value": 200,
+            "strength": "hard",
+            "source": "rule",
+            "polarity": "include",
+            "span": "under 200 pages"
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BR06": {
+      "exact": true,
+      "intent": "refine",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "refine",
+        "semantic_query": "something a bit more lighthearted",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BR07": {
+      "exact": true,
+      "intent": "refine",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "refine",
+        "semantic_query": "newer ones please",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BC02": {
+      "exact": true,
+      "intent": "explain",
+      "missing": [],
+      "extra": [],
+      "leaked": [],
+      "predicted": {
+        "intent": "explain",
+        "semantic_query": "why did you recommend the second one",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": []
+      }
+    },
+    "BC04": {
+      "exact": false,
+      "intent": "refine",
+      "missing": [],
+      "extra": [
+        "pages shift -1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "refine",
+        "semantic_query": "one is the shortest",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BO01": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 soft",
+        "facet.romance gte 2 soft",
+        "facet.violence eq 0 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq advanced soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq space soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "hi there",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "gte",
+            "value": 2,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "eq",
+            "value": 0,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "advanced",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "space",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BO02": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "what time does the library close",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BO04": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq space soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "renew book",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "space",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    },
+    "BH01": {
+      "exact": false,
+      "intent": "other",
+      "missing": [],
+      "extra": [
+        "facet.darkness lte 1 hard",
+        "facet.romance lte 1 hard",
+        "facet.violence lte 1 hard",
+        "facet.pace eq fast soft",
+        "facet.supernatural eq yes soft",
+        "facet.audience eq ya soft",
+        "facet.fiction eq true soft",
+        "facet.reading_level eq intro soft",
+        "pages shift -1 soft",
+        "year shift 1 soft",
+        "not theme eq space soft"
+      ],
+      "leaked": [],
+      "predicted": {
+        "intent": "other",
+        "semantic_query": "lost books",
+        "lookup": null,
+        "seed_titles": [],
+        "seed_work_ids": [],
+        "constraints": [
+          {
+            "field": "facet.darkness",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.romance",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.violence",
+            "op": "lte",
+            "value": 1,
+            "strength": "hard",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.pace",
+            "op": "eq",
+            "value": "fast",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.supernatural",
+            "op": "eq",
+            "value": "yes",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.audience",
+            "op": "eq",
+            "value": "ya",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.fiction",
+            "op": "eq",
+            "value": true,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "facet.reading_level",
+            "op": "eq",
+            "value": "intro",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "pages",
+            "op": "shift",
+            "value": -1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "year",
+            "op": "shift",
+            "value": 1,
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "include",
+            "span": null
+          },
+          {
+            "field": "theme",
+            "op": "eq",
+            "value": "space",
+            "strength": "soft",
+            "source": "llm",
+            "polarity": "exclude",
+            "span": null
+          }
+        ]
+      }
+    }
+  }
+}
