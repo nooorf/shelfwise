@@ -29,6 +29,10 @@ from shelfwise.retrieval.lexical import LexicalIndex, build_lexical_index
 from shelfwise.retrieval.lookup import find_authors, find_by_isbn, find_titles
 
 CANDIDATES = 100  # per channel, before fusion (design doc §13.2)
+# Relevance floor for parsed_hybrid's embedding searches: a book more than this below the best
+# match in the catalog is dropped. On the dev split's graded pairs (bge-base, 2026-10-08) 0.20
+# keeps 99.9% of relevant books (grade 2-3) and drops 30% of grade-0 ones.
+MAX_GAP = 0.20
 RERANK_DEPTH = 50  # default until the depth sweep picks one (design doc §14.2)
 # The LLM's answers for every evaluated query, so benchmark runs don't need Ollama (committed).
 LLM_CACHE = Path("eval/data/llm_cache.jsonl")
@@ -251,11 +255,19 @@ def _seed_vector(index: DenseIndex, seeds: list[int]) -> np.ndarray | None:
     return vector / norm if norm > 0 else None
 
 
+def _near(
+    index: DenseIndex, vector: np.ndarray, mask: np.ndarray, ignore: list[int] | None = None
+) -> list[int]:
+    hits = index.search(vector, CANDIDATES, allowed=mask, max_gap=MAX_GAP, ignore=ignore or [])
+    return [h.work_id for h in hits]
+
+
 def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
     """The cascade parser's reading drives everything: its hard constraints filter; a lookup's
     title or author comes first; "like X" searches near the seed book (and leaves it out); the
     negation-stripped semantic text goes to BM25 and dense; RRF, then soft constraints nudge
-    (`ranking.soft`). An author named in a non-lookup ("neil gaiman for kids") narrows the
+    (`ranking.soft`). Dense hits far below the catalog's best match are dropped (`MAX_GAP`), so a
+    filter that leaves only off-topic books shows none of them. An author named in a non-lookup ("neil gaiman for kids") narrows the
     search to their books."""
     request = ctx.parsed(query)
     embedder, index = ctx.require_dense()
@@ -271,13 +283,12 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
     if semantic:
         rankings.append([h.work_id for h in ctx.index.search(semantic, CANDIDATES, allowed=mask)])
         vector = embedder.encode_query(semantic)
-        rankings.append([h.work_id for h in index.search(vector, CANDIDATES, allowed=mask)])
+        rankings.append(_near(index, vector, mask))
     if (seed := _seed_vector(index, request.seed_work_ids)) is not None:
-        rankings.append([h.work_id for h in index.search(seed, CANDIDATES, allowed=mask)])
+        rankings.append(_near(index, seed, mask, ignore=request.seed_work_ids))
     if not rankings:  # nothing parsed out: fall back to the words as typed
         rankings.append([h.work_id for h in ctx.index.search(query, CANDIDATES, allowed=mask)])
-        vector = embedder.encode_query(query)
-        rankings.append([h.work_id for h in index.search(vector, CANDIDATES, allowed=mask)])
+        rankings.append(_near(index, embedder.encode_query(query), mask))
 
     signals = ctx.signals()
     scored = [

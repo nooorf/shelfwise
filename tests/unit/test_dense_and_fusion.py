@@ -92,3 +92,23 @@ def test_dense_search_respects_mask_and_skips_missing_vectors(index: DenseIndex)
 def test_dense_index_rejects_misaligned_matrix() -> None:
     with pytest.raises(ValueError):
         DenseIndex(np.array([1, 2]), np.zeros((3, 4)), "fake")
+
+
+def test_dense_search_max_gap_drops_books_far_below_the_best_match() -> None:
+    matrix = np.array([[1.0, 0.0], [0.9, np.sqrt(1 - 0.81)], [0.0, 1.0]], dtype=np.float32)
+    index = DenseIndex(np.array([1, 2, 3]), matrix, "fake")
+    query = np.array([1.0, 0.0], dtype=np.float32)
+    only_far = np.array([False, False, True])
+
+    assert [h.work_id for h in index.search(query, max_gap=0.2)] == [1, 2]
+    assert index.search(query, allowed=only_far, max_gap=0.2) == []  # off-topic, not shown
+    assert [h.work_id for h in index.search(query, allowed=only_far)] == [3]  # no floor
+
+
+def test_dense_search_max_gap_ignores_the_seed_as_best_match() -> None:
+    matrix = np.array([[1.0, 0.0], [0.7, np.sqrt(1 - 0.49)]], dtype=np.float32)
+    index = DenseIndex(np.array([1, 2]), matrix, "fake")
+    seed = matrix[0]
+
+    assert index.search(seed, max_gap=0.2, ignore=[]) == index.search(seed, k=1)
+    assert [h.work_id for h in index.search(seed, max_gap=0.2, ignore=[1])] == [1, 2]

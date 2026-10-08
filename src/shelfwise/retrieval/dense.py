@@ -5,6 +5,7 @@ recall; approximate indexes would add a filtered-search recall problem for no be
 is aligned to a given work-id order (the lexical index's), so one filter mask serves both.
 """
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 import numpy as np
@@ -51,9 +52,23 @@ class DenseIndex:
         return self.matrix @ query_vector.astype(np.float32, copy=False)
 
     def search(
-        self, query_vector: np.ndarray, k: int = 10, allowed: np.ndarray | None = None
+        self,
+        query_vector: np.ndarray,
+        k: int = 10,
+        allowed: np.ndarray | None = None,
+        max_gap: float | None = None,
+        ignore: Sequence[int] = (),
     ) -> list[DenseHit]:
+        """Top-k works by similarity among `allowed`. With `max_gap`, a work scoring more than
+        that below the best match in the whole catalog is left out, so filters that leave only
+        off-topic books return nothing instead of them. `ignore` keeps works out of that best
+        match (a "like X" search's seed book, which matches itself perfectly)."""
+        raw = self.scores(query_vector)
         ok = self.has_vector if allowed is None else (self.has_vector & allowed)
-        scores = np.where(ok, self.scores(query_vector), -np.inf)
+        if max_gap is not None:
+            reference = self.has_vector & ~np.isin(self.work_ids, list(ignore))
+            if reference.any():
+                ok = ok & (raw >= float(raw[reference].max()) - max_gap)
+        scores = np.where(ok, raw, -np.inf)
         top = np.argsort(-scores, kind="stable")[:k]
         return [DenseHit(int(self.work_ids[i]), float(scores[i])) for i in top if ok[i]]
