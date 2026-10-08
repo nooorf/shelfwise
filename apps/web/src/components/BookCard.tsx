@@ -1,5 +1,7 @@
 // Titles, authors and availability come from the catalog; only the "why" line is the LLM's,
 // and it has passed the validator (design doc §18.2).
+import { ThumbsDown, ThumbsUp } from 'lucide-react'
+
 import type { BookResult, ReplyItem } from '../api/types'
 import { AvailabilityPill } from './AvailabilityPill'
 import { Cover } from './Cover'
@@ -9,9 +11,10 @@ interface Props {
   position: number
   note?: ReplyItem
   writing: boolean
+  onFeedback?: (book: BookResult, more: boolean) => void
 }
 
-export function BookCard({ book, position, note, writing }: Props) {
+export function BookCard({ book, position, note, writing, onFeedback }: Props) {
   const author = book.authors.join(', ') || 'Unknown author'
   const facts = [book.year, book.pages && `${book.pages} pp`].filter(Boolean).join(' · ')
   return (
@@ -37,6 +40,26 @@ export function BookCard({ book, position, note, writing }: Props) {
         </p>
       ) : (
         writing && <p className="animate-pulse text-sm text-muted">Writing a note…</p>
+      )}
+      {onFeedback && (
+        <div className="mt-auto flex gap-1 pt-1">
+          <button
+            type="button"
+            onClick={() => onFeedback(book, true)}
+            aria-label={`More like ${book.title}`}
+            className="inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs text-muted hover:bg-accent-soft hover:text-accent"
+          >
+            <ThumbsUp className="size-3.5" aria-hidden="true" /> More like this
+          </button>
+          <button
+            type="button"
+            onClick={() => onFeedback(book, false)}
+            aria-label={`Less like ${book.title}`}
+            className="inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs text-muted hover:bg-line hover:text-ink"
+          >
+            <ThumbsDown className="size-3.5" aria-hidden="true" /> Less
+          </button>
+        </div>
       )}
     </article>
   )

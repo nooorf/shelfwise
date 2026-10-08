@@ -11,7 +11,7 @@ import { useConversation } from './session/useConversation'
 import { useSession } from './session/store'
 
 export default function App() {
-  const { ask, undo, removeChip, cancel, newVisitor } = useConversation()
+  const { ask, undo, removeChip, feedback, cancel, newVisitor } = useConversation()
   const status = useSession((s) => s.status)
   const exchanges = useSession((s) => s.exchanges)
   const shelf = useSession((s) => s.shelf)
@@ -59,7 +59,13 @@ export default function App() {
               {error}
             </p>
           )}
-          <ResultsShelf shelf={shelf} reply={shelfReply} writing={status === 'writing'} onAsk={ask} />
+          <ResultsShelf
+            shelf={shelf}
+            reply={shelfReply}
+            writing={status === 'writing'}
+            onAsk={ask}
+            onFeedback={feedback}
+          />
         </main>
       </div>
     </div>

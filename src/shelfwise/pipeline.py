@@ -183,7 +183,9 @@ class SearchService:
             ctx = replace(ctx, parser=lambda _query, _today: parsed, _parses={})
         else:
             system = hybrid_rerank if ctx.reranker is not None else hybrid_lookup
-        return system.__name__, system(ctx, query, limit)
+        avoid = set(parsed.avoid_work_ids)  # "less like this": never shown again
+        ids = [w for w in system(ctx, query, limit + len(avoid)) if w not in avoid]
+        return system.__name__, ids[:limit]
 
     def relax(self, conn: Connection, constraints: list[Constraint]) -> list[Relaxation]:
         """When nothing matched: which hard constraint to drop, and how many books that gives."""

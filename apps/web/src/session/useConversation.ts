@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 
 import { endSession, socketUrl, startSession } from '../api/client'
-import type { Chip } from '../api/types'
+import type { BookResult, Chip } from '../api/types'
 import { SessionSocket } from './socket'
 import { useSession } from './store'
 
@@ -12,6 +12,7 @@ export interface Conversation {
   ask: (text: string) => void
   undo: () => void
   removeChip: (chip: Chip) => void
+  feedback: (book: BookResult, more: boolean) => void
   cancel: () => void
   newVisitor: () => Promise<void>
 }
@@ -66,6 +67,11 @@ export function useConversation(): Conversation {
     socket.current?.send({ type: 'remove_chip', field: chip.field, label: chip.label })
   }, [])
 
+  const feedback = useCallback((book: BookResult, more: boolean) => {
+    useSession.getState().said(`${more ? 'More' : 'Less'} like “${book.title}”`)
+    socket.current?.send({ type: more ? 'more_like' : 'less_like', work_id: book.work_id })
+  }, [])
+
   const cancel = useCallback(() => socket.current?.send({ type: 'cancel' }), [])
 
   const newVisitor = useCallback(async () => {
@@ -75,5 +81,5 @@ export function useConversation(): Conversation {
     await openSession(socket)
   }, [sessionId])
 
-  return { ask, undo, removeChip, cancel, newVisitor }
+  return { ask, undo, removeChip, feedback, cancel, newVisitor }
 }

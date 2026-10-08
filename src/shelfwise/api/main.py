@@ -12,6 +12,7 @@ from sqlalchemy import Connection, Engine
 from shelfwise import __version__
 from shelfwise.config import Settings, get_settings
 from shelfwise.conversation.service import (
+    BookFeedback,
     ChipRemoval,
     ConversationService,
     SessionNotFound,
@@ -160,6 +161,20 @@ def create_app(
         except SessionNotFound:
             raise HTTPException(404, "session not found or expired: start a new one") from None
 
+    @v1.post("/sessions/{session_id}/feedback")
+    def book_feedback(
+        session_id: str,
+        feedback: BookFeedback,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> TurnResponse:
+        """ "More like this" (the book becomes the seed) or "less like this" (it is hidden and
+        the books nearest it pushed down) on a shown book; the search runs again."""
+        try:
+            return conversation.book_feedback(conn, session_id, feedback)
+        except SessionNotFound:
+            raise HTTPException(404, "session not found or expired: start a new one") from None
+
     @v1.delete("/sessions/{session_id}", status_code=204)
     def end_session(
         session_id: str,
@@ -177,7 +192,8 @@ def create_app(
     ) -> None:
         """One socket per session (design doc §20.5, text events). Client -> server:
         {"type": "text", "text": ..., "limit"?, "narrate"?}, {"type": "undo"},
-        {"type": "remove_chip", "field": ..., "label": ...}, {"type": "cancel"}. Server -> client, per turn: "turn" (cards, chips, notes: everything
+        {"type": "remove_chip", "field": ..., "label": ...},
+        {"type": "more_like" | "less_like", "work_id": ...}, {"type": "cancel"}. Server -> client, per turn: "turn" (cards, chips, notes: everything
         but the narration, as soon as retrieval is done), then "reply" when the narration is
         ready, then "done". A new message or "cancel" while narration runs drops it
         ("cancelled"): the server half of barge-in."""
@@ -217,7 +233,7 @@ def create_app(
                 if kind == "cancel":
                     await drop_narration()
                     continue
-                if kind not in ("text", "undo", "remove_chip"):
+                if kind not in ("text", "undo", "remove_chip", "more_like", "less_like"):
                     await websocket.send_json({"type": "error", "message": f"unknown {kind!r}"})
                     continue
                 await drop_narration()  # a new message barges in
@@ -243,6 +259,17 @@ def create_app(
                             removal.model_copy(update={"narrate": False}),
                         )  # fmt: skip
                         said = f'without "{removal.label}"'
+                    elif kind in ("more_like", "less_like"):
+                        feedback = BookFeedback.model_validate(
+                            {k: v for k, v in message.items() if k != "type"}
+                            | {"more": kind == "more_like"}
+                        )
+                        wants_reply = feedback.narrate
+                        response = await asyncio.to_thread(
+                            conversation.book_feedback, conn, session_id,
+                            feedback.model_copy(update={"narrate": False}),
+                        )  # fmt: skip
+                        said = f"{'more' if feedback.more else 'less'} like this"
                     else:
                         wants_reply = bool(message.get("narrate", True))
                         response = await asyncio.to_thread(

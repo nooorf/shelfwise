@@ -84,7 +84,16 @@ _FIELD_WORDS = {
 }
 
 TurnKind = Literal[
-    "new_search", "refine", "new_topic", "start_over", "reference", "chat", "relax", "remove"
+    "new_search",
+    "refine",
+    "new_topic",
+    "start_over",
+    "reference",
+    "chat",
+    "relax",
+    "remove",
+    "more_like",
+    "less_like",
 ]
 
 
@@ -451,6 +460,30 @@ def remove_chip(
     state.offers = []
     state.constraints = [a for a in state.constraints if a not in gone]
     return TurnUpdate(state, "remove", dropped=[chip_label])
+
+
+def book_feedback(
+    state: ConversationState, work_id: int, title: str, more: bool, now: datetime
+) -> TurnUpdate:
+    """ "More like this" makes the book the seed and keeps everything else, as "more like the
+    second one" does. "Less like this" hides it and pushes the books nearest it down."""
+    state = state.model_copy(deep=True)
+    state.turn += 1
+    state.last_active = now
+    said = f'{"more" if more else "less"} like "{title}"'
+    turns = [*state.recent_turns, Turn(text=said, intent="refine")]
+    state.recent_turns = turns[-MAX_RECENT_TURNS:]
+    state.offers = []
+    state.avoid_work_ids = [w for w in state.avoid_work_ids if w != work_id]
+    if more:
+        state.seed_titles, state.seed_work_ids = [title], [work_id]
+        return TurnUpdate(state, "more_like", targets=[work_id])
+    state.avoid_work_ids.append(work_id)
+    if work_id in state.seed_work_ids:
+        keep = [i for i, w in enumerate(state.seed_work_ids) if w != work_id]
+        state.seed_work_ids = [state.seed_work_ids[i] for i in keep]
+        state.seed_titles = [state.seed_titles[i] for i in keep if i < len(state.seed_titles)]
+    return TurnUpdate(state, "less_like", targets=[work_id])
 
 
 def undo_reset(state: ConversationState, now: datetime) -> ConversationState | None:

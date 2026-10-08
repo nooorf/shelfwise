@@ -24,4 +24,5 @@ export type ClientMessage =
   | { type: 'text'; text: string; limit?: number; narrate?: boolean }
   | { type: 'undo' }
   | { type: 'remove_chip'; field: string; label: string; narrate?: boolean }
+  | { type: 'more_like' | 'less_like'; work_id: number; narrate?: boolean }
   | { type: 'cancel' }

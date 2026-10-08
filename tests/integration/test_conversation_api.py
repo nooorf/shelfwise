@@ -368,3 +368,27 @@ def test_a_chip_can_be_removed_over_the_socket(client: TestClient) -> None:
 
     assert [e["type"] for e in events] == ["turn", "done"]
     assert events[0]["kind"] == "remove" and "pages lt 300" not in chips(events[0])
+
+
+def test_more_and_less_like_a_shown_book(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    shown = say(client, session, "psychological thrillers")
+    first = shown["results"][0]
+    url = f"/api/v1/sessions/{session}/feedback"
+
+    more = client.post(url, json={"work_id": first["work_id"], "more": True}).json()
+    assert (more["kind"], more["route"], more["seed_titles"]) == (
+        "more_like",
+        "search",
+        [first["title"]],
+    )
+    assert first["work_id"] not in {r["work_id"] for r in more["results"]}  # the seed itself
+
+    other = more["results"][0]
+    with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+        ws.send_json({"type": "less_like", "work_id": other["work_id"], "narrate": False})
+        events = events_until_done(ws)
+    less = events[0]
+    assert [e["type"] for e in events] == ["turn", "done"]
+    assert less["kind"] == "less_like" and less["notes"] == [f"Fewer like {other['title']}."]
+    assert other["work_id"] not in {r["work_id"] for r in less["results"]}

@@ -58,6 +58,7 @@ class ConversationState(BaseModel):
     lookup: LookupSpec | None = None
     seed_titles: list[str] = Field(default_factory=list)
     seed_work_ids: list[int] = Field(default_factory=list)
+    avoid_work_ids: list[int] = Field(default_factory=list)  # "less like this", newest last
     last_results: list[ShownBook] = Field(default_factory=list)  # ordered, as shown
     shown_ids: list[int] = Field(default_factory=list)  # everything shown this session
     declined_relaxations: list[str] = Field(default_factory=list)  # labels: never re-offered

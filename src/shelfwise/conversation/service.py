@@ -26,13 +26,14 @@ from datetime import UTC, datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field
-from sqlalchemy import Connection
+from sqlalchemy import Connection, text
 
 from shelfwise.conversation.merge import (
     TurnUpdate,
     answer_offer,
     answer_turn,
     apply_turn,
+    book_feedback,
     label,
     record_results,
     remove_chip,
@@ -91,6 +92,15 @@ class ChipRemoval(BaseModel):
     narrate: bool = True
 
 
+class BookFeedback(BaseModel):
+    """ "More like this" / "less like this" on a shown book."""
+
+    work_id: int
+    more: bool
+    limit: int = Field(default=5, ge=1, le=20)
+    narrate: bool = True
+
+
 class TurnResponse(BaseModel):
     session_id: str
     turn: int
@@ -130,6 +140,7 @@ def state_request(state: ConversationState, intent: Intent) -> ParsedRequest:
         seed_titles=state.seed_titles,
         seed_work_ids=state.seed_work_ids,
         constraints=state.active,
+        avoid_work_ids=state.avoid_work_ids,
     )
 
 
@@ -417,6 +428,35 @@ class ConversationService:
             conn, ctx, state, "remove", "search", "refine", None, system, ids,
             [f'Removed "{removal.label}".'], {}, start, 0.0, said if removal.narrate else None,
         )  # fmt: skip
+
+    def book_feedback(
+        self, conn: Connection, session_id: str, feedback: BookFeedback
+    ) -> TurnResponse:
+        """A tap on "more like this" or "less like this": no parsing, search again."""
+        start = time.perf_counter()
+        state = self._load(session_id)
+        ctx = self.search.context(conn)
+        titles = {b.work_id: b.title for b in state.last_results}
+        title = titles.get(feedback.work_id) or self._title(conn, feedback.work_id)
+        update = book_feedback(state, feedback.work_id, title, feedback.more, self.now())
+        state = update.state
+        intent: Intent = "similar" if state.seed_work_ids else "refine"
+        system, ids = self.search.retrieve(
+            ctx, state.semantic_query or title, state_request(state, intent), True,
+            feedback.limit,
+        )  # fmt: skip
+        note = f"More like {title}." if feedback.more else f"Fewer like {title}."
+        said = f'{"more" if feedback.more else "less"} like "{title}"'
+        return self._respond(
+            conn, ctx, state, update.kind, "search", intent, None, system, ids, [note], {},
+            start, 0.0, said if feedback.narrate else None,
+        )  # fmt: skip
+
+    def _title(self, conn: Connection, work_id: int) -> str:
+        row = conn.execute(
+            text("SELECT title FROM work WHERE work_id = :w"), {"w": work_id}
+        ).scalar()
+        return str(row) if row else "that book"
 
     def _reference(
         self, state: ConversationState, intent: Intent, targets: list[int]

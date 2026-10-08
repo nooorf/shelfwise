@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import userEvent from '@testing-library/user-event'
+import { describe, expect, it, vi } from 'vitest'
 
 import { book } from '../test/fixtures'
 import { BookCard } from './BookCard'
@@ -18,5 +19,14 @@ describe('book card', () => {
   it('says a note is coming while the LLM writes', () => {
     render(<BookCard book={book(2)} position={2} writing />)
     expect(screen.getByText('Writing a note…')).toBeInTheDocument()
+  })
+
+  it('sends more or less like this for its own book', async () => {
+    const onFeedback = vi.fn()
+    const gone = book(1, 'Gone Girl')
+    render(<BookCard book={gone} position={1} writing={false} onFeedback={onFeedback} />)
+    await userEvent.click(screen.getByRole('button', { name: 'More like Gone Girl' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Less like Gone Girl' }))
+    expect(onFeedback.mock.calls).toEqual([[gone, true], [gone, false]])
   })
 })

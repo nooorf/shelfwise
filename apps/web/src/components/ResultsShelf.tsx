@@ -1,4 +1,4 @@
-import type { Relaxation, Reply, TurnResponse } from '../api/types'
+import type { BookResult, Relaxation, Reply, TurnResponse } from '../api/types'
 import { BookCard } from './BookCard'
 
 interface Props {
@@ -6,6 +6,7 @@ interface Props {
   reply: Reply | null
   writing: boolean
   onAsk: (text: string) => void
+  onFeedback?: (book: BookResult, more: boolean) => void
 }
 
 function Offers({ offers, onAsk }: { offers: Relaxation[]; onAsk: (text: string) => void }) {
@@ -35,7 +36,7 @@ function Offers({ offers, onAsk }: { offers: Relaxation[]; onAsk: (text: string)
   )
 }
 
-export function ResultsShelf({ shelf, reply, writing, onAsk }: Props) {
+export function ResultsShelf({ shelf, reply, writing, onAsk, onFeedback }: Props) {
   if (!shelf) {
     return (
       <div className="grid h-full place-items-center p-8 text-center text-muted">
@@ -58,6 +59,7 @@ export function ResultsShelf({ shelf, reply, writing, onAsk }: Props) {
             position={i + 1}
             note={notes.get(book.work_id)}
             writing={writing && !reply}
+            onFeedback={onFeedback}
           />
         ))}
       </div>

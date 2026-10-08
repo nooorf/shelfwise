@@ -33,6 +33,9 @@ CANDIDATES = 100  # per channel, before fusion (design doc §13.2)
 # match in the catalog is dropped. On the dev split's graded pairs (bge-base, 2026-10-08) 0.20
 # keeps 99.9% of relevant books (grade 2-3) and drops 30% of grade-0 ones.
 MAX_GAP = 0.20
+# "Less like this": a list of the books nearest an avoided one, fused with this negative weight,
+# so a book ranked first near it loses what a first place in one search list gives. Untuned.
+AVOID_WEIGHT = 1.0
 RERANK_DEPTH = 50  # default until the depth sweep picks one (design doc §14.2)
 # The LLM's answers for every evaluated query, so benchmark runs don't need Ollama (committed).
 LLM_CACHE = Path("eval/data/llm_cache.jsonl")
@@ -246,6 +249,11 @@ def _author_books(ctx: SearchContext, name: str) -> list[int]:
     return sorted(matches[0].work_ids, key=lambda w: -popularity.get(w, 0.0))
 
 
+def _row(index: DenseIndex, work_id: int) -> int | None:
+    rows = np.flatnonzero((index.work_ids == work_id) & index.has_vector)
+    return int(rows[0]) if rows.size else None
+
+
 def _seed_vector(index: DenseIndex, seeds: list[int]) -> np.ndarray | None:
     rows = np.isin(index.work_ids, seeds) & index.has_vector
     if not rows.any():
@@ -290,11 +298,17 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
         rankings.append([h.work_id for h in ctx.index.search(query, CANDIDATES, allowed=mask)])
         rankings.append(_near(index, embedder.encode_query(query), mask))
 
+    penalty = dict(rrf([
+        _near(index, index.matrix[row], mask, ignore=[w])
+        for w in request.avoid_work_ids
+        if (row := _row(index, w)) is not None
+    ])) if request.avoid_work_ids else {}  # fmt: skip
     signals = ctx.signals()
     scored = [
         (
             work_id,
             score
+            - AVOID_WEIGHT * penalty.get(work_id, 0.0)
             + SOFT_WEIGHT
             * soft_score(
                 constraints,
@@ -315,9 +329,9 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
             known += [m.work_id for m in find_titles(ctx.conn, lookup.title)]
         known += author_books
     allowed = _allowed_ids(ctx, mask)
-    seeds = set(request.seed_work_ids)
+    hidden = set(request.seed_work_ids) | set(request.avoid_work_ids)
     ranked = known + [w for w, _ in scored]
-    return [w for w in dict.fromkeys(ranked) if w in allowed and w not in seeds][:k]
+    return [w for w in dict.fromkeys(ranked) if w in allowed and w not in hidden][:k]
 
 
 def popular(ctx: SearchContext, query: str, k: int) -> list[int]:

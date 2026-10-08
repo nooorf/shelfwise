@@ -4,6 +4,7 @@ import pytest
 
 from shelfwise.conversation.merge import (
     apply_turn,
+    book_feedback,
     record_results,
     remove_chip,
     removed_fields,
@@ -471,3 +472,25 @@ def test_removing_a_chip_drops_everything_behind_it() -> None:
     assert active(update.state) == {"available_now eq True hard"}
     assert update.state.semantic_query == "thrillers" and update.state.turn == state.turn + 1
     assert remove_chip(update.state, "pages", "between 150 and 200 pages", NOW) is None
+
+
+def test_more_like_this_reseeds_and_less_like_this_hides() -> None:
+    state = turn(
+        new_state("s", NOW),
+        "x",
+        parsed("discover", "thrillers", c("available_now", "eq", True, "hard")),
+    ).state
+
+    more = book_feedback(state, 7, "Gone Girl", True, NOW)
+    assert (more.kind, more.state.seed_work_ids, more.state.seed_titles) == (
+        "more_like",
+        [7],
+        ["Gone Girl"],
+    )
+    assert active(more.state) == active(state) and more.state.semantic_query == "thrillers"
+
+    less = book_feedback(more.state, 7, "Gone Girl", False, NOW)
+    assert less.kind == "less_like"
+    assert (less.state.seed_work_ids, less.state.avoid_work_ids) == ([], [7])
+    again = book_feedback(less.state, 7, "Gone Girl", True, NOW)
+    assert again.state.avoid_work_ids == []  # changed their mind

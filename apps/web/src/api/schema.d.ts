@@ -124,6 +124,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/sessions/{session_id}/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Book Feedback
+         * @description "More like this" (the book becomes the seed) or "less like this" (it is hidden and
+         *     the books nearest it pushed down) on a shown book; the search runs again.
+         */
+        post: operations["book_feedback_api_v1_sessions__session_id__feedback_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/sessions/{session_id}": {
         parameters: {
             query?: never;
@@ -164,6 +185,26 @@ export interface components {
          * @enum {string}
          */
         AvailabilityState: "available" | "in_library_only" | "due_soon" | "borrowed" | "unavailable";
+        /**
+         * BookFeedback
+         * @description "More like this" / "less like this" on a shown book.
+         */
+        BookFeedback: {
+            /** Work Id */
+            work_id: number;
+            /** More */
+            more: boolean;
+            /**
+             * Limit
+             * @default 5
+             */
+            limit: number;
+            /**
+             * Narrate
+             * @default true
+             */
+            narrate: boolean;
+        };
         /** BookResult */
         BookResult: {
             /** Work Id */
@@ -601,6 +642,41 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ChipRemoval"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    book_feedback_api_v1_sessions__session_id__feedback_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BookFeedback"];
             };
         };
         responses: {

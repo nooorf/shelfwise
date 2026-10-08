@@ -39,6 +39,8 @@ class ParsedRequest(BaseModel):
     seed_titles: list[str] = Field(default_factory=list)  # "like Gone Girl", catalog spelling
     seed_work_ids: list[int] = Field(default_factory=list)  # the seeds found in the catalog
     constraints: list[Constraint] = Field(default_factory=list)
+    # "Less like this": never shown again, and the books nearest them are pushed down.
+    avoid_work_ids: list[int] = Field(default_factory=list)
 
 
 @dataclass(frozen=True)

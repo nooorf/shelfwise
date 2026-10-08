@@ -229,6 +229,56 @@
         }
       }
     },
+    "/api/v1/sessions/{session_id}/feedback": {
+      "post": {
+        "summary": "Book Feedback",
+        "description": "\"More like this\" (the book becomes the seed) or \"less like this\" (it is hidden and\nthe books nearest it pushed down) on a shown book; the search runs again.",
+        "operationId": "book_feedback_api_v1_sessions__session_id__feedback_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookFeedback"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/sessions/{session_id}": {
       "delete": {
         "summary": "End Session",
@@ -321,6 +371,37 @@
           "unavailable"
         ],
         "title": "AvailabilityState"
+      },
+      "BookFeedback": {
+        "properties": {
+          "work_id": {
+            "type": "integer",
+            "title": "Work Id"
+          },
+          "more": {
+            "type": "boolean",
+            "title": "More"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 5
+          },
+          "narrate": {
+            "type": "boolean",
+            "title": "Narrate",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "work_id",
+          "more"
+        ],
+        "title": "BookFeedback",
+        "description": "\"More like this\" / \"less like this\" on a shown book."
       },
       "BookResult": {
         "properties": {
