@@ -5,7 +5,6 @@ Conversational library search that turns requests like *"dark, psychological, no
 **Status:** early development. Book metadata is real (Open Library, and Goodreads via the UCSD Book Graph); copies and circulation are simulated. No results yet; benchmark numbers will appear here once measured.
 
 - Design: [docs/SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md)
-- Plan and progress: [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)
 - How relevance is graded: [eval/GRADING.md](eval/GRADING.md)
 
 ## Quickstart

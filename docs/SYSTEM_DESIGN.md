@@ -2,7 +2,7 @@
 
 Oct 6, 2026 · @Noor
 
-> Snapshot of the living design doc on claude.ai: https://claude.ai/code/artifact/3957cf61-c5e3-4b63-b770-a0d9323a928d. The task checklist is [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md).
+> Snapshot of the living design doc on claude.ai: https://claude.ai/code/artifact/3957cf61-c5e3-4b63-b770-a0d9323a928d.
 
 Status of every number in this document: **proposed targets or illustrative examples, not measured results.** Nothing has been built or benchmarked yet. "Shelfwise" is a working name.
 
