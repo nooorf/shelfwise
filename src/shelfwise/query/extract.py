@@ -302,6 +302,22 @@ _GENRE_CUES = {
     "short stories": r"anthology|anthologies|collection of stories",
 }
 _GENRE_STOPWORDS = {"fiction", "novels", "and", "s"}
+# Genres a message names outright, added in code: Qwen3-4B leaves `genres` empty for about half
+# of them ("thrillers i can take home today", "a good memoir"; recall 0.44 on 2026-10-08).
+# Synonyms are PARSING.md's; audience words are never genres.
+_NAMED_GENRE_SYNONYMS = {
+    "humor": r"funny|hilarious|comedy|comedic|humou?rous",
+    "graphic novels": r"manga|comics?|comic books?",
+    "science fiction": r"sci ?fi|scifi|cyberpunk|space opera",
+    "self-help": r"self ?help",
+    "classics": r"classic",
+    "poetry": r"poems?",
+    "biography": r"biograph(?:y|ies)",
+    "memoir": r"memoirs?",
+}
+_NOT_NAMED = {"young adult", "children's"}
+_NOT_A_GENRE = re.compile(r"\btime travel\w*\b")  # "travel" here is not the travel genre
+_ONLY = re.compile(r"\b(?:only|strictly|exclusively)(?: \w+)? $")
 _FILLER_WORDS = {"a", "an", "the", "any", "books", "book", "novels", "novel", "stuff"}
 # Genres that are also topics: "no war" is a theme penalty, not a genre filter (PARSING.md).
 _TOPIC_GENRES = {
@@ -315,6 +331,37 @@ _NEGATION_BEFORE = re.compile(
     r"|(?:isn|aren|doesn|don|wasn|won) ?t)\b"
 )
 _LESS_BEFORE = re.compile(r"\bless\b")
+
+
+def _genre_pattern(genre: str) -> str:
+    words = re.escape(fold_text(genre)).replace(r"\ ", " ")
+    plural = words[:-1] + "ies" if words.endswith("y") else words + "s"
+    alternatives = [words, plural, *([s] if (s := _NAMED_GENRE_SYNONYMS.get(genre)) else [])]
+    return "|".join(alternatives)
+
+
+def named_genres(text: str) -> tuple[list[str], bool]:
+    """Catalog genres `text` (folded) names, longest name first so "true crime" isn't also
+    "crime"; skipped when negated just before ("not about world war 2"). True if one is
+    preceded by "only" / "strictly" (a hard genre)."""
+    found: list[str] = []
+    strict = False
+    taken = [False] * (len(text) + 1)
+    for genre in sorted((g for g in GENRES if g not in _NOT_NAMED), key=len, reverse=True):
+        for match in re.finditer(rf"\b(?:{_genre_pattern(genre)})\b", text):
+            if any(taken[match.start() : match.end()]):
+                continue
+            for i in range(match.start(), match.end()):
+                taken[i] = True
+            before = " ".join(text[: match.start()].split()[-4:])
+            if re.search(rf"\b{_NEGATOR}\b|\b(?:except|other than|instead of|but)\b", before):
+                continue
+            if re.search(r"\b(?:less|more|much|too)$", before):  # "less romance": an amount
+                continue
+            if genre not in found:
+                found.append(genre)
+            strict = strict or bool(_ONLY.search(text[: match.start()]))
+    return found, strict
 
 
 def _says(pattern: str, text: str) -> bool:
@@ -409,7 +456,18 @@ def check_evidence(out: QueryLLM, message: str) -> QueryLLM:
         if getattr(out, name) != "none" and not _says(_CUES[name], text):
             update[name] = "none"
     genres = [g for g in out.genres if _names_genre(g, text)]
-    excluded = [g for g in out.excluded_genres if _names_genre(g, text)]
+    # Books the message names aren't genre words: "like the secret history" is not history.
+    unnamed = text
+    for title in [*out.similar_to, out.lookup_title or ""]:
+        if words := fold_text(title):
+            unnamed = re.sub(rf"\b{re.escape(words)}\b", " ", unnamed)
+    named, strict = named_genres(_NOT_A_GENRE.sub(" ", unnamed))
+    genres += [g for g in named if g not in genres]
+    if strict:
+        update["genres_strict"] = True
+    # An exclusion stands only if the message negates that genre: one it names plainly
+    # ("historical fiction but not about world war 2") is wanted, whatever the LLM said.
+    excluded = [g for g in out.excluded_genres if _names_genre(g, text) and g not in named]
     # Said by the genre already: "romance novels" is not also romance >= 2.
     if "romance" in genres and update.get("romance", out.romance) == "wanted":
         update["romance"] = NOT_MENTIONED
@@ -442,6 +500,7 @@ def check_evidence(out: QueryLLM, message: str) -> QueryLLM:
                     update[name] = choice
         else:
             avoid.append(phrase)
+    genres = [g for g in genres if g not in excluded]  # "anything except mysteries"
     update |= {"genres": genres, "excluded_genres": excluded, "avoid": avoid}
     return out.model_copy(update=update)
 

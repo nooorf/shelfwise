@@ -93,8 +93,9 @@ def main() -> None:
 
             def parse(text: str, today: date) -> ParsedRequest:
                 result = cascade.parse(text, today)
-                if result.used_llm and not result.cached:
-                    llm_ms.append(result.llm_ms)
+                if result.used_llm:
+                    if not result.cached:  # no latency for answers read from the cache
+                        llm_ms.append(result.llm_ms)
                 elif result.fast_path:
                     fast.append(text)
                 else:

@@ -229,7 +229,7 @@ FILLED_FORM = {
 }
 
 
-@pytest.mark.parametrize("query", ["hi there", "what time does the library close", "manga"])
+@pytest.mark.parametrize("query", ["hi there", "what time does the library close", "asdfghjkl"])
 def test_choices_the_message_gives_no_reason_for_are_dropped(query: str) -> None:
     request, _ = parse(query, **FILLED_FORM)
 
@@ -243,6 +243,7 @@ def test_choices_the_message_does_say_are_kept() -> None:
     )
 
     assert found(request) == {
+        "genre in ['fantasy'] soft",  # named, so added in code
         "facet.darkness lte 1 soft",
         "facet.romance lte 1 hard",
         "facet.pace eq fast soft",
@@ -257,8 +258,10 @@ def test_choices_the_message_does_say_are_kept() -> None:
     ("query", "form", "expected"),
     [
         # Numbers are the rules' job; a shift needs a comparative.
-        ("fantasy under 300 pages", {"length_change": "shorter"}, {"pages lt 300 hard"}),
-        ("dark fantasy from the last decade", {"year_change": "newer"}, {"year gte 2016 hard"}),
+        ("fantasy under 300 pages", {"length_change": "shorter"},
+         {"pages lt 300 hard", "genre in ['fantasy'] soft"}),
+        ("dark fantasy from the last decade", {"year_change": "newer"},
+         {"year gte 2016 hard", "genre in ['fantasy'] soft"}),
         # A genre the message doesn't name, or names only through a listed synonym.
         ("cozy mystery", {"genres": ["computer science", "mystery"]}, {"genre in ['mystery'] soft"}),
         ("some sci fi", {"genres": ["science fiction"]}, {"genre in ['science fiction'] soft"}),
@@ -280,7 +283,8 @@ def test_choices_the_message_does_say_are_kept() -> None:
          {"facet.reading_level eq intro soft"}),
         ("i know some python already", {"reading_level": "intermediate"},
          {"facet.reading_level eq intermediate soft"}),
-        ("best sci fi ever", {"popular": True}, {"popular eq True soft"}),
+        ("best sci fi ever", {"popular": True},
+         {"popular eq True soft", "genre in ['science fiction'] soft"}),
     ],
 )  # fmt: skip
 def test_unsupported_shifts_and_genres_are_dropped(
@@ -315,7 +319,8 @@ def test_avoided_phrases_go_where_parsing_md_puts_them(
 ) -> None:
     request, _ = parse(query, intent="discover", avoid=avoid)
 
-    assert found(request) == expected
+    named = {f for f in found(request) if f.startswith("genre in")}  # "a thriller": tested above
+    assert found(request) - named == expected
 
 
 @pytest.mark.parametrize(
@@ -400,3 +405,38 @@ def test_a_negated_mood_beats_a_positive_pick() -> None:
 
     assert "facet.darkness lte 1 hard" in found(request)
     assert "dark" not in request.semantic_query.split()
+
+
+@pytest.mark.parametrize(
+    ("query", "genres", "strict"),
+    [
+        ("thrillers i can take home today", ["thriller"], False),
+        ("cozy mysteries", ["mystery"], False),
+        ("true crime books", ["true crime"], False),  # not also "crime"
+        ("manga", ["graphic novels"], False),
+        ("a funny book for teens", ["humor"], False),
+        ("only mysteries please", ["mystery"], True),
+        ("just the best fantasy", ["fantasy"], False),
+        ("historical fiction but not about world war 2", ["historical fiction"], False),
+        ("childrens books for young adults", [], False),  # audience, never genre
+    ],
+)
+def test_genres_the_message_names(query: str, genres: list[str], strict: bool) -> None:
+    from shelfwise.ingest.normalize import fold_text
+    from shelfwise.query.extract import named_genres
+
+    assert named_genres(fold_text(query)) == (genres, strict)
+
+
+def test_named_genres_are_added_but_not_from_book_titles() -> None:
+    """Qwen3-4B left `genres` empty for about half the named ones (2026-10-08)."""
+    plain, _ = parse("thrillers i can take home today", intent="discover")
+    titled, _ = parse("another book like the secret history", intent="similar",
+                      similar_to=["the secret history"])  # fmt: skip
+    timey, _ = parse("a book about time travel", intent="discover")
+    strict, _ = parse("only mysteries please", intent="discover")
+
+    assert "genre in ['thriller'] soft" in found(plain)
+    assert not any(c.field == "genre" for c in titled.constraints)
+    assert not any(c.field == "genre" for c in timey.constraints)
+    assert "genre in ['mystery'] hard" in found(strict)
