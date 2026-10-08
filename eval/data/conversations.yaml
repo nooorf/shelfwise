@@ -1,0 +1,838 @@
+# Conversation set C: scripted sessions with the gold state after every turn.
+# Format and scoring: src/shelfwise/evaluation/conversations.py. Constraint lines: eval/PARSING.md.
+# Merge rules (what a turn does to the state): src/shelfwise/conversation/merge.py.
+#
+# constraints: the WHOLE active set after the turn ("same" = unchanged; "~" = not scored,
+#   for outcomes that depend on the catalog). "*" as a value: a catalog-dependent number,
+#   e.g. what "shorter" resolves to; only the field, op and strength are checked.
+# targets: positions (from 1) in the books shown last, for references.
+# Drafted by Claude 2026-10-08 (source: llm-draft); several sessions test known gaps on purpose.
+
+today: 2026-10-08
+
+sessions:
+  # ---------------------------------------------------------------- refine
+  - id: C01
+    category: refine
+    source: llm-draft
+    notes: the design doc's worked example (§17)
+    turns:
+      - say: give me psychological thrillers
+        kind: new_search
+        route: search
+        constraints:
+          - genre in [thriller] soft
+        keep: [psychological]
+      - say: something darker
+        kind: refine
+        route: search
+        constraints:
+          - genre in [thriller] soft
+          - facet.darkness gte * soft
+        keep: [psychological]
+        drop: [darker]
+      - say: i dont want anything supernatural
+        kind: refine
+        constraints:
+          - genre in [thriller] soft
+          - facet.darkness gte * soft
+          - not facet.supernatural eq yes hard
+        drop: [supernatural]
+      - say: under three hundred pages
+        kind: refine
+        constraints:
+          - genre in [thriller] soft
+          - facet.darkness gte * soft
+          - not facet.supernatural eq yes hard
+          - pages lt 300 hard
+      - say: tell me more about the second one
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [2]
+
+  - id: C02
+    category: refine
+    source: llm-draft
+    notes: repeated shifts replace each other; a new shift on another field adds
+    turns:
+      - say: cozy mysteries
+        kind: new_search
+        constraints:
+          - genre in [mystery] soft
+          - facet.darkness lte 1 soft
+        keep: [cozy]
+      - say: shorter
+        kind: refine
+        constraints:
+          - genre in [mystery] soft
+          - facet.darkness lte 1 soft
+          - pages lt * hard
+      - say: even shorter
+        kind: refine
+        constraints: same
+      - say: newer ones please
+        kind: refine
+        constraints:
+          - genre in [mystery] soft
+          - facet.darkness lte 1 soft
+          - pages lt * hard
+          - year gt * hard
+
+  - id: C03
+    category: refine
+    source: llm-draft
+    turns:
+      - say: epic fantasy series
+        kind: new_search
+        constraints:
+          - genre in [fantasy] soft
+        keep: [epic]
+      - say: faster paced
+        kind: refine
+        constraints:
+          - genre in [fantasy] soft
+          - facet.pace eq * soft
+      - say: for adults
+        kind: refine
+        constraints:
+          - genre in [fantasy] soft
+          - facet.pace eq * soft
+          - facet.audience eq adult soft
+        keep: [epic]
+
+  - id: C04
+    category: refine
+    source: llm-draft
+    notes: '"less romance" replaces the romance wish, it doesn''t add a second one'
+    turns:
+      - say: a romantic comedy
+        kind: new_search
+        constraints:
+          - facet.romance gte 2 soft
+          - genre in [humor] soft
+      - say: less romance
+        kind: refine
+        constraints:
+          - facet.romance lte * soft
+          - genre in [humor] soft
+        drop: [romance]
+      - say: only ones i can borrow today
+        kind: refine
+        constraints:
+          - facet.romance lte * soft
+          - genre in [humor] soft
+          - available_now eq true hard
+
+  - id: C05
+    category: refine
+    source: llm-draft
+    turns:
+      - say: science fiction about first contact
+        kind: new_search
+        constraints:
+          - genre in [science fiction] soft
+        keep: [first contact]
+      - say: more recent
+        kind: refine
+        constraints:
+          - genre in [science fiction] soft
+          - year gt * hard
+      - say: something shorter
+        kind: refine
+        constraints:
+          - genre in [science fiction] soft
+          - year gt * hard
+          - pages lt * hard
+        keep: [first contact]
+
+  - id: C06
+    category: refine
+    source: llm-draft
+    notes: a new pace wish replaces the old one
+    turns:
+      - say: a slow burn mystery
+        kind: new_search
+        constraints:
+          - genre in [mystery] soft
+          - facet.pace eq slow soft
+      - say: actually make it fast paced
+        kind: refine
+        constraints:
+          - genre in [mystery] soft
+          - facet.pace eq fast soft
+
+  - id: C07
+    category: refine
+    source: llm-draft
+    turns:
+      - say: historical fiction set in ancient rome
+        kind: new_search
+        constraints:
+          - genre in [historical fiction] soft
+          - facet.historical_setting eq yes soft
+        keep: [ancient rome]
+      - say: less violent
+        kind: refine
+        constraints:
+          - genre in [historical fiction] soft
+          - facet.historical_setting eq yes soft
+          - facet.violence lte * soft
+      - say: under 400 pages
+        kind: refine
+        constraints:
+          - genre in [historical fiction] soft
+          - facet.historical_setting eq yes soft
+          - facet.violence lte * soft
+          - pages lt 400 hard
+        keep: [ancient rome]
+
+  - id: C08
+    category: refine
+    source: llm-draft
+    notes: '"anything similar to the first one" reseeds and keeps everything else'
+    turns:
+      - say: a heist novel
+        kind: new_search
+        constraints:
+          - facet.fiction eq true soft
+        keep: [heist]
+      - say: for teens
+        kind: refine
+        constraints:
+          - facet.fiction eq true soft
+          - facet.audience eq ya soft
+      - say: nothing too dark
+        kind: refine
+        constraints:
+          - facet.fiction eq true soft
+          - facet.audience eq ya soft
+          - facet.darkness lte 1 hard
+        drop: [dark]
+      - say: anything similar to the first one?
+        kind: refine
+        route: search
+        constraints: same
+
+  # ---------------------------------------------------------------- negation
+  - id: C09
+    category: negation
+    source: llm-draft
+    turns:
+      - say: vampire novels
+        kind: new_search
+        constraints:
+          - facet.fiction eq true soft
+          - facet.supernatural eq yes soft
+        keep: [vampire]
+      - say: without the romance
+        kind: refine
+        constraints:
+          - facet.fiction eq true soft
+          - facet.supernatural eq yes soft
+          - facet.romance lte 1 hard
+        drop: [romance]
+      - say: and nothing gory
+        kind: refine
+        constraints:
+          - facet.fiction eq true soft
+          - facet.supernatural eq yes soft
+          - facet.romance lte 1 hard
+          - facet.violence lte 2 hard
+        keep: [vampire]
+        drop: [gory]
+
+  - id: C10
+    category: negation
+    source: llm-draft
+    turns:
+      - say: a creepy gothic novel
+        kind: new_search
+        constraints:
+          - genre in [gothic] soft
+          - facet.fiction eq true soft
+        keep: [creepy]
+      - say: nothing supernatural though
+        kind: refine
+        constraints:
+          - genre in [gothic] soft
+          - facet.fiction eq true soft
+          - not facet.supernatural eq yes hard
+        drop: [supernatural]
+      - say: under 350 pages
+        kind: refine
+        constraints:
+          - genre in [gothic] soft
+          - facet.fiction eq true soft
+          - not facet.supernatural eq yes hard
+          - pages lt 350 hard
+        keep: [creepy]
+
+  - id: C11
+    category: negation
+    source: llm-draft
+    turns:
+      - say: a mystery
+        kind: new_search
+        constraints:
+          - genre in [mystery] soft
+      - say: not too violent
+        kind: refine
+        constraints:
+          - genre in [mystery] soft
+          - facet.violence lte 1 hard
+        drop: [violent]
+      - say: and no romance at all
+        kind: refine
+        constraints:
+          - genre in [mystery] soft
+          - facet.violence lte 1 hard
+          - facet.romance eq 0 hard
+        drop: [romance]
+
+  - id: C12
+    category: negation
+    source: llm-draft
+    notes: an author's books, then narrowed; the author stays
+    turns:
+      - say: stephen king books
+        kind: new_search
+        route: search
+        constraints: []
+      - say: but not horror
+        kind: refine
+        constraints:
+          - not genre in [horror] hard
+        drop: [horror]
+      - say: something from before 1990
+        kind: refine
+        constraints:
+          - not genre in [horror] hard
+          - year lt 1990 hard
+
+  - id: C13
+    category: negation
+    source: llm-draft
+    turns:
+      - say: a dystopian story for teens
+        kind: new_search
+        constraints:
+          - genre in [dystopian] soft
+          - facet.audience eq ya soft
+          - facet.fiction eq true soft
+      - say: that isnt depressing
+        kind: refine
+        constraints:
+          - genre in [dystopian] soft
+          - facet.audience eq ya soft
+          - facet.fiction eq true soft
+          - facet.darkness lte 2 hard
+        drop: [depressing]
+      - say: and no love triangle
+        kind: refine
+        constraints:
+          - genre in [dystopian] soft
+          - facet.audience eq ya soft
+          - facet.fiction eq true soft
+          - facet.darkness lte 2 hard
+          - not theme eq love triangle soft
+        drop: [love triangle]
+
+  - id: C14
+    category: negation
+    source: llm-draft
+    notes: known gap - "not ya" has no audience exclusion in the LLM's form yet
+    turns:
+      - say: fantasy with dragons
+        kind: new_search
+        constraints:
+          - genre in [fantasy] soft
+          - facet.supernatural eq yes soft
+        keep: [dragons]
+      - say: not ya though
+        kind: refine
+        constraints:
+          - genre in [fantasy] soft
+          - facet.supernatural eq yes soft
+          - not facet.audience eq ya hard
+      - say: only ones available now
+        kind: refine
+        constraints:
+          - genre in [fantasy] soft
+          - facet.supernatural eq yes soft
+          - not facet.audience eq ya hard
+          - available_now eq true hard
+
+  # ---------------------------------------------------------------- reference
+  - id: C15
+    category: reference
+    source: llm-draft
+    turns:
+      - say: books like gone girl
+        kind: new_search
+        constraints: []
+      - say: the third one, is it on the shelf?
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [3]
+      - say: compare the first and the second
+        kind: reference
+        route: compare
+        constraints: same
+        targets: [1, 2]
+
+  - id: C16
+    category: reference
+    source: llm-draft
+    turns:
+      - say: funny fantasy
+        kind: new_search
+        constraints:
+          - genre in [humor, fantasy] soft
+      - say: which of these is the shortest
+        kind: reference
+        route: compare
+        constraints: same
+      - say: tell me about the last one
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [5]
+
+  - id: C17
+    category: reference
+    source: llm-draft
+    notes: a bare ordinal is a reference, even if the parser calls it small talk
+    turns:
+      - say: a book for a long flight
+        kind: new_search
+        constraints: []
+      - say: show me more like the first one
+        kind: refine
+        route: search
+        constraints: same
+      - say: the second one
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [2]
+
+  - id: C18
+    category: reference
+    source: llm-draft
+    notes: '"that one" with five books on screen is ambiguous: ask'
+    turns:
+      - say: short story collections
+        kind: new_search
+        constraints:
+          - genre in [short stories] soft
+      - say: tell me about that one
+        kind: reference
+        route: clarify
+        constraints: same
+      - say: the fourth one
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [4]
+
+  - id: C19
+    category: reference
+    source: llm-draft
+    turns:
+      - say: a classic novel
+        kind: new_search
+        constraints:
+          - genre in [classics] soft
+          - facet.fiction eq true soft
+      - say: is number 2 available
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [2]
+      - say: anything newer than these?
+        kind: refine
+        route: search
+        constraints:
+          - genre in [classics] soft
+          - facet.fiction eq true soft
+          - year gt * hard
+
+  - id: C20
+    category: reference
+    source: llm-draft
+    turns:
+      - say: true crime
+        kind: new_search
+        constraints:
+          - genre in [true crime] soft
+      - say: the first two, which is darker?
+        kind: reference
+        route: compare
+        constraints: same
+        targets: [1, 2]
+
+  # ---------------------------------------------------------------- topic
+  - id: C21
+    category: topic
+    source: llm-draft
+    notes: a new topic keeps availability (it describes the reader); undo brings it all back
+    turns:
+      - say: dark thrillers i can borrow today
+        kind: new_search
+        constraints:
+          - genre in [thriller] soft
+          - facet.darkness gte 2 soft
+          - available_now eq true hard
+      - say: actually, something funny
+        kind: new_topic
+        constraints:
+          - available_now eq true hard
+          - genre in [humor] soft
+      - action: undo
+        kind: undo
+        route: search
+        constraints:
+          - genre in [thriller] soft
+          - facet.darkness gte 2 soft
+          - available_now eq true hard
+
+  - id: C22
+    category: topic
+    source: llm-draft
+    turns:
+      - say: space opera
+        kind: new_search
+        constraints:
+          - genre in [science fiction] soft
+      - say: what about poetry
+        kind: new_topic
+        constraints:
+          - genre in [poetry] soft
+      - say: start over
+        kind: start_over
+        route: start_over
+        constraints: []
+
+  - id: C23
+    category: topic
+    source: llm-draft
+    notes: the page limit belongs to the old topic and goes with it
+    turns:
+      - say: books about world war 2
+        kind: new_search
+        constraints:
+          - genre in [war] soft
+        keep: [world war]
+      - say: under 300 pages
+        kind: refine
+        constraints:
+          - genre in [war] soft
+          - pages lt 300 hard
+      - say: now something for kids about dinosaurs
+        kind: new_topic
+        constraints:
+          - facet.audience eq children soft
+        keep: [dinosaurs]
+
+  - id: C24
+    category: topic
+    source: llm-draft
+    notes: start over clears everything, availability included, and searches the rest
+    turns:
+      - say: a cozy fantasy, available now
+        kind: new_search
+        constraints:
+          - genre in [fantasy] soft
+          - facet.darkness lte 1 soft
+          - available_now eq true hard
+      - say: start over, something about the ocean
+        kind: new_search
+        constraints: []
+        keep: [ocean]
+
+  - id: C25
+    category: topic
+    source: llm-draft
+    notes: known gap - "python specifically" is a narrowing, but it brings its own topic word
+    turns:
+      - say: programming books for beginners
+        kind: new_search
+        constraints:
+          - genre in [programming] soft
+          - facet.reading_level eq intro soft
+      - say: python specifically
+        kind: refine
+        constraints: same
+        keep: [python]
+
+  # ---------------------------------------------------------------- relax
+  - id: C26
+    category: relax
+    source: llm-draft
+    notes: nothing can match; dropping the named limit is the reader's choice
+    turns:
+      - say: a horror novel under 20 pages published after 2024 that i can borrow now
+        kind: new_search
+        route: search
+        constraints:
+          - genre in [horror] soft
+          - facet.fiction eq true soft
+          - pages lt 20 hard
+          - year gt 2024 hard
+          - available_now eq true hard
+      - say: drop the page limit
+        constraints:
+          - genre in [horror] soft
+          - facet.fiction eq true soft
+          - year gt 2024 hard
+          - available_now eq true hard
+
+  - id: C27
+    category: relax
+    source: llm-draft
+    notes: a refusal keeps everything
+    turns:
+      - say: a horror novel under 20 pages published after 2024 that i can borrow now
+        kind: new_search
+        constraints:
+          - genre in [horror] soft
+          - facet.fiction eq true soft
+          - pages lt 20 hard
+          - year gt 2024 hard
+          - available_now eq true hard
+      - say: no thanks
+        constraints: same
+
+  - id: C28
+    category: relax
+    source: llm-draft
+    notes: '"yes" takes the offer with the most books, which depends on the catalog'
+    turns:
+      - say: a romance under 30 pages published after 2024, available today
+        kind: new_search
+        constraints:
+          - genre in [romance] soft
+          - pages lt 30 hard
+          - year gt 2024 hard
+          - available_now eq true hard
+      - say: yes
+        constraints: ~
+
+  # ---------------------------------------------------------------- forget
+  - id: C29
+    category: forget
+    source: llm-draft
+    turns:
+      - say: fantasy under 300 pages from the last five years
+        kind: new_search
+        constraints:
+          - genre in [fantasy] soft
+          - pages lt 300 hard
+          - year gte 2021 hard
+      - say: forget the page limit
+        kind: refine
+        constraints:
+          - genre in [fantasy] soft
+          - year gte 2021 hard
+      - say: never mind the dates too
+        kind: refine
+        constraints:
+          - genre in [fantasy] soft
+
+  - id: C30
+    category: forget
+    source: llm-draft
+    notes: known gap - "doesn't matter if it's checked out" isn't a removal phrase yet
+    turns:
+      - say: mysteries i can take home today
+        kind: new_search
+        constraints:
+          - genre in [mystery] soft
+          - available_now eq true hard
+      - say: doesnt matter if its checked out
+        kind: refine
+        constraints:
+          - genre in [mystery] soft
+
+  - id: C31
+    category: forget
+    source: llm-draft
+    turns:
+      - say: dark fantasy for teens
+        kind: new_search
+        constraints:
+          - genre in [fantasy] soft
+          - facet.darkness gte 2 soft
+          - facet.audience eq ya soft
+      - say: drop the teen part
+        kind: refine
+        constraints:
+          - genre in [fantasy] soft
+          - facet.darkness gte 2 soft
+
+  - id: C32
+    category: forget
+    source: llm-draft
+    turns:
+      - say: short horror stories
+        kind: new_search
+        constraints:
+          - genre in [horror] soft
+          - pages lte 250 soft
+          - facet.fiction eq true soft
+      - say: ignore the length
+        kind: refine
+        constraints:
+          - genre in [horror] soft
+          - facet.fiction eq true soft
+
+  # ---------------------------------------------------------------- chat
+  - id: C33
+    category: chat
+    source: llm-draft
+    turns:
+      - say: hi
+        kind: chat
+        route: chat
+        constraints: []
+      - say: what are your opening hours
+        kind: chat
+        route: chat
+        constraints: []
+      - say: ok then, recommend a good mystery
+        kind: new_search
+        route: search
+        constraints:
+          - genre in [mystery] soft
+
+  - id: C34
+    category: chat
+    source: llm-draft
+    turns:
+      - say: fantasy for adults
+        kind: new_search
+        constraints:
+          - genre in [fantasy] soft
+          - facet.audience eq adult soft
+      - say: thanks!
+        kind: chat
+        route: chat
+        constraints: same
+      - say: surprise me
+        kind: chat
+        route: surprise
+        constraints: same
+
+  - id: C35
+    category: chat
+    source: llm-draft
+    turns:
+      - say: asdfghjkl
+        kind: chat
+        route: chat
+        constraints: []
+      - say: sorry, i meant a thriller
+        kind: new_search
+        route: search
+        constraints:
+          - genre in [thriller] soft
+
+  # ---------------------------------------------------------------- mixed
+  - id: C36
+    category: mixed
+    source: llm-draft
+    notes: known gap - "less violent" relative to a seed book that isn't shown yet
+    turns:
+      - say: something like the hunger games but less violent
+        kind: new_search
+        constraints:
+          - facet.violence lte * soft
+        drop: [violent]
+      - say: for adults
+        kind: refine
+        constraints:
+          - facet.violence lte * soft
+          - facet.audience eq adult soft
+      - say: the second one
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [2]
+
+  - id: C37
+    category: mixed
+    source: llm-draft
+    notes: known gap - a genre added later is a narrowing, not a new topic
+    turns:
+      - say: a long book for the summer, at least 500 pages
+        kind: new_search
+        constraints:
+          - pages gte 500 hard
+        keep: [summer]
+      - say: fantasy please
+        kind: refine
+        constraints:
+          - pages gte 500 hard
+          - genre in [fantasy] soft
+
+  - id: C38
+    category: mixed
+    source: llm-draft
+    turns:
+      - say: books about grief for teens
+        kind: new_search
+        constraints:
+          - facet.audience eq ya soft
+        keep: [grief]
+      - say: not too dark
+        kind: refine
+        constraints:
+          - facet.audience eq ya soft
+          - facet.darkness lte 1 hard
+        keep: [grief]
+        drop: [dark]
+      - say: is the first one available
+        kind: reference
+        route: explain
+        constraints: same
+        targets: [1]
+
+  - id: C39
+    category: mixed
+    source: llm-draft
+    notes: known gap - "about animals" narrows the request rather than replacing it
+    turns:
+      - say: a book my 10 year old would love
+        kind: new_search
+        constraints:
+          - facet.audience eq children soft
+      - say: about animals
+        kind: refine
+        constraints: same
+        keep: [animals]
+
+  - id: C40
+    category: mixed
+    source: llm-draft
+    turns:
+      - say: nordic noir
+        kind: new_search
+        constraints: []
+        keep: [nordic noir]
+      - say: from the 2010s
+        kind: refine
+        constraints:
+          - year gte 2010 hard
+          - year lte 2019 hard
+      - say: darker
+        kind: refine
+        constraints:
+          - year gte 2010 hard
+          - year lte 2019 hard
+          - facet.darkness gte * soft
+      - say: start over
+        kind: start_over
+        route: start_over
+        constraints: []

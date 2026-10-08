@@ -445,3 +445,12 @@ def test_a_removal_is_never_small_talk() -> None:
     assert (update.kind, update.removed) == ("refine", ["year"])
     assert active(update.state) == set()
     assert (worded.kind, worded.state.semantic_query) == ("refine", "cyberpunk")
+
+
+def test_a_bare_ordinal_is_a_reference_even_if_the_parser_says_small_talk() -> None:
+    state = turn(new_state("s", NOW), "x", parsed("discover", "horror")).state
+    state = record_results(state, shown({}, {}, {}))
+
+    update = turn(state, "the second one", parsed("other"))
+
+    assert (update.kind, update.targets) == ("reference", [2])

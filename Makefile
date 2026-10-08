@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades eval eval-parser api test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades eval eval-parser eval-conversations api test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -100,6 +100,9 @@ eval:  ## Score all systems on the dev split and save a report (RERANKER=minilm 
 eval-parser:  ## Score the query parser against gold set B (PARSER=rules|cascade, SPLIT=dev|test|all, ERRORS=1)
 	uv run python scripts/eval_parser.py --parser $(or $(PARSER),rules) --split $(or $(SPLIT),dev) \
 		$(if $(MODEL),--model $(MODEL),) $(if $(ERRORS),--errors,)
+
+eval-conversations:  ## Play conversation set C and score the state after every turn (PARSER=rules|cascade, ERRORS=1)
+	uv run python scripts/eval_conversations.py --parser $(or $(PARSER),rules) $(if $(ERRORS),--errors,)
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload

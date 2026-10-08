@@ -299,6 +299,10 @@ def apply_turn(
                     "constraints": [*parsed.constraints, *shifts]}
         )  # fmt: skip
 
+    shown = [b.work_id for b in state.last_results]
+    targets = resolve_references(message, shown)
+    if parsed.intent in ("explain", "compare") or (targets and not _LIKE.search(text)):
+        return TurnUpdate(state, "reference", targets=targets)
     # "hi", "surprise me": the topic stays as it is. But "drop the year" is a removal even when
     # the parser calls it small talk (Qwen3-4B did, 2026-10-08).
     if parsed.intent in ("other", "surprise") and not removed_fields(message):
@@ -307,10 +311,6 @@ def apply_turn(
             state.constraints = merge_constraints(state.constraints, plain, state.turn)
         return TurnUpdate(state, "chat")
 
-    shown = [b.work_id for b in state.last_results]
-    targets = resolve_references(message, shown)
-    if parsed.intent in ("explain", "compare") or (targets and not _LIKE.search(text)):
-        return TurnUpdate(state, "reference", targets=targets)
     reseed = bool(targets)
     if reseed:  # "more like the second one": a refinement whose seed is that book
         titles = {b.work_id: b.title for b in state.last_results}
