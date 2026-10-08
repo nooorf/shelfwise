@@ -25,7 +25,7 @@ Rules of thumb:
 
 ## `data/blind_sample.csv` — the agreement sample
 
-160 Claude-graded (query, book) pairs, drawn by `scripts/blind.py draw` for a person to grade without seeing Claude's grades (`make label-blind JUDGE=<initials>`). Same columns as `qrels.csv`; the person's grades stay here, and `make agreement JUDGE=<initials>` compares them with `prelabels.csv`. See [GRADING.md](GRADING.md#from-round-2-claudes-grades-checked-on-a-blind-sample).
+160 Claude-graded (query, book) pairs, drawn by `scripts/blind.py draw` for a person to grade without seeing Claude's grades (`make blind-doc`, fill in `eval/blind_review.md`, `make import-blind JUDGE=<initials>`; or `make label-blind JUDGE=<initials>` in the terminal). Same columns as `qrels.csv`; the person's grades stay here, and `make agreement JUDGE=<initials>` compares them with Claude's grades as they were when the sample was drawn (`data/blind_sample_claude.csv`). `data/blind_sample_retest.csv` is the same sample graded a second time by the same person (`scripts/blind.py score --sample`). See [GRADING.md](GRADING.md#from-round-2-claudes-grades-checked-on-a-blind-sample).
 
 ## `data/facet_labels.csv` — human book tags
 

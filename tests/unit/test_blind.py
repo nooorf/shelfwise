@@ -2,7 +2,7 @@ from collections import Counter
 
 import pytest
 
-from shelfwise.evaluation.blind import Candidate, draw, score
+from shelfwise.evaluation.blind import Candidate, draw, parse_doc, score
 
 
 def _candidates() -> list[Candidate]:
@@ -36,3 +36,20 @@ def test_score_counts_only_pairs_both_graded() -> None:
     assert result.within_one == 1.0
     assert result.confusion[(3, 2)] == 1
     assert result.by_category["vague"] == (2, 0.5)
+
+
+def test_parse_doc_reads_filled_and_empty_cells() -> None:
+    doc = "\n".join(
+        [
+            "## S11 · discovery",
+            "| Grade | Book | ISBN |",
+            "| --- | --- | --- |",
+            "| 2 | **Salem's Lot** — Stephen King | 9780450031069 |",
+            "|  | **Carrie** — Stephen King | 9780307743664 |",
+            "## X01N · negation",
+            "| maybe | **Dracula** — Bram Stoker | 9780486411095 |",
+        ]
+    )
+    grades, problems = parse_doc(doc)
+    assert grades == {("S11", "9780450031069"): 2, ("S11", "9780307743664"): None}
+    assert problems == ["line 7: grade must be 0, 1, 2, 3 or empty, got 'maybe'"]

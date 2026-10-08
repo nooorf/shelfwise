@@ -2710,7 +2710,7 @@ P01,9781563899805,0,claude,
 P01,9781490436524,0,claude,
 P01,9781476786414,0,claude,
 P01,9780525954576,2,claude,"dark kidnapping thriller, little romance"
-P01,9780525953074,2,claude,thriller about a perfect family's secrets
+P01,9780525953074,3,claude,"a domestic thriller about a family's secrets, little romance; adjudicated after the blind sample"
 P01,9780425240168,0,claude,
 P01,9780141357270,0,claude,
 P01,9780765328663,0,claude,
@@ -4164,7 +4164,7 @@ G12,9780767919371,3,claude,
 G12,9780805089257,3,claude,
 G12,9780374105235,3,claude,
 G12,9780312311353,3,claude,
-G12,9780425179611,2,claude,"memoir, since discredited"
+G12,9780425179611,3,claude,a widely read memoir; adjudicated after the blind sample
 G12,9780062300546,3,claude,
 G12,9780140100181,3,claude,
 G12,9780802136688,3,claude,
@@ -4227,7 +4227,7 @@ G14,9780061470851,1,claude,"dark, not really gothic"
 G14,9781537579368,3,claude,
 G14,9780606256155,1,claude,horror epic
 G14,9780007436828,3,claude,
-G14,9780345422385,2,claude,gothic vampire novel
+G14,9780345422385,3,claude,"gothic fiction, and a standalone story; adjudicated after the blind sample"
 G14,9780743298025,3,claude,
 G14,9780670023486,1,claude,paranormal romance
 G14,9780393970128,3,claude,
@@ -4302,7 +4302,7 @@ G16,9781579126261,3,claude,
 G16,9780448095028,1,claude,children's mystery
 G16,9780007120703,2,claude,"golden-age, cozy-adjacent"
 G16,9781579126285,2,claude,"golden-age, cozy-adjacent"
-G16,9780810959255,1,claude,children's mystery
+G16,9780810959255,2,claude,"a gentle, whimsical mystery: cozy in tone, for younger readers; adjudicated after the blind sample"
 G16,9780062081018,1,claude,YA mystery
 G16,9781594633669,1,claude,dark thriller
 G16,9780152010669,0,claude,
@@ -4396,7 +4396,7 @@ S11,9780451230546,0,claude,
 S11,9789812692368,0,claude,
 S11,9781563899805,0,claude,
 S11,9780756410438,0,claude,
-S11,9780450031069,1,claude,"slow-burn horror, not a mystery"
+S11,9780450031069,2,claude,"slow-burn and atmospheric, with a mystery at its core (what is happening to the town); adjudicated after the blind sample"
 S11,9781905654949,0,claude,
 S11,9781582349060,0,claude,
 S11,9781442440753,0,claude,
@@ -4417,7 +4417,7 @@ S11,9781618680525,1,claude,"mystery, but sci-fi horror"
 S11,9780312377045,3,claude,
 S11,9780312655464,3,claude,
 S11,9780671011376,1,claude,forensic procedural
-S11,9780441015832,0,claude,
+S11,9780441015832,1,claude,urban fantasy with an investigation: partly related; adjudicated after the blind sample
 S11,9780340686034,2,claude,atmospheric Southern legal mystery
 S11,9780515133318,0,claude,
 S12,9780739328279,0,claude,
@@ -4820,7 +4820,7 @@ S23,9780224085618,0,claude,
 S23,9780525954576,0,claude,
 S23,9781594486401,3,claude,
 S23,9781476746531,0,claude,
-S23,9781416903437,2,claude,a girl with a gift for horses
+S23,9781416903437,3,claude,a girl whose gift centres on horses; adjudicated after the blind sample
 S23,9780027436297,1,claude,a boy and a horse
 S23,9780060512620,1,claude,a boy and his horse
 S23,9780439228909,1,claude,"the horse's story, no girl"
@@ -6500,7 +6500,7 @@ V09,9780751504576,3,claude,
 V09,9780340798737,3,claude,
 V09,9781416524526,3,claude,
 V09,9780785764830,3,claude,
-V09,9781401228309,2,claude,co-written comic
+V09,9781401228309,3,claude,co-written by Stephen King: by that author; adjudicated after the blind sample
 V09,9780450524684,3,claude,
 V09,9781416554844,3,claude,
 V09,9780451210852,3,claude,
@@ -7043,7 +7043,7 @@ P13,9780192802637,1,claude,"Austen, not modern"
 P13,9781400068326,3,claude,
 P13,9780552555708,0,claude,
 P13,9781476792484,1,claude,"modern, not Austen-like"
-P13,9780061921261,2,claude,modern YA retelling
+P13,9780061921261,3,claude,a modern retelling of Pride and Prejudice; adjudicated after the blind sample
 P13,9780671737634,1,claude,historical romance
 P13,9781932796780,0,claude,
 P14,9780739328279,0,claude,
@@ -7297,7 +7297,7 @@ U05,9780544920958,1,claude,
 U05,9780778316558,1,claude,
 U05,9780316154857,1,claude,
 U05,9780679751526,2,claude,widely loved
-U05,9780375422737,1,claude,
+U05,9780375422737,2,claude,"well-liked, though late in the series: 2 for a vague request; adjudicated after the blind sample"
 U05,9781405293181,2,claude,widely loved
 U06,9780739328279,2,claude,light page-turner
 U06,9780679600213,1,claude,
@@ -7582,7 +7582,7 @@ U13,9780385613507,1,claude,
 U13,9780061351525,1,claude,
 U13,9780312949815,1,claude,
 U13,9780593053898,1,claude,
-U13,9780451219244,1,claude,
+U13,9780451219244,2,claude,a well-liked thriller: 2 for a vague request; adjudicated after the blind sample
 U13,9780062004017,1,claude,
 U13,9780345518514,1,claude,
 U13,9781401308667,1,claude,
@@ -7677,7 +7677,7 @@ H08,9789812692368,0,claude,
 H08,9781563899805,0,claude,
 H08,9780152018481,0,claude,
 H08,9781599909547,0,claude,
-H08,9780679824251,0,claude,
+H08,9780679824251,1,claude,pirate-themed: matches the playful part of the request; adjudicated after the blind sample
 H08,9780061929373,0,claude,
 H08,9780545850971,0,claude,
 H08,9780316120555,0,claude,
@@ -8031,7 +8031,7 @@ T15,9780070612938,1,claude,different EE course
 T15,9780155510074,0,claude,
 T15,9780872591721,1,claude,electronics handbook
 T15,9780070310865,0,claude,
-T15,9780070612853,1,claude,different EE course
+T15,9780070612853,0,claude,"power systems, a different subject from signals and systems; adjudicated after the blind sample"
 T15,9780534362980,0,claude,
 T15,9781108569323,0,claude,
 T16,9780739328279,0,claude,
@@ -8062,7 +8062,7 @@ T16,9781491903117,0,claude,
 T16,9781492034025,0,claude,
 T16,9781593274245,1,claude,general problem solving
 T16,9780141979243,0,claude,
-T16,9781548955489,2,claude,"web development, not PHP"
+T16,9781548955489,1,claude,"web development, but neither PHP nor MySQL; adjudicated after the blind sample"
 T16,9781593279929,0,claude,
 T16,9781118057315,0,claude,
 X01B,9780739328279,0,claude,
@@ -8907,7 +8907,7 @@ X12N,9780553383836,0,claude,
 X12N,9780812993103,0,claude,
 X12N,9780060748098,0,claude,
 X12N,9780141027128,0,claude,"the reason says the romances are central, which is what was ruled out: 0"
-X12N,9781503943377,2,claude,a romance thread
+X12N,9781503943377,0,claude,"the love story with Anna is a major thread, which is what was ruled out; adjudicated after the blind sample"
 X12N,9780307460202,0,claude,"the reason says the love story is central, which is what was ruled out: 0"
 X12N,9781501116971,0,claude,
 X12N,9781101883075,2,claude,a romance thread

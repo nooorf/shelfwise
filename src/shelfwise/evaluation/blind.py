@@ -8,6 +8,7 @@ out: they are near-mechanical, and round 1 measured them already.
 """
 
 import random
+import re
 from collections import Counter, defaultdict
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -88,3 +89,30 @@ def score(
         confusion=dict(Counter((person[p], claude[p]) for p in both)),
         by_category={c: (len(v), sum(v) / len(v)) for c, v in sorted(per_category.items())},
     )
+
+
+_SECTION = re.compile(r"^## (\S+) · ")
+_ROW = re.compile(r"^\|\s*([^|]*?)\s*\|.*\|\s*(\S+)\s*\|\s*$")
+
+
+def parse_doc(text: str) -> tuple[dict[tuple[str, str], int | None], list[str]]:
+    """Grades from the filled-in sample document: {(query, work_key): grade or None if left
+    empty}, plus problems (a cell that isn't 0-3 or empty), with line numbers."""
+    grades: dict[tuple[str, str], int | None] = {}
+    problems: list[str] = []
+    query = None
+    for number, line in enumerate(text.splitlines(), start=1):
+        if match := _SECTION.match(line):
+            query = match.group(1)
+            continue
+        if query is None or not line.startswith("|") or line.startswith(("| Grade", "| ---")):
+            continue
+        match = _ROW.match(line)
+        if match is None:
+            continue
+        cell, key = match.group(1), match.group(2)
+        if cell not in {"", "0", "1", "2", "3"}:
+            problems.append(f"line {number}: grade must be 0, 1, 2, 3 or empty, got {cell!r}")
+            continue
+        grades[(query, key)] = int(cell) if cell else None
+    return grades, problems

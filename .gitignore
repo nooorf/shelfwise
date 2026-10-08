@@ -19,6 +19,7 @@ IMPLEMENTATION_PLAN.md
 # Review document, regenerated from prelabels.csv (make grades-doc)
 eval/grades_review.md
 eval/tags_review.md
+eval/blind_review.md
 
 # Data (large or licensed; rebuilt by scripts)
 data/raw/
