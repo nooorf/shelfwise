@@ -30,9 +30,12 @@ from shelfwise.ingest.normalize import fold_text, title_norm
 from shelfwise.llm.client import LLMInvalidOutput, LLMUnavailable, StructuredLLM
 from shelfwise.query.constraints import Constraint
 from shelfwise.query.extract import (
+    NOT_MENTIONED,
     QueryLLM,
     build_messages,
     check_evidence,
+    is_audience_phrase,
+    negated_audience,
     negated_words,
     to_constraints,
 )
@@ -112,12 +115,67 @@ def strip_words(text: str, words: list[str]) -> str:
     return re.sub(r"^[\s,.;]+|[\s,;]+$|,(?=[\s,]*,)", "", text)
 
 
+# "other than 1984", "isnt twilight": the phrase after a negation, up to a joining word.
+_EXCEPT = re.compile(
+    r"\b(other than|except(?: for)?|besides|apart from|not|isn ?t|aren ?t)"
+    r" (.+?)(?= (?:by|and|but|or|please|thanks)\b|$)"
+)
+_EXPLICIT_EXCEPT = {"other than", "except", "except for", "besides", "apart from"}
+
+
+def excluded_titles(text: str, linker: Linker, author_named: bool) -> list[str]:
+    """Books the person rules out, by catalog title. The words right after the negation must
+    *be* a title ("isnt twilight"; not "isnt about ghosts", nor "not space stuff" -> "A
+    Mango-Shaped Space"). After "other than" in an author request they are one even when the
+    catalog lacks it ("orwell other than 1984")."""
+    candidates = [(m.group(2), m.group(1) in _EXPLICIT_EXCEPT) for m in _EXCEPT.finditer(text)]
+    found: dict[str, str] = {}
+    for phrase, explicit in candidates:
+        if not phrase or is_audience_phrase(phrase):
+            continue
+        link = linker.title(phrase)
+        if link is not None and title_norm(link.name) == title_norm(phrase):
+            found.setdefault(title_norm(link.name), link.name)
+        elif explicit and author_named:
+            found.setdefault(title_norm(phrase), phrase)
+    return list(found.values())
+
+
+def _exclusion(field: str, value: str, span: str) -> Constraint:
+    return Constraint(
+        field=field, op="eq", value=value, strength="hard", source="llm",
+        polarity="exclude", span=span,
+    )  # fmt: skip
+
+
+def exclusions(out: QueryLLM, text: str, linker: Linker) -> tuple[QueryLLM, list[Constraint]]:
+    """Audiences and books the message rules out (PARSING.md: `not facet.audience eq ya hard`,
+    `not title eq Twilight hard`), taken out of the form's avoided phrases, which would only
+    make them soft theme penalties."""
+    found: list[Constraint] = []
+    avoid = list(out.avoid)
+    update: dict[str, object] = {}
+    if (audience := negated_audience(text)) is not None:
+        found.append(_exclusion("facet.audience", audience, f"not {audience}"))
+        avoid = [a for a in avoid if not is_audience_phrase(" ".join(fold_text(a).split()))]
+        if out.audience == audience:
+            update["audience"] = NOT_MENTIONED
+    titles = excluded_titles(text, linker, author_named=bool(out.lookup_author))
+    for title in titles:
+        found.append(_exclusion("title", title, f"not {title}"))
+    keys = {title_norm(t) for t in titles}
+    update["avoid"] = [a for a in avoid if title_norm(a) not in keys]
+    return out.model_copy(update=update), found
+
+
 def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
     """Combine the rule parse and the LLM's form into one request (steps 3-5)."""
     out = check_evidence(out, rules.text)
+    out, excluded = exclusions(out, fold_text(rules.text), linker)
     llm_constraints = [
-        c for c in to_constraints(out) if c.field not in _RULE_FIELDS or c.op == "shift"
-    ]
+        c for c in [*to_constraints(out), *excluded]
+        if c.field not in _RULE_FIELDS or c.op == "shift"
+    ]  # fmt: skip
     constraints: list[Constraint] = [*rules.constraints]
     for c in llm_constraints:
         if problems := constraint_problems(c.field, c.op, c.value):
@@ -160,7 +218,8 @@ def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
     # The residual stands in when the LLM left the topic empty, except for a refinement, whose
     # words ("something darker") are the change, not a topic.
     fallback = "" if intent == "refine" else rules.residual
-    semantic = strip_words(out.semantic_query or fallback, negated_words(out))
+    ruled_out = [str(c.value) for c in excluded]  # "ya", "twilight": not search words either
+    semantic = strip_words(out.semantic_query or fallback, [*negated_words(out), *ruled_out])
     return ParsedRequest(
         intent=intent,
         semantic_query=semantic,

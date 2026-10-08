@@ -87,6 +87,17 @@ def test_genre_include_and_exclude(conn: Connection) -> None:
     )
 
 
+def test_excluding_a_title_drops_every_work_with_it(conn: Connection) -> None:
+    twilight = add_work(conn, "Twilight")
+    twilight_again = add_work(conn, "Twilight (Twilight, #1)")  # another record, same title
+    new_moon = add_work(conn, "New Moon")
+
+    allowed = allowed_work_ids(conn, [hard("title", "eq", "twilight", polarity="exclude")])
+
+    assert new_moon in allowed
+    assert not {twilight, twilight_again} & allowed
+
+
 def test_soft_constraints_do_not_filter(conn: Connection) -> None:
     work_id = add_work(conn)
     add_edition(conn, work_id, pages=500)

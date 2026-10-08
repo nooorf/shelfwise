@@ -35,6 +35,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import ARRAY
 
 from shelfwise.catalog import schema
+from shelfwise.ingest.normalize import title_norm
 from shelfwise.query.constraints import Constraint
 
 _COMPARE: dict[str, Callable[[Any, Any], ColumnElement[bool]]] = {
@@ -104,6 +105,10 @@ def _work_condition(c: Constraint) -> ColumnElement[bool]:
         raise UnsupportedConstraint(f"genre does not support op {c.op!r}")
     if c.field == "work_id":
         return _membership(work.c.work_id, c)
+    if c.field == "title":  # "other than 1984": every work with that title, any edition
+        if c.op != "eq":
+            raise UnsupportedConstraint(f"title does not support op {c.op!r}")
+        return work.c.title_norm == title_norm(str(c.value))
     if c.field == "author_id":
         wa = schema.work_author
         return exists().where(wa.c.work_id == work.c.work_id, _membership(wa.c.author_id, c))

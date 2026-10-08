@@ -440,3 +440,49 @@ def test_named_genres_are_added_but_not_from_book_titles() -> None:
     assert not any(c.field == "genre" for c in titled.constraints)
     assert not any(c.field == "genre" for c in timey.constraints)
     assert "genre in ['mystery'] hard" in found(strict)
+
+
+@pytest.mark.parametrize(
+    ("query", "audience"),
+    [
+        ("fantasy thats not ya", "ya"),
+        ("a fantasy book that isnt for kids", "children"),
+        ("a talking animal story, not a kids book", "children"),
+        ("horror not for teens but still scary", "ya"),
+        ("not scary for kids", None),  # a wish about kids, not against them
+        ("a thriller where no children are harmed", None),  # a theme
+        ("a ya fantasy", None),
+    ],
+)
+def test_a_negated_audience_is_a_hard_exclusion(query: str, audience: str | None) -> None:
+    request, _ = parse(query, intent="discover", avoid=["ya", "kids"], audience="ya")
+
+    excluded = {c.value for c in request.constraints if c.field == "facet.audience"
+                and c.polarity == "exclude"}  # fmt: skip
+    assert excluded == ({audience} if audience else set())
+    if audience:
+        assert not any(
+            c.field == "theme" and c.value in ("ya", "kids") for c in request.constraints
+        )
+
+
+@pytest.mark.parametrize(
+    ("query", "lookup_author", "titles"),
+    [
+        ("a sci fi epic that isnt dune", None, {"Dune"}),
+        ("anything by stephen king other than it", "stephen king", {"it"}),
+        ("a thriller that isnt about gone girl stuff", None, set()),  # not the title itself
+        ("something other than space opera", None, set()),  # no such book, no author named
+    ],
+)
+def test_a_negated_title_is_a_hard_exclusion(
+    query: str, lookup_author: str | None, titles: set[str]
+) -> None:
+    request, _ = parse(query, lookup_author=lookup_author, intent="discover")
+
+    found_titles = {c.value for c in request.constraints if c.field == "title"}
+    assert found_titles == titles
+    assert all(c.polarity == "exclude" and c.strength == "hard"
+               for c in request.constraints if c.field == "title")  # fmt: skip
+    for title in titles:
+        assert title.lower() not in request.semantic_query.lower()

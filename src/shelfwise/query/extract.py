@@ -436,6 +436,33 @@ def _negated_moods(text: str) -> dict[str, str]:
     return found
 
 
+# Audience words (PARSING.md: for teens / YA -> ya; for kids -> children). "not ya", "isn't for
+# kids", "not a kids book" rule an audience out; "not scary for kids" doesn't (only these few
+# words may come between the negation and the audience)...
+_AUDIENCES = {
+    "ya": r"ya|young adults?|teens?|teenagers?",
+    "children": r"kids?|childrens?|children s|middle grade",
+    "adult": r"adults?",
+}
+_BETWEEN = r"(?: (?:a|an|for|just|really|meant|aimed|at|written))"
+# ...and the audience ends the phrase: "no children are harmed" is a theme, not an audience.
+_AUDIENCE_END = r"(?= (?:books?|novels?|stuff|fiction|but|and|or|please)\b|$)"
+
+
+def negated_audience(text: str) -> str | None:
+    """The audience a folded message rules out, if any."""
+    for audience, words in _AUDIENCES.items():
+        if re.search(rf"\b{_NEGATOR}{_BETWEEN}{{0,3}} (?:{words}){_AUDIENCE_END}", text):
+            return audience
+    return None
+
+
+def is_audience_phrase(phrase: str) -> bool:
+    """'ya', 'kids books', 'for children': an avoided phrase that is only an audience."""
+    words = "|".join(_AUDIENCES.values())
+    return re.fullmatch(rf"(?:for )?(?:{words})(?: books?| novels?| stuff)?", phrase) is not None
+
+
 def check_evidence(out: QueryLLM, message: str) -> QueryLLM:
     """Reset every choice the message gives no reason for, and route avoided phrases that
     are really genres or facets to where PARSING.md puts them."""
