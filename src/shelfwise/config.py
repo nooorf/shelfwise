@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     # How the API reads queries: "cascade" (rules + the LLM, falling back to the rules when
     # Ollama is down) or "rules" (no LLM at all).
     query_parser: Literal["cascade", "rules"] = "cascade"
+    # Conversation state expires after this many idle seconds: 30 min on the web; set 120 on a
+    # shared kiosk so the next visitor never sees the previous conversation.
+    session_ttl_s: int = 1800
     log_level: str = "INFO"
     log_json: bool = True
 
