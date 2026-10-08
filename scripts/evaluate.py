@@ -3,6 +3,7 @@
     uv run python scripts/evaluate.py                       # dev split, all systems
     uv run python scripts/evaluate.py --systems bm25 bm25_lookup
     uv run python scripts/evaluate.py --split test          # the locked test split: milestones only
+    uv run python scripts/evaluate.py --parser cascade      # adds parsed_hybrid (LLM answers cached)
 
 Queries with no relevant book (grade >= 2) are left out of the averages and listed separately;
 for those the right behaviour is an honest "no match", which is tested elsewhere.
@@ -27,7 +28,7 @@ from shelfwise.evaluation.metrics import bootstrap_ci, mean, query_metrics
 from shelfwise.evaluation.queries import load_queries
 from shelfwise.evaluation.reports import git_version, report_path
 from shelfwise.evaluation.splits import split_of
-from shelfwise.evaluation.systems import SYSTEMS, available_systems, load_context
+from shelfwise.evaluation.systems import PARSERS, SYSTEMS, available_systems, load_context
 
 QUERIES = Path("eval/data/queries.csv")
 QRELS = Path("eval/data/qrels.csv")
@@ -45,6 +46,9 @@ def main() -> None:
     parser.add_argument("--reranker", help="cross-encoder for hybrid_rerank, e.g. minilm")
     parser.add_argument("--rerank-depth", type=int, help="books reranked per query (default 50)")
     parser.add_argument("--qrels", type=Path, default=QRELS)
+    parser.add_argument(
+        "--parser", choices=PARSERS, help="query parser for the parsed systems (parsed_hybrid)"
+    )
     args = parser.parse_args()
 
     queries = [
@@ -76,7 +80,10 @@ def main() -> None:
     with make_engine().connect() as conn:
         report["catalog_version"] = get_catalog_version(conn)
         report["embedding_model"] = args.embedding_model
-        ctx = load_context(conn, args.embedding_model, reranker_model=args.reranker)
+        ctx = load_context(
+            conn, args.embedding_model, reranker_model=args.reranker, parser=args.parser
+        )
+        report["parser"] = args.parser
         if args.rerank_depth:
             ctx.rerank_depth = args.rerank_depth
         key_of = work_keys(conn)
@@ -99,8 +106,12 @@ def main() -> None:
                 "per_query": per_query,
             }
 
+    if args.parser:
+        report["parse_fallbacks"] = ctx.parse_fallbacks
     out = report_path(report["git"], args.split)
     out.write_text(json.dumps(report, indent=2) + "\n")
+    if args.parser and ctx.parse_fallbacks:
+        print(f"note: {len(ctx.parse_fallbacks)} queries fell back to the rules (LLM unavailable?)")
 
     print(
         f"{args.split} split: {len(scored)} queries scored ({len(no_relevant)} without a relevant book)"

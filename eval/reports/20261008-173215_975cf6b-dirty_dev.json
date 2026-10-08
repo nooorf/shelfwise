@@ -1,0 +1,3858 @@
+{
+  "created": "2026-10-08T12:31:46+00:00",
+  "git": "975cf6b-dirty",
+  "split": "dev",
+  "k": 10,
+  "queries_scored": 35,
+  "queries_without_relevant": [
+    "L06",
+    "H01",
+    "H03",
+    "L07",
+    "L08",
+    "L09",
+    "L11",
+    "L15",
+    "L19",
+    "L20",
+    "L23",
+    "L24",
+    "A05",
+    "A08",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "A15",
+    "G05",
+    "G06",
+    "G07",
+    "G10",
+    "G12",
+    "G13",
+    "G15",
+    "G16",
+    "S11",
+    "S13",
+    "S16",
+    "S18",
+    "S20",
+    "S22",
+    "S24",
+    "S25",
+    "S27",
+    "S29",
+    "S30",
+    "M09",
+    "M10",
+    "M12",
+    "M13",
+    "M14",
+    "M16",
+    "M18",
+    "M19",
+    "M21",
+    "M22",
+    "M23",
+    "N06",
+    "N08",
+    "N09",
+    "N11",
+    "N15",
+    "N18",
+    "N20",
+    "V07",
+    "V08",
+    "V10",
+    "V11",
+    "V12",
+    "V13",
+    "V15",
+    "V16",
+    "P06",
+    "P07",
+    "P08",
+    "P09",
+    "P11",
+    "P12",
+    "P13",
+    "P17",
+    "P18",
+    "P19",
+    "U05",
+    "U07",
+    "U08",
+    "U10",
+    "U12",
+    "H05",
+    "H07",
+    "H09",
+    "H10",
+    "H11",
+    "H12",
+    "H13",
+    "H15",
+    "T13",
+    "T14",
+    "T16"
+  ],
+  "systems": {
+    "random": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.0020961120599817164,
+          "ci95": [
+            0.0,
+            0.006288336179945149
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "recall@10": {
+          "mean": 0.0009523809523809524,
+          "ci95": [
+            0.0,
+            0.002857142857142857
+          ]
+        },
+        "precision@10": {
+          "mean": 0.002857142857142857,
+          "ci95": [
+            0.0,
+            0.008571428571428572
+          ]
+        },
+        "hit@10": {
+          "mean": 0.02857142857142857,
+          "ci95": [
+            0.0,
+            0.08571428571428572
+          ]
+        },
+        "mrr": {
+          "mean": 0.004081632653061224,
+          "ci95": [
+            0.0,
+            0.012244897959183673
+          ]
+        },
+        "judged@10": {
+          "mean": 0.008571428571428572,
+          "ci95": [
+            0.0,
+            0.02
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.03668196104968004,
+        "availability": 0.0,
+        "discovery": 0.0,
+        "genre": 0.0,
+        "learning": 0.0,
+        "lookup": 0.0,
+        "multi_constraint": 0.0,
+        "negation": 0.0,
+        "similarity": 0.0,
+        "vague": 0.0
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 0.07336392209936007,
+          "ndcg@5": 0.0,
+          "recall@10": 0.03333333333333333,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 0.1
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.1
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.1
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        }
+      }
+    },
+    "popular": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "recall@10": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "precision@10": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "hit@10": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "judged@10": {
+          "mean": 0.014285714285714285,
+          "ci95": [
+            0.002857142857142857,
+            0.03142857142857143
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.0,
+        "availability": 0.0,
+        "discovery": 0.0,
+        "genre": 0.0,
+        "learning": 0.0,
+        "lookup": 0.0,
+        "multi_constraint": 0.0,
+        "negation": 0.0,
+        "similarity": 0.0,
+        "vague": 0.0
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.2
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.1
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.1
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.1
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        }
+      }
+    },
+    "bm25_raw": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.3938303526391898,
+          "ci95": [
+            0.301809038704253,
+            0.48822106238833557
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.38685626872345014,
+          "ci95": [
+            0.2876162457634175,
+            0.49057034404866356
+          ]
+        },
+        "recall@10": {
+          "mean": 0.3618595934957491,
+          "ci95": [
+            0.2596878763240319,
+            0.473878013672064
+          ]
+        },
+        "precision@10": {
+          "mean": 0.25142857142857145,
+          "ci95": [
+            0.17714285714285716,
+            0.34285714285714286
+          ]
+        },
+        "hit@10": {
+          "mean": 0.8285714285714286,
+          "ci95": [
+            0.6857142857142857,
+            0.9428571428571428
+          ]
+        },
+        "mrr": {
+          "mean": 0.5191156462585034,
+          "ci95": [
+            0.3910204081632653,
+            0.6512925170068027
+          ]
+        },
+        "judged@10": {
+          "mean": 0.9942857142857142,
+          "ci95": [
+            0.9857142857142858,
+            1.0
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.9207954237157487,
+        "availability": 0.47666452210497995,
+        "discovery": 0.42068991336760553,
+        "genre": 0.44729124478445503,
+        "learning": 0.47074218075752683,
+        "lookup": 0.8516363568018328,
+        "multi_constraint": 0.23615670309581477,
+        "negation": 0.1697624959853522,
+        "similarity": 0.04578187138204338,
+        "vague": 0.2593993898726503
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.7032727136036657,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.8415908474314976,
+          "ndcg@5": 0.8539316501572934,
+          "recall@10": 0.42105263157894735,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.28573025827568127,
+          "ndcg@5": 0.29245629475313456,
+          "recall@10": 0.23076923076923078,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.6088522312932289,
+          "ndcg@5": 0.7316537845947063,
+          "recall@10": 0.30434782608695654,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.36296701765744915,
+          "ndcg@5": 0.3503205764270141,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.15630839265013166,
+          "ndcg@5": 0.03632484615766417,
+          "recall@10": 0.2,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 1.0
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.2702855441007812,
+          "ndcg@5": 0.2661987979668741,
+          "recall@10": 0.25,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.520510505641581,
+          "ndcg@5": 0.3962787801884237,
+          "recall@10": 0.625,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.7933781067880845,
+          "ndcg@5": 1.0,
+          "recall@10": 0.5714285714285714,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.11787971322575708,
+          "ndcg@5": 0.13120507751234178,
+          "recall@10": 0.1,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.2,
+          "judged@10": 1.0
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.5616389690976717,
+          "ndcg@5": 0.529634717214042,
+          "recall@10": 0.5555555555555556,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.11412273447025746,
+          "ndcg@5": 0.025951576819959944,
+          "recall@10": 0.25,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 0.9
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.14721284040537086,
+          "ndcg@5": 0.11161490603366744,
+          "recall@10": 0.09523809523809523,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.23992925828001657,
+          "ndcg@5": 0.3697296716642629,
+          "recall@10": 0.038461538461538464,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.19640969544788286,
+          "ndcg@5": 0.16186687558570215,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.28489690474876794,
+          "ndcg@5": 0.21803152782161714,
+          "recall@10": 0.36363636363636365,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.25,
+          "judged@10": 1.0
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.13513179427719232,
+          "ndcg@5": 0.12169965650054368,
+          "recall@10": 0.2,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.06261158946756568,
+          "ndcg@5": 0.0,
+          "recall@10": 0.2,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.1,
+          "judged@10": 1.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.3585003532455793,
+          "ndcg@5": 0.4308686044455565,
+          "recall@10": 0.1111111111111111,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.31918251542557674,
+          "ndcg@5": 0.3391602052736161,
+          "recall@10": 0.13333333333333333,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.7523106976437838,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.13734561414613014,
+          "ndcg@5": 0.1293612305733766,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.5187987797453006,
+          "ndcg@5": 0.6568190367442152,
+          "recall@10": 0.18181818181818182,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.4701855520137367,
+          "ndcg@5": 0.4878817072119659,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.06780788615336626,
+          "ndcg@5": 0.07050708341957183,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.5354683515021718,
+          "ndcg@5": 0.432247198958792,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.49107220966021825,
+          "ndcg@5": 0.40458382396052295,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.7565337552129939,
+          "ndcg@5": 0.659532565726752,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.6508205185601091,
+          "ndcg@5": 0.6508205185601091,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.32330699220009174,
+          "ndcg@5": 0.11677352547567135,
+          "recall@10": 0.5,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        }
+      }
+    },
+    "bm25": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.44117173749573224,
+          "ci95": [
+            0.34542829343833653,
+            0.5438354035136332
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.42519157130772456,
+          "ci95": [
+            0.32366036424941375,
+            0.537113967203027
+          ]
+        },
+        "recall@10": {
+          "mean": 0.3865796353586481,
+          "ci95": [
+            0.28981316928685347,
+            0.4942319585176728
+          ]
+        },
+        "precision@10": {
+          "mean": 0.31142857142857144,
+          "ci95": [
+            0.21714285714285717,
+            0.42000000000000004
+          ]
+        },
+        "hit@10": {
+          "mean": 0.8285714285714286,
+          "ci95": [
+            0.6857142857142857,
+            0.9428571428571428
+          ]
+        },
+        "mrr": {
+          "mean": 0.5610204081632654,
+          "ci95": [
+            0.4291156462585034,
+            0.6993197278911564
+          ]
+        },
+        "judged@10": {
+          "mean": 0.9828571428571428,
+          "ci95": [
+            0.962857142857143,
+            0.9971428571428571
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.9207954237157487,
+        "availability": 0.6021891239450489,
+        "discovery": 0.42068991336760553,
+        "genre": 0.44729124478445503,
+        "learning": 0.47074218075752683,
+        "lookup": 0.8516363568018328,
+        "multi_constraint": 0.49223163598757075,
+        "negation": 0.1697624959853522,
+        "similarity": 0.04578187138204338,
+        "vague": 0.2593993898726503
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.7032727136036657,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.8415908474314976,
+          "ndcg@5": 0.8539316501572934,
+          "recall@10": 0.42105263157894735,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.28573025827568127,
+          "ndcg@5": 0.29245629475313456,
+          "recall@10": 0.23076923076923078,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.6088522312932289,
+          "ndcg@5": 0.7316537845947063,
+          "recall@10": 0.30434782608695654,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.36296701765744915,
+          "ndcg@5": 0.3503205764270141,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.15630839265013166,
+          "ndcg@5": 0.03632484615766417,
+          "recall@10": 0.2,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 1.0
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.2702855441007812,
+          "ndcg@5": 0.2661987979668741,
+          "recall@10": 0.25,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.520510505641581,
+          "ndcg@5": 0.3962787801884237,
+          "recall@10": 0.625,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.7933781067880845,
+          "ndcg@5": 1.0,
+          "recall@10": 0.5714285714285714,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.45484930972438864,
+          "ndcg@5": 0.3936428001431002,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.36487158016233595,
+          "ndcg@5": 0.3802075455436068,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.11412273447025746,
+          "ndcg@5": 0.025951576819959944,
+          "recall@10": 0.25,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 0.9
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.6193388914802657,
+          "ndcg@5": 0.4927520655196097,
+          "recall@10": 0.38095238095238093,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.9079756641006058,
+          "ndcg@5": 0.9165323715184533,
+          "recall@10": 0.38461538461538464,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.19640969544788286,
+          "ndcg@5": 0.16186687558570215,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.28489690474876794,
+          "ndcg@5": 0.21803152782161714,
+          "recall@10": 0.36363636363636365,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.25,
+          "judged@10": 1.0
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.13513179427719232,
+          "ndcg@5": 0.12169965650054368,
+          "recall@10": 0.2,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.06261158946756568,
+          "ndcg@5": 0.0,
+          "recall@10": 0.2,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.1,
+          "judged@10": 1.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.8258616677027038,
+          "ndcg@5": 0.7316537845947063,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.9,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.22839500648865915,
+          "ndcg@5": 0.3391602052736161,
+          "recall@10": 0.06666666666666667,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.7523106976437838,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.13734561414613014,
+          "ndcg@5": 0.1293612305733766,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.5187987797453006,
+          "ndcg@5": 0.6568190367442152,
+          "recall@10": 0.18181818181818182,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.4701855520137367,
+          "ndcg@5": 0.4878817072119659,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.06780788615336626,
+          "ndcg@5": 0.07050708341957183,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.5354683515021718,
+          "ndcg@5": 0.432247198958792,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.49107220966021825,
+          "ndcg@5": 0.40458382396052295,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.7565337552129939,
+          "ndcg@5": 0.659532565726752,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.6508205185601091,
+          "ndcg@5": 0.6508205185601091,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.32330699220009174,
+          "ndcg@5": 0.11677352547567135,
+          "recall@10": 0.5,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        }
+      }
+    },
+    "bm25_lookup": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.4241542219998193,
+          "ci95": [
+            0.33233400779557054,
+            0.5186641055483495
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.4060860754519039,
+          "ci95": [
+            0.312724236418895,
+            0.5100410422009733
+          ]
+        },
+        "recall@10": {
+          "mean": 0.3788102117997509,
+          "ci95": [
+            0.2766027820931384,
+            0.4850624688594613
+          ]
+        },
+        "precision@10": {
+          "mean": 0.2914285714285714,
+          "ci95": [
+            0.2057142857142857,
+            0.39142857142857146
+          ]
+        },
+        "hit@10": {
+          "mean": 0.8285714285714286,
+          "ci95": [
+            0.6857142857142857,
+            0.9428571428571428
+          ]
+        },
+        "mrr": {
+          "mean": 0.5610204081632654,
+          "ci95": [
+            0.4319047619047619,
+            0.6943537414965987
+          ]
+        },
+        "judged@10": {
+          "mean": 0.9571428571428572,
+          "ci95": [
+            0.9114285714285714,
+            0.9914285714285715
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.5267477517356282,
+        "availability": 0.6021891239450489,
+        "discovery": 0.42068991336760553,
+        "genre": 0.44729124478445503,
+        "learning": 0.49434681209969344,
+        "lookup": 0.8516363568018328,
+        "multi_constraint": 0.49223163598757075,
+        "negation": 0.1697624959853522,
+        "similarity": 0.05486516545141684,
+        "vague": 0.2593993898726503
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.7032727136036657,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 0.4705561169627618,
+          "ndcg@5": 0.49125969208957576,
+          "recall@10": 0.16666666666666666,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.5
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.5829393865084945,
+          "ndcg@5": 0.4703652827859579,
+          "recall@10": 0.3157894736842105,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.6
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.28573025827568127,
+          "ndcg@5": 0.29245629475313456,
+          "recall@10": 0.23076923076923078,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.6088522312932289,
+          "ndcg@5": 0.7316537845947063,
+          "recall@10": 0.30434782608695654,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.36296701765744915,
+          "ndcg@5": 0.3503205764270141,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.15630839265013166,
+          "ndcg@5": 0.03632484615766417,
+          "recall@10": 0.2,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 1.0
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.2702855441007812,
+          "ndcg@5": 0.2661987979668741,
+          "recall@10": 0.25,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.520510505641581,
+          "ndcg@5": 0.3962787801884237,
+          "recall@10": 0.625,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.7933781067880845,
+          "ndcg@5": 1.0,
+          "recall@10": 0.5714285714285714,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.45484930972438864,
+          "ndcg@5": 0.3936428001431002,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.36487158016233595,
+          "ndcg@5": 0.3802075455436068,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.11412273447025746,
+          "ndcg@5": 0.025951576819959944,
+          "recall@10": 0.25,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 0.9
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.6193388914802657,
+          "ndcg@5": 0.4927520655196097,
+          "recall@10": 0.38095238095238093,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.9079756641006058,
+          "ndcg@5": 0.9165323715184533,
+          "recall@10": 0.38461538461538464,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.19640969544788286,
+          "ndcg@5": 0.16186687558570215,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.28489690474876794,
+          "ndcg@5": 0.21803152782161714,
+          "recall@10": 0.36363636363636365,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.25,
+          "judged@10": 1.0
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.13513179427719232,
+          "ndcg@5": 0.12169965650054368,
+          "recall@10": 0.2,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.06261158946756568,
+          "ndcg@5": 0.0,
+          "recall@10": 0.2,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.1,
+          "judged@10": 1.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.8258616677027038,
+          "ndcg@5": 0.7316537845947063,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.9,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.22839500648865915,
+          "ndcg@5": 0.3391602052736161,
+          "recall@10": 0.06666666666666667,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.7523106976437838,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.16459549635425053,
+          "ndcg@5": 0.1614075631358482,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.5187987797453006,
+          "ndcg@5": 0.6568190367442152,
+          "recall@10": 0.18181818181818182,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.4701855520137367,
+          "ndcg@5": 0.4878817072119659,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.06780788615336626,
+          "ndcg@5": 0.07050708341957183,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.5131240734838652,
+          "ndcg@5": 0.40693444483178604,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.49107220966021825,
+          "ndcg@5": 0.40458382396052295,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.9441104526264669,
+          "ndcg@5": 0.876413307619323,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.6508205185601091,
+          "ndcg@5": 0.6508205185601091,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.32330699220009174,
+          "ndcg@5": 0.11677352547567135,
+          "recall@10": 0.5,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        }
+      }
+    },
+    "dense": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.6391271163302705,
+          "ci95": [
+            0.5657427382329302,
+            0.7052499472970029
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.6114415353152233,
+          "ci95": [
+            0.5195589429773726,
+            0.6969491371792286
+          ]
+        },
+        "recall@10": {
+          "mean": 0.626150222109686,
+          "ci95": [
+            0.5223674718607703,
+            0.7264023695602643
+          ]
+        },
+        "precision@10": {
+          "mean": 0.4,
+          "ci95": [
+            0.3142857142857143,
+            0.49428571428571433
+          ]
+        },
+        "hit@10": {
+          "mean": 0.9714285714285714,
+          "ci95": [
+            0.9142857142857143,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.7054761904761905,
+          "ci95": [
+            0.5914285714285714,
+            0.8171428571428572
+          ]
+        },
+        "judged@10": {
+          "mean": 0.8542857142857143,
+          "ci95": [
+            0.8114285714285715,
+            0.8885714285714286
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.9301909272231255,
+        "availability": 0.661322973999607,
+        "discovery": 0.575527385720769,
+        "genre": 0.7040375891661317,
+        "learning": 0.7554869738907709,
+        "lookup": 0.8695299850220177,
+        "multi_constraint": 0.5493307123816169,
+        "negation": 0.358423892889297,
+        "similarity": 0.5721592557018841,
+        "vague": 0.6575452501639663
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.7390599700440353,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 0.9337457765456111,
+          "ndcg@5": 1.0,
+          "recall@10": 0.3,
+          "precision@10": 0.9,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.92663607790064,
+          "ndcg@5": 1.0,
+          "recall@10": 0.47368421052631576,
+          "precision@10": 0.9,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.6163484589642793,
+          "ndcg@5": 0.4874460665238827,
+          "recall@10": 0.46153846153846156,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 0.9
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.791726719367984,
+          "ndcg@5": 1.0,
+          "recall@10": 0.30434782608695654,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.5162848225503471,
+          "ndcg@5": 0.5066214151672375,
+          "recall@10": 0.5,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.7
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.6733853724496071,
+          "ndcg@5": 0.5630484084549214,
+          "recall@10": 0.6,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.40575122812759523,
+          "ndcg@5": 0.3668820906987509,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 0.9
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.4026345085704281,
+          "ndcg@5": 0.36597070721026864,
+          "recall@10": 0.5,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.8
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.8795809969058677,
+          "ndcg@5": 0.9165323715184533,
+          "recall@10": 0.6428571428571429,
+          "precision@10": 0.9,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.23666452638147933,
+          "ndcg@5": 0.2397600586496046,
+          "recall@10": 0.2,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.6
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.4737328670704699,
+          "ndcg@5": 0.4752997044753014,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.45314103744217765,
+          "ndcg@5": 0.31753250282684636,
+          "recall@10": 0.5,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.2,
+          "judged@10": 0.9
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.7101666100735591,
+          "ndcg@5": 0.6728216095463567,
+          "recall@10": 0.38095238095238093,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.8729485209403984,
+          "ndcg@5": 0.9250256699929476,
+          "recall@10": 0.34615384615384615,
+          "precision@10": 0.9,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.3750262087696311,
+          "ndcg@5": 0.40662265540649295,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.2,
+          "judged@10": 0.8
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.5904600578434509,
+          "ndcg@5": 0.6343169226155623,
+          "recall@10": 0.5454545454545454,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.9
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.4226560689950574,
+          "ndcg@5": 0.5285934918223377,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.8
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.04555323594904858,
+          "ndcg@5": 0.0491172611013571,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.8
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.48518425544091126,
+          "ndcg@5": 0.6992148198508501,
+          "recall@10": 0.14814814814814814,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.4
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.6447621396840768,
+          "ndcg@5": 0.6102650449229513,
+          "recall@10": 0.4666666666666667,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.8540225268738332,
+          "ndcg@5": 0.8527646662062499,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.6984319086466285,
+          "ndcg@5": 0.6922758990315323,
+          "recall@10": 1.0,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.9
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.718515462963013,
+          "ndcg@5": 0.5578380347093612,
+          "recall@10": 1.0,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.29953039549601074,
+          "ndcg@5": 0.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.125,
+          "judged@10": 0.9
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.6568697316584101,
+          "ndcg@5": 0.4463867350912054,
+          "recall@10": 0.6,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.6582207686695223,
+          "ndcg@5": 0.6426881189719142,
+          "recall@10": 0.5454545454545454,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.9
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.7300045159546934,
+          "ndcg@5": 0.8076572091794476,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.8399511191235943,
+          "ndcg@5": 0.838133124414298,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.6799296086017306,
+          "ndcg@5": 0.37971985505795547,
+          "recall@10": 1.0,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.8599404465481655,
+          "ndcg@5": 0.8746716811865615,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.5982128867152391,
+          "ndcg@5": 0.28877248858472115,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.16666666666666666,
+          "judged@10": 1.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.8603443310417203,
+          "ndcg@5": 0.7039180890341348,
+          "recall@10": 1.0,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.7200259092502531,
+          "ndcg@5": 0.7682994509946335,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        }
+      }
+    },
+    "hybrid": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.5924900906200466,
+          "ci95": [
+            0.5084814657842186,
+            0.6747926596435792
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.5498842812617538,
+          "ci95": [
+            0.44962167521130303,
+            0.6520838429466469
+          ]
+        },
+        "recall@10": {
+          "mean": 0.5586233411110822,
+          "ci95": [
+            0.45875722161436444,
+            0.6526281607680758
+          ]
+        },
+        "precision@10": {
+          "mean": 0.4114285714285714,
+          "ci95": [
+            0.3142857142857143,
+            0.5228571428571429
+          ]
+        },
+        "hit@10": {
+          "mean": 0.9428571428571428,
+          "ci95": [
+            0.8571428571428571,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.6802721088435374,
+          "ci95": [
+            0.5598639455782313,
+            0.8047619047619048
+          ]
+        },
+        "judged@10": {
+          "mean": 0.9285714285714286,
+          "ci95": [
+            0.8971428571428572,
+            0.9571428571428572
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.9315076448508441,
+        "availability": 0.7172372312517515,
+        "discovery": 0.6289376080210582,
+        "genre": 0.7125235991624357,
+        "learning": 0.6653025014880468,
+        "lookup": 0.8661571714312581,
+        "multi_constraint": 0.5314302607931317,
+        "negation": 0.23977589805633073,
+        "similarity": 0.30608322785846526,
+        "vague": 0.6143772583846531
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.7323143428625162,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 0.8630152897016883,
+          "ndcg@5": 1.0,
+          "recall@10": 0.26666666666666666,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 0.5263157894736842,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.5077057654294795,
+          "ndcg@5": 0.39721329657039284,
+          "recall@10": 0.46153846153846156,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 0.9
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.9173414328953918,
+          "ndcg@5": 1.0,
+          "recall@10": 0.43478260869565216,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.4390535890607827,
+          "ndcg@5": 0.42166984469328056,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.8
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.5950156359900258,
+          "ndcg@5": 0.5359986516403279,
+          "recall@10": 0.6,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.45658346717894216,
+          "ndcg@5": 0.4453988179544888,
+          "recall@10": 0.4166666666666667,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.9
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.716918709674992,
+          "ndcg@5": 0.6809927256927567,
+          "recall@10": 0.75,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.9371166382005485,
+          "ndcg@5": 0.9030970842075382,
+          "recall@10": 0.7142857142857143,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.2997158976559988,
+          "ndcg@5": 0.25764205015518865,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.4620987871746406,
+          "ndcg@5": 0.5237511623715323,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.3981491952093966,
+          "ndcg@5": 0.35844043723801366,
+          "recall@10": 0.25,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.6722368700150131,
+          "ndcg@5": 0.6728216095463567,
+          "recall@10": 0.38095238095238093,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.8249505539106093,
+          "ndcg@5": 0.9250256699929476,
+          "recall@10": 0.38461538461538464,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.13581369472285512,
+          "ndcg@5": 0.1263826250471917,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.8
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.43692861430125807,
+          "ndcg@5": 0.6169826885784089,
+          "recall@10": 0.18181818181818182,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.2408767700660823,
+          "ndcg@5": 0.026189250454314566,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.16666666666666666,
+          "judged@10": 0.9
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.14548451313512742,
+          "ndcg@5": 0.0,
+          "recall@10": 0.4,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.16666666666666666,
+          "judged@10": 1.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.734615130847348,
+          "ndcg@5": 0.8061941684150765,
+          "recall@10": 0.2962962962962963,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.5861471984194528,
+          "ndcg@5": 0.7058448886378986,
+          "recall@10": 0.4666666666666667,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.8309493644884541,
+          "ndcg@5": 0.8303861546840179,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.47016659352931484,
+          "ndcg@5": 0.3215739166199863,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.44808309004608093,
+          "ndcg@5": 0.1707805145531908,
+          "recall@10": 0.5,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.16666666666666666,
+          "judged@10": 1.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.6568697316584101,
+          "ndcg@5": 0.4463867350912054,
+          "recall@10": 0.6,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.571884785110896,
+          "ndcg@5": 0.5453092190767765,
+          "recall@10": 0.45454545454545453,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.7188930548214403,
+          "ndcg@5": 0.6169573564786358,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.4462433958681,
+          "ndcg@5": 0.16961384531598217,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 1.0
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.5881989743206388,
+          "ndcg@5": 0.432247198958792,
+          "recall@10": 0.8333333333333334,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.6400582083655244,
+          "ndcg@5": 0.5951887418298233,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.6148813700332593,
+          "ndcg@5": 0.28877248858472115,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.16666666666666666,
+          "judged@10": 1.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.9674679834891693,
+          "ndcg@5": 0.9674679834891693,
+          "recall@10": 1.0,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.6813745235181954,
+          "ndcg@5": 0.6753631354966927,
+          "recall@10": 0.8333333333333334,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        }
+      }
+    },
+    "hybrid_lookup": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.5768030367134203,
+          "ci95": [
+            0.49308963044658055,
+            0.6573268831407753
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.5360151409293478,
+          "ci95": [
+            0.43967141600200843,
+            0.6328631642261234
+          ]
+        },
+        "recall@10": {
+          "mean": 0.5497511606599544,
+          "ci95": [
+            0.44648569995742277,
+            0.6441784877188604
+          ]
+        },
+        "precision@10": {
+          "mean": 0.3914285714285714,
+          "ci95": [
+            0.3028571428571428,
+            0.4914285714285714
+          ]
+        },
+        "hit@10": {
+          "mean": 0.9428571428571428,
+          "ci95": [
+            0.8571428571428571,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.6891156462585034,
+          "ci95": [
+            0.5687074829931973,
+            0.8129251700680272
+          ]
+        },
+        "judged@10": {
+          "mean": 0.9085714285714286,
+          "ci95": [
+            0.86,
+            0.9457142857142857
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.5267477517356282,
+        "availability": 0.7172372312517515,
+        "discovery": 0.6289376080210582,
+        "genre": 0.7125235991624357,
+        "learning": 0.7088536072947943,
+        "lookup": 0.8661571714312581,
+        "multi_constraint": 0.5314302607931317,
+        "negation": 0.23977589805633073,
+        "similarity": 0.29128828080889024,
+        "vague": 0.6143772583846531
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.7323143428625162,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 0.4705561169627618,
+          "ndcg@5": 0.49125969208957576,
+          "recall@10": 0.16666666666666666,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.5
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.5829393865084945,
+          "ndcg@5": 0.4703652827859579,
+          "recall@10": 0.3157894736842105,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.6
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.5077057654294795,
+          "ndcg@5": 0.39721329657039284,
+          "recall@10": 0.46153846153846156,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 0.9
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.9173414328953918,
+          "ndcg@5": 1.0,
+          "recall@10": 0.43478260869565216,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.4390535890607827,
+          "ndcg@5": 0.42166984469328056,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.8
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.5950156359900258,
+          "ndcg@5": 0.5359986516403279,
+          "recall@10": 0.6,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.45658346717894216,
+          "ndcg@5": 0.4453988179544888,
+          "recall@10": 0.4166666666666667,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.9
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.716918709674992,
+          "ndcg@5": 0.6809927256927567,
+          "recall@10": 0.75,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.9371166382005485,
+          "ndcg@5": 0.9030970842075382,
+          "recall@10": 0.7142857142857143,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.2997158976559988,
+          "ndcg@5": 0.25764205015518865,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.4620987871746406,
+          "ndcg@5": 0.5237511623715323,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.3981491952093966,
+          "ndcg@5": 0.35844043723801366,
+          "recall@10": 0.25,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.6722368700150131,
+          "ndcg@5": 0.6728216095463567,
+          "recall@10": 0.38095238095238093,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.8249505539106093,
+          "ndcg@5": 0.9250256699929476,
+          "recall@10": 0.38461538461538464,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.13581369472285512,
+          "ndcg@5": 0.1263826250471917,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.8
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.43692861430125807,
+          "ndcg@5": 0.6169826885784089,
+          "recall@10": 0.18181818181818182,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.2408767700660823,
+          "ndcg@5": 0.026189250454314566,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 0.16666666666666666,
+          "judged@10": 0.9
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.14548451313512742,
+          "ndcg@5": 0.0,
+          "recall@10": 0.4,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.16666666666666666,
+          "judged@10": 1.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.734615130847348,
+          "ndcg@5": 0.8061941684150765,
+          "recall@10": 0.2962962962962963,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.5861471984194528,
+          "ndcg@5": 0.7058448886378986,
+          "recall@10": 0.4666666666666667,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.8309493644884541,
+          "ndcg@5": 0.8303861546840179,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.47016659352931484,
+          "ndcg@5": 0.3215739166199863,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.4036982488973559,
+          "ndcg@5": 0.1614075631358482,
+          "recall@10": 0.5,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 1.0
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 1.0
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.6568697316584101,
+          "ndcg@5": 0.4463867350912054,
+          "recall@10": 0.6,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 1.0
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.571884785110896,
+          "ndcg@5": 0.5453092190767765,
+          "recall@10": 0.45454545454545453,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.7188930548214403,
+          "ndcg@5": 0.6169573564786358,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.4462433958681,
+          "ndcg@5": 0.16961384531598217,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.14285714285714285,
+          "judged@10": 1.0
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.5658546963023323,
+          "ndcg@5": 0.40693444483178604,
+          "recall@10": 0.8333333333333334,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.6400582083655244,
+          "ndcg@5": 0.5951887418298233,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.9420833886987983,
+          "ndcg@5": 0.876413307619323,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 0.9674679834891693,
+          "ndcg@5": 0.9674679834891693,
+          "recall@10": 1.0,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.6813745235181954,
+          "ndcg@5": 0.6753631354966927,
+          "recall@10": 0.8333333333333334,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        }
+      }
+    },
+    "parsed_hybrid": {
+      "overall": {
+        "ndcg@10": {
+          "mean": 0.5362628225643037,
+          "ci95": [
+            0.4500021972699934,
+            0.6136371564603583
+          ]
+        },
+        "ndcg@5": {
+          "mean": 0.538949793731149,
+          "ci95": [
+            0.4422272526349977,
+            0.6298679351286138
+          ]
+        },
+        "recall@10": {
+          "mean": 0.472072465993682,
+          "ci95": [
+            0.3692237920809349,
+            0.578342351774846
+          ]
+        },
+        "precision@10": {
+          "mean": 0.34,
+          "ci95": [
+            0.26285714285714284,
+            0.43142857142857144
+          ]
+        },
+        "hit@10": {
+          "mean": 0.8857142857142857,
+          "ci95": [
+            0.7714285714285715,
+            0.9714285714285714
+          ]
+        },
+        "mrr": {
+          "mean": 0.6797619047619048,
+          "ci95": [
+            0.5535714285714286,
+            0.8059523809523809
+          ]
+        },
+        "judged@10": {
+          "mean": 0.7,
+          "ci95": [
+            0.6114285714285714,
+            0.7771428571428571
+          ]
+        }
+      },
+      "ndcg@10_by_category": {
+        "author": 0.5267477517356282,
+        "availability": 0.6625407997204268,
+        "discovery": 0.5435826451068764,
+        "genre": 0.6007335609727622,
+        "learning": 0.6399674647227728,
+        "lookup": 0.8661571714312581,
+        "multi_constraint": 0.5033331238892447,
+        "negation": 0.2625451954644842,
+        "similarity": 0.34980863473304674,
+        "vague": 0.49017081910648064
+      },
+      "per_query": {
+        "L01": {
+          "category": "lookup",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "L05": {
+          "category": "lookup",
+          "ndcg@10": 0.7323143428625162,
+          "ndcg@5": 0.7822575827866781,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "A01": {
+          "category": "author",
+          "ndcg@10": 0.4705561169627618,
+          "ndcg@5": 0.49125969208957576,
+          "recall@10": 0.16666666666666666,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.5
+        },
+        "A02": {
+          "category": "author",
+          "ndcg@10": 0.5829393865084945,
+          "ndcg@5": 0.4703652827859579,
+          "recall@10": 0.3157894736842105,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.6
+        },
+        "G01": {
+          "category": "genre",
+          "ndcg@10": 0.5077057654294795,
+          "ndcg@5": 0.39721329657039284,
+          "recall@10": 0.46153846153846156,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 0.9
+        },
+        "G04": {
+          "category": "genre",
+          "ndcg@10": 0.6937613565160449,
+          "ndcg@5": 0.8539316501572934,
+          "recall@10": 0.2608695652173913,
+          "precision@10": 0.6,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "S02": {
+          "category": "discovery",
+          "ndcg@10": 0.4390535890607827,
+          "ndcg@5": 0.42166984469328056,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.8
+        },
+        "S03": {
+          "category": "discovery",
+          "ndcg@10": 0.5956747768782208,
+          "ndcg@5": 0.5925171900423737,
+          "recall@10": 0.6,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "S04": {
+          "category": "discovery",
+          "ndcg@10": 0.29594271116995713,
+          "ndcg@5": 0.3048207143653232,
+          "recall@10": 0.25,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.6
+        },
+        "S05": {
+          "category": "discovery",
+          "ndcg@10": 0.6499929526578425,
+          "ndcg@5": 0.5483782997158051,
+          "recall@10": 0.625,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "S08": {
+          "category": "discovery",
+          "ndcg@10": 0.7372491957675784,
+          "ndcg@5": 0.8687949224876581,
+          "recall@10": 0.5,
+          "precision@10": 0.7,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "M02": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.2997158976559988,
+          "ndcg@5": 0.25764205015518865,
+          "recall@10": 0.4,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "M03": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.4941942366194306,
+          "ndcg@5": 0.5431562809120525,
+          "recall@10": 0.4444444444444444,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M04": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.2255680612451713,
+          "ndcg@5": 0.09409879734452473,
+          "recall@10": 0.25,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 0.125,
+          "judged@10": 0.5
+        },
+        "M05": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.6722368700150131,
+          "ndcg@5": 0.6728216095463567,
+          "recall@10": 0.38095238095238093,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "M06": {
+          "category": "multi_constraint",
+          "ndcg@10": 0.8249505539106093,
+          "ndcg@5": 0.9250256699929476,
+          "recall@10": 0.38461538461538464,
+          "precision@10": 1.0,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 1.0
+        },
+        "N01": {
+          "category": "negation",
+          "ndcg@10": 0.2358915866006235,
+          "ndcg@5": 0.23813370830243144,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.4
+        },
+        "N03": {
+          "category": "negation",
+          "ndcg@10": 0.5288498757262667,
+          "ndcg@5": 0.7853272940061117,
+          "recall@10": 0.36363636363636365,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.4
+        },
+        "N04": {
+          "category": "negation",
+          "ndcg@10": 0.2854393195310465,
+          "ndcg@5": 0.13094625227157283,
+          "recall@10": 0.3,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.3333333333333333,
+          "judged@10": 0.9
+        },
+        "N05": {
+          "category": "negation",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.0
+        },
+        "V01": {
+          "category": "availability",
+          "ndcg@10": 0.734615130847348,
+          "ndcg@5": 0.8061941684150765,
+          "recall@10": 0.2962962962962963,
+          "precision@10": 0.8,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        },
+        "V02": {
+          "category": "availability",
+          "ndcg@10": 0.4111357733316029,
+          "ndcg@5": 0.5620736819578982,
+          "recall@10": 0.26666666666666666,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.4
+        },
+        "V04": {
+          "category": "availability",
+          "ndcg@10": 0.8418714949823294,
+          "ndcg@5": 0.838133124414298,
+          "recall@10": 1.0,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.9
+        },
+        "P02": {
+          "category": "similarity",
+          "ndcg@10": 0.47016659352931484,
+          "ndcg@5": 0.3215739166199863,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 1.0
+        },
+        "P03": {
+          "category": "similarity",
+          "ndcg@10": 0.5792593106698255,
+          "ndcg@5": 0.45830590704296625,
+          "recall@10": 0.75,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.25,
+          "judged@10": 0.8
+        },
+        "P05": {
+          "category": "similarity",
+          "ndcg@10": 0.0,
+          "ndcg@5": 0.0,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.7
+        },
+        "U01": {
+          "category": "vague",
+          "ndcg@10": 0.5480749986558143,
+          "ndcg@5": 0.646910188523972,
+          "recall@10": 0.4,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.5
+        },
+        "U03": {
+          "category": "vague",
+          "ndcg@10": 0.43226663955714695,
+          "ndcg@5": 0.5453092190767765,
+          "recall@10": 0.2727272727272727,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.5
+        },
+        "T01": {
+          "category": "learning",
+          "ndcg@10": 0.6289938091770352,
+          "ndcg@5": 0.6863024195657901,
+          "recall@10": 0.3333333333333333,
+          "precision@10": 0.1,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.7
+        },
+        "T02": {
+          "category": "learning",
+          "ndcg@10": 0.10747295680625482,
+          "ndcg@5": 0.11175108325523973,
+          "recall@10": 0.0,
+          "precision@10": 0.0,
+          "hit@10": 0.0,
+          "mrr": 0.0,
+          "judged@10": 0.1
+        },
+        "T04": {
+          "category": "learning",
+          "ndcg@10": 0.6527978455868697,
+          "ndcg@5": 0.43729337406231816,
+          "recall@10": 0.8333333333333334,
+          "precision@10": 0.5,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.9
+        },
+        "T05": {
+          "category": "learning",
+          "ndcg@10": 0.6587120593984688,
+          "ndcg@5": 0.645953470996069,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.5,
+          "judged@10": 0.9
+        },
+        "T06": {
+          "category": "learning",
+          "ndcg@10": 0.6527297709794666,
+          "ndcg@5": 0.5418556139099732,
+          "recall@10": 1.0,
+          "precision@10": 0.2,
+          "hit@10": 1.0,
+          "mrr": 0.25,
+          "judged@10": 1.0
+        },
+        "T09": {
+          "category": "learning",
+          "ndcg@10": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "precision@10": 0.3,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.5
+        },
+        "T11": {
+          "category": "learning",
+          "ndcg@10": 0.779065811111314,
+          "ndcg@5": 0.8832264745243287,
+          "recall@10": 0.6666666666666666,
+          "precision@10": 0.4,
+          "hit@10": 1.0,
+          "mrr": 1.0,
+          "judged@10": 0.8
+        }
+      }
+    }
+  },
+  "catalog_version": 9,
+  "embedding_model": "bge-base",
+  "parser": "cascade",
+  "parse_fallbacks": []
+}

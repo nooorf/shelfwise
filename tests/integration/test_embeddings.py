@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import date
 
 import numpy as np
@@ -14,7 +15,10 @@ from shelfwise.evaluation.systems import (
     hybrid,
     hybrid_lookup,
     hybrid_rerank,
+    parsed_hybrid,
 )
+from shelfwise.query.constraints import Constraint
+from shelfwise.query.request import LookupSpec, ParsedRequest
 from shelfwise.ranking.rerank import CachedReranker
 from shelfwise.retrieval.dense import DenseIndex
 
@@ -152,3 +156,82 @@ def test_rerank_respects_filters_and_needs_a_reranker(
     top = hybrid_rerank(with_reranker, "dark psychological story under 300 pages", 4)
     assert set(top) == {catalog["Sharp Objects"], catalog["Murder at the Vicarage"]}  # < 300 pp
     assert top[0] == catalog["Sharp Objects"]  # the reranker prefers the dark psychological one
+
+
+def constraint(field: str, op: str, value: object, strength: str = "hard") -> Constraint:
+    return Constraint(field=field, op=op, value=value, strength=strength, source="llm")
+
+
+def with_parses(ctx: SearchContext, parses: dict[str, ParsedRequest]) -> SearchContext:
+    return replace(ctx, parser=lambda query, today: parses[query], _parses={})
+
+
+def test_parsed_systems_need_a_parser(ctx: SearchContext) -> None:
+    assert "parsed_hybrid" not in available_systems(ctx, list(SYSTEMS))
+    with pytest.raises(RuntimeError, match="parser"):
+        parsed_hybrid(ctx, "anything", 3)
+
+
+def test_parsed_hybrid_filters_and_searches_the_stripped_text(
+    ctx: SearchContext, catalog: dict[str, int]
+) -> None:
+    query = "dark psychological, nothing over 300 pages, no space stuff"
+    parsed = with_parses(ctx, {query: ParsedRequest(
+        intent="discover",
+        semantic_query="dark psychological",
+        constraints=[constraint("pages", "lt", 300)],
+    )})  # fmt: skip
+
+    top = parsed_hybrid(parsed, query, 4)
+
+    assert top[0] == catalog["Sharp Objects"]
+    assert catalog["The Silent Patient"] not in top  # 336 pages
+    assert ctx.embedder is not None
+    assert ctx.embedder.queries[-1] == "dark psychological"  # type: ignore[attr-defined]
+
+
+def test_parsed_hybrid_lookups_seeds_and_authors(
+    ctx: SearchContext, catalog: dict[str, int]
+) -> None:
+    parsed = with_parses(ctx, {
+        "got dune?": ParsedRequest(intent="lookup", lookup=LookupSpec(title="Dune")),
+        "like the silent patient": ParsedRequest(
+            intent="similar",
+            seed_titles=["The Silent Patient"],
+            seed_work_ids=[catalog["The Silent Patient"]],
+        ),
+        "agatha christie, something cozy": ParsedRequest(
+            intent="discover", semantic_query="cozy", lookup=LookupSpec(author="Agatha Christie")
+        ),
+    })  # fmt: skip
+
+    assert parsed_hybrid(parsed, "got dune?", 1) == [catalog["Dune"]]
+    similar = parsed_hybrid(parsed, "like the silent patient", 4)
+    assert catalog["The Silent Patient"] not in similar  # the seed itself isn't a suggestion
+    assert similar[0] == catalog["Sharp Objects"]
+    assert parsed_hybrid(parsed, "agatha christie, something cozy", 4) == [
+        catalog["Murder at the Vicarage"]
+    ]
+
+
+def test_soft_constraints_move_books_without_removing_any(
+    conn: Connection, ctx: SearchContext, catalog: dict[str, int]
+) -> None:
+    for title, darkness in (("Murder at the Vicarage", 0), ("Sharp Objects", 3)):
+        conn.execute(
+            insert(schema.work_facets).values(
+                work_id=catalog[title], darkness=darkness, source="human"
+            )
+        )
+    plain = ParsedRequest(intent="discover", semantic_query="a story")
+    cozy = plain.model_copy(
+        update={"constraints": [constraint("facet.darkness", "lte", 1, "soft")]}
+    )
+    parsed = with_parses(ctx, {"plain": plain, "cozy": cozy})
+
+    without, with_soft = parsed_hybrid(parsed, "plain", 4), parsed_hybrid(parsed, "cozy", 4)
+
+    assert set(with_soft) == set(without)
+    assert with_soft.index(catalog["Murder at the Vicarage"]) < with_soft.index(
+        catalog["Sharp Objects"]
+    )

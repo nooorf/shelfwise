@@ -93,6 +93,7 @@ class CascadeResult:
     used_llm: bool
     llm_ms: float = 0.0
     fast_path: bool = False  # a plain lookup, answered without the LLM
+    cached: bool = False  # the LLM's answer came from a `CachedLLM` file
     error: str | None = None  # why the LLM step was skipped or failed
 
 
@@ -247,4 +248,8 @@ class CascadeParser:
             log.warning("parser.llm_failed", error=str(exc))
             return CascadeResult(from_rules(rules), used_llm=False, error=str(exc))
         elapsed = (time.perf_counter() - start) * 1000
-        return CascadeResult(merge(rules, result.value, self.linker), used_llm=True, llm_ms=elapsed)
+        request = merge(rules, result.value, self.linker)
+        cached = result.stats.attempts == 0
+        return CascadeResult(
+            request, used_llm=True, llm_ms=0.0 if cached else elapsed, cached=cached
+        )

@@ -42,3 +42,7 @@ The ideal parse of each query: intent, lookup, seed books, constraints, and whic
 ## `data/violation_labels.csv` — human answers for the negation study
 
 One row per (book, tag, labeller), written by `make label-violations JUDGE=<initials>`: for every book pooled for either query of a pair, the one tag that pair is about (e.g. "Supernatural?"). Same definitions as [TAGGING.md](TAGGING.md); a blank value means "can't tell". Books already labelled in full in `facet_labels.csv` by the same person aren't asked again. Kept separate from `facet_labels.csv`, whose books are a genre-balanced sample for scoring the tagger.
+
+## `data/llm_cache.jsonl` — the LLM's answers, for reproducible runs
+
+The query parser's LLM answer for every evaluated query, one JSON line each, keyed by the model and the exact prompt messages. `make eval-parser PARSER=cascade`, `make eval PARSER=cascade` (which adds the `parsed_hybrid` system) and the negation study's `--parser cascade` read it first and only call Ollama for queries it doesn't have, so a benchmark can be rerun without the model running. A new prompt or model misses the cache by itself; old lines are never reused for it. What's cached is the model's form, not the final parse, so changes to the code after the LLM (the merge, the evidence check) apply on every run. Delete the file to force fresh answers.

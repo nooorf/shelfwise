@@ -2,29 +2,48 @@
 
 Each takes a query and returns ranked work ids. New systems register here, and the pooling and
 evaluation scripts pick them up by name. Dense systems need an embedding model loaded into the
-context (`SearchContext.build(..., embedder=...)`), rerank systems a reranker as well.
+context (`SearchContext.build(..., embedder=...)`), rerank systems a reranker as well, and
+parsed systems a query parser (`load_context(..., parser="cascade")`).
 """
 
 import random
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 from sqlalchemy import Connection, text
 
 from shelfwise.embed.encoder import Embedder
 from shelfwise.query.constraints import Constraint
+from shelfwise.query.request import ParsedRequest
 from shelfwise.query.rules import parse_rules
 from shelfwise.ranking.rerank import CachedReranker, rerank
+from shelfwise.ranking.soft import SOFT_WEIGHT, soft_score
 from shelfwise.retrieval.dense import DenseIndex
-from shelfwise.retrieval.filters import allowed_mask
+from shelfwise.retrieval.filters import FACET_COLUMNS, allowed_mask
 from shelfwise.retrieval.fusion import rrf
 from shelfwise.retrieval.lexical import LexicalIndex, build_lexical_index
 from shelfwise.retrieval.lookup import find_authors, find_by_isbn, find_titles
 
 CANDIDATES = 100  # per channel, before fusion (design doc §13.2)
 RERANK_DEPTH = 50  # default until the depth sweep picks one (design doc §14.2)
+# The LLM's answers for every evaluated query, so benchmark runs don't need Ollama (committed).
+LLM_CACHE = Path("eval/data/llm_cache.jsonl")
+PARSERS = ("cascade",)
+
+Parser = Callable[[str, date], ParsedRequest]
+
+
+@dataclass(frozen=True)
+class BookSignals:
+    """Per-book data the soft-constraint score reads, loaded once per context."""
+
+    facets: dict[int, dict[str, Any]]
+    genres: dict[int, list[str]]
+    popularity_rank: dict[int, float]  # percentile, 1.0 = most borrowed
 
 
 @dataclass
@@ -40,6 +59,10 @@ class SearchContext:
     rerank_depth: int = RERANK_DEPTH
     # Hard constraints added to every query's own, e.g. a facet filter under study.
     extra_constraints: tuple[Constraint, ...] = ()
+    parser: Parser | None = None  # for the parsed systems; the others use the rules directly
+    parse_fallbacks: list[str] = field(default_factory=list)  # queries the LLM couldn't parse
+    _parses: dict[str, ParsedRequest] = field(default_factory=dict)
+    _signals: BookSignals | None = None
 
     @classmethod
     def build(
@@ -70,6 +93,31 @@ class SearchContext:
         parse = parse_rules(query, self.today)
         constraints = [*parse.constraints, *self.extra_constraints]
         return allowed_mask(self.conn, constraints, self.index.work_ids), parse.residual
+
+    def parsed(self, query: str) -> ParsedRequest:
+        """The parser's reading of `query`, parsed once per context (systems share it)."""
+        if self.parser is None:
+            raise RuntimeError("this system needs a query parser: pass --parser cascade")
+        if query not in self._parses:
+            self._parses[query] = self.parser(query, self.today)
+        return self._parses[query]
+
+    def signals(self) -> BookSignals:
+        if self._signals is None:
+            columns = ", ".join(FACET_COLUMNS)
+            facets = {
+                r.work_id: dict(r._mapping)
+                for r in self.conn.execute(text(f"SELECT work_id, {columns} FROM work_facets"))
+            }
+            genres = {
+                r.work_id: list(r.genres or [])
+                for r in self.conn.execute(text("SELECT work_id, genres FROM work"))
+            }
+            order = np.argsort(np.argsort(self.popularity, kind="stable"), kind="stable")
+            ranks = order / max(len(order) - 1, 1)
+            popularity_rank = dict(zip(self.index.work_ids.tolist(), ranks.tolist(), strict=True))
+            self._signals = BookSignals(facets, genres, popularity_rank)
+        return self._signals
 
     def require_reranker(self) -> tuple[CachedReranker, dict[int, str]]:
         if self.reranker is None or self.texts is None:
@@ -171,6 +219,80 @@ def hybrid_rerank(ctx: SearchContext, query: str, k: int) -> list[int]:
     return [w for w in dict.fromkeys(ranked) if w in allowed][:k]
 
 
+def _author_books(ctx: SearchContext, name: str) -> list[int]:
+    """The best-matching author's books, most borrowed first."""
+    matches = find_authors(ctx.conn, name, limit=1)
+    if not matches:
+        return []
+    popularity = dict(zip(ctx.index.work_ids.tolist(), ctx.popularity.tolist(), strict=True))
+    return sorted(matches[0].work_ids, key=lambda w: -popularity.get(w, 0.0))
+
+
+def _seed_vector(index: DenseIndex, seeds: list[int]) -> np.ndarray | None:
+    rows = np.isin(index.work_ids, seeds) & index.has_vector
+    if not rows.any():
+        return None
+    vector = index.matrix[rows].mean(axis=0)
+    norm = float(np.linalg.norm(vector))
+    return vector / norm if norm > 0 else None
+
+
+def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
+    """The cascade parser's reading drives everything: its hard constraints filter; a lookup's
+    title or author comes first; "like X" searches near the seed book (and leaves it out); the
+    negation-stripped semantic text goes to BM25 and dense; RRF, then soft constraints nudge
+    (`ranking.soft`). An author named in a non-lookup ("neil gaiman for kids") narrows the
+    search to their books."""
+    request = ctx.parsed(query)
+    embedder, index = ctx.require_dense()
+    constraints = [*request.constraints, *ctx.extra_constraints]
+    mask = allowed_mask(ctx.conn, constraints, ctx.index.work_ids)
+    lookup = request.lookup
+    author_books = _author_books(ctx, lookup.author) if lookup and lookup.author else []
+    if author_books and request.intent != "lookup":
+        mask = mask & np.isin(ctx.index.work_ids, author_books)
+
+    rankings: list[list[int]] = []
+    semantic = request.semantic_query.strip()
+    if semantic:
+        rankings.append([h.work_id for h in ctx.index.search(semantic, CANDIDATES, allowed=mask)])
+        vector = embedder.encode_query(semantic)
+        rankings.append([h.work_id for h in index.search(vector, CANDIDATES, allowed=mask)])
+    if (seed := _seed_vector(index, request.seed_work_ids)) is not None:
+        rankings.append([h.work_id for h in index.search(seed, CANDIDATES, allowed=mask)])
+    if not rankings:  # nothing parsed out: fall back to the words as typed
+        rankings.append([h.work_id for h in ctx.index.search(query, CANDIDATES, allowed=mask)])
+        vector = embedder.encode_query(query)
+        rankings.append([h.work_id for h in index.search(vector, CANDIDATES, allowed=mask)])
+
+    signals = ctx.signals()
+    scored = [
+        (
+            work_id,
+            score
+            + SOFT_WEIGHT
+            * soft_score(
+                constraints,
+                signals.facets.get(work_id),
+                signals.genres.get(work_id, []),
+                signals.popularity_rank.get(work_id),
+            ),
+        )
+        for work_id, score in rrf(rankings)
+    ]
+    scored.sort(key=lambda item: (-item[1], item[0]))
+
+    known: list[int] = []
+    if request.intent == "lookup" and lookup:
+        if lookup.title:
+            known += [m.work_id for m in find_titles(ctx.conn, lookup.title)]
+        known += author_books
+    allowed = _allowed_ids(ctx, mask)
+    seeds = set(request.seed_work_ids)
+    ranked = known + [w for w, _ in scored]
+    return [w for w in dict.fromkeys(ranked) if w in allowed and w not in seeds][:k]
+
+
 def popular(ctx: SearchContext, query: str, k: int) -> list[int]:
     """Most-borrowed works that pass the hard filters; ignores the query's meaning."""
     mask, _ = ctx.mask(query)
@@ -195,21 +317,48 @@ SYSTEMS: dict[str, System] = {
     "hybrid": hybrid,
     "hybrid_lookup": hybrid_lookup,
     "hybrid_rerank": hybrid_rerank,
+    "parsed_hybrid": parsed_hybrid,
 }
 DENSE_SYSTEMS = ("dense", "hybrid", "hybrid_lookup", "hybrid_rerank")
 RERANK_SYSTEMS = ("hybrid_rerank",)
+PARSED_SYSTEMS = ("parsed_hybrid",)
 # Systems whose results go into the judging pool. Random adds labeling cost for little value.
-POOL_SYSTEMS = ("popular", "bm25_raw", "bm25", "bm25_lookup", *DENSE_SYSTEMS)  # incl. rerank
+# Rerank and parsed systems pool only when their model or parser is given (RERANKER=, PARSER=);
+# otherwise their earlier pairs are kept, not dropped.
+POOL_SYSTEMS = ("popular", "bm25_raw", "bm25", "bm25_lookup", *DENSE_SYSTEMS, *PARSED_SYSTEMS)
 
 
 def available_systems(ctx: SearchContext, names: list[str]) -> list[str]:
-    """Drop dense systems when no embedding model is loaded, rerank ones without a reranker."""
+    """Drop dense systems when no embedding model is loaded, rerank ones without a reranker,
+    parsed ones without a parser (they are dense too)."""
     return [
         n
         for n in names
-        if (ctx.dense is not None or n not in DENSE_SYSTEMS)
+        if (ctx.dense is not None or n not in (*DENSE_SYSTEMS, *PARSED_SYSTEMS))
         and (ctx.reranker is not None or n not in RERANK_SYSTEMS)
+        and (ctx.parser is not None or n not in PARSED_SYSTEMS)
     ]
+
+
+def cascade_parser(
+    conn: Connection, model: str | None = None, cache: Path = LLM_CACHE
+) -> tuple[Parser, list[str]]:
+    """The cascade parser behind the LLM answer cache, and the list it appends fallbacks to.
+    Ollama is only contacted for queries not in the cache."""
+    from shelfwise.llm.cache import CachedLLM
+    from shelfwise.llm.client import OllamaClient
+    from shelfwise.query.cascade import CascadeParser, CatalogLinker
+
+    cascade = CascadeParser(CachedLLM(OllamaClient(model=model), cache), CatalogLinker(conn))
+    fallbacks: list[str] = []
+
+    def parse(query: str, today: date) -> ParsedRequest:
+        result = cascade.parse(query, today)
+        if not result.used_llm and not result.fast_path:
+            fallbacks.append(query)
+        return result.request
+
+    return parse, fallbacks
 
 
 def load_context(
@@ -217,10 +366,22 @@ def load_context(
     embedding_model: str | None,
     today: date | None = None,
     reranker_model: str | None = None,
+    parser: str | None = None,
 ) -> SearchContext:
     """Search context with the dense index when embeddings exist for the model; otherwise
     lexical-only, with a note (so scripts still run before `make embed`). A reranker is loaded
     only when named: it is the slowest model in the pipeline."""
+    ctx = _load_context(conn, embedding_model, today, reranker_model)
+    if parser == "cascade":
+        ctx.parser, ctx.parse_fallbacks = cascade_parser(conn)
+    elif parser is not None:
+        raise ValueError(f"unknown parser {parser!r}; one of {PARSERS}")
+    return ctx
+
+
+def _load_context(
+    conn: Connection, embedding_model: str | None, today: date | None, reranker_model: str | None
+) -> SearchContext:
     reranker = None
     if reranker_model:
         from shelfwise.ranking.rerank import load_reranker

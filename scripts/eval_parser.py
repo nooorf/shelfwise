@@ -22,6 +22,8 @@ from shelfwise.evaluation.parser_gold import load_gold
 from shelfwise.evaluation.parser_metrics import QueryResult, score_query, summarize
 from shelfwise.evaluation.reports import git_version, report_path
 from shelfwise.evaluation.splits import split_of
+from shelfwise.evaluation.systems import LLM_CACHE
+from shelfwise.llm.cache import CachedLLM
 from shelfwise.llm.client import OllamaClient
 from shelfwise.query.cascade import CascadeParser, CatalogLinker
 from shelfwise.query.extract import PROMPT_VERSION
@@ -86,12 +88,12 @@ def main() -> None:
     with ExitStack() as stack:
         if args.parser == "cascade":
             conn = stack.enter_context(make_engine().connect())
-            llm = OllamaClient(model=args.model)
+            llm = CachedLLM(OllamaClient(model=args.model), LLM_CACHE)
             cascade = CascadeParser(llm, CatalogLinker(conn))
 
             def parse(text: str, today: date) -> ParsedRequest:
                 result = cascade.parse(text, today)
-                if result.used_llm:
+                if result.used_llm and not result.cached:
                     llm_ms.append(result.llm_ms)
                 elif result.fast_path:
                     fast.append(text)
@@ -118,6 +120,7 @@ def main() -> None:
             "prompt_version": PROMPT_VERSION,
             "fallbacks": fallbacks,
             "fast_path": len(fast),
+            "cached": llm.hits,  # answers from LLM_CACHE: no latency measured for these
             "ms_p50": statistics.median(llm_ms) if llm_ms else None,
             "ms_p95": sorted(llm_ms)[int(0.95 * (len(llm_ms) - 1))] if llm_ms else None,
         }

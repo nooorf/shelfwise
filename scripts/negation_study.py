@@ -31,7 +31,7 @@ from shelfwise.evaluation.negation_study import (
 )
 from shelfwise.evaluation.queries import QUERY_FILES, load_query_files
 from shelfwise.evaluation.reports import git_version, report_path
-from shelfwise.evaluation.systems import SYSTEMS, available_systems, load_context
+from shelfwise.evaluation.systems import PARSERS, SYSTEMS, available_systems, load_context
 from shelfwise.query.constraints import Constraint
 from shelfwise.retrieval.filters import allowed_work_ids
 from shelfwise.tagging.labels import load_labels
@@ -58,12 +58,17 @@ def main() -> None:
     parser.add_argument("--systems", nargs="+", default=list(STUDY_SYSTEMS), choices=list(SYSTEMS))
     parser.add_argument("--embedding-model", default=get_settings().embedding_model)
     parser.add_argument("--reranker", help="cross-encoder for hybrid_rerank, e.g. minilm")
+    parser.add_argument(
+        "--parser", choices=PARSERS, help="query parser, for --systems parsed_hybrid"
+    )
     args = parser.parse_args()
 
     queries = {q.id: q for q in load_query_files(QUERY_FILES)}
     pairs = load_pairs(PAIRS, queries)
     with make_engine().connect() as conn:
-        ctx = load_context(conn, args.embedding_model, reranker_model=args.reranker)
+        ctx = load_context(
+            conn, args.embedding_model, reranker_model=args.reranker, parser=args.parser
+        )
         systems = available_systems(ctx, args.systems)
         key_of = work_keys(conn)
         aliases = key_aliases(conn)

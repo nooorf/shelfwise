@@ -26,7 +26,13 @@ from shelfwise.evaluation.judgments import (
     work_keys,
 )
 from shelfwise.evaluation.queries import QUERY_FILES, load_query_files
-from shelfwise.evaluation.systems import POOL_SYSTEMS, SYSTEMS, available_systems, load_context
+from shelfwise.evaluation.systems import (
+    PARSERS,
+    POOL_SYSTEMS,
+    SYSTEMS,
+    available_systems,
+    load_context,
+)
 
 QRELS = Path("eval/data/qrels.csv")
 
@@ -40,13 +46,16 @@ def main() -> None:
     parser.add_argument("--reranker", help="cross-encoder for hybrid_rerank, e.g. minilm")
     parser.add_argument("--rerank-depth", type=int, help="books reranked per query (default 50)")
     parser.add_argument("--qrels", type=Path, default=QRELS)
+    parser.add_argument("--parser", choices=PARSERS, help="query parser for parsed_hybrid")
     parser.add_argument("--keep-stale", action="store_true", help="keep blanks no system returns")
     args = parser.parse_args()
 
     queries = load_query_files(args.queries)
     existing = load_judgments(args.qrels)
     with make_engine().connect() as conn:
-        ctx = load_context(conn, args.embedding_model, reranker_model=args.reranker)
+        ctx = load_context(
+            conn, args.embedding_model, reranker_model=args.reranker, parser=args.parser
+        )
         if args.rerank_depth:
             ctx.rerank_depth = args.rerank_depth
         keys = work_keys(conn)

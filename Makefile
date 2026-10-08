@@ -80,8 +80,8 @@ score-tags:  ## Score the LLM's book tags against the hand labels
 embed:  ## Embed new or changed books with the default model (MODEL=all for every model)
 	uv run python scripts/embed.py $(if $(MODEL),--model $(MODEL),)
 
-pool:  ## Add every search system's top 10 per query to eval/data/qrels.csv (RERANKER=minilm adds hybrid_rerank)
-	uv run python scripts/pool.py $(if $(RERANKER),--reranker $(RERANKER),)
+pool:  ## Add every search system's top 10 per query to eval/data/qrels.csv (RERANKER=minilm adds hybrid_rerank, PARSER=cascade adds parsed_hybrid)
+	uv run python scripts/pool.py $(if $(RERANKER),--reranker $(RERANKER),) $(if $(PARSER),--parser $(PARSER),)
 
 label:  ## Grade pooled books: make label JUDGE=<your initials>
 	@test -n "$(JUDGE)" || (echo "usage: make label JUDGE=<your initials>" && exit 1)
@@ -94,8 +94,8 @@ import-grades:  ## Save your reviewed eval/grades_review.md: make import-grades 
 	@test -n "$(JUDGE)" || (echo "usage: make import-grades JUDGE=<your initials>" && exit 1)
 	uv run python scripts/grades_doc.py import --judge $(JUDGE)
 
-eval:  ## Score all systems on the dev split and save a report (RERANKER=minilm adds hybrid_rerank)
-	uv run python scripts/evaluate.py $(if $(RERANKER),--reranker $(RERANKER),)
+eval:  ## Score all systems on the dev split and save a report (RERANKER=minilm adds hybrid_rerank, PARSER=cascade adds parsed_hybrid)
+	uv run python scripts/evaluate.py $(if $(RERANKER),--reranker $(RERANKER),) $(if $(PARSER),--parser $(PARSER),)
 
 eval-parser:  ## Score the query parser against gold set B (PARSER=rules|cascade, SPLIT=dev|test|all, ERRORS=1)
 	uv run python scripts/eval_parser.py --parser $(or $(PARSER),rules) --split $(or $(SPLIT),dev) \
