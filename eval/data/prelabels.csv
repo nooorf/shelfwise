@@ -2302,7 +2302,7 @@ G04,9780441014941,2,claude,urban fantasy with strong romance
 G04,9780131173347,0,claude,
 G04,9781849231848,3,claude,
 G04,9780385495646,0,claude,
-G04,9781668001233,3,claude,
+G04,9781668001233,2,claude,sequel to It Ends with Us: sequel rule
 G04,9780451230546,1,claude,romance subplot only
 G04,9789812692368,1,claude,"shojo manga, mid-series"
 G04,9781563899805,0,claude,
@@ -2403,7 +2403,7 @@ S06,9780679600213,0,claude,
 S06,9780441014941,0,claude,
 S06,9780131173347,0,claude,
 S06,9781849231848,0,claude,
-S06,9780385495646,1,claude,"gripping, but nonfiction"
+S06,9780385495646,2,claude,"the query doesn't ask for fiction, and Shadow Divers (true adventure) is 2 in the same query"
 S06,9781668001233,0,claude,
 S06,9780451230546,0,claude,
 S06,9789812692368,0,claude,
@@ -2598,7 +2598,7 @@ N04,9780451230546,0,claude,
 N04,9789812692368,0,claude,
 N04,9781563899805,3,claude,earthbound sci-fi
 N04,9780613074049,0,claude,
-N04,9780857078629,3,claude,
+N04,9780857078629,2,claude,book 2 of Unwind: sequel rule
 N04,9780613824224,0,claude,
 N04,9781593074494,0,claude,
 N05,9780739328279,0,claude,
@@ -2664,7 +2664,7 @@ V03,9780739328279,0,claude,
 V03,9780441014941,0,claude,
 V03,9780131173347,0,claude,
 V03,9781668001233,0,claude,
-V03,9780451230546,3,claude,
+V03,9780451230546,2,claude,omnibus of Morganville 1-2: box-set rule
 V03,9781563899805,0,claude,
 V03,9781421501680,1,claude,"supernatural manga, not YA fantasy"
 V03,9780615429502,0,claude,
@@ -2675,11 +2675,11 @@ V03,9780553296983,0,claude,
 V03,9780689867040,3,claude,
 V03,9780803734616,3,claude,
 V03,9780763665661,2,claude,YA magical realism
-V03,9780061668067,3,claude,
+V03,9780061668067,2,claude,book 2 of Wings: sequel rule
 V03,9781416903437,3,claude,
 V03,9780803730021,3,claude,
 V03,9780316036245,3,claude,
-V03,9780689868238,3,claude,
+V03,9780689868238,2,claude,book 2 of the Modern Faerie Tales; book 1 (Tithe) is in the pool at 3
 V03,9780064471831,3,claude,
 V03,9780061142024,2,claude,"adult fairy tale, YA crossover"
 V04,9780739328279,0,claude,
@@ -2808,7 +2808,7 @@ U03,9780451230546,1,claude,
 U03,9789812692368,1,claude,
 U03,9781563899805,1,claude,
 U03,9780312306328,2,claude,light Christmas caper
-U03,9781419702235,0,claude,
+U03,9781419702235,1,claude,"middle-grade chapter book, not a picture book; other children's chapter books in vague queries are 1"
 U03,9780770437855,1,claude,
 U04,9780739328279,1,claude,
 U04,9780679600213,1,claude,
@@ -3675,7 +3675,7 @@ A09,9780515133318,2,claude,"Lee Child, not the latest"
 A09,9780440339342,2,claude,"Lee Child, not the latest"
 A09,9780345529725,2,claude,"Lee Child short story, not the latest"
 A09,9780385336697,2,claude,"Lee Child, not the latest"
-A09,9780385344340,3,claude,the latest Lee Child in the catalog
+A09,9780385344340,2,claude,not the latest: Make Me (2015) is in the catalog; the reason was wrong (see Calls)
 A09,9780385344333,2,claude,"Lee Child, not the latest"
 A09,9780440243670,2,claude,"Lee Child, not the latest"
 A09,9780385340557,2,claude,"Lee Child, not the latest"
@@ -3688,6 +3688,7 @@ A09,9780553815863,2,claude,"Lee Child, not the latest"
 A09,9780440241010,2,claude,"Lee Child, not the latest"
 A09,9780440241003,2,claude,"Lee Child, not the latest"
 A09,9780593057056,2,claude,"Lee Child, not the latest"
+A09,9780804178778,3,claude,"the latest Lee Child in the catalog (2015); no system returned it, added by hand"
 A10,9780739328279,0,claude,
 A10,9780679600213,0,claude,
 A10,9780441014941,0,claude,
@@ -4151,7 +4152,7 @@ G12,9781668001233,0,claude,
 G12,9780451230546,0,claude,
 G12,9789812692368,0,claude,
 G12,9781563899805,0,claude,
-G12,9780006551812,3,claude,
+G12,9780006551812,2,claude,the sequel to Angela's Ashes: sequel rule
 G12,9780739326220,1,claude,a novel
 G12,9780192123091,0,claude,
 G12,9780060858797,3,claude,
@@ -4176,7 +4177,7 @@ G12,9780060569662,3,claude,
 G12,9780618477944,3,claude,
 G13,9780739328279,0,claude,
 G13,9780679600213,0,claude,
-G13,9780441014941,3,claude,
+G13,9780441014941,2,claude,book 7 of Sookie Stackhouse: sequel rule
 G13,9780131173347,0,claude,
 G13,9781849231848,0,claude,
 G13,9780385495646,0,claude,
@@ -4190,19 +4191,19 @@ G13,9781632153272,2,claude,"urban fantasy, later volume"
 G13,9780803725690,0,claude,
 G13,9780811200073,0,claude,
 G13,9780062380876,3,claude,
-G13,9781481426305,3,claude,
+G13,9781481426305,2,claude,book 6 of The Mortal Instruments: sequel rule
 G13,9780375718946,1,claude,magical realism
-G13,9780345524614,3,claude,
-G13,9780441020010,3,claude,
-G13,9780451460912,3,claude,
+G13,9780345524614,2,claude,Rivers of London book 3; book 1 (Midnight Riot) is in the pool at 3
+G13,9780441020010,2,claude,Mercy Thompson book 7: sequel rule
+G13,9780451460912,2,claude,Dresden Files book 7; book 1 (Storm Front) is in the pool at 3
 G13,9780060557812,3,claude,
-G13,9780451461032,3,claude,
+G13,9780451461032,2,claude,Dresden Files book 8; book 1 is in the pool at 3
 G13,9780451457813,3,claude,
-G13,9780451458445,3,claude,
-G13,9780451459404,3,claude,
-G13,9780441018529,3,claude,
-G13,9780451458124,3,claude,
-G13,9780451463791,3,claude,
+G13,9780451458445,2,claude,Dresden Files book 3; book 1 is in the pool at 3
+G13,9780451459404,2,claude,Dresden Files book 5; book 1 is in the pool at 3
+G13,9780441018529,2,claude,Kate Daniels book 4: sequel rule
+G13,9780451458124,2,claude,Dresden Files book 2; book 1 is in the pool at 3
+G13,9780451463791,2,claude,Dresden Files book 13; book 1 is in the pool at 3
 G13,9781841492612,0,claude,
 G13,9780590396431,1,claude,YA secondary-world fantasy
 G13,9780345524256,3,claude,
@@ -4325,7 +4326,7 @@ S09,9780425204665,0,claude,
 S09,9781594486630,1,claude,"wry, not laugh-out-loud"
 S09,9781301673872,0,claude,
 S09,9781401216221,0,claude,
-S09,9780060589363,3,claude,
+S09,9780060589363,2,claude,"book 5 of the Georgia Nicolson diaries, one continuing story: sequel rule (first book is 3)"
 S09,9780061161643,3,claude,
 S09,9781496026064,0,claude,
 S09,9781452110585,3,claude,
@@ -4335,7 +4336,7 @@ S09,9780446552448,3,claude,
 S09,9780060288143,3,claude,
 S09,9781400065943,2,claude,gentle comedy
 S09,9781416596363,3,claude,
-S09,9780060097479,3,claude,
+S09,9780060097479,2,claude,"book 4 of the Georgia Nicolson diaries, one continuing story: sequel rule (first book is 3)"
 S09,9780385342049,2,claude,"comic chick lit, late in a series"
 S09,9780375861253,2,claude,"funny, for children"
 S09,9780811874557,2,claude,gag book
@@ -4345,7 +4346,7 @@ S09,9781427211323,0,claude,
 S09,9780312987855,2,claude,funny romance
 S09,9780142408780,2,claude,"funny, for children"
 S09,9780763660406,2,claude,"funny, for children"
-S09,9780307118387,1,claude,picture book
+S09,9780307118387,0,claude,picture book; picture books are 0 unless the request is for children
 S09,9780670026609,1,claude,"funny in places, mostly sad"
 S10,9780739328279,0,claude,
 S10,9780679600213,0,claude,
@@ -4483,15 +4484,15 @@ S13,9780140183511,1,claude,animal fables
 S13,9780440226703,2,claude,follows the animals
 S13,9780439228909,3,claude,
 S13,9780393061727,0,claude,
-S13,9780140544510,2,claude,"told by the wolf, a picture book"
+S13,9780140544510,0,claude,picture book; picture books are 0 unless the request is for children (see Calls: possible exception)
 S13,9780330518239,1,claude,a human's view of a lion
 S13,9780689817212,0,claude,
 S13,9780156027328,1,claude,a boy with a tiger
-S13,9780618007011,1,claude,animal picture book
-S13,9780399219207,1,claude,animal picture book
+S13,9780618007011,0,claude,picture book; picture books are 0 unless the request is for children
+S13,9780399219207,0,claude,picture book; picture books are 0 unless the request is for children
 S13,9780312330866,1,claude,"animals, vet's view"
 S13,9780688140014,1,claude,"talking animals, human hero"
-S13,9780763655983,1,claude,animal picture book
+S13,9780763655983,0,claude,picture book; picture books are 0 unless the request is for children
 S14,9780739328279,0,claude,
 S14,9780679600213,0,claude,
 S14,9780441014941,0,claude,
@@ -4613,7 +4614,7 @@ S17,9780451230546,1,claude,"vampires, not very creepy"
 S17,9789812692368,0,claude,
 S17,9781563899805,0,claude,
 S17,9781563894695,1,claude,"holiday crime, not creepy"
-S17,9780064431835,1,claude,Halloween picture book
+S17,9780064431835,0,claude,picture book; picture books are 0 unless the request is for children
 S17,9780439568333,2,claude,"Halloween horror, for children"
 S17,9781416980087,0,claude,
 S17,9781632156747,2,claude,"eerie, set the night after Halloween"
@@ -4643,7 +4644,7 @@ S18,9780062255655,1,claude,a pond called an ocean
 S18,9781451681734,2,claude,lighthouse island
 S18,9780425246955,0,claude,
 S18,9780316380867,2,claude,jellyfish and the sea
-S18,9780448421650,1,claude,"a river, not the ocean"
+S18,9780448421650,0,claude,picture book; picture books are 0 unless the request is for children
 S18,9780142406250,0,claude,
 S18,9780425233382,0,claude,
 S18,9780345807953,0,claude,
@@ -4653,7 +4654,7 @@ S18,9780141001821,3,claude,
 S18,9780812550924,3,claude,
 S18,9780385515504,2,claude,undersea thriller
 S18,9780440439882,2,claude,island life by the sea
-S18,9780618194575,2,claude,ocean picture book
+S18,9780618194575,0,claude,picture book; picture books are 0 unless the request is for children
 S18,9780786706211,2,claude,polar seas
 S18,9780399162428,0,claude,
 S18,9781400064168,2,claude,adrift at sea for part
@@ -4751,15 +4752,15 @@ S21,9780064404778,3,claude,
 S21,9780525423348,3,claude,
 S21,9780747599876,1,claude,invented tales
 S21,9780345501332,0,claude,
-S21,9780688040451,2,claude,"Cinderella retold, picture book"
-S21,9780140558647,1,claude,faithful picture-book version
-S21,9780613608329,1,claude,faithful picture-book version
+S21,9780688040451,0,claude,picture book; picture books are 0 unless the request is for children (see Calls: possible exception)
+S21,9780140558647,0,claude,picture book; picture books are 0 unless the request is for children
+S21,9780613608329,0,claude,picture book; picture books are 0 unless the request is for children
 S21,9780316176040,3,claude,
 S21,9780062001030,3,claude,
 S21,9780062224736,3,claude,
 S21,9781416936497,3,claude,
 S21,9781475070309,2,claude,"YA, fairy tales come true"
-S21,9780312642969,3,claude,
+S21,9780312642969,2,claude,"book 2 of the Lunar Chronicles, one continuing story: sequel rule"
 S21,9780060987107,3,claude,
 S21,9780142414828,2,claude,comic verse retellings
 S22,9780739328279,0,claude,
@@ -4968,23 +4969,23 @@ S28,9781668001233,0,claude,
 S28,9780451230546,0,claude,
 S28,9789812692368,0,claude,
 S28,9781563899805,0,claude,
-S28,9780152045654,3,claude,
+S28,9780152045654,2,claude,book 2 of the Enchanted Forest Chronicles; book 1 is in the pool at 3
 S28,9781904442486,3,claude,
-S28,9780552113137,3,claude,
+S28,9780552113137,2,claude,book 3 of the Dragonriders of Pern; book 1 (Dragonflight) is in the pool at 3
 S28,9780812513714,1,claude,"a title, few dragons"
 S28,9781250000231,0,claude,
 S28,9780152045661,3,claude,
 S28,9780345481283,3,claude,
 S28,9780751504576,1,claude,"a title, no dragons"
 S28,9780525945567,0,claude,
-S28,9780786930708,3,claude,
+S28,9780786930708,2,claude,book 3 of Dragonlance Chronicles; book 1 (Autumn Twilight) is in the pool at 3
 S28,9781416924999,2,claude,fire lizards
-S28,9780553801477,3,claude,
+S28,9780553801477,2,claude,book 5 of A Song of Ice and Fire: sequel rule
 S28,9780316166317,0,claude,
 S28,9780345484260,3,claude,
 S28,9780345382849,0,claude,
-S28,9780007256747,3,claude,
-S28,9780152046927,3,claude,
+S28,9780007256747,2,claude,book 4 of Temeraire; book 1 (His Majesty's Dragon) is in the pool at 3
+S28,9780152046927,2,claude,book 3 of the Enchanted Forest Chronicles; book 1 (Dealing with Dragons) is in the pool at 3
 S28,9780786915743,3,claude,
 S28,9781420103731,2,claude,"dragon shifters, romance"
 S29,9780739328279,0,claude,
@@ -5069,7 +5070,7 @@ M07,9780679889182,0,claude,
 M07,9781423147947,1,claude,spy YA with romance
 M07,9780689717383,0,claude,
 M07,9781477822586,0,claude,
-M07,9780141348469,3,claude,
+M07,9780141348469,2,claude,book 3 of the Breathing series: sequel rule
 M07,9780399162435,0,claude,
 M07,9780062240194,3,claude,
 M07,9780525953487,1,claude,thriller about lost love
@@ -5128,7 +5129,7 @@ M09,9781579126285,2,claude,short classic mystery
 M09,9780307277770,3,claude,
 M09,9780142402498,2,claude,short children's classic
 M09,9780151686568,1,claude,light verse
-M09,9780698400016,1,claude,picture book
+M09,9780698400016,0,claude,48-page picture-book edition; picture books are 0 unless the request is for children
 M09,9780525444459,1,claude,children's verse
 M09,9780140439243,1,claude,"classic, long"
 M09,9780156262248,2,claude,"short classic, autobiographical"
@@ -5137,7 +5138,7 @@ M09,9780811200417,1,claude,"poetry, not a classic novel"
 M09,9780425285046,0,claude,
 M09,9780062330260,0,claude,
 M09,9780575077881,0,claude,
-M09,9780399231902,1,claude,picture book
+M09,9780399231902,0,claude,picture book; picture books are 0 unless the request is for children
 M09,9780679824114,0,claude,
 M09,9780060515225,0,claude,
 M09,9780380789023,0,claude,
@@ -5147,7 +5148,7 @@ M09,9781693224188,3,claude,
 M09,9780763601355,2,claude,a single classic story
 M09,9780736423120,0,claude,
 M09,9780060929787,1,claude,"classic memoir, long"
-M09,9780394805757,1,claude,picture book
+M09,9780394805757,0,claude,picture book; picture books are 0 unless the request is for children
 M09,9780375757853,1,claude,"classic, long"
 M09,9780316058438,2,claude,short children's classic
 M09,9780143039099,2,claude,short children's classic
@@ -5157,7 +5158,7 @@ M09,9780192123176,2,claude,classic stories
 M09,9780199537266,1,claude,"classic, long"
 M09,9780140183511,2,claude,short children's classic
 M09,9780140444421,1,claude,long poem
-M09,9780007169924,1,claude,picture book
+M09,9780007169924,0,claude,picture book; picture books are 0 unless the request is for children
 M09,9780679732457,2,claude,"short, demanding"
 M09,9781416534730,2,claude,"classic, medium length"
 M09,9780679433132,1,claude,long poem
@@ -5168,13 +5169,13 @@ M09,9781593081485,1,claude,"classic, long"
 M09,9781406501070,1,claude,"sequel, long"
 M09,9780879235734,1,claude,"children's classic, long"
 M09,9781435122949,2,claude,"short classics, collected"
-M09,9780618840199,1,claude,picture book
+M09,9780618840199,0,claude,picture book; picture books are 0 unless the request is for children
 M09,9780553213874,2,claude,short classic memoir
 M10,9780615429502,0,claude,
-M10,9781426858321,3,claude,
+M10,9781426858321,2,claude,Iron Fey novella 1.5: sequel rule
 M10,9781451627282,0,claude,
 M10,9781612183954,0,claude,
-M10,9780545424943,3,claude,
+M10,9780545424943,2,claude,book 2 of The Raven Cycle: sequel rule
 M10,9781936305629,0,claude,
 M10,9781416995586,1,claude,"YA, not fantasy"
 M10,9780399167065,0,claude,
@@ -5191,7 +5192,7 @@ M10,9780399254123,1,claude,"YA, not fantasy"
 M10,9780761317913,0,claude,
 M10,9780451463654,1,claude,adult fantasy
 M10,9780062011992,3,claude,
-M10,9781594747359,3,claude,
+M10,9781594747359,2,claude,book 2 of Miss Peregrine: sequel rule
 M10,9780062117182,3,claude,
 M10,9781447205722,2,claude,YA paranormal romance
 M10,9780330425780,1,claude,"YA, not fantasy"
@@ -5199,22 +5200,22 @@ M10,9781442408944,1,claude,"YA, not fantasy"
 M10,9780312569037,1,claude,YA sci-fi
 M10,9780316213073,3,claude,
 M10,9781402277825,1,claude,"YA, not fantasy"
-M10,9780316134071,3,claude,
+M10,9780316134071,2,claude,book 3 of Daughter of Smoke & Bone; book 1 is in the pool at 3
 M10,9780062286925,3,claude,
 M10,9781442402003,3,claude,
 M10,9780385742375,2,claude,YA sci-fi dystopian
-M10,9780373210138,3,claude,
+M10,9780373210138,2,claude,book 2 of the Iron Fey: sequel rule
 M10,9780062026484,3,claude,
 M10,9780316201575,2,claude,middle-grade fantasy
 M10,9780316134026,3,claude,
 M10,9780763665661,3,claude,
-M10,9781423140566,3,claude,
-M10,9781444778533,3,claude,
-M10,9781594747588,3,claude,
+M10,9781423140566,2,claude,book 2 of the Kane Chronicles: sequel rule
+M10,9781444778533,2,claude,book 2 of Penryn & the End of Days: sequel rule
+M10,9781594747588,2,claude,book 3 of Miss Peregrine: sequel rule
 M10,9780434020805,1,claude,adult fantasy
 M10,9780061978067,2,claude,YA dystopian
-M10,9781595142504,3,claude,
-M10,9781841497129,3,claude,
+M10,9781595142504,2,claude,Vampire Academy book 5: sequel rule
+M10,9781841497129,2,claude,book 3 of Darkest Powers: sequel rule
 M10,9780312575939,3,claude,
 M11,9780739328279,3,claude,
 M11,9780679600213,0,claude,
@@ -5286,7 +5287,7 @@ M12,9780425192030,2,claude,sci-fi thriller with horror
 M12,9780747235163,2,claude,horror-tinged thriller
 M12,9780425181102,3,claude,
 M12,9780451223296,3,claude,
-M12,9780345419620,3,claude,
+M12,9780345419620,2,claude,book 3 of the Vampire Chronicles: sequel rule
 M12,9780425218648,3,claude,
 M12,9780425142486,3,claude,
 M12,9780451205421,3,claude,
@@ -5437,28 +5438,28 @@ M16,9780060264604,0,claude,
 M16,9781845763565,2,claude,huge fantasy graphic novel
 M16,9780618640157,3,claude,
 M16,9780785764830,1,claude,"long, horror-fantasy"
-M16,9780553573411,3,claude,
-M16,9780553565690,3,claude,
-M16,9780375857041,3,claude,
-M16,9781857232097,3,claude,
-M16,9780340829783,3,claude,
-M16,9780006486039,3,claude,
+M16,9780553573411,2,claude,book 2 of the Farseer trilogy: sequel rule
+M16,9780553565690,2,claude,book 3 of the Farseer trilogy: sequel rule
+M16,9780375857041,2,claude,omnibus of Inheritance 1-2: box-set rule
+M16,9781857232097,2,claude,Wheel of Time book 5; book 1 is in the pool at 3
+M16,9780340829783,2,claude,Dark Tower book 4: sequel rule
+M16,9780006486039,2,claude,book 3 of the Tawny Man trilogy; book 1 (Fool's Errand) is in the pool at 3
 M16,9780375507779,2,claude,long fantasy-horror
-M16,9780553573428,3,claude,
-M16,9780812551488,3,claude,
-M16,9780812550283,3,claude,
-M16,9780886774806,3,claude,
-M16,9780812513738,3,claude,
+M16,9780553573428,2,claude,book 3 of A Song of Ice and Fire; book 1 is in the pool at 3
+M16,9780812551488,2,claude,Sword of Truth book 4: sequel rule
+M16,9780812550283,2,claude,Wheel of Time book 7; book 1 is in the pool at 3
+M16,9780886774806,2,claude,"book 2 of Memory, Sorrow and Thorn: sequel rule"
+M16,9780812513738,2,claude,Wheel of Time book 4; book 1 is in the pool at 3
 M16,9780006486015,3,claude,
-M16,9780553381696,3,claude,
-M16,9780812513752,3,claude,
+M16,9780553381696,2,claude,book 2 of A Song of Ice and Fire; book 1 is in the pool at 3
+M16,9780812513752,2,claude,Wheel of Time book 6; book 1 is in the pool at 3
 M16,9781841493152,2,claude,"fantasy, moderately long"
 M16,9780553588484,3,claude,
-M16,9780812517729,3,claude,
+M16,9780812517729,2,claude,Wheel of Time book 2; book 1 is in the pool at 3
 M16,9780586217832,3,claude,
-M16,9780765302304,3,claude,
-M16,9780765315236,3,claude,
-M16,9780765344311,3,claude,
+M16,9780765302304,2,claude,Wheel of Time book 12; book 1 is in the pool at 3
+M16,9780765315236,2,claude,Sword of Truth book 11: sequel rule
+M16,9780765344311,2,claude,Sword of Truth book 9: sequel rule
 M16,9780812511819,3,claude,
 M17,9781563899805,0,claude,
 M17,9781421501680,2,claude,fast thriller manga
@@ -5661,7 +5662,7 @@ M22,9781480560406,0,claude,
 M22,9781439123126,1,claude,paranormal romance
 M22,9780312979973,1,claude,paranormal romance
 M22,9780689710872,1,claude,children's fantasy
-M22,9781416524526,3,claude,
+M22,9781416524526,2,claude,Dark Tower book 7: sequel rule
 M22,9780451450524,1,claude,gentle classic
 M22,9781846558917,0,claude,
 M22,9780670022809,0,claude,
@@ -5671,7 +5672,7 @@ M22,9780843958447,1,claude,paranormal romance
 M22,9781101904220,0,claude,
 M22,9781484746424,1,claude,light middle-grade
 M22,9780062385437,3,claude,
-M22,9780399167850,3,claude,
+M22,9780399167850,2,claude,book 3 of The Young Elites: sequel rule
 M22,9780751565355,1,claude,"a play, not dark fantasy"
 M22,9781627792134,2,claude,
 M22,9781619634466,2,claude,"romantic fantasy, dark turns"
@@ -5683,7 +5684,7 @@ M22,9781442468351,2,claude,
 M22,9780316341684,2,claude,
 M22,9780316310314,3,claude,
 M22,9781408888186,2,claude,"romantic fantasy, dark turns"
-M22,9780008250447,3,claude,
+M22,9780008250447,2,claude,book 2 of An Ember in the Ashes: sequel rule
 M22,9781685085391,1,claude,audio dramatization
 M22,9780765376473,2,claude,
 M23,9780739328279,0,claude,
@@ -5692,7 +5693,7 @@ M23,9780441014941,1,claude,paranormal with romance
 M23,9780131173347,0,claude,
 M23,9781849231848,3,claude,
 M23,9780385495646,0,claude,
-M23,9781668001233,3,claude,
+M23,9781668001233,2,claude,sequel to It Ends with Us: sequel rule
 M23,9780451230546,0,claude,
 M23,9789812692368,0,claude,
 M23,9781563899805,0,claude,
@@ -5725,7 +5726,7 @@ M23,9780062267146,3,claude,
 M23,9780525425632,3,claude,
 M23,9780345544117,3,claude,
 M23,9780425230077,3,claude,
-M23,9781476717487,3,claude,
+M23,9781476717487,2,claude,"book 2 of Thoughtless, one continuing story: sequel rule"
 M23,9781455559312,3,claude,
 M23,9780316051590,2,claude,grief with romance
 M24,9781523662449,0,claude,
@@ -5760,12 +5761,12 @@ M24,9781250191786,1,claude,sci-fi with a mystery thread
 M24,9781250186935,1,claude,sci-fi with a mystery thread
 N06,9780739328279,0,claude,
 N06,9780679600213,0,claude,
-N06,9780441014941,3,claude,
+N06,9780441014941,2,claude,book 7 of Sookie Stackhouse: sequel rule
 N06,9780131173347,0,claude,
 N06,9781849231848,0,claude,
 N06,9780385495646,0,claude,
 N06,9781668001233,0,claude,
-N06,9780451230546,3,claude,
+N06,9780451230546,2,claude,omnibus of Morganville 1-2: box-set rule
 N06,9789812692368,0,claude,
 N06,9781563899805,0,claude,
 N06,9780316015844,0,claude,ruled out
@@ -5781,15 +5782,15 @@ N06,9780316043120,0,claude,ruled out
 N06,9780060724696,0,claude,
 N06,9780316032544,0,claude,"Twilight series, ruled out"
 N06,9781481280761,3,claude,
-N06,9780061132230,3,claude,
+N06,9780061132230,2,claude,book 4 of Vampire Kisses: sequel rule
 N06,9781416589426,3,claude,
-N06,9780061720857,3,claude,
+N06,9780061720857,2,claude,Vampire Diaries: The Return book 3: sequel rule
 N06,9780316125581,0,claude,"Twilight series, ruled out"
 N06,9781595141743,3,claude,
 N06,9781921518997,2,claude,graphic adaptation
 N06,9780345476876,3,claude,
 N06,9780759529434,0,claude,ruled out
-N06,9781416974505,3,claude,
+N06,9781416974505,2,claude,omnibus of Night World 1-3: box-set rule
 N07,9780739328279,0,claude,
 N07,9780679600213,0,claude,
 N07,9780441014941,0,claude,
@@ -5801,10 +5802,10 @@ N07,9780451230546,1,claude,"YA, romance only a subplot"
 N07,9789812692368,1,claude,"clean manga romance, but volume 20"
 N07,9781563899805,0,claude,
 N07,9780425143322,0,claude,
-N07,9780064472265,3,claude,
+N07,9780064472265,2,claude,book 3 of the Georgia Nicolson diaries: sequel rule
 N07,9780062240194,0,claude,
 N07,9780061444852,0,claude,
-N07,9781416995555,3,claude,
+N07,9781416995555,2,claude,book 2 of the Summer trilogy: sequel rule
 N07,9780525950073,0,claude,
 N07,9780515144314,0,claude,
 N07,9780062068521,0,claude,
@@ -5826,7 +5827,7 @@ N07,9780061852053,0,claude,
 N07,9781505724523,0,claude,
 N07,9780345803504,0,claude,
 N07,9781500110734,0,claude,
-N07,9780007191482,3,claude,
+N07,9780007191482,2,claude,book 7 of the Georgia Nicolson diaries: sequel rule
 N07,9780380782338,0,claude,
 N07,9781476248950,0,claude,
 N08,9780739328279,1,claude,"comic mystery, not a thriller"
@@ -5869,7 +5870,7 @@ N08,9780446609401,1,claude,babies under threat
 N08,9780425142486,0,claude,
 N09,9780739328279,0,claude,
 N09,9780679600213,0,claude,
-N09,9780441014941,3,claude,adult urban fantasy
+N09,9780441014941,2,claude,book 7 of Sookie Stackhouse: sequel rule
 N09,9780131173347,0,claude,
 N09,9781849231848,0,claude,
 N09,9780385495646,0,claude,
@@ -5890,18 +5891,18 @@ N09,9780062117182,0,claude,
 N09,9780670020553,3,claude,
 N09,9781408888186,1,claude,"new adult, shelved as YA"
 N09,9781685085391,1,claude,"new adult, shelved as YA"
-N09,9780670015672,3,claude,
+N09,9780670015672,2,claude,book 3 of The Magicians; book 1 is in the pool at 3
 N09,9780316201575,0,claude,
 N09,9781619634466,1,claude,"new adult, shelved as YA"
 N09,9780743437325,0,claude,
-N09,9780812550283,3,claude,
+N09,9780812550283,2,claude,Wheel of Time book 7: sequel rule
 N09,9781841493138,3,claude,
 N09,9781554682744,0,claude,
 N09,9780316213073,0,claude,
-N09,9781845762780,3,claude,
+N09,9781845762780,2,claude,Fables volume 7: sequel rule
 N09,9780152046927,0,claude,
 N09,9780439709101,0,claude,
-N09,9780434020805,3,claude,
+N09,9780434020805,2,claude,book 2 of The Magicians; book 1 is in the pool at 3
 N09,9780316067928,0,claude,
 N10,9780739328279,0,claude,
 N10,9780679600213,0,claude,
@@ -5923,7 +5924,7 @@ N10,9780064440585,0,claude,
 N10,9780552551311,0,claude,
 N10,9781933718002,0,claude,
 N10,9780060890315,0,claude,
-N10,9780064431835,1,claude,picture book
+N10,9780064431835,0,claude,picture book; picture books are 0 unless the request is for children
 N10,9781553379591,0,claude,
 N10,9780439568470,2,claude,"scary, for children"
 N10,9780061449154,1,claude,violent YA
@@ -5991,7 +5992,7 @@ N12,9780062267528,0,claude,
 N12,9781480225640,0,claude,
 N12,9780689717383,0,claude,
 N12,9781573225120,1,claude,bleak memoir
-N12,9780395181560,1,claude,gently sad picture book
+N12,9780395181560,0,claude,picture book; picture books are 0 unless the request is for children
 N12,9780615782140,0,claude,
 N12,9780440412670,3,claude,
 N12,9780440472100,0,claude,
@@ -6028,9 +6029,9 @@ N13,9789812692368,0,claude,
 N13,9781563899805,3,claude,
 N13,9781423170280,0,claude,
 N13,9780785135821,0,claude,
-N13,9780062071071,3,claude,
+N13,9780062071071,2,claude,book 2 of Partials: sequel rule
 N13,9781106927026,0,claude,
-N13,9781250191786,3,claude,
+N13,9781250191786,2,claude,Murderbot book 3: sequel rule
 N13,9780451461551,0,claude,
 N13,9781612620244,2,claude,"titans, not aliens"
 N13,9780553499162,1,claude,alien parasites
@@ -6117,8 +6118,8 @@ N15,9780618391110,0,claude,
 N15,9780316347112,2,claude,"fairy-tale world, no elves to speak of"
 N15,9780140367461,2,claude,"goblins, children's classic"
 N15,9780803741713,0,claude,
-N15,9780060764906,3,claude,
-N15,9780552552646,1,claude,the elves are the enemy
+N15,9780060764906,1,claude,dwarfs appear (briefly) when Aslan creates Narnia: a minor element of what was ruled out is at most 1
+N15,9780552552646,2,claude,"the reason was wrong: the elves are in The Wee Free Men, not this one (its villain is the hiver); sequel cap 2"
 N15,9781857231519,0,claude,
 N15,9780345538376,0,claude,
 N15,9781560760474,0,claude,
@@ -6303,7 +6304,7 @@ N20,9780064635738,3,claude,
 N20,9780142412145,0,claude,
 N20,9780385342322,3,claude,
 N20,9781481268509,0,claude,
-N20,9780803741713,1,claude,children's picture book
+N20,9780803741713,0,claude,picture book; picture books are 0 unless the request is for children
 N20,9780671737634,0,claude,
 N20,9781476717487,0,claude,
 N20,9781301985296,0,claude,
@@ -6385,26 +6386,26 @@ V06,9781250034489,0,claude,
 V06,9780062413864,0,claude,
 V06,9780543904706,0,claude,
 V06,9780758278456,0,claude,
-V06,9780552123822,3,claude,
+V06,9780552123822,2,claude,Belgariad book 3: sequel rule
 V06,9780552153157,3,claude,
-V06,9780099408390,1,claude,picture book
-V06,9781857231328,3,claude,
-V06,9780670015672,3,claude,
+V06,9780099408390,0,claude,picture book; picture books are 0 unless the request is for children
+V06,9781857231328,2,claude,Shannara book 3: sequel rule
+V06,9780670015672,2,claude,book 3 of The Magicians: sequel rule
 V06,9780552152945,3,claude,
 V06,9780380789023,2,claude,stories
 V06,9781841493138,3,claude,
 V06,9780575058088,3,claude,
 V06,9780061142024,3,claude,
-V06,9780812517729,3,claude,
+V06,9780812517729,2,claude,Wheel of Time book 2; book 1 is in the pool at 3
 V06,9780061020667,3,claude,
-V06,9780812513714,3,claude,
+V06,9780812513714,2,claude,Wheel of Time book 3; book 1 is in the pool at 3
 V06,9780812511819,3,claude,
 V06,9781405240925,2,claude,children's fantasy
 V06,9780575077836,3,claude,
-V06,9780345335708,3,claude,
+V06,9780345335708,2,claude,Belgariad book 4: sequel rule
 V06,9780345352668,3,claude,
 V06,9781841492612,3,claude,
-V06,9780006486039,3,claude,
+V06,9780006486039,2,claude,book 3 of the Tawny Man trilogy: sequel rule
 V07,9780739328279,0,claude,
 V07,9780441014941,0,claude,
 V07,9780131173347,0,claude,
@@ -6415,7 +6416,7 @@ V07,9781421501680,3,claude,
 V07,9780615429502,0,claude,
 V07,9781416552512,0,claude,
 V07,9780137585281,0,claude,
-V07,9780316133197,3,claude,
+V07,9780316133197,2,claude,Twilight graphic novel volume 2; volume 1 is in the pool at 3
 V07,9780440423218,3,claude,
 V07,9781921518997,3,claude,
 V07,9780374386153,3,claude,
@@ -6428,14 +6429,14 @@ V07,9780201168938,0,claude,
 V07,9780606212342,3,claude,
 V07,9780316358323,3,claude,
 V07,9780375424144,3,claude,
-V07,9781563892059,3,claude,
-V07,9780439706391,3,claude,
+V07,9781563892059,2,claude,Sandman volume 9: sequel rule
+V07,9780439706391,2,claude,Bone volume 2: sequel rule
 V07,9780785113799,3,claude,
 V07,9781845760458,3,claude,
 V07,9780930289232,3,claude,
 V07,9781563896453,3,claude,
 V07,9781401242855,3,claude,
-V07,9781563891380,3,claude,
+V07,9781563891380,2,claude,Sandman volume 7: sequel rule
 V07,9781596914520,3,claude,
 V07,9781401201135,3,claude,
 V07,9781560974277,3,claude,
@@ -6443,7 +6444,7 @@ V07,9780375423802,3,claude,
 V08,9780739328279,0,claude,
 V08,9780441014941,2,claude,urban fantasy with strong romance
 V08,9780131173347,0,claude,
-V08,9781668001233,3,claude,
+V08,9781668001233,2,claude,sequel to It Ends with Us: sequel rule
 V08,9780451230546,1,claude,romance subplot only
 V08,9781563899805,0,claude,
 V08,9781421501680,0,claude,
@@ -6458,7 +6459,7 @@ V08,9780399256929,1,claude,"historical YA, little romance"
 V08,9780099402831,0,claude,
 V08,9780061444852,3,claude,
 V08,9781452110585,0,claude,
-V08,9780141348469,3,claude,
+V08,9780141348469,2,claude,book 3 of the Breathing series: sequel rule
 V08,9780679600213,0,claude,
 V08,9780064635738,0,claude,
 V08,9780142412145,3,claude,
@@ -6482,7 +6483,7 @@ V08,9780062267146,3,claude,
 V08,9780525425632,3,claude,
 V08,9780345544117,3,claude,
 V08,9780425230077,3,claude,
-V08,9781476717487,3,claude,
+V08,9781476717487,2,claude,"book 2 of Thoughtless, one continuing story: sequel rule"
 V08,9781455559312,3,claude,
 V08,9780316051590,2,claude,grief with romance
 V09,9780739328279,0,claude,
@@ -6530,12 +6531,12 @@ V10,9781421501680,0,claude,
 V10,9780615429502,0,claude,
 V10,9781416552512,0,claude,
 V10,9780137585281,0,claude,
-V10,9780316954990,3,claude,
+V10,9780316954990,2,claude,"sequel to The Winds of War, which is in the pool at 3"
 V10,9780307346605,0,claude,
 V10,9780316952668,3,claude,
 V10,9781590302255,0,claude,
 V10,9781406500530,0,claude,
-V10,9780525952923,3,claude,
+V10,9780525952923,2,claude,book 2 of the Century Trilogy: sequel rule
 V10,9781921640803,0,claude,
 V10,9780439796637,1,claude,First World War
 V10,9780785121787,0,claude,
@@ -6593,7 +6594,7 @@ V11,9780525952275,3,claude,
 V11,9780778316558,3,claude,
 V11,9780312999520,3,claude,
 V11,9780062073167,3,claude,
-V11,9780307594778,3,claude,
+V11,9780307594778,2,claude,the Millennium trilogy as one box set: box-set rule
 V11,9780345528506,3,claude,
 V11,9780525955092,3,claude,
 V11,9780385344333,3,claude,
@@ -6619,10 +6620,10 @@ V12,9781593080105,3,claude,
 V12,9780590371254,2,claude,short verse novel
 V12,9780316159418,1,claude,medium length
 V12,9780743298858,1,claude,medium length
-V12,9780007158515,1,claude,picture book
+V12,9780007158515,0,claude,picture book; picture books are 0 unless the request is for children
 V12,9781594204210,0,claude,
 V12,9780142004036,1,claude,medium length
-V12,9780688009144,1,claude,picture book
+V12,9780688009144,0,claude,picture book; picture books are 0 unless the request is for children
 V12,9780060007195,1,claude,"short, for children"
 V12,9780385015837,1,claude,children's
 V12,9781590302255,3,claude,
@@ -6667,7 +6668,7 @@ V13,9780575082458,3,claude,
 V13,9780552154222,3,claude,
 V13,9780765346520,2,claude,
 V13,9781518729379,0,claude,
-V13,9780545010221,3,claude,
+V13,9780545010221,2,claude,Harry Potter book 7: sequel rule
 V13,9780618640157,3,claude,
 V13,9780061020643,3,claude,
 V13,9781416936497,1,claude,light fairy-tale YA
@@ -6681,11 +6682,11 @@ V14,9781421501680,1,claude,"supernatural, not sci-fi"
 V14,9780615429502,0,claude,
 V14,9781416552512,0,claude,
 V14,9780137585281,0,claude,
-V14,9780062071071,3,claude,
+V14,9780062071071,2,claude,book 2 of Partials: sequel rule
 V14,9780140389661,0,claude,
 V14,9781106927026,3,claude,
-V14,9781250191786,3,claude,
-V14,9780785135821,3,claude,
+V14,9781250191786,2,claude,Murderbot book 3: sequel rule
+V14,9780785135821,2,claude,Ender's Game graphic novel volume 2: sequel rule
 V14,9780451461551,0,claude,
 V14,9781612620244,2,claude,sci-fi manga
 V14,9780547152608,0,claude,
@@ -6698,13 +6699,13 @@ V14,9780060872984,3,claude,
 V14,9780345404473,3,claude,
 V14,9781101946596,1,claude,nonfiction about AI
 V14,9781790777457,3,claude,
-V14,9780399162435,3,claude,
+V14,9780399162435,2,claude,book 3 of The 5th Wave: sequel rule
 V14,9781423176374,3,claude,
 V14,9781595144911,1,claude,"a sci-fi premise, mostly romance"
 V14,9780613074049,0,claude,
-V14,9780765356185,3,claude,
-V14,9780553499162,3,claude,
-V14,9780689865398,3,claude,
+V14,9780765356185,2,claude,book 3 of Old Man's War: sequel rule
+V14,9780553499162,2,claude,book 2 of The Illuminae Files: sequel rule
+V14,9780689865398,2,claude,book 2 of Uglies: sequel rule
 V14,9780689857980,2,claude,children's dystopia
 V14,9781606841754,2,claude,YA post-apocalyptic
 V14,9780525423645,3,claude,
@@ -6792,19 +6793,19 @@ P06,9780385336697,0,claude,
 P06,9780670018864,0,claude,
 P06,9781455521319,0,claude,
 P06,9780545284158,1,claude,middle-grade fantasy
-P06,9780553381696,3,claude,
+P06,9780553381696,2,claude,"book 2 of A Song of Ice and Fire: sequel rule (the seed's own sequel, Words of Radiance, keeps 3, as Catching Fire did in P03)"
 P06,9781101602188,0,claude,
 P06,9780060835774,2,claude,political YA fantasy
 P06,9780062310712,1,claude,YA fantasy
 P06,9780765326362,3,claude,
 P06,9781937007478,2,claude,grimdark epic
 P06,9780316033671,2,claude,epic-ish assassin fantasy
-P06,9780575077904,3,claude,
-P06,9780812513752,3,claude,
-P06,9781857232097,3,claude,
+P06,9780575077904,2,claude,book 3 of The First Law: sequel rule
+P06,9780812513752,2,claude,Wheel of Time book 6: sequel rule
+P06,9781857232097,2,claude,Wheel of Time book 5: sequel rule
 P06,9780312156961,2,claude,historical Arthurian epic
 P06,9780345335654,2,claude,"classic epic, lighter"
-P06,9780765325945,3,claude,
+P06,9780765325945,2,claude,Wheel of Time book 13: sequel rule
 P06,9780552148030,2,claude,"classic epic, lighter"
 P06,9780434020805,2,claude,literary fantasy
 P06,9780751504576,1,claude,short fable
@@ -7254,7 +7255,7 @@ P20,9781842323007,0,claude,
 P20,9780749941994,0,claude,
 P20,9780062464316,2,claude,"same author, not shorter"
 P20,9781101946596,1,claude,big ideas about AI
-P20,9781400032051,2,claude,big-picture history
+P20,9781400032051,1,claude,"541 pages, longer than Sapiens: same as A Short History of Nearly Everything (1) for ""but shorter"""
 P20,9781501227745,1,claude,big ideas about AI
 P20,9780613074049,2,claude,short big-ideas classic
 P20,9780593163269,1,claude,futurism
@@ -7366,7 +7367,7 @@ U07,9781476756578,1,claude,angsty romance
 U07,9780698184893,1,claude,bittersweet romance
 U07,9780525425922,1,claude,bittersweet romance
 U07,9781476740485,1,claude,grief in the backstory
-U07,9780440474654,3,claude,
+U07,9780440474654,2,claude,"sad, but a short children's book; an adult asking ""a sad one"" gets a small mismatch"
 U07,9780439206471,1,claude,comically sad
 U07,9781400052295,2,claude,
 U07,9780440236702,1,claude,grief-driven thriller
@@ -7422,13 +7423,13 @@ U09,9789812692368,1,claude,
 U09,9781563899805,1,claude,
 U09,9780152099879,1,claude,
 U09,9780393320923,1,claude,
-U09,9780805047905,1,claude,
-U09,9780394823959,1,claude,
+U09,9780805047905,0,claude,picture book; picture books are 0 unless the request is for children
+U09,9780394823959,0,claude,picture book; picture books are 0 unless the request is for children
 U09,9781932416640,1,claude,
 U09,9780312321185,1,claude,
-U09,9780805017588,1,claude,
+U09,9780805017588,0,claude,picture book; picture books are 0 unless the request is for children
 U09,9780786812400,1,claude,
-U09,9780805053883,1,claude,
+U09,9780805053883,0,claude,picture book; picture books are 0 unless the request is for children
 U09,9780375828256,1,claude,
 U09,9781497316928,1,claude,
 U09,9781594201929,1,claude,
@@ -7461,7 +7462,7 @@ U10,9780375706851,1,claude,
 U10,9780671776091,1,claude,
 U10,9780679456209,2,claude,
 U10,9781250040152,1,claude,
-U10,9780688009144,1,claude,picture book
+U10,9780688009144,0,claude,picture book; picture books are 0 unless the request is for children
 U10,9780142403709,1,claude,
 U10,9780618982509,1,claude,graphic memoir
 U10,9781101902769,1,claude,heavy for a gift
@@ -7517,7 +7518,7 @@ U12,9781849231848,1,claude,
 U12,9780385495646,1,claude,
 U12,9781668001233,1,claude,
 U12,9780451230546,1,claude,
-U12,9789812692368,2,claude,short manga volume
+U12,9789812692368,1,claude,"volume 20 of a 23-volume manga: short, but nobody starts a series there"
 U12,9781563899805,2,claude,short graphic novel
 U12,9780060773755,1,claude,title only
 U12,9780316221337,1,claude,"short, heavy"
@@ -8245,8 +8246,8 @@ X03B,9780061043581,2,claude,partly a Hampshire village
 X03B,9781579126292,3,claude,
 X03B,9780007151660,1,claude,London and Africa
 X03B,9781579126933,2,claude,"Marple, a country house"
-X03B,9781557091574,0,claude,
-X03B,9780448095042,0,claude,
+X03B,9781557091574,1,claude,"a mystery, wrong country: same as the other non-English village mysteries (1), and the same book is 1 in X03N"
+X03B,9780448095042,1,claude,"a mystery, wrong country: 1, like the other non-English village mysteries"
 X03B,9781579126957,1,claude,on a train
 X03B,9780553278026,3,claude,
 X03B,9780316393874,1,claude,an Irish village
@@ -8286,7 +8287,7 @@ X03N,9780425206867,1,claude,an Arkansas town
 X03N,9780061043581,2,claude,partly a Hampshire village
 X03N,9781579126278,3,claude,
 X03N,9780143039976,1,claude,an American village
-X03N,9780448095042,0,claude,
+X03N,9780448095042,1,claude,"a mystery, wrong country: 1, like the other non-English village mysteries"
 X03N,9781557091574,1,claude,children's mystery
 X03N,9780646418438,3,claude,
 X03N,9780061791055,1,claude,children's mystery
@@ -8488,7 +8489,7 @@ X06N,9780451230546,0,claude,
 X06N,9789812692368,0,claude,
 X06N,9781563899805,0,claude,
 X06N,9780060751647,0,claude,
-X06N,9780060652388,3,claude,
+X06N,9780060652388,2,claude,"nonfiction where a story was asked for: 2, as in the base query X06B"
 X06N,9780671685638,0,claude,
 X06N,9780545540612,0,claude,
 X06N,9780571323760,1,claude,a fantastical crow
@@ -8613,7 +8614,7 @@ X08B,9780064410342,2,claude,a witch's curse
 X08B,9780060987107,3,claude,
 X08B,9780060766207,2,claude,a witch hunter's apprentice
 X08B,9780440995777,3,claude,
-X08B,9780099471431,3,claude,
+X08B,9780099471431,2,claude,book 2 of the Mayfair Witches; book 1 (The Witching Hour) is in the pool at 3
 X08B,9781416974505,1,claude,witches among vampires
 X08B,9780142409862,3,claude,
 X08B,9780060853983,1,claude,"a witch's prophecies, minor"
@@ -8669,16 +8670,16 @@ X09B,9780525453673,0,claude,
 X09B,9780843955286,1,claude,a vampire prince
 X09B,9780316310314,3,claude,
 X09B,9780738713700,2,claude,"a faery, not a prince"
-X09B,9780373210367,3,claude,
+X09B,9780373210367,2,claude,book 4 of the Iron Fey; book 1 is in the pool at 3
 X09B,9780061214714,2,claude,a faery king
 X09B,9780373210084,3,claude,
 X09B,9780385341677,2,claude,"fae princes, urban setting"
 X09B,9780385339162,2,claude,"fae princes, urban setting"
-X09B,9781619634466,3,claude,
+X09B,9781619634466,2,claude,book 2 of A Court of Thorns and Roses: sequel rule
 X09B,9780385341639,2,claude,"fae princes, urban setting"
 X09B,9780385341653,2,claude,"fae princes, urban setting"
-X09B,9780373210138,3,claude,
-X09B,9781426858321,3,claude,
+X09B,9780373210138,2,claude,book 2 of the Iron Fey; book 1 (The Iron King) is in the pool at 3
+X09B,9781426858321,2,claude,Iron Fey novella 1.5; book 1 is in the pool at 3
 X09N,9780739328279,0,claude,
 X09N,9780679600213,0,claude,
 X09N,9780441014941,0,claude,
@@ -8698,7 +8699,7 @@ X09N,9780312979973,0,claude,
 X09N,9780425274262,0,claude,
 X09N,9780007202300,1,claude,"no romance, but not fae"
 X09N,9780545284134,1,claude,"no romance, but not fae"
-X09N,9780525453673,1,claude,"no romance, a fairy-tale prince"
+X09N,9780525453673,0,claude,"32-page picture-book edition, and a statue prince, not fae; it is 0 in the base query too"
 X09N,9780316310314,0,claude,
 X09N,9781250044655,0,claude,
 X09N,9780738713700,0,claude,
@@ -8788,7 +8789,7 @@ X11B,9780451230546,0,claude,
 X11B,9789812692368,0,claude,
 X11B,9781563899805,1,claude,"dystopian, not YA"
 X11B,9780399167836,1,claude,"YA fantasy, not dystopia"
-X11B,9781442430006,3,claude,
+X11B,9781442430006,2,claude,book 2 of Dust Lands; book 1 (Blood Red Road) is in the pool at 3
 X11B,9781442429987,3,claude,
 X11B,9781442445802,3,claude,
 X11B,9780553296983,0,claude,
@@ -8800,20 +8801,20 @@ X11B,9780451475602,0,claude,
 X11B,9780765329585,3,claude,
 X11B,9780553376050,2,claude,YA war story
 X11B,9780312650087,3,claude,
-X11B,9780062014535,3,claude,
-X11B,9780547959214,3,claude,
-X11B,9780061978067,3,claude,
+X11B,9780062014535,2,claude,book 3 of Delirium: sequel rule
+X11B,9780547959214,2,claude,book 3 of The Testing: sequel rule
+X11B,9780061978067,2,claude,book 2 of Delirium: sequel rule (2 in X22B already)
 X11B,9780062048509,3,claude,
-X11B,9780547959207,3,claude,
-X11B,9780062048547,3,claude,
+X11B,9780547959207,2,claude,book 2 of The Testing: sequel rule
+X11B,9780062048547,2,claude,book 2 of Eve; book 1 is in the pool at 3
 X11B,9780765319852,3,claude,
 X11B,9780439829113,2,claude,YA invasion war
-X11B,9780152063115,3,claude,
+X11B,9780152063115,2,claude,book 2 of the Last Survivors: sequel rule
 X11B,9780062024039,3,claude,
-X11B,9780061449123,3,claude,
+X11B,9780061449123,2,claude,book 4 of Gone; book 1 is in the pool at 3 (2 in X22B already)
 X11B,9780061448768,3,claude,
 X11B,9780439023481,3,claude,
-X11B,9781596435704,3,claude,
+X11B,9781596435704,2,claude,book 2 of Birthmarked: sequel rule
 X11B,9781442402324,3,claude,
 X11N,9780739328279,0,claude,
 X11N,9780679600213,0,claude,
@@ -8863,9 +8864,9 @@ X12B,9780451230546,0,claude,
 X12B,9789812692368,0,claude,
 X12B,9781563899805,0,claude,
 X12B,9780316952668,3,claude,
-X12B,9780316954990,3,claude,
+X12B,9780316954990,2,claude,"sequel to The Winds of War, which is in the pool at 3"
 X12B,9780307346605,0,claude,
-X12B,9780525952923,3,claude,
+X12B,9780525952923,2,claude,"book 2 of the Century Trilogy (""picks up right where the first book left off"")"
 X12B,9780439796637,1,claude,First World War
 X12B,9780060750862,0,claude,
 X12B,9780803740815,2,claude,"WWII, children's"
@@ -8905,21 +8906,21 @@ X12N,9780062278784,0,claude,
 X12N,9780553383836,0,claude,
 X12N,9780812993103,0,claude,
 X12N,9780060748098,0,claude,
-X12N,9780141027128,1,claude,romances central
+X12N,9780141027128,0,claude,"the reason says the romances are central, which is what was ruled out: 0"
 X12N,9781503943377,2,claude,a romance thread
-X12N,9780307460202,1,claude,a love story central
+X12N,9780307460202,0,claude,"the reason says the love story is central, which is what was ruled out: 0"
 X12N,9781501116971,0,claude,
 X12N,9781101883075,2,claude,a romance thread
 X12N,9781400044733,2,claude,a love affair in part
 X12N,9780553241600,2,claude,love stories within the uprising
 X12N,9780452270077,1,claude,First World War
-X12N,9781741666700,1,claude,a love affair central
+X12N,9781741666700,0,claude,"the reason says the love affair is central, which is what was ruled out: 0"
 X12N,9780062409201,0,claude,
 X12N,9780525950073,0,claude,
 X12N,9780307394965,0,claude,
 X12N,9781842323007,0,claude,
 X12N,9780525951650,1,claude,First World War
-X12N,9781501124372,1,claude,love story at its heart
+X12N,9781501124372,0,claude,"the reason says the love story is at its heart, which is what was ruled out: 0"
 X12N,9780385534819,1,claude,love and revenge
 X13B,9780739328279,1,claude,"comic mystery, no bakery"
 X13B,9780679600213,0,claude,
@@ -8932,13 +8933,13 @@ X13B,9780451230546,0,claude,
 X13B,9789812692368,0,claude,
 X13B,9781563899805,0,claude,
 X13B,9780758213501,3,claude,
-X13B,9780061791055,0,claude,
-X13B,9781557091574,0,claude,
+X13B,9780061791055,1,claude,"a mystery without the bakery: 1, like the other non-bakery mysteries in this query"
+X13B,9781557091574,1,claude,"a mystery without the bakery: 1, like the other non-bakery mysteries in this query"
 X13B,9780312655464,1,claude,no bakery
-X13B,9781579126957,0,claude,
+X13B,9781579126957,1,claude,"a mystery without the bakery: 1, like the other Christies in this query"
 X13B,9780646418438,1,claude,no bakery
 X13B,9781455599189,0,claude,
-X13B,9780448095042,0,claude,
+X13B,9780448095042,1,claude,"a mystery without the bakery: 1, like the other non-bakery mysteries in this query"
 X13B,9780316057776,0,claude,
 X13B,9780316057806,0,claude,
 X13B,9780307460202,1,claude,"a bakery, not a mystery"
@@ -8987,7 +8988,7 @@ X13N,9780385342322,2,claude,"no love interest, no bakery"
 X13N,9781250044655,0,claude,
 X13N,9780330348775,1,claude,no bakery
 X13N,9780345527707,0,claude,
-X13N,9780385342308,3,claude,
+X13N,9780385342308,2,claude,"no bakery, as the base query X13B says (2 there); adding ""no love interest"" can't make it a better fit"
 X13N,9781579126957,1,claude,no bakery
 X13N,9780448095042,1,claude,children's mystery
 X13N,9780007119356,1,claude,no bakery
@@ -9038,7 +9039,7 @@ X14N,9781563899805,0,claude,
 X14N,9781416995555,0,claude,
 X14N,9780399159893,1,claude,romantic suspense
 X14N,9781416968238,0,claude,
-X14N,9781626720947,3,claude,
+X14N,9781626720947,2,claude,"lake not beach, graphic novel: 2 in the base query X14B, and ""isn't a romance"" doesn't fix that"
 X14N,9780316159784,2,claude,"beach thriller, no romance"
 X14N,9780446612548,2,claude,"beach thriller, no romance"
 X14N,9781442406599,0,claude,
@@ -9054,28 +9055,28 @@ X14N,9781416995586,0,claude,
 X14N,9781416990673,1,claude,"family grief, with a romance"
 X15B,9780739328279,0,claude,
 X15B,9780679600213,0,claude,
-X15B,9780441014941,3,claude,
+X15B,9780441014941,2,claude,book 7 of Sookie Stackhouse: sequel rule
 X15B,9780131173347,0,claude,
 X15B,9781849231848,0,claude,
 X15B,9780385495646,0,claude,
 X15B,9781668001233,0,claude,
-X15B,9780451230546,3,claude,
+X15B,9780451230546,2,claude,omnibus of Morganville 1-2: box-set rule
 X15B,9789812692368,0,claude,
 X15B,9781563899805,0,claude,
-X15B,9780316905749,3,claude,
-X15B,9780007435319,3,claude,
-X15B,9780316606844,3,claude,
+X15B,9780316905749,2,claude,Cirque du Freak book 4: sequel rule
+X15B,9780007435319,2,claude,Cirque du Freak book 6: sequel rule
+X15B,9780316606844,2,claude,Cirque du Freak book 2: sequel rule
 X15B,9780345476876,3,claude,
-X15B,9780345434807,3,claude,
+X15B,9780345434807,2,claude,Vampire Chronicles book 6; book 1 is in the pool at 3
 X15B,9780060093365,3,claude,
 X15B,9781595141743,3,claude,
-X15B,9780061132230,3,claude,
-X15B,9780345476883,3,claude,
+X15B,9780061132230,2,claude,book 4 of Vampire Kisses; book 1 is in the pool at 3
+X15B,9780345476883,2,claude,Vampire Chronicles book 2; book 1 is in the pool at 3
 X15B,9781401228309,2,claude,vampire comic
 X15B,9781921518997,2,claude,graphic adaptation
 X15B,9780345422385,3,claude,
-X15B,9780316032544,3,claude,
-X15B,9780345419620,3,claude,
+X15B,9780316032544,2,claude,book 2 of Twilight: sequel rule
+X15B,9780345419620,2,claude,Vampire Chronicles book 3; book 1 (Interview) is in the pool at 3
 X15B,9780575095779,2,claude,"angels first, vampires serve"
 X15B,9780446563086,3,claude,
 X15B,9781421511306,2,claude,"manga, mid-series"
@@ -9098,13 +9099,13 @@ X15N,9781563899805,0,claude,
 X15N,9780425143322,0,claude,
 X15N,9780060093365,0,claude,
 X15N,9780061132230,0,claude,
-X15N,9780316905749,3,claude,
-X15N,9780007435319,3,claude,
-X15N,9780316606844,3,claude,
+X15N,9780316905749,2,claude,Cirque du Freak book 4: sequel rule
+X15N,9780007435319,2,claude,Cirque du Freak book 6: sequel rule
+X15N,9780316606844,2,claude,Cirque du Freak book 2: sequel rule
 X15N,9780345476876,3,claude,
 X15N,9780061963865,0,claude,
 X15N,9781421519548,0,claude,
-X15N,9780345434807,3,claude,
+X15N,9780345434807,2,claude,book 6 of the Vampire Chronicles: sequel rule
 X15N,9780505525529,0,claude,
 X15N,9780316056632,0,claude,
 X15N,9781416589426,0,claude,
@@ -9214,7 +9215,7 @@ X17B,9781400031573,1,claude,"a murder, not serial"
 X17B,9780345348104,0,claude,
 X17B,9780061566134,1,claude,YA mystery
 X17B,9780345528506,2,claude,linked murders decades apart
-X17B,9781400095926,3,claude,
+X17B,9781400095926,2,claude,Dexter book 2; book 1 (Darkly Dreaming Dexter) is in the pool at 3
 X17B,9780316410984,2,claude,multiple killings
 X17B,9780446696616,3,claude,
 X17B,9780446696630,2,claude,a serial sniper
@@ -9268,7 +9269,7 @@ X17N,9781780892887,1,claude,not a serial killer
 X17N,9780380820887,0,claude,
 X17N,9780553589177,0,claude,
 X17N,9780425205815,0,claude,
-X17N,9781405293181,2,claude,"not gory, not a serial killer"
+X17N,9781405293181,1,claude,"still not a serial killer, so no better than the base query X17B (1)"
 X17N,9780316153997,2,claude,"serial killer, procedural, less gore"
 X18B,9780739328279,0,claude,
 X18B,9780679600213,0,claude,
@@ -9283,7 +9284,7 @@ X18B,9781563899805,0,claude,
 X18B,9780316952668,3,claude,
 X18B,9780439796637,3,claude,
 X18B,9781590302255,1,claude,"a treatise, not a novel"
-X18B,9780316954990,3,claude,
+X18B,9780316954990,2,claude,"sequel to The Winds of War, which is in the pool at 3"
 X18B,9780785121787,0,claude,
 X18B,9780192833983,3,claude,
 X18B,9781406500530,1,claude,"a treatise, not a novel"
@@ -9340,7 +9341,7 @@ X19B,9781668001233,0,claude,
 X19B,9780451230546,0,claude,
 X19B,9789812692368,0,claude,
 X19B,9781563899805,0,claude,
-X19B,9780008250447,3,claude,
+X19B,9780008250447,2,claude,book 2 of An Ember in the Ashes; book 1 is in the pool at 3
 X19B,9780765311788,3,claude,
 X19B,9780312979973,0,claude,
 X19B,9780007256747,1,claude,"dragons, Napoleonic"
@@ -9350,7 +9351,7 @@ X19B,9781619636071,2,claude,war for a throne
 X19B,9780385613507,0,claude,
 X19B,9780425246955,0,claude,
 X19B,9780316380867,0,claude,
-X19B,9781595145932,3,claude,
+X19B,9781595145932,2,claude,book 2 of Falling Kingdoms: sequel rule
 X19B,9780441012688,1,claude,"invasion, not rebellion"
 X19B,9781937007478,1,claude,"Broken Empire, ambition"
 X19B,9781616960926,1,claude,empire intrigue
@@ -9360,8 +9361,8 @@ X19B,9780765350374,1,claude,"fallen city, no rebellion"
 X19B,9781595145840,2,claude,kingdoms at war
 X19B,9780441014347,2,claude,a rebellion against the First Lord
 X19B,9781595148032,3,claude,
-X19B,9780375826726,3,claude,
-X19B,9780765310026,3,claude,
+X19B,9780375826726,2,claude,book 3 of the Inheritance Cycle: sequel rule
+X19B,9780765310026,2,claude,book 2 of the Malazan Book of the Fallen: sequel rule
 X19N,9780739328279,0,claude,
 X19N,9780679600213,0,claude,
 X19N,9780441014941,0,claude,
@@ -9459,7 +9460,7 @@ X20N,9781400031573,0,claude,
 X20N,9780345542885,2,claude,"comic, mobster family"
 X20N,9780679745587,0,claude,
 X20N,9780515132182,1,claude,"family business, no mafia"
-X20N,9780142403709,2,claude,"gentle, a gangster in the background"
+X20N,9780142403709,1,claude,"a gangster cameo, not a mafia family story: 1 in the base query X20B, and ""without much violence"" doesn't change that"
 X20N,9780446581196,0,claude,
 X20N,9781456527730,0,claude,
 X20N,9780525953074,0,claude,
@@ -9515,7 +9516,7 @@ X21N,9781668001233,0,claude,
 X21N,9780451230546,1,claude,not very scary
 X21N,9789812692368,0,claude,
 X21N,9781563899805,0,claude,
-X21N,9780590431972,2,claude,"spooky, little violence"
+X21N,9780590431972,1,claude,children's stories: 1 in the base query X21B; the negation doesn't change the audience
 X21N,9780553116601,2,claude,"a haunting, little violence"
 X21N,9781421527550,0,claude,
 X21N,9780061253102,1,claude,YA anthology
@@ -9529,11 +9530,11 @@ X21N,9780553579758,1,claude,some violence
 X21N,9781476727653,0,claude,
 X21N,9780553582918,0,claude,
 X21N,9781416589426,1,claude,comic
-X21N,9780439568470,2,claude,children's horror
+X21N,9780439568470,1,claude,children's horror: 1 in the base query X21B; the negation doesn't change the audience
 X21N,9780061449154,0,claude,
 X21N,9780064431835,0,claude,
 X21N,9780060534059,0,claude,
-X21N,9780439568456,2,claude,"children's horror, not violent"
+X21N,9780439568456,1,claude,"children's horror, same as Welcome to Dead House (1 in the base query)"
 X21N,9780385671101,1,claude,satirical
 X21N,9780451223296,0,claude,
 X21N,9780062255655,2,claude,"eerie, little violence"
@@ -9647,11 +9648,11 @@ X23B,9781665197052,1,claude,"social engineering, nonfiction"
 X23B,9781616201326,2,claude,an art-heist backdrop
 X23B,9780670018703,1,claude,"a quest, not a heist"
 X23B,9780439903448,3,claude,
-X23B,9781408316221,3,claude,
+X23B,9781408316221,2,claude,book 2 of Heist Society; book 1 is in the pool at 3
 X23B,9781491589250,3,claude,
 X23B,9780553804690,2,claude,con artists
 X23B,9780307269751,0,claude,
-X23B,9781627792134,3,claude,
+X23B,9781627792134,2,claude,book 2 of Six of Crows; book 1 is in the pool at 3
 X23B,9780446612739,0,claude,
 X23N,9780739328279,0,claude,
 X23N,9780679600213,0,claude,
@@ -9681,13 +9682,13 @@ X23N,9780316057851,0,claude,
 X23N,9780425238196,0,claude,
 X23N,9780307278272,0,claude,
 X23N,9780553582918,0,claude,
-X23N,9781408316221,3,claude,
+X23N,9781408316221,2,claude,book 2 of Heist Society; book 1 is in the pool at 3
 X23N,9780545654746,0,claude,
 X23N,9780446611626,0,claude,
 X23N,9780446602280,0,claude,
 X23N,9780439903448,3,claude,
 X23N,9780380782345,0,claude,
-X23N,9781423166009,3,claude,
+X23N,9781423166009,2,claude,book 3 of Heist Society; book 1 is in the pool at 3
 X23N,9780446547598,0,claude,
 X24B,9780739328279,0,claude,
 X24B,9780679600213,0,claude,
@@ -9815,8 +9816,8 @@ X25N,9780312655464,1,claude,monastery murder
 X25N,9780316410984,0,claude,
 X25N,9781405293181,1,claude,"gets dark, not boarding"
 X25N,9780751531183,0,claude,
-X25N,9781579126292,2,claude,"cozy, not a school"
-X25N,9781579126254,2,claude,"cozy, not a school"
+X25N,9781579126292,1,claude,"a village, not a school: 1 in the base query X25B; ""not dark"" doesn't fix the setting"
+X25N,9781579126254,1,claude,"a village, not a school: 1 in the base query X25B; ""not dark"" doesn't fix the setting"
 X25N,9780670026326,1,claude,"boarding-school murder, darkish"
 X25N,9780062026088,1,claude,"boarding school, darkish"
 X25N,9780593063279,0,claude,
@@ -9850,12 +9851,12 @@ X26B,9780345807953,0,claude,
 X26B,9780143126683,0,claude,
 X26B,9781481420761,1,claude,"romance, an addict hero"
 X26B,9780689865190,3,claude,
-X26B,9781416940906,3,claude,
+X26B,9781416940906,2,claude,book 2 of the Crank trilogy; book 1 (Crank) is in the pool at 3
 X26B,9781847371669,2,claude,addiction memoir
 X26B,9780060858797,1,claude,eating-disorder memoir
 X26B,9780307276902,2,claude,addiction memoir
 X26B,9780060596996,2,claude,alcoholism memoir
-X26B,9781416950097,3,claude,
+X26B,9781416950097,2,claude,book 3 of the Crank trilogy; book 1 is in the pool at 3
 X26B,9781476770383,1,claude,"addiction a theme, horror"
 X26B,9781400052295,2,claude,addiction memoir
 X26B,9780385351379,2,claude,"addict hero, thriller"
@@ -9914,24 +9915,24 @@ X27B,9780345501332,0,claude,
 X27B,9780394709307,2,claude,"fairy tales, some fairies"
 X27B,9780606212342,1,claude,"elves, not fairies"
 X27B,9781475070309,2,claude,fairy-tale curse
-X27B,9780786851478,3,claude,
-X27B,9780141321318,3,claude,
+X27B,9780786851478,2,claude,Artemis Fowl book 2: sequel rule
+X27B,9780141321318,2,claude,Artemis Fowl book 3: sequel rule
 X27B,9780061668036,3,claude,
 X27B,9780738713700,3,claude,
 X27B,9780552153157,3,claude,
 X27B,9780316310314,3,claude,
 X27B,9780060012380,3,claude,
 X27B,9780590920681,3,claude,
-X27B,9780061668067,3,claude,
+X27B,9780061668067,2,claude,book 2 of Wings; book 1 is in the pool at 3
 X27B,9781405230278,2,claude,"children's, a fairy among many"
 X27B,9781554682744,3,claude,
 X27B,9781405240925,2,claude,"children's, a fairy among many"
 X27B,9780316201575,2,claude,fairy-tale world
-X27B,9781423103998,3,claude,
+X27B,9781423103998,2,claude,Artemis Fowl book 4: sequel rule
 X27B,9781599904788,1,claude,fairy-tale retelling
 X27B,9780061020612,2,claude,fairy godmothers
-X27B,9780786849567,3,claude,
-X27B,9780061214684,3,claude,
+X27B,9780786849567,2,claude,Artemis Fowl book 5: sequel rule
+X27B,9780061214684,2,claude,book 2 of Wicked Lovely: sequel rule
 X27N,9780739328279,0,claude,
 X27N,9780679600213,0,claude,
 X27N,9780441014941,0,claude,
@@ -9999,7 +10000,7 @@ X28B,9781400031573,3,claude,
 X28B,9780061655500,3,claude,
 X28B,9780345807090,2,claude,Harry Hole in Australia
 X28B,9780375704024,0,claude,
-X28B,9780307594778,3,claude,
+X28B,9780307594778,2,claude,the Millennium trilogy as one box set: box-set rule
 X28B,9781935744184,0,claude,
 X28B,9781594202247,1,claude,"comic noir, not Nordic"
 X28B,9780446698870,1,claude,American noir
@@ -10285,23 +10286,23 @@ X32B,9780061119064,1,claude,children's series
 X32B,9780606212342,2,claude,graphic adaptation
 X32B,9780064430685,0,claude,
 X32B,9781416990659,0,claude,
-X32B,9780553573428,3,claude,
-X32B,9780345335708,3,claude,
+X32B,9780553573428,2,claude,book 3 of A Song of Ice and Fire; book 1 is in the pool at 3
+X32B,9780345335708,2,claude,Belgariad book 4; book 1 (Pawn of Prophecy) is in the pool at 3
 X32B,9780385743600,1,claude,YA superhero
 X32B,9780385743563,1,claude,YA superhero
 X32B,9780345352668,3,claude,
-X32B,9780345335654,3,claude,
+X32B,9780345335654,2,claude,Belgariad book 2; book 1 is in the pool at 3
 X32B,9780345335517,3,claude,
-X32B,9780375840401,3,claude,
+X32B,9780375840401,2,claude,book 2 of the Inheritance Cycle: sequel rule
 X32B,9780142415245,2,claude,YA adventure series
 X32B,9780805080520,2,claude,children's epic
-X32B,9781857232097,3,claude,
-X32B,9780765302304,3,claude,
+X32B,9781857232097,2,claude,Wheel of Time book 5: sequel rule
+X32B,9780765302304,2,claude,Wheel of Time book 12: sequel rule
 X32B,9780553588484,3,claude,
 X32B,9780345536150,2,claude,comic adaptation
 X32B,9780586217832,3,claude,
 X32B,9780765350374,2,claude,standalone epic
-X32B,9780586066881,3,claude,
+X32B,9780586066881,2,claude,last book of the Riftwar Saga; book 1 (Magician) is in the pool at 3
 X32B,9780618640157,3,claude,
 X32B,9781607067238,1,claude,space-fantasy comic
 X32B,9780440423218,2,claude,graphic adaptation
@@ -10365,14 +10366,14 @@ X33B,9781416523710,1,claude,poetry
 X33B,9780143039099,3,claude,
 X33B,9780451525260,3,claude,
 X33B,9780192833983,3,claude,
-X33B,9780199537266,3,claude,
+X33B,9780199537266,2,claude,sequel to The Three Musketeers: sequel rule (it is 2 in X33N already)
 X33B,9781416534730,3,claude,
 X33B,9780061120084,3,claude,
 X33B,9781731494047,3,claude,
 X33B,9780140259445,2,claude,collected edition
 X33B,9780142437209,3,claude,
 X33B,9780141439808,3,claude,
-X33B,9781406501070,3,claude,
+X33B,9781406501070,2,claude,book 3 of Little Women: sequel rule
 X33B,9781840224023,3,claude,
 X33B,9780451205766,2,claude,modern classic
 X33B,9780192836380,3,claude,
@@ -10389,7 +10390,7 @@ X33N,9780451230546,0,claude,
 X33N,9789812692368,0,claude,
 X33N,9781563899805,0,claude,
 X33N,9780756410438,0,claude,
-X33N,9780606212342,2,claude,"graphic, quick"
+X33N,9780606212342,1,claude,"a graphic-novel adaptation, not the classic novel: 1 in the base query X33B; ""not slow"" doesn't fix that"
 X33N,9780679813439,2,claude,"children's classic, quick"
 X33N,9781693224188,3,claude,
 X33N,9780887308369,0,claude,
@@ -10588,7 +10589,7 @@ X36B,9780441017027,0,claude,
 X36B,9780062104892,3,claude,
 X36B,9780670020553,3,claude,
 X36B,9780434020805,2,claude,Brakebills sequel
-X36B,9780439139601,3,claude,
+X36B,9780439139601,2,claude,Harry Potter book 4: sequel rule
 X36B,9780670015672,2,claude,Brakebills returns
 X36B,9781477823835,2,claude,apprenticeship after magic school
 X36B,9780345335708,0,claude,
@@ -10597,10 +10598,10 @@ X36B,9780786818594,2,claude,magician's apprentice
 X36B,9780765356154,1,claude,"magicians, no school"
 X36B,9780765376459,1,claude,"magic, no school"
 X36B,9780006498858,0,claude,
-X36B,9781423104872,3,claude,
+X36B,9781423104872,2,claude,book 2 of the Heir Chronicles: sequel rule
 X36B,9780590414272,0,claude,
 X36B,9780756404079,3,claude,
-X36B,9780439358071,3,claude,
+X36B,9780439358071,2,claude,Harry Potter book 5: sequel rule
 X36N,9780739328279,0,claude,
 X36N,9780679600213,0,claude,
 X36N,9780441014941,0,claude,
@@ -10711,7 +10712,7 @@ X37N,9780439050234,0,claude,
 X37N,9780448421650,0,claude,
 X37N,9780823423910,0,claude,
 X37N,9780688140014,0,claude,
-X37N,9781401200770,3,claude,
+X37N,9781401200770,2,claude,Fables volume 2: sequel rule caps it at 2 (it is 2 in the base query too)
 X37N,9780060266868,0,claude,
 X37N,9780723236184,0,claude,
 X37N,9780375814235,1,claude,"Dahl stories, partly adult"
@@ -10802,7 +10803,7 @@ X39B,9780544025837,0,claude,
 X39B,9780316122382,2,claude,love in a day
 X39B,9780006479673,0,claude,
 X39B,9780446698467,0,claude,
-X39B,9780062347268,0,claude,
+X39B,9780062347268,1,claude,"coming of age and a first love, adult historical: 1, as in X39N"
 X39B,9780425246955,0,claude,
 X39B,9781563893308,0,claude,
 X39B,9780061689420,1,claude,YA vampire romance sequel
@@ -10874,12 +10875,12 @@ X40B,9780394709307,3,claude,
 X40B,9780525423348,3,claude,
 X40B,9780747599876,2,claude,invented wizarding fairy tales
 X40B,9780345501332,0,claude,
-X40B,9780670844876,2,claude,"fractured fairy tales, picture book"
+X40B,9780670844876,0,claude,51-page picture book; picture books are 0 unless the request is for children
 X40B,9780140424386,1,claude,"medieval tales, not fairy tales"
 X40B,9781984899668,0,claude,
 X40B,9780064404778,3,claude,
 X40B,9780142414828,2,claude,twisted fairy tales in verse
-X40B,9780140558647,2,claude,"a single tale, picture book"
+X40B,9780140558647,0,claude,picture book; picture books are 0 unless the request is for children (same book is 0 in S21)
 X40B,9780316406819,2,claude,"Land of Stories, fairy-tale world"
 X40B,9781475070309,2,claude,fairy-tale curse
 X40B,9781599904788,2,claude,Cinderella retelling

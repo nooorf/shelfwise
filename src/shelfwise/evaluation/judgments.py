@@ -43,6 +43,21 @@ class PreLabel:
 
 
 PRELABEL_COLUMNS = ("query_id", "work_key", "grade", "judge", "reason")
+CLAUDE_REVIEW = "claude-review"  # a suggestion checked only by Claude's own review pass
+
+
+def review_judge(
+    grade: int, suggested: int | None, checked: bool, current: Judgment, judge: str
+) -> str:
+    """Who a grade imported from the review document is credited to.
+
+    The person, if they changed the suggestion, marked the row as checked, or already had this
+    grade as theirs; otherwise Claude, so `<judge>-review` always means a person looked at it.
+    """
+    mine = f"{judge}-review"
+    if checked or grade != suggested or (current.judge == mine and current.grade == grade):
+        return mine
+    return CLAUDE_REVIEW
 
 
 def load_prelabels(path: Path) -> list[PreLabel]:

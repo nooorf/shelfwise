@@ -5,9 +5,10 @@
 
 The document has one section per query, books sorted by suggested grade (relevant first), each
 with title, author, year, pages, genres, a short blurb and the reason for the grade. To correct a
-grade, change the number in its Grade cell; leave everything else as it is. `import` saves every
-row of the document as your reviewed grade (judge "<initials>-review") and lists what you changed.
-Pairs you graded yourself are shown for reference and never overwritten.
+grade, change the number in its Grade cell; to confirm one you checked, add a ✓ after it ("2 ✓").
+`import` saves every row: the ones you changed or ticked as your reviewed grade (judge
+"<initials>-review"), the rest as "claude-review", so the file never claims a person read a row
+they didn't. Pairs you graded yourself are shown for reference and never overwritten.
 """
 
 import argparse
@@ -19,9 +20,11 @@ from sqlalchemy import text
 
 from shelfwise.catalog.db import make_engine
 from shelfwise.evaluation.judgments import (
+    CLAUDE_REVIEW,
     key_aliases,
     load_judgments,
     load_prelabels,
+    review_judge,
     save_judgments,
     set_grade,
     work_keys,
@@ -35,7 +38,7 @@ CATEGORY_ORDER = ("vague", "discovery", "negation", "similarity", "multi_constra
                   "genre", "availability", "adversarial", "lookup", "author")  # fmt: skip
 BLURB_CHARS = 110
 _CELL_SPLIT = re.compile(r"(?<!\\)\|")
-_ROW = re.compile(r"^\|\s*([0-3])\s*\|.*\|\s*(\S+)\s*\|\s*$")
+_ROW = re.compile(r"^\|\s*([0-3])\s*(✓)?\s*\|.*\|\s*(\S+)\s*\|\s*$")
 _SECTION = re.compile(r"^## (\S+) · ")
 
 _BOOK_SQL = text(
@@ -56,14 +59,16 @@ related · **0** not what they asked for. Books are sorted by grade within each 
 relevant ones come first.
 
 **How to review:** read each query's table. Where you disagree, change the number in the
-**Grade** column (0 to 3) and nothing else. Rows marked *(you)* are your own grades, shown for
-reference. When done, run:
+**Grade** column (0 to 3) and nothing else. Checked a row and agree? Add a ✓ after the number
+("2 ✓") so it counts as yours. Rows marked *(you)* are your own grades, shown for reference. When
+done, run:
 
 ```bash
 uv run python scripts/grades_doc.py import --judge NF
 ```
 
-Every row is then saved as your reviewed grade, and the command lists what you changed. Queries
+Rows you changed or ticked are saved as your reviewed grade, the rest as `claude-review`, and the
+command lists what you changed. Queries
 are ordered hardest first (vague, discovery, negation, similarity ...); author and lookup queries
 at the end are near-mechanical.
 
@@ -150,7 +155,7 @@ def import_doc(doc: Path, judge: str, qrels: Path) -> None:
 
     suggested = {(p.query_id, current(p.work_key)): p.grade for p in load_prelabels(PRELABELS)}
     index = {(j.query_id, current(j.work_key)): i for i, j in enumerate(judgments)}
-    query, saved, changed, problems = None, 0, [], []
+    query, saved, yours, changed, problems = None, 0, 0, [], []
     for number, line in enumerate(doc.read_text(encoding="utf-8").splitlines(), start=1):
         if match := _SECTION.match(line):
             query = match.group(1)
@@ -161,24 +166,30 @@ def import_doc(doc: Path, judge: str, qrels: Path) -> None:
         if query is None or match is None:
             problems.append(f"line {number}: grade must be 0, 1, 2 or 3")
             continue
-        grade, key = int(match.group(1)), current(match.group(2))
+        grade, checked, key = int(match.group(1)), bool(match.group(2)), current(match.group(3))
         i = index.get((query, key))
         if i is None:
             problems.append(f"line {number}: {query}/{key} is not in the pool any more")
             continue
         if judgments[i].grade is not None and not judgments[i].judge.endswith("-review"):
             continue  # an independent human grade: never overwritten
-        if grade != suggested.get((query, key)):
+        suggestion = suggested.get((query, key))
+        if grade != suggestion:
             title = _CELL_SPLIT.split(line)[2].split("**")[1] if "**" in line else key
-            changed.append(f"{query} {title}: {suggested.get((query, key))} -> {grade}")
-        judgments = set_grade(judgments, i, grade, f"{judge}-review")
+            changed.append(f"{query} {title}: {suggestion} -> {grade}")
+        who = review_judge(grade, suggestion, checked, judgments[i], judge)
+        judgments = set_grade(judgments, i, grade, who)
         saved += 1
+        yours += who != CLAUDE_REVIEW
     if problems:
         raise SystemExit(
             "Nothing saved; fix these in the document first:\n  " + "\n  ".join(problems)
         )
     save_judgments(qrels, judgments)
-    print(f"saved {saved} reviewed grades to {qrels}; you changed {len(changed)}:")
+    print(
+        f"saved {saved} grades to {qrels}: {yours} as {judge}-review, the rest as "
+        f"{CLAUDE_REVIEW}; you changed {len(changed)}:"
+    )
     for c in changed:
         print(f"  {c}")
     left = sum(j.grade is None for j in judgments)

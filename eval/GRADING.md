@@ -41,7 +41,7 @@ A book counts as **relevant** in the metrics at grade 2 or 3.
 
 ## Pre-labels and review
 
-An LLM (Claude) can pre-grade pooled pairs by these same rules, with a one-line reason where the grade isn't obvious. Pre-labels live in `data/prelabels.csv` and are **not** judgments: they count only after a person reviews them: `make grades-doc` writes every query with its books and suggested grades to one Markdown document, the reviewer corrects grades in place, and `make import-grades` saves the reviewed document. Reviewed grades record the judge as `<initials>-review`, so they can always be separated from independent grades.
+An LLM (Claude) can pre-grade pooled pairs by these same rules, with a one-line reason where the grade isn't obvious. Pre-labels live in `data/prelabels.csv` and are **not** judgments: they count only after a person reviews them: `make grades-doc` writes every query with its books and suggested grades to one Markdown document, the reviewer corrects grades in place, and `make import-grades` saves the reviewed document. Reviewed grades record the judge as `<initials>-review`, so they can always be separated from independent grades. Only rows the reviewer changed or ticked as checked (`2 ✓`) get their initials; rows nobody but Claude looked at are saved as `claude-review` (since round 2, 2026-10-08, when Claude did the review pass and the reviewer decided only the open calls).
 
 Reviewing is faster than grading but anchors the reviewer on the suggestion, so agreement is measured on pairs graded **independently** by both:
 

@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from shelfwise.evaluation.judgments import (
+    CLAUDE_REVIEW,
     Judgment,
     PreLabel,
     drop_stale,
@@ -11,6 +12,7 @@ from shelfwise.evaluation.judgments import (
     load_prelabels,
     merge_pool,
     qrels_by_query,
+    review_judge,
     save_judgments,
     save_prelabels,
     set_grade,
@@ -116,3 +118,18 @@ def test_split_is_deterministic_and_roughly_forty_percent_test() -> None:
 
     assert split_of("M01") == split_of("M01")
     assert 0.35 < splits["test"] / 2000 < 0.45
+
+
+def test_review_credits_the_person_only_for_rows_they_touched() -> None:
+    blank = Judgment("Q1", "k1")
+    assert review_judge(2, 3, False, blank, "NF") == "NF-review"  # changed the suggestion
+    assert review_judge(3, 3, True, blank, "NF") == "NF-review"  # marked as checked
+    assert review_judge(3, 3, False, blank, "NF") == CLAUDE_REVIEW  # left alone
+    assert review_judge(2, None, False, blank, "NF") == "NF-review"  # no suggestion to keep
+
+
+def test_review_keeps_an_earlier_human_review_unless_the_grade_moves() -> None:
+    mine = Judgment("Q1", "k1", 2, "NF-review")
+    assert review_judge(2, 2, False, mine, "NF") == "NF-review"
+    claude = Judgment("Q1", "k1", 2, CLAUDE_REVIEW)
+    assert review_judge(2, 2, False, claude, "NF") == CLAUDE_REVIEW
