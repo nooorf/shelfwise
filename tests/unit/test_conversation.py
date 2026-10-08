@@ -129,7 +129,8 @@ def test_shifts_are_made_absolute_from_what_was_shown(
 
     assert result is not None
     assert f"{result.field} {result.op} {result.value}" == expected
-    assert (result.source, result.strength) == ("state", "soft")
+    hard = shift.field in ("pages", "year")  # "shorter" limits every book; moods only nudge
+    assert (result.source, result.strength) == ("state", "hard" if hard else "soft")
 
 
 def test_a_shift_with_nothing_to_compare_is_reported_not_guessed() -> None:
@@ -344,3 +345,27 @@ def test_rules_only_refinements_and_start_over() -> None:
     assert darker.state.semantic_query == "dark fantasy"
     assert active(darker.state) == {"facet.darkness gte 3 soft"}
     assert over.kind == "start_over" and not over.state.has_search
+
+
+@pytest.mark.parametrize(
+    ("constraint", "words"),
+    [
+        (c("facet.darkness", "lte", 1, "hard"), "not too dark"),
+        (c("facet.darkness", "gte", 3), "very dark"),
+        (c("facet.romance", "eq", 0, "hard"), "no romance"),
+        (c("facet.violence", "lte", 2, "hard"), "nothing graphic"),
+        (c("facet.supernatural", "eq", "yes", "hard", exclude=True), "nothing supernatural"),
+        (c("facet.audience", "eq", "adult"), "for adults"),
+        (c("genre", "in", ["fantasy"]), "fantasy"),
+        (c("genre", "in", ["horror"], "hard", exclude=True), "no horror"),
+        (c("theme", "eq", "space", exclude=True), "no space"),
+        (c("pages", "lt", 240, "hard"), "under 240 pages"),
+        (c("year", "gt", 2015, "hard"), "after 2015"),
+        (c("facet.darkness", "shift", 1), "darker"),
+        (c("pages", "lt", 300, "hard", span="short ones"), "short ones"),  # their words win
+    ],
+)
+def test_chips_read_as_plain_words(constraint: Constraint, words: str) -> None:
+    from shelfwise.conversation.merge import label
+
+    assert label(constraint) == words

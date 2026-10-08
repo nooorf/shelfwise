@@ -107,6 +107,7 @@ def strip_words(text: str, words: list[str]) -> str:
         pattern = r"[\s-]+".join(map(re.escape, re.split(r"[\s-]+", word)))
         text = re.sub(rf"\b{pattern}(?:s|es)?\b", " ", text, flags=re.IGNORECASE)
     text = _NEGATION_CUES.sub(" ", text)
+    text = re.sub(r"\btoo\b(?=\s*(?:[,.;]|$))", " ", text)  # "nothing too dark" leaves "too"
     text = re.sub(r"\s+([,.;])", r"\1", " ".join(text.split()))
     return re.sub(r"^[\s,.;]+|[\s,;]+$|,(?=[\s,]*,)", "", text)
 

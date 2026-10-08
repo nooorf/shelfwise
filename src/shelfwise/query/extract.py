@@ -365,6 +365,30 @@ def _avoid_as_facet(phrase: str, less: bool) -> dict[str, str]:
     return {}
 
 
+# A mood word the message itself negates: "nothing too dark", "no romance", "isn't violent".
+# Its negation beats a positive pick ("cozy" -> light) so the word is stripped and filtered.
+_NEGATED_MOOD = {
+    "darkness": (r"bleak|depressing", "not bleak", ("not bleak",)),
+    "darkness ": (r"dark", "not too dark", ("not too dark", "not bleak", "lighter")),
+    "romance": (r"romance|romantic|love story", "none or minor",
+                ("none or minor", "none at all", "less")),
+    "violence": (r"violen(?:t|ce)", "not too violent",
+                 ("not too violent", "no gore", "none at all", "less")),
+    "violence ": (r"gore|gory|graphic", "no gore",  # "isn't gory": graphic only
+                  ("not too violent", "no gore", "none at all", "less")),
+    "supernatural": (r"supernatural|magic(?:al)?|paranormal", "excluded", ("excluded",)),
+}  # fmt: skip
+_NEGATOR = r"(?:no|not|nothing|without|never|(?:isn|aren|don|doesn|wasn) ?t)"
+
+
+def _negated_moods(text: str) -> dict[str, str]:
+    found: dict[str, str] = {}
+    for key, (words, choice, _) in _NEGATED_MOOD.items():
+        if re.search(rf"\b{_NEGATOR}(?: \w+){{0,2}} (?:{words})\b", text):
+            found.setdefault(key.strip(), choice)
+    return found
+
+
 def check_evidence(out: QueryLLM, message: str) -> QueryLLM:
     """Reset every choice the message gives no reason for, and route avoided phrases that
     are really genres or facets to where PARSING.md puts them."""
@@ -377,6 +401,10 @@ def check_evidence(out: QueryLLM, message: str) -> QueryLLM:
     for name in ("historical_setting", "popular"):
         if getattr(out, name) and not _says(_CUES[name], text):
             update[name] = False
+    for name, choice in _negated_moods(text).items():
+        negations = next(n for k, (_, _, n) in _NEGATED_MOOD.items() if k.strip() == name)
+        if update.get(name, getattr(out, name)) not in negations:
+            update[name] = choice
     for name in ("length_change", "year_change"):
         if getattr(out, name) != "none" and not _says(_CUES[name], text):
             update[name] = "none"

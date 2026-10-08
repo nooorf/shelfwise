@@ -18,6 +18,8 @@ from shelfwise.conversation.service import (
 from shelfwise.logging import configure_logging
 from shelfwise.pipeline import SearchRequest, SearchResponse, SearchService, build_service
 
+NARRATE_TIMEOUT_S = 60.0  # a whole reply; past it the reply falls back to templates
+
 
 class _Resources:
     """The database engine and search service, created on first use so the app starts (and
@@ -59,9 +61,14 @@ class _Resources:
         with self._lock:
             if self._conversation is None:
                 from shelfwise.conversation.store import RedisSessionStore
+                from shelfwise.generation.narrate import Narrator
+                from shelfwise.llm.client import OllamaClient
 
                 store = RedisSessionStore(self.settings.redis_url, self.settings.session_ttl_s)
-                self._conversation = ConversationService(search, store)
+                llm_on = self.settings.query_parser == "cascade" and self.settings.narrate
+                llm = OllamaClient(model=self.settings.llm_model, timeout=NARRATE_TIMEOUT_S)
+                narrator = Narrator(llm if llm_on else None)  # None: template replies
+                self._conversation = ConversationService(search, store, narrator=narrator)
             return self._conversation
 
 

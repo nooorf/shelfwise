@@ -325,6 +325,7 @@ def test_avoided_phrases_go_where_parsing_md_puts_them(
         ("data structures in C++, no self-help", ["self help"], "data structures in C++"),
         ("dogs where the dog dies", ["die", "dies"], "dogs where the dog"),
         ("not just theory, practical", [], "not just theory, practical"),  # nothing negated
+        ("cozy fantasy, nothing too dark", ["dark"], "cozy fantasy"),
     ],
 )
 def test_strip_words(text: str, words: list[str], expected: str) -> None:
@@ -383,3 +384,19 @@ def test_anything_more_goes_to_the_llm(query: str) -> None:
 
     assert not result.fast_path
     assert len(llm.calls) == 1
+
+
+def test_a_negated_mood_beats_a_positive_pick() -> None:
+    """2026-10-08, Qwen3-4B on "a cozy fantasy for adults, nothing too dark": darkness "light"
+    (from cozy), so "dark" stayed in the search text and pulled "Dark ..." titles up."""
+    request, _ = parse(
+        "a cozy fantasy for adults, nothing too dark",
+        intent="discover",
+        genres=["fantasy"],
+        darkness="light",
+        audience="adult",
+        semantic_query="cozy fantasy for adults nothing too dark",
+    )
+
+    assert "facet.darkness lte 1 hard" in found(request)
+    assert "dark" not in request.semantic_query.split()

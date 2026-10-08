@@ -104,11 +104,68 @@ _SHIFT_WORDS = {
 }  # fmt: skip
 
 
+_SCALE_WORDS = {
+    # field: (lte 0 / eq 0, lte 1, lte 2, gte 2, gte 3)
+    "facet.darkness": ("not dark at all", "not too dark", "not bleak", "dark", "very dark"),
+    "facet.romance": ("no romance", "little or no romance", "some romance at most", "romantic",
+                      "very romantic"),
+    "facet.violence": ("no violence", "not too violent", "nothing graphic", "violent",
+                       "very violent"),
+}  # fmt: skip
+_EQ_WORDS = {
+    ("facet.pace", "fast"): "fast-paced", ("facet.pace", "slow"): "slow-paced",
+    ("facet.pace", "medium"): "steady pace",
+    ("facet.supernatural", "yes"): "magic or the supernatural",
+    ("facet.audience", "ya"): "for teens", ("facet.audience", "children"): "for kids",
+    ("facet.audience", "adult"): "for adults",
+    ("facet.fiction", True): "fiction", ("facet.fiction", False): "nonfiction",
+    ("facet.historical_setting", "yes"): "set in the past",
+    ("facet.reading_level", "intro"): "beginner level",
+    ("facet.reading_level", "intermediate"): "intermediate level",
+    ("facet.reading_level", "advanced"): "advanced level",
+    ("available_now", True): "available now", ("popular", True): "popular",
+}  # fmt: skip
+_BOUND_WORDS = {
+    "pages": {"lt": "under {} pages", "lte": "at most {} pages", "gt": "over {} pages",
+              "gte": "at least {} pages", "approx": "about {} pages"},
+    "year": {"lt": "before {}", "lte": "{} or earlier", "gt": "after {}", "gte": "{} or later",
+             "eq": "from {}"},
+}  # fmt: skip
+
+
+def describe(c: Constraint) -> str | None:
+    """Plain words for a constraint the person didn't phrase themselves (LLM, state)."""
+    negate = c.polarity == "exclude"
+    if c.field in _SCALE_WORDS and isinstance(c.value, int) and not negate:
+        words = _SCALE_WORDS[c.field]
+        if c.op in ("lte", "lt", "eq") and c.value <= 2:
+            limit = c.value - (1 if c.op == "lt" else 0)
+            return words[max(0, limit)] if c.op != "eq" or c.value == 0 else None
+        if c.op in ("gte", "gt"):
+            return words[3] if c.value + (1 if c.op == "gt" else 0) <= 2 else words[4]
+    if c.op == "eq" and not isinstance(c.value, list) and (c.field, c.value) in _EQ_WORDS:
+        if negate and c.field == "facet.supernatural":
+            return "nothing supernatural"
+        words = _EQ_WORDS[(c.field, c.value)]
+        return f"not {words}" if negate else words
+    if c.field == "genre" and c.op == "in":
+        names = " or ".join(c.value if isinstance(c.value, list) else [c.value])
+        return f"no {names}" if negate else names
+    if c.field == "theme":
+        return f"no {c.value}" if negate else str(c.value)
+    if c.field in _BOUND_WORDS and (pattern := _BOUND_WORDS[c.field].get(c.op)):
+        return pattern.format(c.value)
+    return None
+
+
 def label(c: Constraint) -> str:
-    """How a constraint reads on a chip: its words when known, else a readable fallback."""
+    """How a constraint reads on a chip and in replies: the person's words when known, else
+    plain words, else the raw form."""
     if c.span:
         return c.span
     if c.op == "shift" and (words := _SHIFT_WORDS.get((c.field, c.value))):
+        return words
+    if words := describe(c):
         return words
     return f"{'not ' if c.polarity == 'exclude' else ''}{c.field} {c.op} {c.value}"
 
@@ -150,7 +207,10 @@ def resolve_shift(c: Constraint, shown: list[ShownBook]) -> Constraint | None:
     span = c.span or _SHIFT_WORDS.get((c.field, 1 if up else -1), "")
 
     def made(field_: str, op: str, value: object) -> Constraint:
-        update = {"field": field_, "op": op, "value": value, "source": "state", "span": span}
+        # "Shorter" means every book shorter: a hard, visible, removable limit. Moods stay soft.
+        strength = "hard" if field_ in ("pages", "year") else c.strength
+        update = {"field": field_, "op": op, "value": value, "source": "state", "span": span,
+                  "strength": strength}  # fmt: skip
         return c.model_copy(update=update)
 
     if c.field in _SCALES:

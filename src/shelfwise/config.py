@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     # Conversation state expires after this many idle seconds: 30 min on the web; set 120 on a
     # shared kiosk so the next visitor never sees the previous conversation.
     session_ttl_s: int = 1800
+    # The LLM writes a short validated note per book in conversation replies; off: template
+    # notes (always correct, plain). Needs query_parser="cascade" (the LLM switched on).
+    narrate: bool = True
     log_level: str = "INFO"
     log_json: bool = True
 

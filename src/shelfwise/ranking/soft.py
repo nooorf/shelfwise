@@ -6,9 +6,9 @@ genre label, a shift with nothing to shift from) counts 0; the score is the mean
 A missing genre label is unknown, not a miss: the catalog's genres are too incomplete to count
 against a book (PARSING.md).
 
-Not scored yet: theme penalties (no theme data per book), `shift` (needs the previous results,
-Phase 4), and soft page or year limits (the rules make those hard). Until the ranker learns
-weights, `SOFT_WEIGHT` is an untuned nudge on top of RRF.
+Page and year preferences count too: the conversation turns "shorter" into a soft page limit
+from the books just shown. Not scored: theme penalties (no theme data per book) and unresolved
+`shift`s. Until the ranker learns weights, `SOFT_WEIGHT` is an untuned nudge on top of RRF.
 """
 
 import operator
@@ -32,7 +32,7 @@ _BOOL_FACETS = {"fiction"}  # stored as a boolean; the parser says True / False
 _YES_NO_FACETS = {"supernatural", "historical_setting"}  # 'yes' / 'no' / 'unclear'
 
 
-def _facet_match(c: Constraint, value: Any) -> int:
+def facet_match(c: Constraint, value: Any) -> int:
     if value is None or c.op not in _COMPARE:
         return 0
     name = c.field.removeprefix("facet.")
@@ -47,11 +47,22 @@ def _facet_match(c: Constraint, value: Any) -> int:
     return 1 if met else -1
 
 
+def _number_match(c: Constraint, value: int | None) -> int:
+    if value is None or c.op not in _COMPARE or not isinstance(c.value, int | float):
+        return 0
+    met = _COMPARE[c.op](value, c.value)
+    if c.polarity == "exclude":
+        met = not met
+    return 1 if met else -1
+
+
 def soft_score(
     constraints: Sequence[Constraint],
     facets: Mapping[str, Any] | None,
     genres: Sequence[str],
     popularity_rank: float | None = None,
+    pages: int | None = None,
+    year: int | None = None,
 ) -> float:
     """Mean of +1 (met) / -1 (broken) / 0 (unknown) over the soft constraints that apply.
 
@@ -61,13 +72,17 @@ def soft_score(
         if c.strength != "soft" or c.op == "shift":
             continue
         if c.field.startswith("facet."):
-            votes.append(_facet_match(c, (facets or {}).get(c.field.removeprefix("facet."))))
+            votes.append(facet_match(c, (facets or {}).get(c.field.removeprefix("facet."))))
         elif c.field == "genre" and c.op == "in":
             overlap = bool(set(genres) & set(c.value if isinstance(c.value, list) else [c.value]))
             if c.polarity == "exclude":
                 votes.append(-1 if overlap else 0)
             else:
                 votes.append(1 if overlap else 0)
+        elif c.field == "pages":
+            votes.append(_number_match(c, pages))
+        elif c.field == "year":
+            votes.append(_number_match(c, year))
         elif c.field == "popular" and popularity_rank is not None:
             votes.append(1 if popularity_rank >= 0.8 else 0)
     return sum(votes) / len(votes) if votes else 0.0

@@ -32,6 +32,10 @@ from shelfwise.conversation.merge import TurnUpdate, apply_turn, label, record_r
 from shelfwise.conversation.state import ConversationState, ShownBook, new_state
 from shelfwise.conversation.store import SessionStore, new_session_id
 from shelfwise.evaluation.systems import SearchContext
+from shelfwise.generation.context import Candidate, descriptions, matched_labels
+from shelfwise.generation.narrate import Narrator, Reply
+from shelfwise.generation.templates import Task
+from shelfwise.generation.validate import CatalogNames
 from shelfwise.pipeline import BookResult, Relaxation, SearchService
 from shelfwise.query.constraints import Constraint, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
@@ -53,6 +57,7 @@ CHAT_REPLY = (
 class TurnRequest(BaseModel):
     message: str = Field(min_length=1, max_length=500)
     limit: int = Field(default=5, ge=1, le=20)
+    narrate: bool = True  # the LLM's notes on the books; off for speed (cards are the same)
 
 
 class Chip(BaseModel):
@@ -82,6 +87,7 @@ class TurnResponse(BaseModel):
     lookup: LookupSpec | None
     seed_titles: list[str]
     results: list[BookResult]
+    reply: Reply | None  # intro, one validated note per book, follow-up; None if not asked for
     facets: dict[int, dict[str, Any]]  # explain / compare: the tags of the books discussed
     relaxations: list[Relaxation]
     can_undo: bool
@@ -163,10 +169,52 @@ class ConversationService:
         search: SearchService,
         store: SessionStore,
         now: Callable[[], datetime] = lambda: datetime.now(UTC),
+        narrator: Narrator | None = None,
     ) -> None:
         self.search = search
         self.store = store
         self.now = now
+        # Without an LLM the narrator writes templates: correct, plain.
+        self.narrator = narrator or Narrator(None)
+        self._names: CatalogNames | None = None
+        self._names_version: int | None = None
+
+    def _catalog_names(self, conn: Connection) -> CatalogNames:
+        version = self.search.catalog_version
+        if self._names is None or version != self._names_version:
+            self._names, self._names_version = CatalogNames.load(conn), version
+        return self._names
+
+    def _narrate(
+        self, conn: Connection, ctx: SearchContext, state: ConversationState, route: Route,
+        message: str, results: list[BookResult],
+    ) -> Reply | None:  # fmt: skip
+        task: Task | None = {"search": "recommend", "surprise": "recommend", "explain": "explain",
+                             "compare": "compare"}.get(route)  # type: ignore[assignment]  # fmt: skip
+        if task is None or not results:
+            return None
+        facets = ctx.signals().facets
+        texts = descriptions(conn, [r.work_id for r in results])
+        wishes = [(label(a.constraint), a.constraint) for a in state.constraints]
+        books = [
+            Candidate(
+                work_id=r.work_id,
+                title=r.title,
+                authors=r.authors,
+                pages=r.pages,
+                year=r.year,
+                genres=r.genres,
+                facets=facets.get(r.work_id, {}),
+                matched=matched_labels(wishes, facets.get(r.work_id, {}), r.genres),
+                description=texts.get(r.work_id, ""),
+            )
+            for r in results
+        ]
+        said = [state.semantic_query] if state.semantic_query else []
+        return self.narrator.narrate(
+            task, message, books, self._catalog_names(conn), [*said, *(w for w, _ in wishes)],
+            state.seed_titles, state.seed_work_ids,
+        )  # fmt: skip
 
     def start(self) -> str:
         session_id = new_session_id()
@@ -222,10 +270,12 @@ class ConversationService:
             )
         return self._respond(
             conn, ctx, state, update.kind, route, parsed.intent, parse_error, system, ids,
-            notes, facets, start, parse_ms,
+            notes, facets, start, parse_ms, request.message if request.narrate else None,
         )  # fmt: skip
 
-    def undo(self, conn: Connection, session_id: str, limit: int = 5) -> TurnResponse:
+    def undo(
+        self, conn: Connection, session_id: str, limit: int = 5, narrate: bool = True
+    ) -> TurnResponse:
         """Back to the state before the last topic reset, searched again."""
         start = time.perf_counter()
         state = self._load(session_id)
@@ -234,15 +284,16 @@ class ConversationService:
         if restored is None:
             return self._respond(
                 conn, ctx, state, "undo", "chat", "other", None, None, [],
-                ["Nothing to undo."], {}, start, 0.0,
+                ["Nothing to undo."], {}, start, 0.0, None,
             )  # fmt: skip
         query = restored.semantic_query or "books"
         system, ids = self.search.retrieve(
             ctx, query, state_request(restored, "discover"), True, limit
         )
+        said = restored.recent_turns[-1].text if restored.recent_turns else query
         return self._respond(
             conn, ctx, restored, "undo", "search", "refine", None, system, ids,
-            ["Back to your previous search."], {}, start, 0.0,
+            ["Back to your previous search."], {}, start, 0.0, said if narrate else None,
         )  # fmt: skip
 
     def _reference(
@@ -279,8 +330,9 @@ class ConversationService:
         self, conn: Connection, ctx: SearchContext, state: ConversationState, kind: str,
         route: Route, intent: Intent, parse_error: str | None, system: str | None,
         ids: list[int], notes: list[str], facets: dict[int, dict[str, Any]], start: float,
-        parse_ms: float,
+        parse_ms: float, message: str | None,
     ) -> TurnResponse:  # fmt: skip
+        """`message`: what to narrate for (None: no narration)."""
         results = self.search.details(conn, ids, ctx.today)
         relaxations: list[Relaxation] = []
         if route == "search" and not results:
@@ -294,6 +346,10 @@ class ConversationService:
                 notes.append("Nothing in the catalog matches that.")
         if route in ("search", "surprise"):
             state = record_results(state, shown_books(results, ctx.signals().facets))
+        retrieved_ms = (time.perf_counter() - start) * 1000
+        reply = None
+        if message is not None:
+            reply = self._narrate(conn, ctx, state, route, message, results)
         self.store.put(state)
         return TurnResponse(
             session_id=state.session_id,
@@ -310,11 +366,14 @@ class ConversationService:
             lookup=state.lookup,
             seed_titles=state.seed_titles,
             results=results,
+            reply=reply,
             facets=facets,
             relaxations=relaxations,
             can_undo=state.before_reset is not None,
             timings_ms={
                 "parse": round(parse_ms, 1),
+                "retrieve": round(retrieved_ms - parse_ms, 1),
+                "narrate": reply.ms if reply else 0.0,
                 "total": round((time.perf_counter() - start) * 1000, 1),
             },
         )

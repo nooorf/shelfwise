@@ -16,6 +16,7 @@ from shelfwise.config import Settings
 from shelfwise.conversation.service import ConversationService
 from shelfwise.conversation.store import MemorySessionStore
 from shelfwise.embed.store import embed_missing, refresh_search_text
+from shelfwise.generation.narrate import Narrator
 from shelfwise.pipeline import SearchService
 
 from ..fakes import FakeEmbedder, FakeLLM
@@ -69,6 +70,26 @@ FORMS: list[Any] = [
 ]
 
 
+class NarratingLLM:
+    """Writes a note for whichever books it is given (they're in the schema's enum)."""
+
+    model = "fake-narrator"
+
+    def __init__(self) -> None:
+        self.calls: list[list[dict[str, str]]] = []
+
+    def chat_structured(self, messages, schema, **kwargs):  # type: ignore[no-untyped-def]
+        from shelfwise.llm.client import GenerationStats, StructuredResult
+
+        self.calls.append(messages)
+        prop = schema.model_json_schema()["$defs"]["NarrationItem"]["properties"]["work_id"]
+        ids = prop.get("enum") or [prop["const"]]  # one book: a const, not an enum
+        value = {"intro": "A few picks.", "items": [{"work_id": i, "why": "A gripping story."}
+                                                    for i in ids]}  # fmt: skip
+        stats = GenerationStats(self.model, 100, 40, 50.0, 0.0, 1)
+        return StructuredResult(schema.model_validate(value), stats)
+
+
 @contextmanager
 def make_client(conn: Connection, forms: list[Any]) -> Iterator[TestClient]:
     embedder = FakeEmbedder()
@@ -78,6 +99,7 @@ def make_client(conn: Connection, forms: list[Any]) -> Iterator[TestClient]:
         search,
         MemorySessionStore(ttl_s=1800),
         now=lambda: datetime(2026, 10, 8, 12, 0, tzinfo=UTC),
+        narrator=Narrator(NarratingLLM()),
     )
     app = create_app(
         Settings(profile="cpu", log_json=False), service=search, conversation=conversation
@@ -114,6 +136,8 @@ def test_a_conversation_refines_explains_resets_and_undoes(client: TestClient) -
 
     one = say(client, session, "psychological thrillers")
     assert (one["kind"], one["route"], one["parser"]) == ("new_search", "search", "cascade")
+    assert one["reply"]["source"] == "llm"
+    assert [i["work_id"] for i in one["reply"]["items"]] == [r["work_id"] for r in one["results"]]
     assert {r["title"] for r in one["results"][:4]} == {
         t for t, _, g, *_ in BOOKS if g == "thriller"
     }
@@ -146,7 +170,7 @@ def test_a_conversation_refines_explains_resets_and_undoes(client: TestClient) -
     assert not undone["can_undo"]
 
     hello = say(client, session, "hi")
-    assert (hello["route"], hello["results"]) == ("chat", [])
+    assert (hello["route"], hello["results"], hello["reply"]) == ("chat", [], None)
 
     assert client.delete(f"/api/v1/sessions/{session}").status_code == 204
     gone = client.post(f"/api/v1/sessions/{session}/turns", json={"message": "hello again"})
@@ -183,3 +207,15 @@ def test_surprise_and_compare(conn: Connection, catalog: dict[str, int]) -> None
     assert picks and len(picks) <= 3
     assert not set(picks) & set(shown)  # something not seen yet
     assert all(r["availability"]["state"] == "available" for r in surprise["results"])
+
+
+def test_narration_can_be_skipped(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+
+    body = client.post(
+        f"/api/v1/sessions/{session}/turns",
+        json={"message": "psychological thrillers", "narrate": False},
+    ).json()
+
+    assert body["results"] and body["reply"] is None
+    assert body["timings_ms"]["narrate"] == 0.0

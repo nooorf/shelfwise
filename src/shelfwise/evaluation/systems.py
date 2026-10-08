@@ -35,6 +35,15 @@ LLM_CACHE = Path("eval/data/llm_cache.jsonl")
 PARSERS = ("cascade",)
 
 Parser = Callable[[str, date], ParsedRequest]
+_BOOK_NUMBERS = text(
+    """
+    SELECT w.work_id, w.genres,
+           (SELECT max(e.pages) FROM edition e WHERE e.work_id = w.work_id) AS pages,
+           coalesce(w.first_pub_year,
+                    (SELECT min(e.pub_year) FROM edition e WHERE e.work_id = w.work_id)) AS year
+    FROM work w
+    """
+)
 
 
 @dataclass(frozen=True)
@@ -44,6 +53,8 @@ class BookSignals:
     facets: dict[int, dict[str, Any]]
     genres: dict[int, list[str]]
     popularity_rank: dict[int, float]  # percentile, 1.0 = most borrowed
+    pages: dict[int, int]  # longest edition, as the cards show
+    year: dict[int, int]  # first publication, else the earliest edition
 
 
 @dataclass
@@ -109,14 +120,17 @@ class SearchContext:
                 r.work_id: dict(r._mapping)
                 for r in self.conn.execute(text(f"SELECT work_id, {columns} FROM work_facets"))
             }
-            genres = {
-                r.work_id: list(r.genres or [])
-                for r in self.conn.execute(text("SELECT work_id, genres FROM work"))
-            }
+            genres, pages, year = {}, {}, {}
+            for r in self.conn.execute(_BOOK_NUMBERS):
+                genres[r.work_id] = list(r.genres or [])
+                if r.pages:
+                    pages[r.work_id] = r.pages
+                if r.year:
+                    year[r.work_id] = r.year
             order = np.argsort(np.argsort(self.popularity, kind="stable"), kind="stable")
             ranks = order / max(len(order) - 1, 1)
             popularity_rank = dict(zip(self.index.work_ids.tolist(), ranks.tolist(), strict=True))
-            self._signals = BookSignals(facets, genres, popularity_rank)
+            self._signals = BookSignals(facets, genres, popularity_rank, pages, year)
         return self._signals
 
     def require_reranker(self) -> tuple[CachedReranker, dict[int, str]]:
@@ -276,6 +290,8 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
                 signals.facets.get(work_id),
                 signals.genres.get(work_id, []),
                 signals.popularity_rank.get(work_id),
+                signals.pages.get(work_id),
+                signals.year.get(work_id),
             ),
         )
         for work_id, score in rrf(rankings)
