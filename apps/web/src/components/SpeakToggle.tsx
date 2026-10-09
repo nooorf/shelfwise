@@ -1,6 +1,6 @@
 // "Read aloud": replies are spoken as well as shown (design doc §21). The text stays on
 // screen either way: it is the caption.
-import { Volume2, VolumeX } from 'lucide-react'
+import { Ear, Volume2, VolumeX } from 'lucide-react'
 
 interface SpeakToggleProps {
   wanted: boolean
@@ -21,6 +21,22 @@ export function SpeakToggle({ wanted, on, onToggle }: SpeakToggleProps) {
       {wanted ? <Volume2 className="size-4" aria-hidden="true" /> : <VolumeX className="size-4" aria-hidden="true" />}
       Read aloud
       {unavailable && <span className="text-xs text-out">(unavailable)</span>}
+    </button>
+  )
+}
+
+// Hands-free (kiosk): the microphone stays open, listening again after every answer; talking
+// over the assistant interrupts it.
+export function HandsFreeToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={onToggle}
+      className={`inline-flex items-center gap-1.5 text-sm hover:text-ink ${on ? 'text-accent' : 'text-muted'}`}
+    >
+      <Ear className="size-4" aria-hidden="true" />
+      Hands-free
     </button>
   )
 }

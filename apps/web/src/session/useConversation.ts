@@ -23,17 +23,52 @@ export interface Conversation {
   cancel: () => void
   toggleSpeech: () => void
   listen: () => void
+  toggleHandsFree: () => void
   newVisitor: () => Promise<void>
 }
 
 // One audio output and one microphone per page.
 export const speech = new SpeechPlayer((playing) => useSession.getState().setPlaying(playing))
 const microphone = new Microphone()
+let liveSocket: SessionSocket | null = null // the session's current socket, for the mic
+
+// While the assistant talks, only frames this loud reach the server: someone speaking to the
+// kiosk gets through (barge-in); its own voice leaking past echo cancellation doesn't.
+export const BARGE_IN_RMS = 0.03
+
+export function frameLevel(pcm: ArrayBuffer): number {
+  const samples = new Int16Array(pcm)
+  let sum = 0
+  for (const s of samples) sum += (s / 32768) ** 2
+  return Math.sqrt(sum / Math.max(samples.length, 1))
+}
+
+function forward(pcm: ArrayBuffer): void {
+  if (speech.playing && frameLevel(pcm) < BARGE_IN_RMS) return
+  liveSocket?.sendAudio(pcm)
+}
+
+/** Hands-free: ask the server to listen again, without the barge-in a user action makes. */
+function keepListening(): void {
+  if (useSession.getState().handsFree && microphone.open) liveSocket?.send({ type: 'listen', on: true })
+}
 
 function onEvent(event: ServerEvent): void {
-  if (event.type === 'turn') speech.seen(event.turn)
+  const handsFree = useSession.getState().handsFree
+  if (event.type === 'turn') {
+    speech.seen(event.turn)
+    keepListening() // the answer is on screen: listen for the next question (or a barge-in)
+  }
   if (event.type === 'speech_start') speech.stop() // barge-in by voice
-  if (event.type === 'listening' && !event.on) microphone.stop() // the server heard the end
+  if (event.type === 'transcript' && !event.text) keepListening() // unintelligible: try again
+  if (event.type === 'listening' && !event.on) {
+    if (!handsFree || event.reason === 'unavailable') {
+      microphone.stop() // the server heard the end
+      if (handsFree) useSession.getState().setHandsFree(false)
+    } else if (event.reason === 'no speech') {
+      keepListening() // nobody spoke: just keep listening, no error
+    }
+  }
   if (event.type === 'audio') void speech.play(event.turn, event.wav)
   useSession.getState().receive(event)
 }
@@ -55,6 +90,7 @@ async function openSession(
         setOnline(open)
         // Each new socket starts with speech off on the server: say what the reader wants.
         if (open) next.send({ type: 'speak', on: useSession.getState().speakWanted })
+        if (open) keepListening() // a reconnect mid hands-free: the server forgot it was listening
       },
       onSessionGone: () => {
         clear()
@@ -62,6 +98,7 @@ async function openSession(
       },
     })
     socket.current = next
+    liveSocket = next
     for (const message of outbox.splice(0)) next.send(message)
     next.connect()
   } catch {
@@ -154,17 +191,29 @@ export function useConversation(): Conversation {
 
   const listen = useCallback(() => {
     if (microphone.open) {
+      useSession.getState().setHandsFree(false) // the mic button ends hands-free too
       microphone.stop()
       send({ type: 'listen', on: false }) // "done talking": transcribe what was heard
       return
     }
     send({ type: 'listen', on: true })
-    microphone.start((pcm) => socket.current?.sendAudio(pcm)).catch(() => {
+    microphone.start(forward).catch(() => {
+      useSession.getState().setHandsFree(false)
       microphone.stop()
       send({ type: 'listen', on: false })
       useSession.setState({ error: 'The microphone isn’t available: check the browser’s permission.' })
     })
   }, [send])
+
+  const toggleHandsFree = useCallback(() => {
+    const on = !useSession.getState().handsFree
+    useSession.getState().setHandsFree(on)
+    if (on && !microphone.open) listen()
+    if (!on && microphone.open) {
+      microphone.stop()
+      send({ type: 'listen', on: false })
+    }
+  }, [listen, send])
 
   const newVisitor = useCallback(async () => {
     speech.stop()
@@ -179,6 +228,6 @@ export function useConversation(): Conversation {
 
   return {
     ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech,
-    listen, newVisitor,
+    listen, toggleHandsFree, newVisitor,
   }
 }

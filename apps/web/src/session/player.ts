@@ -43,6 +43,10 @@ export class SpeechPlayer {
     return this.tap
   }
 
+  get playing(): boolean {
+    return this.sources.length > 0
+  }
+
   get sampleRate(): number {
     return this.output?.sampleRate ?? 48_000
   }

@@ -126,3 +126,21 @@ test('the avatar loads, or falls back to the orb, and can be switched off', asyn
   await expect(toggle).toHaveAttribute('aria-pressed', 'false')
   await expect(page.locator('[data-avatar]')).toHaveCount(0)
 })
+
+test('hands-free answers a spoken question and listens again', async ({ page }) => {
+  test.skip(!existsSync(QUESTION_WAV), 'no TTS model to record the question with')
+  test.setTimeout(60_000)
+  const handsFree = page.getByRole('button', { name: 'Hands-free' })
+  await handsFree.click()
+  await expect(handsFree).toHaveAttribute('aria-pressed', 'true')
+
+  await expect(page.getByRole('list', { name: 'Conversation' }).getByText(/gothic horror/i)).toBeVisible({
+    timeout: 45_000,
+  })
+  await expect(cards(page).first()).toBeVisible()
+  // No button pressed, yet it's listening for the next question.
+  await expect(page.getByRole('button', { name: 'Stop listening' })).toHaveAttribute('aria-pressed', 'true')
+
+  await handsFree.click()
+  await expect(page.getByRole('button', { name: 'Speak' })).toHaveAttribute('aria-pressed', 'false')
+})

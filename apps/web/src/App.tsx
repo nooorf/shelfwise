@@ -10,18 +10,19 @@ import { ModeBar } from './components/ModeBar'
 import { PipelineInspector } from './components/PipelineInspector'
 import { ResultsShelf } from './components/ResultsShelf'
 import { SearchBar } from './components/SearchBar'
-import { SpeakToggle } from './components/SpeakToggle'
+import { HandsFreeToggle, SpeakToggle } from './components/SpeakToggle'
 import { useConversation } from './session/useConversation'
 import { useSession } from './session/store'
 
 export default function App() {
   const {
     ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech, listen,
-    newVisitor,
+    toggleHandsFree, newVisitor,
   } = useConversation()
   const status = useSession((s) => s.status)
   const playing = useSession((s) => s.playing)
   const listening = useSession((s) => s.listening)
+  const handsFree = useSession((s) => s.handsFree)
   const speakWanted = useSession((s) => s.speakWanted)
   const speakOn = useSession((s) => s.speakOn)
   const exchanges = useSession((s) => s.exchanges)
@@ -47,7 +48,8 @@ export default function App() {
             <ModeBar onSurprise={surprise} onExplore={explore} onFilters={filter} />
           </div>
         </div>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-4">
+          <HandsFreeToggle on={handsFree} onToggle={toggleHandsFree} />
           <SpeakToggle wanted={speakWanted} on={speakOn} onToggle={toggleSpeech} />
         </div>
         <button

@@ -31,6 +31,8 @@ export interface SessionState {
   speakOn: boolean | null // what the server confirmed: false when it has no speech model
   playing: boolean // speech is coming out of the speakers now
   listening: boolean // the microphone is open
+  handsFree: boolean // kiosk: listen again after every answer, barge-in by voice
+  setHandsFree: (on: boolean) => void
   setSpeakWanted: (on: boolean) => void
   setPlaying: (playing: boolean) => void
   setSession: (sessionId: string | null) => void
@@ -43,6 +45,7 @@ export interface SessionState {
 let nextKey = 1
 
 const SPEAK_KEY = 'shelfwise.speak'
+const HANDS_FREE_KEY = 'shelfwise.handsfree'
 
 const LISTENING_PROBLEMS: Record<string, string> = {
   'no speech': 'I didn’t hear anything. Tap the microphone and try again.',
@@ -50,17 +53,17 @@ const LISTENING_PROBLEMS: Record<string, string> = {
 }
 
 // A per-browser convenience: private windows and blocked storage just start with speech off.
-function readSpeakSetting(): boolean {
+function readSetting(key: string): boolean {
   try {
-    return globalThis.localStorage?.getItem(SPEAK_KEY) === 'on'
+    return globalThis.localStorage?.getItem(key) === 'on'
   } catch {
     return false
   }
 }
 
-function writeSpeakSetting(on: boolean): void {
+function writeSetting(key: string, on: boolean): void {
   try {
-    globalThis.localStorage?.setItem(SPEAK_KEY, on ? 'on' : 'off')
+    globalThis.localStorage?.setItem(key, on ? 'on' : 'off')
   } catch {
     // not remembered; the setting still holds for this page
   }
@@ -77,13 +80,18 @@ export const useSession = create<SessionState>((set) => ({
   shelf: null,
   shelfReply: null,
   error: null,
-  speakWanted: readSpeakSetting(),
+  speakWanted: readSetting(SPEAK_KEY),
   speakOn: null,
   playing: false,
   listening: false,
+  handsFree: readSetting(HANDS_FREE_KEY),
+  setHandsFree: (on) => {
+    writeSetting(HANDS_FREE_KEY, on)
+    set({ handsFree: on })
+  },
 
   setSpeakWanted: (on) => {
-    writeSpeakSetting(on)
+    writeSetting(SPEAK_KEY, on)
     set({ speakWanted: on, speakOn: on ? null : false })
   },
   setPlaying: (playing) => set({ playing }),
@@ -144,10 +152,14 @@ export const useSession = create<SessionState>((set) => ({
         case 'speech_start':
           return {} // handled by the speech player and the microphone, not drawn
         case 'listening': {
-          if (event.on) return { listening: true, status: 'listening', error: null }
+          // Hands-free re-listens during a turn: the face keeps showing thinking/writing.
+          const busy = s.exchanges.some((e) => e.pending)
+          if (event.on) return { listening: true, status: busy ? s.status : 'listening', error: null }
           const message = LISTENING_PROBLEMS[event.reason ?? '']
           const waiting = event.reason === 'heard' // a transcript follows
-          return { listening: false, status: waiting ? 'searching' : 'ready', ...(message && { error: message }) }
+          const quiet = s.handsFree && event.reason === 'no speech' // hands-free: not an error
+          const status = waiting ? 'searching' : busy ? s.status : 'ready'
+          return { listening: false, status, ...(message && !quiet && { error: message }) }
         }
         case 'transcript':
           if (!event.text) return { error: 'I couldn’t make that out. Try again, or type it.', status: 'ready' }

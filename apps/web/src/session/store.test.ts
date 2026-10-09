@@ -101,4 +101,17 @@ describe('session store', () => {
     receive({ type: 'reply', turn: 1, reply })
     expect(useSession.getState().shelfReply).toEqual(reply) // the whole reply replaces the pieces
   })
+
+  it('hands-free keeps listening quietly and keeps the face on the turn', () => {
+    const { said, receive, setHandsFree } = useSession.getState()
+    setHandsFree(true)
+    receive({ type: 'listening', on: false, reason: 'no speech' })
+    expect(useSession.getState().error).toBeNull() // nobody spoke: not an error hands-free
+
+    said('thrillers')
+    receive({ type: 'turn', ...turn(1) })
+    receive({ type: 'listening', on: true }) // re-armed while the reply is written
+    expect(useSession.getState()).toMatchObject({ listening: true, status: 'writing' })
+    setHandsFree(false)
+  })
 })
