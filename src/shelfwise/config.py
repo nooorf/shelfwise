@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     # The LLM writes a short validated note per book in conversation replies; off: template
     # notes (always correct, plain). Needs query_parser="cascade" (the LLM switched on).
     narrate: bool = True
+    # Text-to-speech (Kokoro): where `make download-tts` put the model, and which voice.
+    tts_model_dir: str = "data/models/kokoro"
+    tts_voice: str = "af_heart"
     log_level: str = "INFO"
     log_json: bool = True
 

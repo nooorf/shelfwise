@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations api web web-install web-test web-e2e web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations download-tts api web web-install web-test web-e2e web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -118,6 +118,12 @@ eval-parser:  ## Score the query parser against gold set B (PARSER=rules|cascade
 
 eval-conversations:  ## Play conversation set C and score the state after every turn (PARSER=rules|cascade, ERRORS=1)
 	uv run python scripts/eval_conversations.py --parser $(or $(PARSER),rules) $(if $(ERRORS),--errors,)
+
+TTS_URL = https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0
+download-tts:  ## Download the Kokoro text-to-speech model (~120 MB) into data/models/kokoro
+	mkdir -p data/models/kokoro
+	cd data/models/kokoro && for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do \
+		[ -f $$f ] || curl -fL --progress-bar -o $$f $(TTS_URL)/$$f; done
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload

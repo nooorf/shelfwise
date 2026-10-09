@@ -106,6 +106,38 @@
         }
       }
     },
+    "/api/v1/speech": {
+      "post": {
+        "summary": "Speech",
+        "description": "Any text as speech (a 16-bit WAV, 24 kHz, Kokoro), for demos and checks. 503 when\nthe TTS model isn't downloaded (`make download-tts`).",
+        "operationId": "speech_api_v1_speech_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpeechRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/bench": {
       "get": {
         "summary": "Bench",
@@ -2046,6 +2078,21 @@
           "timings_ms"
         ],
         "title": "SearchResponse"
+      },
+      "SpeechRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "SpeechRequest"
       },
       "SurpriseRequest": {
         "properties": {

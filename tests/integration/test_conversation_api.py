@@ -19,7 +19,7 @@ from shelfwise.embed.store import embed_missing, refresh_search_text
 from shelfwise.generation.narrate import Narrator
 from shelfwise.pipeline import SearchService
 
-from ..fakes import FakeEmbedder, FakeLLM
+from ..fakes import FakeEmbedder, FakeLLM, FakeSpeech
 from .factories import add_author, add_copy, add_edition, add_work
 
 TODAY = date(2026, 10, 8)
@@ -96,8 +96,9 @@ class NarratingLLM:
 
 @contextmanager
 def make_client(
-    conn: Connection, forms: list[Any], narrator: NarratingLLM | None = None
-) -> Iterator[TestClient]:
+    conn: Connection, forms: list[Any], narrator: NarratingLLM | None = None,
+    speech: FakeSpeech | None = None,
+) -> Iterator[TestClient]:  # fmt: skip
     embedder = FakeEmbedder()
     embed_missing(conn, embedder)
     search = SearchService(embedder=embedder, today=lambda: TODAY, llm=FakeLLM(*forms))
@@ -106,6 +107,7 @@ def make_client(
         MemorySessionStore(ttl_s=1800),
         now=lambda: datetime(2026, 10, 8, 12, 0, tzinfo=UTC),
         narrator=Narrator(narrator or NarratingLLM()),
+        speech=speech,
     )
     app = create_app(
         Settings(profile="cpu", log_json=False), service=search, conversation=conversation
@@ -528,3 +530,43 @@ def test_the_inspector_shows_each_stage_of_a_turn(client: TestClient) -> None:
                          json={"genre": "mystery", "narrate": False}).json()["inspector"]  # fmt: skip
     assert browse["parsed"] is None and browse["searched"]["semantic_query"] == ""
     assert [s["name"] for s in browse["stages"]] == ["filter", "final"]
+
+
+def test_speech_reads_the_reply_aloud_sentence_by_sentence(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    import base64
+    import io
+    import wave
+
+    speech = FakeSpeech()
+    with make_client(conn, FORMS, speech=speech) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+            ws.send_json({"type": "speak", "on": True})
+            assert ws.receive_json() == {"type": "speak", "on": True}
+            ws.send_json({"type": "text", "text": "psychological thrillers"})
+            events = events_until_done(ws)
+        clip = client.post("/api/v1/speech", json={"text": "Hello there."})
+
+    kinds = [e["type"] for e in events]
+    assert kinds[:2] == ["turn", "reply"] and kinds[-1] == "done"
+    audio = [e for e in events if e["type"] == "audio"]
+    assert [a["seq"] for a in audio] == list(range(len(audio))) and audio
+    assert audio[0]["text"].startswith("A few picks.")  # the reply's intro first
+    assert [a["text"] for a in audio] == speech.said[: len(audio)]
+    with wave.open(io.BytesIO(base64.b64decode(audio[0]["wav"]))) as w:
+        assert (w.getframerate(), w.getsampwidth(), w.getnchannels()) == (8000, 2, 1)
+    assert clip.status_code == 200 and clip.headers["content-type"] == "audio/wav"
+
+
+def test_without_a_speech_model_speak_stays_off(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+        ws.send_json({"type": "speak", "on": True})
+        assert ws.receive_json() == {"type": "speak", "on": False}
+        ws.send_json({"type": "text", "text": "psychological thrillers"})
+        events = events_until_done(ws)
+
+    assert "audio" not in {e["type"] for e in events}
+    assert client.post("/api/v1/speech", json={"text": "Hello."}).status_code == 503

@@ -63,6 +63,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/speech": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Speech
+         * @description Any text as speech (a 16-bit WAV, 24 kHz, Kokoro), for demos and checks. 503 when
+         *     the TTS model isn't downloaded (`make download-tts`).
+         */
+        post: operations["speech_api_v1_speech_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/bench": {
         parameters: {
             query?: never;
@@ -835,6 +856,11 @@ export interface components {
                 [key: string]: number;
             };
         };
+        /** SpeechRequest */
+        SpeechRequest: {
+            /** Text */
+            text: string;
+        };
         /**
          * SurpriseRequest
          * @description The "Surprise me" button: picks from what is on the shelf, within the hard chips.
@@ -1029,6 +1055,37 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["BookDetail"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    speech_api_v1_speech_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SpeechRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

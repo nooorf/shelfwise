@@ -1,12 +1,22 @@
 """FastAPI application. Routes stay thin; logic lives in the shelfwise package."""
 
 import asyncio
+import base64
 import threading
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
+from pathlib import Path
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-from pydantic import ValidationError
+from fastapi import (
+    APIRouter,
+    Depends,
+    FastAPI,
+    HTTPException,
+    Response,
+    WebSocket,
+    WebSocketDisconnect,
+)
+from pydantic import BaseModel, Field, ValidationError
 from sqlalchemy import Connection, Engine
 
 from shelfwise import __version__
@@ -24,6 +34,7 @@ from shelfwise.conversation.service import (
     TurnResponse,
 )
 from shelfwise.evaluation.bench import Bench, load_bench
+from shelfwise.generation.narrate import Reply
 from shelfwise.logging import configure_logging
 from shelfwise.pipeline import (
     BookDetail,
@@ -33,6 +44,12 @@ from shelfwise.pipeline import (
     SearchService,
     build_service,
 )
+from shelfwise.voice.tts import load_speech
+
+
+class SpeechRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=500)
+
 
 NARRATE_TIMEOUT_S = 60.0  # a whole reply; past it the reply falls back to templates
 # What the session socket accepts besides "cancel" (see `stream`).
@@ -98,7 +115,10 @@ class _Resources:
                 llm_on = self.settings.query_parser == "cascade" and self.settings.narrate
                 llm = OllamaClient(model=self.settings.llm_model, timeout=NARRATE_TIMEOUT_S)
                 narrator = Narrator(llm if llm_on else None)  # None: template replies
-                self._conversation = ConversationService(search, store, narrator=narrator)
+                speech = load_speech(Path(self.settings.tts_model_dir), self.settings.tts_voice)
+                self._conversation = ConversationService(
+                    search, store, narrator=narrator, speech=speech
+                )
             return self._conversation
 
 
@@ -152,6 +172,17 @@ def create_app(
         if detail is None:
             raise HTTPException(404, "no such book")
         return detail
+
+    @v1.post("/speech", response_class=Response)
+    def speech(
+        request: SpeechRequest,
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> Response:
+        """Any text as speech (a 16-bit WAV, 24 kHz, Kokoro), for demos and checks. 503 when
+        the TTS model isn't downloaded (`make download-tts`)."""
+        if conversation.speech is None:
+            raise HTTPException(503, "text-to-speech is off: run `make download-tts`")
+        return Response(conversation.audio(request.text), media_type="audio/wav")
 
     @v1.get("/bench")
     def bench() -> Bench:
@@ -305,10 +336,12 @@ def create_app(
         {"type": "chip_strength", "field": ..., "label": ..., "strength": "hard" | "soft"},
         {"type": "more_like" | "less_like", "work_id": ...}, {"type": "surprise"},
         {"type": "explore", "genre": ...}, {"type": "filters", "pages_max"?, "year_from"?,
-        "year_to"?, "available_now"?},
-        {"type": "cancel"}.
+        "year_to"?, "available_now"?}, {"type": "speak", "on": bool}, {"type": "cancel"}.
         Server -> client, per turn: "turn" (cards, chips, notes: everything but the narration,
-        as soon as retrieval is done), then "reply" when the narration is ready, then "done". A new message or "cancel" while narration runs drops it
+        as soon as retrieval is done), then "reply" when the narration is ready, then, with
+        speech on, one "audio" per sentence ({"seq", "text", "wav": base64 16-bit WAV}), then
+        "done". "speak" is answered with {"type": "speak", "on"}: false when no TTS model is
+        loaded. A new message or "cancel" while the reply or its audio is being made drops it
         ("cancelled"): the server half of barge-in."""
         await websocket.accept()
         if conversation.store.get(session_id) is None:
@@ -318,6 +351,25 @@ def create_app(
         receive: asyncio.Task[Any] = asyncio.create_task(websocket.receive_json())
         narrating: asyncio.Task[Any] | None = None
         narrating_turn = 0
+        speak = False
+
+        async def finish(response: TurnResponse, job: Callable[[], Reply] | None) -> None:
+            """The rest of a turn, in the background: narration, then speech, then "done"."""
+            turn = response.turn
+            reply = None
+            if job is not None:
+                reply = await asyncio.to_thread(job)
+                await websocket.send_json(
+                    {"type": "reply", "turn": turn, "reply": reply.model_dump(mode="json")}
+                )
+            if speak and conversation.speech is not None:
+                for seq, sentence in enumerate(conversation.spoken(response, reply)):
+                    clip = await asyncio.to_thread(conversation.audio, sentence)
+                    await websocket.send_json(
+                        {"type": "audio", "turn": turn, "seq": seq, "text": sentence,
+                         "wav": base64.b64encode(clip).decode("ascii")}
+                    )  # fmt: skip
+            await websocket.send_json({"type": "done", "turn": turn})
 
         async def drop_narration() -> None:
             nonlocal narrating
@@ -331,13 +383,8 @@ def create_app(
                 waiting = {receive} | ({narrating} if narrating else set())
                 done, _ = await asyncio.wait(waiting, return_when=asyncio.FIRST_COMPLETED)
                 if narrating is not None and narrating in done:
-                    reply = narrating.result()
+                    narrating.result()  # raises what the background part raised
                     narrating = None
-                    await websocket.send_json(
-                        {"type": "reply", "turn": narrating_turn,
-                         "reply": reply.model_dump(mode="json")}
-                    )  # fmt: skip
-                    await websocket.send_json({"type": "done", "turn": narrating_turn})
                 if receive not in done:
                     continue
                 message = receive.result()
@@ -345,6 +392,10 @@ def create_app(
                 kind = message.get("type") if isinstance(message, dict) else None
                 if kind == "cancel":
                     await drop_narration()
+                    continue
+                if kind == "speak":
+                    speak = bool(message.get("on")) and conversation.speech is not None
+                    await websocket.send_json({"type": "speak", "on": speak})
                     continue
                 if kind not in SOCKET_MESSAGES:
                     await websocket.send_json({"type": "error", "message": f"unknown {kind!r}"})
@@ -437,11 +488,11 @@ def create_app(
                     continue
                 await websocket.send_json({"type": "turn", **response.model_dump(mode="json")})
                 job = conversation.narration_job(conn, response, said) if wants_reply else None
-                if job is None:
+                if job is None and not (speak and conversation.speech is not None):
                     await websocket.send_json({"type": "done", "turn": response.turn})
                     continue
                 narrating_turn = response.turn
-                narrating = asyncio.create_task(asyncio.to_thread(job))
+                narrating = asyncio.create_task(finish(response, job))
         except WebSocketDisconnect:
             pass
         finally:

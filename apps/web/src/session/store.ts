@@ -4,7 +4,7 @@ import { create } from 'zustand'
 
 import type { Reply, ServerEvent, TurnResponse } from '../api/types'
 
-export type Status = 'starting' | 'ready' | 'searching' | 'writing' | 'offline'
+export type Status = 'starting' | 'ready' | 'searching' | 'writing' | 'speaking' | 'offline'
 
 export interface Exchange {
   key: number // local, for React lists
@@ -26,6 +26,11 @@ export interface SessionState {
   shelf: TurnResponse | null // the turn whose books are on screen
   shelfReply: Reply | null
   error: string | null
+  speakWanted: boolean // the reader's "read aloud" setting
+  speakOn: boolean | null // what the server confirmed: false when it has no speech model
+  playing: boolean // speech is coming out of the speakers now
+  setSpeakWanted: (on: boolean) => void
+  setPlaying: (playing: boolean) => void
   setSession: (sessionId: string | null) => void
   setOnline: (online: boolean) => void
   said: (text: string) => void
@@ -34,6 +39,25 @@ export interface SessionState {
 }
 
 let nextKey = 1
+
+const SPEAK_KEY = 'shelfwise.speak'
+
+// A per-browser convenience: private windows and blocked storage just start with speech off.
+function readSpeakSetting(): boolean {
+  try {
+    return globalThis.localStorage?.getItem(SPEAK_KEY) === 'on'
+  } catch {
+    return false
+  }
+}
+
+function writeSpeakSetting(on: boolean): void {
+  try {
+    globalThis.localStorage?.setItem(SPEAK_KEY, on ? 'on' : 'off')
+  } catch {
+    // not remembered; the setting still holds for this page
+  }
+}
 
 function update(exchanges: Exchange[], turn: number, change: Partial<Exchange>): Exchange[] {
   return exchanges.map((e) => (e.turn === turn ? { ...e, ...change } : e))
@@ -46,7 +70,15 @@ export const useSession = create<SessionState>((set) => ({
   shelf: null,
   shelfReply: null,
   error: null,
+  speakWanted: readSpeakSetting(),
+  speakOn: null,
+  playing: false,
 
+  setSpeakWanted: (on) => {
+    writeSpeakSetting(on)
+    set({ speakWanted: on, speakOn: on ? null : false })
+  },
+  setPlaying: (playing) => set({ playing }),
   setSession: (sessionId) => set({ sessionId }),
   setOnline: (online) =>
     set((s) => ({ status: online ? (s.status === 'offline' ? 'ready' : s.status) : 'offline' })),
@@ -83,6 +115,10 @@ export const useSession = create<SessionState>((set) => ({
             shelfReply: isShelf ? event.reply : s.shelfReply,
           }
         }
+        case 'audio':
+          return {} // played by the speech player, not drawn
+        case 'speak':
+          return { speakOn: event.on }
         case 'done':
           return { exchanges: update(s.exchanges, event.turn, { pending: false }), status: 'ready' }
         case 'cancelled':

@@ -55,9 +55,11 @@ from shelfwise.query.constraints import Constraint, Strength, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
 from shelfwise.ranking.soft import scored
 from shelfwise.retrieval.filters import allowed_mask, filterable, relaxations
+from shelfwise.voice.tts import Speech, sentences, wav_bytes
 
 Route = Literal["search", "explain", "compare", "clarify", "surprise", "chat", "start_over"]
 SURPRISE_PICKS = 3
+SPOKEN_BOOKS = 3  # read aloud; a longer list is for the screen
 MAX_OFFERS = 3
 SURPRISE_POPULARITY_FLOOR = 0.3  # percentile: a quality floor (design doc §15.5)
 _FIELD_WORDS = {
@@ -316,9 +318,11 @@ class ConversationService:
         store: SessionStore,
         now: Callable[[], datetime] = lambda: datetime.now(UTC),
         narrator: Narrator | None = None,
+        speech: Speech | None = None,
     ) -> None:
         self.search = search
         self.store = store
+        self.speech = speech  # None: text only
         self.now = now
         # Without an LLM the narrator writes templates: correct, plain.
         self.narrator = narrator or Narrator(None)
@@ -337,6 +341,28 @@ class ConversationService:
     ) -> Reply | None:  # fmt: skip
         job = self._narration_job(conn, ctx, state, route, message, results)
         return job() if job else None
+
+    def spoken(self, response: TurnResponse, reply: Reply | None) -> list[str]:
+        """What to say aloud for a turn, sentence by sentence (design doc §21): the reply's
+        intro, the notes on the first SPOKEN_BOOKS books by title, the follow-up; without a
+        reply, the turn's notes. The screen shows the rest."""
+        if reply is None:
+            return sentences(" ".join(response.notes))
+        titles = {b.work_id: b.title for b in response.results}
+        parts = [*response.notes, reply.intro]
+        parts += [
+            f"{titles[item.work_id]}: {item.why}"
+            for item in reply.items[:SPOKEN_BOOKS]
+            if item.work_id in titles
+        ]
+        parts.append(reply.follow_up)
+        return sentences(" ".join(p.strip() for p in parts if p.strip()))
+
+    def audio(self, sentence: str) -> bytes:
+        """One sentence as a WAV clip. Callers check `speech` first."""
+        if self.speech is None:
+            raise RuntimeError("no speech model loaded")
+        return wav_bytes(self.speech.synthesize(sentence), self.speech.sample_rate)
 
     def narration_job(
         self, conn: Connection, response: TurnResponse, message: str

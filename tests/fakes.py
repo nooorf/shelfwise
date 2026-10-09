@@ -66,3 +66,17 @@ class FakeReranker:
             len(words & set(re.findall(r"[a-z]+", doc.lower()))) / max(len(words), 1)
             for doc in documents
         ]
+
+
+class FakeSpeech:
+    """A short tone per sentence, its length by the text: no model needed."""
+
+    sample_rate = 8_000
+
+    def __init__(self) -> None:
+        self.said: list[str] = []
+
+    def synthesize(self, text: str) -> np.ndarray:
+        self.said.append(text)
+        t = np.arange(len(text) * 80) / self.sample_rate
+        return (0.1 * np.sin(2 * np.pi * 440 * t)).astype(np.float32)

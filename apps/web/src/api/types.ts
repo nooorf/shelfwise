@@ -24,6 +24,8 @@ export type ServerEvent =
   | { type: 'reply'; turn: number; reply: Reply }
   | { type: 'done'; turn: number }
   | { type: 'cancelled'; turn: number }
+  | { type: 'audio'; turn: number; seq: number; text: string; wav: string }
+  | { type: 'speak'; on: boolean }
   | { type: 'error'; message: string }
 
 export type ClientMessage =
@@ -35,4 +37,5 @@ export type ClientMessage =
   | { type: 'surprise'; narrate?: boolean }
   | { type: 'explore'; genre: string; narrate?: boolean }
   | ({ type: 'filters'; narrate?: boolean } & Filters)
+  | { type: 'speak'; on: boolean }
   | { type: 'cancel' }

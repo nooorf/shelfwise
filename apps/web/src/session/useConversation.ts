@@ -1,10 +1,12 @@
 // Starts a session, keeps its socket open, and exposes what the UI can do. An expired
-// session (kiosk timeout) quietly becomes a new, empty one.
+// session (kiosk timeout) quietly becomes a new, empty one. Any action stops speech first
+// (barge-in), and, being a user gesture, lets the page make sound.
 import { useCallback, useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 
 import { endSession, socketUrl, startSession } from '../api/client'
-import type { BookResult, Chip, ClientMessage, Filters } from '../api/types'
+import type { BookResult, Chip, ClientMessage, Filters, ServerEvent } from '../api/types'
+import { SpeechPlayer } from './player'
 import { SessionSocket } from './socket'
 import { useSession } from './store'
 
@@ -18,7 +20,17 @@ export interface Conversation {
   explore: (genre: string) => void
   filter: (filters: Filters) => void
   cancel: () => void
+  toggleSpeech: () => void
   newVisitor: () => Promise<void>
+}
+
+// One audio output per page.
+const speech = new SpeechPlayer((playing) => useSession.getState().setPlaying(playing))
+
+function onEvent(event: ServerEvent): void {
+  if (event.type === 'turn') speech.seen(event.turn)
+  if (event.type === 'audio') void speech.play(event.turn, event.wav)
+  useSession.getState().receive(event)
 }
 
 /** `outbox`: messages sent before any socket existed (a quick first question while the page
@@ -27,14 +39,18 @@ async function openSession(
   socket: MutableRefObject<SessionSocket | null>,
   outbox: ClientMessage[],
 ): Promise<void> {
-  const { setSession, setOnline, receive, clear } = useSession.getState()
+  const { setSession, setOnline, clear } = useSession.getState()
   socket.current?.close()
   try {
     const id = await startSession()
     setSession(id)
     const next = new SessionSocket(socketUrl(id), {
-      onEvent: receive,
-      onOpenChange: setOnline,
+      onEvent,
+      onOpenChange: (open) => {
+        setOnline(open)
+        // Each new socket starts with speech off on the server: say what the reader wants.
+        if (open) next.send({ type: 'speak', on: useSession.getState().speakWanted })
+      },
       onSessionGone: () => {
         clear()
         void openSession(socket, outbox)
@@ -74,6 +90,8 @@ export function useConversation(): Conversation {
   }, [])
 
   const send = useCallback((message: ClientMessage) => {
+    speech.stop()
+    if (useSession.getState().speakWanted) speech.unlock()
     if (socket.current) socket.current.send(message)
     else outbox.current.push(message)
   }, [])
@@ -123,7 +141,14 @@ export function useConversation(): Conversation {
 
   const cancel = useCallback(() => send({ type: 'cancel' }), [send])
 
+  const toggleSpeech = useCallback(() => {
+    const on = !useSession.getState().speakWanted
+    useSession.getState().setSpeakWanted(on)
+    send({ type: 'speak', on })
+  }, [send])
+
   const newVisitor = useCallback(async () => {
+    speech.stop()
     socket.current?.close()
     socket.current = null // until the new session's socket exists, sends wait in the outbox
     outbox.current.splice(0) // nothing from the previous visitor carries over
@@ -132,5 +157,8 @@ export function useConversation(): Conversation {
     await openSession(socket, outbox.current)
   }, [sessionId])
 
-  return { ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, newVisitor }
+  return {
+    ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech,
+    newVisitor,
+  }
 }

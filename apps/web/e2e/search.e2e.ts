@@ -85,3 +85,15 @@ test('the bench page shows every system and the parser', async ({ page }) => {
   await expect(page.getByRole('img', { name: /nDCG@10 against p95 latency/ })).toBeVisible()
   await expect(page.getByText('Intent accuracy')).toBeVisible()
 })
+
+test('read aloud speaks the reply and a new question interrupts it', async ({ page }) => {
+  const toggle = page.getByRole('button', { name: 'Read aloud' })
+  await toggle.click()
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true')
+
+  await ask(page, 'gothic horror')
+  await expect(page.getByText('Speaking', { exact: true })).toBeVisible({ timeout: 20_000 })
+
+  await ask(page, 'cozy mysteries') // barge-in: speech stops at once
+  await expect(page.getByText('Speaking', { exact: true })).toHaveCount(0, { timeout: 1_000 })
+})

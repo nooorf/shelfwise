@@ -10,13 +10,18 @@ import { ModeBar } from './components/ModeBar'
 import { PipelineInspector } from './components/PipelineInspector'
 import { ResultsShelf } from './components/ResultsShelf'
 import { SearchBar } from './components/SearchBar'
+import { SpeakToggle } from './components/SpeakToggle'
 import { useConversation } from './session/useConversation'
 import { useSession } from './session/store'
 
 export default function App() {
-  const { ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, newVisitor } =
-    useConversation()
+  const {
+    ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech, newVisitor,
+  } = useConversation()
   const status = useSession((s) => s.status)
+  const playing = useSession((s) => s.playing)
+  const speakWanted = useSession((s) => s.speakWanted)
+  const speakOn = useSession((s) => s.speakOn)
   const exchanges = useSession((s) => s.exchanges)
   const shelf = useSession((s) => s.shelf)
   const shelfReply = useSession((s) => s.shelfReply)
@@ -40,10 +45,13 @@ export default function App() {
             <ModeBar onSurprise={surprise} onExplore={explore} onFilters={filter} />
           </div>
         </div>
+        <div className="ml-auto">
+          <SpeakToggle wanted={speakWanted} on={speakOn} onToggle={toggleSpeech} />
+        </div>
         <button
           type="button"
           onClick={() => void newVisitor()}
-          className="ml-auto inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink"
+          className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink"
         >
           <UserPlus className="size-4" aria-hidden="true" /> New visitor
         </button>
@@ -51,7 +59,7 @@ export default function App() {
 
       <div className="flex min-h-0 flex-1 flex-col-reverse md:flex-row">
         <aside className="flex max-h-[40vh] w-full flex-col gap-4 overflow-y-auto border-t border-line p-4 md:max-h-none md:w-80 md:shrink-0 md:border-t-0 md:border-r">
-          <AvatarSlot status={status} />
+          <AvatarSlot status={playing ? 'speaking' : status} />
           <ConversationPanel exchanges={exchanges} />
         </aside>
 

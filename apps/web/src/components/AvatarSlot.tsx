@@ -9,11 +9,12 @@ const LABELS: Record<Status, string> = {
   ready: 'Ready',
   searching: 'Thinking',
   writing: 'Writing',
+  speaking: 'Speaking',
   offline: 'Offline: is the API running?',
 }
 
 export function AvatarSlot({ status }: { status: Status }) {
-  const busy = status === 'searching' || status === 'writing'
+  const busy = status === 'searching' || status === 'writing' || status === 'speaking'
   return (
     <div className="flex items-center gap-3">
       <div className="relative size-12 shrink-0" aria-hidden="true">
