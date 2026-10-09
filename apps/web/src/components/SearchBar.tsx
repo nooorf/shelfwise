@@ -5,7 +5,7 @@ export function SearchBar({ onAsk, onCancel }: { onAsk: (text: string) => void; 
   const [text, setText] = useState('')
   return (
     <form
-      className="flex w-full items-center gap-2 rounded-full border border-line bg-card px-4 py-1.5 shadow-sm focus-within:border-accent"
+      className="flex w-full items-center gap-2 rounded-full border border-line bg-card px-4 py-1.5 shadow-sm focus-within:border-accent focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent"
       onSubmit={(event) => {
         event.preventDefault()
         onAsk(text)

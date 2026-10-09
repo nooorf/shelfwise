@@ -25,7 +25,7 @@
     --color-paper: #191815;
     --color-card: #23211d;
     --color-ink: #ece6dc;
-    --color-muted: #a59d90;
+    --color-muted: #aba396;
     --color-line: #3a362f;
     --color-accent: #8fc2b1;
     --color-accent-soft: #2a3a35;
@@ -49,6 +49,12 @@ body,
 body {
   background: var(--color-paper);
   color: var(--color-ink);
+}
+
+/* One visible focus ring everywhere a keyboard lands; components may restyle, not remove it. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 @keyframes orb-breathe {

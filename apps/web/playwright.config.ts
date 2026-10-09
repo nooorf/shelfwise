@@ -21,7 +21,7 @@ export default defineConfig({
     {
       command: 'uv run uvicorn shelfwise.api.main:app --port 8000',
       cwd: '../..',
-      env: { SHELFWISE_QUERY_PARSER: 'rules' },
+      env: { SHELFWISE_QUERY_PARSER: 'rules', HF_HUB_OFFLINE: '1' }, // the models are cached
       url: 'http://localhost:8000/api/v1/health',
       reuseExistingServer: true,
       timeout: 180_000, // loads the search indexes and the embedding model

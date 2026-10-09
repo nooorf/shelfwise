@@ -26,7 +26,7 @@ export function FiltersPanel({ onApply }: { onApply: (filters: Filters) => void 
     if (!empty) onApply(filters)
   }
 
-  const field = 'w-24 rounded-md border border-line bg-card px-2 py-1 tabular-nums focus:border-accent focus:outline-none'
+  const field = 'w-24 rounded-md border border-muted bg-card px-2 py-1 tabular-nums'
   return (
     <form onSubmit={submit} aria-label="Filters" className="flex flex-wrap items-end gap-x-4 gap-y-2 text-sm">
       <label className="flex flex-col gap-1">

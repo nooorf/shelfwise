@@ -1,7 +1,8 @@
 // The ways in besides asking (design doc §22.1, §22.3). None of them calls the LLM: each builds
-// the request straight from what was tapped. Explore and Filters open a panel below the bar.
+// the request straight from what was tapped. Explore and Filters open a panel below the bar;
+// Escape or a choice closes it and puts focus back on its tab.
 import { Compass, Shuffle, SlidersHorizontal } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import type { Filters } from '../api/types'
@@ -21,9 +22,18 @@ const pill =
 
 export function ModeBar({ onSurprise, onExplore, onFilters }: ModeBarProps) {
   const [open, setOpen] = useState<Panel | null>(null)
+  const tabs = useRef<Partial<Record<Panel, HTMLButtonElement | null>>>({})
+
+  const close = () => {
+    if (open) tabs.current[open]?.focus()
+    setOpen(null)
+  }
 
   const tab = (panel: Panel, icon: ReactNode, name: string) => (
     <button
+      ref={(el) => {
+        tabs.current[panel] = el
+      }}
       type="button"
       aria-expanded={open === panel}
       aria-controls={`mode-${panel}`}
@@ -44,18 +54,22 @@ export function ModeBar({ onSurprise, onExplore, onFilters }: ModeBarProps) {
         {tab('filters', <SlidersHorizontal className="size-3.5" aria-hidden="true" />, 'Filters')}
       </nav>
       {open && (
-        <div id={`mode-${open}`} className="rounded-lg border border-line bg-card p-3">
+        <div
+          id={`mode-${open}`}
+          onKeyDown={(event) => event.key === 'Escape' && close()}
+          className="rounded-lg border border-line bg-card p-3"
+        >
           {open === 'explore' ? (
             <ExplorePanel
               onExplore={(genre) => {
-                setOpen(null)
+                close()
                 onExplore(genre)
               }}
             />
           ) : (
             <FiltersPanel
               onApply={(filters) => {
-                setOpen(null)
+                close()
                 onFilters(filters)
               }}
             />

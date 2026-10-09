@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 
 import { endSession, socketUrl, startSession } from '../api/client'
-import type { BookResult, Chip, Filters } from '../api/types'
+import type { BookResult, Chip, ClientMessage, Filters } from '../api/types'
 import { SessionSocket } from './socket'
 import { useSession } from './store'
 
@@ -21,7 +21,12 @@ export interface Conversation {
   newVisitor: () => Promise<void>
 }
 
-async function openSession(socket: MutableRefObject<SessionSocket | null>): Promise<void> {
+/** `outbox`: messages sent before any socket existed (a quick first question while the page
+ * is still starting a session); they go to the new socket, which sends them once it's open. */
+async function openSession(
+  socket: MutableRefObject<SessionSocket | null>,
+  outbox: ClientMessage[],
+): Promise<void> {
   const { setSession, setOnline, receive, clear } = useSession.getState()
   socket.current?.close()
   try {
@@ -32,14 +37,15 @@ async function openSession(socket: MutableRefObject<SessionSocket | null>): Prom
       onOpenChange: setOnline,
       onSessionGone: () => {
         clear()
-        void openSession(socket)
+        void openSession(socket, outbox)
       },
     })
     socket.current = next
+    for (const message of outbox.splice(0)) next.send(message)
     next.connect()
   } catch {
     setOnline(false)
-    setTimeout(() => void openSession(socket), 3000) // the API isn't up yet
+    setTimeout(() => void openSession(socket, outbox), 3000) // the API isn't up yet
   }
 }
 
@@ -57,65 +63,73 @@ export function filtersInWords(f: Filters): string {
 
 export function useConversation(): Conversation {
   const socket = useRef<SessionSocket | null>(null)
+  const outbox = useRef<ClientMessage[]>([])
   const sessionId = useSession((s) => s.sessionId)
 
   useEffect(() => {
-    void openSession(socket)
+    void openSession(socket, outbox.current)
     // The latest socket, reconnects included, is the one to close: reading it late is the point.
     // oxlint-disable-next-line react-hooks/exhaustive-deps
     return () => socket.current?.close()
+  }, [])
+
+  const send = useCallback((message: ClientMessage) => {
+    if (socket.current) socket.current.send(message)
+    else outbox.current.push(message)
   }, [])
 
   const ask = useCallback((text: string) => {
     const trimmed = text.trim()
     if (!trimmed) return
     useSession.getState().said(trimmed)
-    socket.current?.send({ type: 'text', text: trimmed })
-  }, [])
+    send({ type: 'text', text: trimmed })
+  }, [send])
 
   const undo = useCallback(() => {
     useSession.getState().said('Undo')
-    socket.current?.send({ type: 'undo' })
-  }, [])
+    send({ type: 'undo' })
+  }, [send])
 
   const removeChip = useCallback((chip: Chip) => {
     useSession.getState().said(`Remove "${chip.label}"`)
-    socket.current?.send({ type: 'remove_chip', field: chip.field, label: chip.label })
-  }, [])
+    send({ type: 'remove_chip', field: chip.field, label: chip.label })
+  }, [send])
 
   const switchChip = useCallback((chip: Chip) => {
     const strength = chip.strength === 'hard' ? 'soft' : 'hard'
     useSession.getState().said(`“${chip.label}”: ${strength === 'hard' ? 'must' : 'preferred'}`)
-    socket.current?.send({ type: 'chip_strength', field: chip.field, label: chip.label, strength })
-  }, [])
+    send({ type: 'chip_strength', field: chip.field, label: chip.label, strength })
+  }, [send])
 
   const feedback = useCallback((book: BookResult, more: boolean) => {
     useSession.getState().said(`${more ? 'More' : 'Less'} like “${book.title}”`)
-    socket.current?.send({ type: more ? 'more_like' : 'less_like', work_id: book.work_id })
-  }, [])
+    send({ type: more ? 'more_like' : 'less_like', work_id: book.work_id })
+  }, [send])
 
   const surprise = useCallback(() => {
     useSession.getState().said('Surprise me')
-    socket.current?.send({ type: 'surprise' })
-  }, [])
+    send({ type: 'surprise' })
+  }, [send])
 
   const explore = useCallback((genre: string) => {
     useSession.getState().said(`Explore ${genre}`)
-    socket.current?.send({ type: 'explore', genre })
-  }, [])
+    send({ type: 'explore', genre })
+  }, [send])
 
   const filter = useCallback((filters: Filters) => {
     useSession.getState().said(`Filters: ${filtersInWords(filters)}`)
-    socket.current?.send({ type: 'filters', ...filters })
-  }, [])
+    send({ type: 'filters', ...filters })
+  }, [send])
 
-  const cancel = useCallback(() => socket.current?.send({ type: 'cancel' }), [])
+  const cancel = useCallback(() => send({ type: 'cancel' }), [send])
 
   const newVisitor = useCallback(async () => {
     socket.current?.close()
+    socket.current = null // until the new session's socket exists, sends wait in the outbox
+    outbox.current.splice(0) // nothing from the previous visitor carries over
     if (sessionId) await endSession(sessionId)
     useSession.getState().clear()
-    await openSession(socket)
+    await openSession(socket, outbox.current)
   }, [sessionId])
 
   return { ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, newVisitor }

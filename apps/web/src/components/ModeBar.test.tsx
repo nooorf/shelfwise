@@ -50,6 +50,17 @@ describe('mode bar', () => {
     })
   })
 
+  it('closes a panel with Escape and puts focus back on its tab', async () => {
+    bar()
+    const tab = screen.getByRole('button', { name: 'Filters' })
+    await userEvent.click(tab)
+    await userEvent.click(screen.getByLabelText('At most (pages)'))
+    await userEvent.keyboard('{Escape}')
+
+    expect(screen.queryByRole('form', { name: 'Filters' })).not.toBeInTheDocument()
+    expect(tab).toHaveFocus()
+  })
+
   it('puts filters in words for the conversation', () => {
     expect(filtersInWords({ pages_max: 300, year_from: 2010, year_to: 2020, available_now: true }))
       .toBe('at most 300 pages, 2010–2020, available now')

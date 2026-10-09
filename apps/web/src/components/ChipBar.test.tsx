@@ -37,6 +37,24 @@ describe('chip bar', () => {
     expect(onSwitch).toHaveBeenCalledWith(pages)
   })
 
+  it('moves focus to the next chip after a removal, then to the search box', async () => {
+    const pages = chip('under 300 pages', 'pages', 'hard')
+    const darker = chip('darker', 'facet.darkness', 'soft')
+    const input = document.createElement('input')
+    input.id = 'ask'
+    document.body.append(input)
+    const { rerender } = render(<ChipBar chips={[pages, darker]} onRemove={() => {}} onSwitch={() => {}} />)
+
+    await userEvent.click(screen.getByRole('button', { name: 'Remove under 300 pages' }))
+    rerender(<ChipBar chips={[darker]} onRemove={() => {}} onSwitch={() => {}} />)
+    expect(screen.getByRole('button', { name: 'Remove darker' })).toHaveFocus()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Remove darker' }))
+    rerender(<ChipBar chips={[]} onRemove={() => {}} onSwitch={() => {}} />)
+    expect(input).toHaveFocus()
+    input.remove()
+  })
+
   it('shows nothing without chips', () => {
     const { container } = render(<ChipBar chips={[]} onRemove={() => {}} onSwitch={() => {}} />)
     expect(container).toBeEmptyDOMElement()

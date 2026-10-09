@@ -59,3 +59,20 @@ test('surprise me picks books on the shelf now', async ({ page }) => {
   await expect(cards(page).first()).toBeVisible()
   await expect(cards(page).first()).toContainText(/available/i)
 })
+
+test('works from the keyboard alone', async ({ page }) => {
+  await page.keyboard.press('Tab')
+  await expect(page.getByRole('link', { name: 'Skip to results' })).toBeFocused()
+  await page.getByLabel('Ask about the collection').focus()
+  await page.keyboard.type('thrillers under 300 pages')
+  await page.keyboard.press('Enter')
+  const remove = page.getByRole('button', { name: 'Remove under 300 pages' })
+  await expect(remove).toBeVisible()
+
+  await remove.focus()
+  await page.keyboard.press('Enter')
+
+  await expect(remove).toHaveCount(0)
+  // Focus lands on the next chip's remove button, or the search box, not the page.
+  await expect(page.locator('button[data-remove]:focus, #ask:focus')).toHaveCount(1)
+})

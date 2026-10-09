@@ -8,7 +8,7 @@ export function ConversationPanel({ exchanges }: { exchanges: Exchange[] }) {
           {e.said && (
             <p className="self-end rounded-lg bg-accent-soft px-3 py-2 text-ink">{e.said}</p>
           )}
-          <div aria-live="polite" className="flex flex-col gap-1 text-ink">
+          <div className="flex flex-col gap-1 text-ink">
             {e.response?.notes.map((note) => <p key={note}>{note}</p>)}
             {e.reply?.intro && <p className="font-serif">{e.reply.intro}</p>}
             {e.cancelled && <p className="text-muted italic">(stopped)</p>}
