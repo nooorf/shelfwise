@@ -14,6 +14,7 @@ export interface Conversation {
   removeChip: (chip: Chip) => void
   switchChip: (chip: Chip) => void
   feedback: (book: BookResult, more: boolean) => void
+  surprise: () => void
   cancel: () => void
   newVisitor: () => Promise<void>
 }
@@ -79,6 +80,11 @@ export function useConversation(): Conversation {
     socket.current?.send({ type: more ? 'more_like' : 'less_like', work_id: book.work_id })
   }, [])
 
+  const surprise = useCallback(() => {
+    useSession.getState().said('Surprise me')
+    socket.current?.send({ type: 'surprise' })
+  }, [])
+
   const cancel = useCallback(() => socket.current?.send({ type: 'cancel' }), [])
 
   const newVisitor = useCallback(async () => {
@@ -88,5 +94,5 @@ export function useConversation(): Conversation {
     await openSession(socket)
   }, [sessionId])
 
-  return { ask, undo, removeChip, switchChip, feedback, cancel, newVisitor }
+  return { ask, undo, removeChip, switchChip, feedback, surprise, cancel, newVisitor }
 }

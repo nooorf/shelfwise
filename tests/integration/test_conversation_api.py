@@ -427,3 +427,32 @@ def test_a_chip_that_only_filters_stays_a_must(client: TestClient) -> None:
     assert events[0]["route"] == "chat"
     assert events[0]["notes"] == [f'"{chip["label"]}" can only be a must.']
     assert chips(events[0]) == chips(narrowed)
+
+
+def test_the_surprise_button_picks_unseen_books_on_the_shelf(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    first = client.post(
+        f"/api/v1/sessions/{session}/turns", json={"message": "thrillers", "limit": 2}
+    ).json()
+    shown = {r["work_id"] for r in first["results"]}
+    with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+        ws.send_json({"type": "surprise", "narrate": False})
+        events = events_until_done(ws)
+
+    assert [e["type"] for e in events] == ["turn", "done"]
+    turn = events[0]
+    assert (turn["kind"], turn["route"]) == ("surprise", "surprise")
+    picks = {r["work_id"] for r in turn["results"]}
+    assert 0 < len(picks) <= 3 and not picks & shown
+    assert all(r["availability"]["state"] == "available" for r in turn["results"])
+    assert turn["semantic_query"] == first["semantic_query"]  # the search is kept
+
+
+def test_the_surprise_button_says_when_nothing_fits(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    say(client, session, "books from 1066")
+    body = client.post(f"/api/v1/sessions/{session}/surprise", json={"narrate": False}).json()
+
+    assert body["results"] == [] and body["notes"] == [
+        "Nothing on the shelf right now fits your filters. Try removing one."
+    ]

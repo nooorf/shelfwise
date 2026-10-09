@@ -166,6 +166,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/sessions/{session_id}/surprise": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Surprise
+         * @description The "Surprise me" button: three unseen books on the shelf now, within the hard
+         *     chips. No parsing.
+         */
+        post: operations["surprise_api_v1_sessions__session_id__surprise_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/sessions/{session_id}/feedback": {
         parameters: {
             query?: never;
@@ -532,6 +553,17 @@ export interface components {
                 [key: string]: number;
             };
         };
+        /**
+         * SurpriseRequest
+         * @description The "Surprise me" button: picks from what is on the shelf, within the hard chips.
+         */
+        SurpriseRequest: {
+            /**
+             * Narrate
+             * @default true
+             */
+            narrate: boolean;
+        };
         /** TurnRequest */
         TurnRequest: {
             /** Message */
@@ -841,6 +873,41 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ChipStrength"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    surprise_api_v1_sessions__session_id__surprise_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SurpriseRequest"];
             };
         };
         responses: {

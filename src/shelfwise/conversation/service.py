@@ -35,6 +35,7 @@ from shelfwise.conversation.merge import (
     apply_turn,
     book_feedback,
     label,
+    pressed,
     record_results,
     remove_chip,
     set_chip_strength,
@@ -61,6 +62,7 @@ _FIELD_WORDS = {
     "pages": "the page limit", "year": "the dates", "available_now": "availability",
     "genre": "the genre", "language": "the language",
 }  # fmt: skip
+NO_SURPRISE = "Nothing on the shelf right now fits your filters. Try removing one."
 CHAT_REPLY = (
     "I can help you find books in this library: describe what you'd like to read, name a book "
     "or an author, or ask for something like a book you loved."
@@ -104,6 +106,12 @@ class ChipStrength(BaseModel):
     label: str
     strength: Strength
     limit: int = Field(default=5, ge=1, le=20)
+    narrate: bool = True
+
+
+class SurpriseRequest(BaseModel):
+    """The "Surprise me" button: picks from what is on the shelf, within the hard chips."""
+
     narrate: bool = True
 
 
@@ -482,6 +490,18 @@ class ConversationService:
             conn, ctx, state, update.kind, "search", "refine", None, system, ids,
             [f'"{change.label}" is now {words}.'], {}, start, 0.0,
             said if change.narrate else None,
+        )  # fmt: skip
+
+    def surprise(self, conn: Connection, session_id: str, request: SurpriseRequest) -> TurnResponse:
+        """The "Surprise me" button: the same picks as saying it, without parsing."""
+        start = time.perf_counter()
+        state = pressed(self._load(session_id), "surprise me", "surprise", self.now())
+        ctx = self.search.context(conn)
+        ids = self._surprise(ctx, state)
+        notes = [] if ids else [NO_SURPRISE]
+        return self._respond(
+            conn, ctx, state, "surprise", "surprise", "surprise", None, None, ids, notes, {},
+            start, 0.0, "surprise me" if request.narrate else None,
         )  # fmt: skip
 
     def book_feedback(

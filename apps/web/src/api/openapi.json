@@ -319,6 +319,56 @@
         }
       }
     },
+    "/api/v1/sessions/{session_id}/surprise": {
+      "post": {
+        "summary": "Surprise",
+        "description": "The \"Surprise me\" button: three unseen books on the shelf now, within the hard\nchips. No parsing.",
+        "operationId": "surprise_api_v1_sessions__session_id__surprise_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurpriseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/sessions/{session_id}/feedback": {
       "post": {
         "summary": "Book Feedback",
@@ -1301,6 +1351,18 @@
           "timings_ms"
         ],
         "title": "SearchResponse"
+      },
+      "SurpriseRequest": {
+        "properties": {
+          "narrate": {
+            "type": "boolean",
+            "title": "Narrate",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "SurpriseRequest",
+        "description": "The \"Surprise me\" button: picks from what is on the shelf, within the hard chips."
       },
       "TurnRequest": {
         "properties": {

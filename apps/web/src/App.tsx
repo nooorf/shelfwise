@@ -5,13 +5,15 @@ import { RotateCcw, UserPlus } from 'lucide-react'
 import { AvatarSlot } from './components/AvatarSlot'
 import { ChipBar } from './components/ChipBar'
 import { ConversationPanel } from './components/ConversationPanel'
+import { ModeBar } from './components/ModeBar'
 import { ResultsShelf } from './components/ResultsShelf'
 import { SearchBar } from './components/SearchBar'
 import { useConversation } from './session/useConversation'
 import { useSession } from './session/store'
 
 export default function App() {
-  const { ask, undo, removeChip, switchChip, feedback, cancel, newVisitor } = useConversation()
+  const { ask, undo, removeChip, switchChip, feedback, surprise, cancel, newVisitor } =
+    useConversation()
   const status = useSession((s) => s.status)
   const exchanges = useSession((s) => s.exchanges)
   const shelf = useSession((s) => s.shelf)
@@ -25,6 +27,9 @@ export default function App() {
         <h1 className="font-serif text-xl font-semibold tracking-tight">Shelfwise</h1>
         <div className="order-last w-full md:order-none md:max-w-2xl md:flex-1">
           <SearchBar onAsk={ask} onCancel={cancel} />
+          <div className="mt-2 px-1">
+            <ModeBar onSurprise={surprise} />
+          </div>
         </div>
         <button
           type="button"

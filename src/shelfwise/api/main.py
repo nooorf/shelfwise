@@ -17,6 +17,7 @@ from shelfwise.conversation.service import (
     ChipStrength,
     ConversationService,
     SessionNotFound,
+    SurpriseRequest,
     TurnRequest,
     TurnResponse,
 )
@@ -30,6 +31,10 @@ from shelfwise.pipeline import (
 )
 
 NARRATE_TIMEOUT_S = 60.0  # a whole reply; past it the reply falls back to templates
+# What the session socket accepts besides "cancel" (see `stream`).
+SOCKET_MESSAGES = frozenset(
+    {"text", "undo", "remove_chip", "chip_strength", "more_like", "less_like", "surprise"}
+)
 
 
 class _Resources:
@@ -195,6 +200,20 @@ def create_app(
         except SessionNotFound:
             raise HTTPException(404, "session not found or expired: start a new one") from None
 
+    @v1.post("/sessions/{session_id}/surprise")
+    def surprise(
+        session_id: str,
+        request: SurpriseRequest,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> TurnResponse:
+        """The "Surprise me" button: three unseen books on the shelf now, within the hard
+        chips. No parsing."""
+        try:
+            return conversation.surprise(conn, session_id, request)
+        except SessionNotFound:
+            raise HTTPException(404, "session not found or expired: start a new one") from None
+
     @v1.post("/sessions/{session_id}/feedback")
     def book_feedback(
         session_id: str,
@@ -228,7 +247,8 @@ def create_app(
         {"type": "text", "text": ..., "limit"?, "narrate"?}, {"type": "undo"},
         {"type": "remove_chip", "field": ..., "label": ...},
         {"type": "chip_strength", "field": ..., "label": ..., "strength": "hard" | "soft"},
-        {"type": "more_like" | "less_like", "work_id": ...}, {"type": "cancel"}.
+        {"type": "more_like" | "less_like", "work_id": ...}, {"type": "surprise"},
+        {"type": "cancel"}.
         Server -> client, per turn: "turn" (cards, chips, notes: everything but the narration,
         as soon as retrieval is done), then "reply" when the narration is ready, then "done". A new message or "cancel" while narration runs drops it
         ("cancelled"): the server half of barge-in."""
@@ -268,14 +288,7 @@ def create_app(
                 if kind == "cancel":
                     await drop_narration()
                     continue
-                if kind not in (
-                    "text",
-                    "undo",
-                    "remove_chip",
-                    "chip_strength",
-                    "more_like",
-                    "less_like",
-                ):
+                if kind not in SOCKET_MESSAGES:
                     await websocket.send_json({"type": "error", "message": f"unknown {kind!r}"})
                     continue
                 await drop_narration()  # a new message barges in
@@ -312,6 +325,16 @@ def create_app(
                         )  # fmt: skip
                         words = "a must" if change.strength == "hard" else "a preference"
                         said = f'"{change.label}" as {words}'
+                    elif kind == "surprise":
+                        press = SurpriseRequest.model_validate(
+                            {k: v for k, v in message.items() if k != "type"}
+                        )
+                        wants_reply = press.narrate
+                        response = await asyncio.to_thread(
+                            conversation.surprise, conn, session_id,
+                            press.model_copy(update={"narrate": False}),
+                        )  # fmt: skip
+                        said = "surprise me"
                     elif kind in ("more_like", "less_like"):
                         feedback = BookFeedback.model_validate(
                             {k: v for k, v in message.items() if k != "type"}
