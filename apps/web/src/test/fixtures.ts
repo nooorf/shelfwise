@@ -41,6 +41,7 @@ export function turn(n: number, overrides: Partial<TurnResponse> = {}): TurnResp
     relaxations: [],
     can_undo: false,
     timings_ms: {},
+    inspector: { parsed: null, searched: null, stages: [] },
     ...overrides,
   }
 }

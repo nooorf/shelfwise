@@ -507,3 +507,24 @@ def test_filters_narrow_an_explore_search_and_explore_again_can_be_undone(
     }  # fmt: skip
     assert other["can_undo"] and "genre in ['thriller']" in chips(back)
     assert empty_form.status_code == 422
+
+
+def test_the_inspector_shows_each_stage_of_a_turn(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    body = say(client, session, "psychological thrillers")
+    inspector = body["inspector"]
+
+    assert inspector["parsed"]["semantic_query"] == "psychological thrillers"
+    assert inspector["searched"]["constraints"] == inspector["parsed"]["constraints"]
+    stages = {s["name"]: s for s in inspector["stages"]}
+    assert list(stages) == ["filter", "bm25", "dense", "fused", "final"]
+    assert stages["filter"]["count"] == 6 and stages["filter"]["top"] == []  # no musts
+    assert all(h["score"] is not None for h in stages["dense"]["top"])
+    final = stages["final"]["top"]
+    assert [h["work_id"] for h in final] == [r["work_id"] for r in body["results"]]
+    assert [h["title"] for h in final] == [r["title"] for r in body["results"]]
+
+    browse = client.post(f"/api/v1/sessions/{session}/explore",
+                         json={"genre": "mystery", "narrate": False}).json()["inspector"]  # fmt: skip
+    assert browse["parsed"] is None and browse["searched"]["semantic_query"] == ""
+    assert [s["name"] for s in browse["stages"]] == ["filter", "final"]

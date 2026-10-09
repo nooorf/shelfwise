@@ -227,7 +227,8 @@ class SearchService:
                 self._ctx.signals()  # facets etc. once per catalog version, shared by requests
                 self._version = version
             ctx = self._ctx
-        return replace(ctx, conn=conn, today=self.today())  # per-request connection and date
+        # Per request: the connection, the date and a fresh trace for the inspector.
+        return replace(ctx, conn=conn, today=self.today(), trace=[])
 
     def retrieve(
         self, ctx: SearchContext, query: str, parsed: ParsedRequest, use_parse: bool, limit: int
@@ -245,8 +246,9 @@ class SearchService:
         else:
             system = hybrid_rerank if ctx.reranker is not None else hybrid_lookup
         avoid = set(parsed.avoid_work_ids)  # "less like this": never shown again
-        ids = [w for w in system(ctx, query, limit + len(avoid)) if w not in avoid]
-        return system.__name__, ids[:limit]
+        ids = [w for w in system(ctx, query, limit + len(avoid)) if w not in avoid][:limit]
+        ctx.record("final", [(w, None) for w in ids], f"what {system.__name__} shows")
+        return system.__name__, ids
 
     def browse(
         self, ctx: SearchContext, constraints: list[Constraint], avoid: list[int], limit: int
@@ -259,6 +261,7 @@ class SearchService:
         hard = [c for c in constraints if c.strength == "hard"]
         ids = ctx.index.work_ids
         mask = allowed_mask(ctx.conn, [*hard, *ctx.extra_constraints], ids)
+        ctx.record("filter", [], f"of {len(mask)} books pass the hard filters", int(mask.sum()))
         on_shelf = allowed_work_ids(ctx.conn, [*hard, _AVAILABLE])
         signals, hidden = ctx.signals(), set(avoid)
 
@@ -271,7 +274,11 @@ class SearchService:
             return -soft, w not in on_shelf, -float(ctx.popularity[i])
 
         candidates = [int(i) for i in np.flatnonzero(mask) if int(ids[i]) not in hidden]
-        return [int(ids[i]) for i in sorted(candidates, key=order)[:limit]]
+        shown = [int(ids[i]) for i in sorted(candidates, key=order)[:limit]]
+        note = "preferred chips met, then on the shelf now, then most borrowed; score: popularity"
+        popularity = dict(zip(ids.tolist(), ctx.popularity.tolist(), strict=True))
+        ctx.record("final", [(w, popularity[w]) for w in shown], note, len(candidates))
+        return shown
 
     def genres(self, conn: Connection) -> list[GenreCount]:
         """Every genre in the catalog with its number of books, largest first (Explore)."""

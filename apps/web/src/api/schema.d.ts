@@ -455,6 +455,42 @@ export interface components {
              */
             narrate: boolean;
         };
+        /**
+         * Constraint
+         * @description One requirement or preference.
+         *
+         *     `field` names what is constrained: "pages", "year" (the work's original publication year),
+         *     "available_now", "isbn", "genre", "facet.supernatural", ...
+         */
+        Constraint: {
+            /** Field */
+            field: string;
+            /**
+             * Op
+             * @enum {string}
+             */
+            op: "eq" | "in" | "lt" | "lte" | "gt" | "gte" | "not_in" | "approx" | "shift";
+            /** Value */
+            value: unknown;
+            /**
+             * Strength
+             * @enum {string}
+             */
+            strength: "hard" | "soft";
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "rule" | "llm" | "chip" | "state";
+            /**
+             * Polarity
+             * @default include
+             * @enum {string}
+             */
+            polarity: "include" | "exclude";
+            /** Span */
+            span?: string | null;
+        };
         /** CopyInfo */
         CopyInfo: {
             /** Branch */
@@ -535,6 +571,37 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /**
+         * Inspector
+         * @description The pipeline inspector's view of a turn (design doc §22.2): how the message was read,
+         *     what was searched, and the candidates at each stage. Timings are in `timings_ms`.
+         */
+        Inspector: {
+            parsed: components["schemas"]["ParsedRequest"] | null;
+            searched: components["schemas"]["ParsedRequest"] | null;
+            /** Stages */
+            stages: components["schemas"]["InspectorStage"][];
+        };
+        /** InspectorHit */
+        InspectorHit: {
+            /** Work Id */
+            work_id: number;
+            /** Title */
+            title: string;
+            /** Score */
+            score: number | null;
+        };
+        /** InspectorStage */
+        InspectorStage: {
+            /** Name */
+            name: string;
+            /** Count */
+            count: number;
+            /** Note */
+            note: string;
+            /** Top */
+            top: components["schemas"]["InspectorHit"][];
+        };
         /** Location */
         Location: {
             /** Branch */
@@ -568,6 +635,28 @@ export interface components {
             polarity: string;
             /** Span */
             span: string | null;
+        };
+        /** ParsedRequest */
+        ParsedRequest: {
+            /**
+             * Intent
+             * @enum {string}
+             */
+            intent: "lookup" | "discover" | "similar" | "refine" | "compare" | "explain" | "surprise" | "other";
+            /**
+             * Semantic Query
+             * @default
+             */
+            semantic_query: string;
+            lookup?: components["schemas"]["LookupSpec"] | null;
+            /** Seed Titles */
+            seed_titles?: string[];
+            /** Seed Work Ids */
+            seed_work_ids?: number[];
+            /** Constraints */
+            constraints?: components["schemas"]["Constraint"][];
+            /** Avoid Work Ids */
+            avoid_work_ids?: number[];
         };
         /** Relaxation */
         Relaxation: {
@@ -740,6 +829,7 @@ export interface components {
             timings_ms: {
                 [key: string]: number;
             };
+            inspector: components["schemas"]["Inspector"];
         };
         /** ValidationError */
         ValidationError: {

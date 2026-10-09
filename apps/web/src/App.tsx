@@ -6,6 +6,7 @@ import { AvatarSlot } from './components/AvatarSlot'
 import { ChipBar } from './components/ChipBar'
 import { ConversationPanel } from './components/ConversationPanel'
 import { ModeBar } from './components/ModeBar'
+import { PipelineInspector } from './components/PipelineInspector'
 import { ResultsShelf } from './components/ResultsShelf'
 import { SearchBar } from './components/SearchBar'
 import { useConversation } from './session/useConversation'
@@ -73,6 +74,7 @@ export default function App() {
           />
         </main>
       </div>
+      <PipelineInspector response={latest} />
     </div>
   )
 }

@@ -172,6 +172,28 @@ class BookFeedback(BaseModel):
     narrate: bool = True
 
 
+class InspectorHit(BaseModel):
+    work_id: int
+    title: str
+    score: float | None  # the stage's own score (BM25, cosine, fused); None: rank only
+
+
+class InspectorStage(BaseModel):
+    name: str  # "filter", "bm25", "dense", "seed", "fused", "final"
+    count: int  # candidates the stage produced (filter: books that pass)
+    note: str
+    top: list[InspectorHit]
+
+
+class Inspector(BaseModel):
+    """The pipeline inspector's view of a turn (design doc §22.2): how the message was read,
+    what was searched, and the candidates at each stage. Timings are in `timings_ms`."""
+
+    parsed: ParsedRequest | None  # this message's parse; None for a button press
+    searched: ParsedRequest | None  # the merged state retrieval ran on; None without a search
+    stages: list[InspectorStage]
+
+
 class TurnResponse(BaseModel):
     session_id: str
     turn: int
@@ -192,6 +214,7 @@ class TurnResponse(BaseModel):
     relaxations: list[Relaxation]
     can_undo: bool
     timings_ms: dict[str, float]
+    inspector: Inspector
 
 
 class SessionNotFound(KeyError):
@@ -425,7 +448,7 @@ class ConversationService:
             )
         return self._respond(
             conn, ctx, state, update.kind, route, parsed.intent, parse_error, system, ids,
-            notes, facets, start, parse_ms, request.message if request.narrate else None,
+            notes, facets, start, parse_ms, request.message if request.narrate else None, parsed,
         )  # fmt: skip
 
     def _answer_offer(
@@ -630,6 +653,27 @@ class ConversationService:
             return "compare", targets
         return "explain", targets
 
+    def _inspector(
+        self, conn: Connection, ctx: SearchContext, state: ConversationState, intent: Intent,
+        system: str | None, parsed: ParsedRequest | None,
+    ) -> Inspector:  # fmt: skip
+        trace = ctx.trace or []
+        ids = list({w for stage in trace for w, _ in stage.top})
+        rows = conn.execute(
+            text("SELECT work_id, title FROM work WHERE work_id = ANY(:ids)"), {"ids": ids}
+        ) if ids else []  # fmt: skip
+        titles = {r.work_id: r.title for r in rows}
+        stages = [
+            InspectorStage(
+                name=stage.name, count=stage.count, note=stage.note,
+                top=[InspectorHit(work_id=w, title=titles.get(w, "?"), score=x)
+                     for w, x in stage.top],
+            )
+            for stage in trace
+        ]  # fmt: skip
+        searched = state_request(state, intent) if system is not None else None
+        return Inspector(parsed=parsed, searched=searched, stages=stages)
+
     def _surprise(self, ctx: SearchContext, state: ConversationState) -> list[int]:
         available = Constraint(field="available_now", op="eq", value=True, strength="hard",
                                source="state")  # fmt: skip
@@ -649,9 +693,10 @@ class ConversationService:
         self, conn: Connection, ctx: SearchContext, state: ConversationState, kind: str,
         route: Route, intent: Intent, parse_error: str | None, system: str | None,
         ids: list[int], notes: list[str], facets: dict[int, dict[str, Any]], start: float,
-        parse_ms: float, message: str | None,
+        parse_ms: float, message: str | None, parsed: ParsedRequest | None = None,
     ) -> TurnResponse:  # fmt: skip
-        """`message`: what to narrate for (None: no narration)."""
+        """`message`: what to narrate for (None: no narration); `parsed`: the message's parse,
+        for the inspector."""
         results = self.search.details(conn, ids, ctx.today)
         relaxations_out: list[Relaxation] = []
         if route == "search" and not results:
@@ -692,6 +737,7 @@ class ConversationService:
             facets=facets,
             relaxations=relaxations_out,
             can_undo=state.before_reset is not None,
+            inspector=self._inspector(conn, ctx, state, intent, system, parsed),
             timings_ms={
                 "parse": round(parse_ms, 1),
                 "retrieve": round(retrieved_ms - parse_ms, 1),

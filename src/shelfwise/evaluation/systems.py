@@ -7,7 +7,7 @@ parsed systems a query parser (`load_context(..., parser="cascade")`).
 """
 
 import random
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -64,6 +64,19 @@ class BookSignals:
     year: dict[int, int]  # first publication, else the earliest edition
 
 
+TRACE_TOP = 10  # candidates kept per stage for the pipeline inspector
+
+
+@dataclass(frozen=True)
+class TraceStage:
+    """One retrieval stage as the pipeline inspector shows it (design doc §22.2)."""
+
+    name: str  # "filter", "bm25", "dense", "seed", "fused", "final"
+    count: int  # how many candidates the stage produced (filter: how many books pass)
+    top: list[tuple[int, float | None]]  # (work_id, score), best first, at most TRACE_TOP
+    note: str = ""
+
+
 @dataclass
 class SearchContext:
     conn: Connection
@@ -81,6 +94,15 @@ class SearchContext:
     parse_fallbacks: list[str] = field(default_factory=list)  # queries the LLM couldn't parse
     _parses: dict[str, ParsedRequest] = field(default_factory=dict)
     _signals: BookSignals | None = None
+    # Set to a list to record each stage for the inspector; None (evals) records nothing.
+    trace: list[TraceStage] | None = None
+
+    def record(self, name: str, scored: Sequence[tuple[int, float | None]], note: str = "",
+               count: int | None = None) -> None:  # fmt: skip
+        if self.trace is not None:
+            total = len(scored) if count is None else count
+            top = [(w, None if x is None else round(float(x), 4)) for w, x in scored[:TRACE_TOP]]
+            self.trace.append(TraceStage(name, total, top, note))
 
     @classmethod
     def build(
@@ -264,9 +286,14 @@ def _seed_vector(index: DenseIndex, seeds: list[int]) -> np.ndarray | None:
 
 
 def _near(
-    index: DenseIndex, vector: np.ndarray, mask: np.ndarray, ignore: list[int] | None = None
-) -> list[int]:
+    index: DenseIndex, vector: np.ndarray, mask: np.ndarray, ignore: list[int] | None = None,
+    trace: tuple[SearchContext, str] | None = None,
+) -> list[int]:  # fmt: skip
+    """Nearest allowed works; `trace`: (context, stage name) to record the hits under."""
     hits = index.search(vector, CANDIDATES, allowed=mask, max_gap=MAX_GAP, ignore=ignore or [])
+    if trace is not None:
+        ctx, name = trace
+        ctx.record(name, [(h.work_id, h.score) for h in hits], "cosine similarity")
     return [h.work_id for h in hits]
 
 
@@ -285,18 +312,24 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
     author_books = _author_books(ctx, lookup.author) if lookup and lookup.author else []
     if author_books and request.intent != "lookup":
         mask = mask & np.isin(ctx.index.work_ids, author_books)
+    ctx.record("filter", [], f"of {len(mask)} books pass the hard filters", int(mask.sum()))
+
+    def keyword(text: str) -> list[int]:
+        hits = ctx.index.search(text, CANDIDATES, allowed=mask)
+        ctx.record("bm25", [(h.work_id, h.score) for h in hits], f'BM25 on "{text}"')
+        return [h.work_id for h in hits]
 
     rankings: list[list[int]] = []
     semantic = request.semantic_query.strip()
     if semantic:
-        rankings.append([h.work_id for h in ctx.index.search(semantic, CANDIDATES, allowed=mask)])
+        rankings.append(keyword(semantic))
         vector = embedder.encode_query(semantic)
-        rankings.append(_near(index, vector, mask))
+        rankings.append(_near(index, vector, mask, trace=(ctx, "dense")))
     if (seed := _seed_vector(index, request.seed_work_ids)) is not None:
-        rankings.append(_near(index, seed, mask, ignore=request.seed_work_ids))
+        rankings.append(_near(index, seed, mask, request.seed_work_ids, (ctx, "seed")))
     if not rankings:  # nothing parsed out: fall back to the words as typed
-        rankings.append([h.work_id for h in ctx.index.search(query, CANDIDATES, allowed=mask)])
-        rankings.append(_near(index, embedder.encode_query(query), mask))
+        rankings.append(keyword(query))
+        rankings.append(_near(index, embedder.encode_query(query), mask, trace=(ctx, "dense")))
 
     penalty = dict(rrf([
         _near(index, index.matrix[row], mask, ignore=[w])
@@ -322,6 +355,7 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
         for work_id, score in rrf(rankings)
     ]
     scored.sort(key=lambda item: (-item[1], item[0]))
+    ctx.record("fused", scored, "RRF, then preferred chips nudge and less-like-this pushes down")
 
     known: list[int] = []
     if request.intent == "lookup" and lookup:

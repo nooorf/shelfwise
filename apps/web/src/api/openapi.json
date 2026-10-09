@@ -978,6 +978,80 @@
         "title": "ChipStrength",
         "description": "Switch a chip to must (\"hard\") or preferred (\"soft\"), named as the response showed it."
       },
+      "Constraint": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "in",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "not_in",
+              "approx",
+              "shift"
+            ],
+            "title": "Op"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "strength": {
+            "type": "string",
+            "enum": [
+              "hard",
+              "soft"
+            ],
+            "title": "Strength"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "rule",
+              "llm",
+              "chip",
+              "state"
+            ],
+            "title": "Source"
+          },
+          "polarity": {
+            "type": "string",
+            "enum": [
+              "include",
+              "exclude"
+            ],
+            "title": "Polarity",
+            "default": "include"
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "op",
+          "value",
+          "strength",
+          "source"
+        ],
+        "title": "Constraint",
+        "description": "One requirement or preference.\n\n`field` names what is constrained: \"pages\", \"year\" (the work's original publication year),\n\"available_now\", \"isbn\", \"genre\", \"facet.supernatural\", ..."
+      },
       "CopyInfo": {
         "properties": {
           "branch": {
@@ -1229,6 +1303,106 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "Inspector": {
+        "properties": {
+          "parsed": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParsedRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "searched": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParsedRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "stages": {
+            "items": {
+              "$ref": "#/components/schemas/InspectorStage"
+            },
+            "type": "array",
+            "title": "Stages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "parsed",
+          "searched",
+          "stages"
+        ],
+        "title": "Inspector",
+        "description": "The pipeline inspector's view of a turn (design doc \u00a722.2): how the message was read,\nwhat was searched, and the candidates at each stage. Timings are in `timings_ms`."
+      },
+      "InspectorHit": {
+        "properties": {
+          "work_id": {
+            "type": "integer",
+            "title": "Work Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "work_id",
+          "title",
+          "score"
+        ],
+        "title": "InspectorHit"
+      },
+      "InspectorStage": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          },
+          "top": {
+            "items": {
+              "$ref": "#/components/schemas/InspectorHit"
+            },
+            "type": "array",
+            "title": "Top"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "count",
+          "note",
+          "top"
+        ],
+        "title": "InspectorStage"
+      },
       "Location": {
         "properties": {
           "branch": {
@@ -1338,6 +1512,72 @@
           "span"
         ],
         "title": "ParsedConstraint"
+      },
+      "ParsedRequest": {
+        "properties": {
+          "intent": {
+            "type": "string",
+            "enum": [
+              "lookup",
+              "discover",
+              "similar",
+              "refine",
+              "compare",
+              "explain",
+              "surprise",
+              "other"
+            ],
+            "title": "Intent"
+          },
+          "semantic_query": {
+            "type": "string",
+            "title": "Semantic Query",
+            "default": ""
+          },
+          "lookup": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LookupSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "seed_titles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Seed Titles"
+          },
+          "seed_work_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Seed Work Ids"
+          },
+          "constraints": {
+            "items": {
+              "$ref": "#/components/schemas/Constraint"
+            },
+            "type": "array",
+            "title": "Constraints"
+          },
+          "avoid_work_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Avoid Work Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "intent"
+        ],
+        "title": "ParsedRequest"
       },
       "Relaxation": {
         "properties": {
@@ -1773,6 +2013,9 @@
             },
             "type": "object",
             "title": "Timings Ms"
+          },
+          "inspector": {
+            "$ref": "#/components/schemas/Inspector"
           }
         },
         "type": "object",
@@ -1795,7 +2038,8 @@
           "facets",
           "relaxations",
           "can_undo",
-          "timings_ms"
+          "timings_ms",
+          "inspector"
         ],
         "title": "TurnResponse"
       },
