@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -111,6 +111,9 @@ agreement:  ## Agreement between your blind grades and Claude's: make agreement 
 
 eval:  ## Score all systems on the dev split and save a report (RERANKER=minilm adds hybrid_rerank, PARSER=cascade adds parsed_hybrid)
 	uv run python scripts/evaluate.py $(if $(RERANKER),--reranker $(RERANKER),) $(if $(PARSER),--parser $(PARSER),)
+
+eval-grounding:  ## Grounding set E: invented books, availability talk, claims; full system vs naive RAG vs LLM-only (needs make llm; PER_KIND=2 for a quick look)
+	uv run python scripts/eval_grounding.py $(if $(PER_KIND),--per-kind $(PER_KIND),)
 
 eval-parser:  ## Score the query parser against gold set B (PARSER=rules|cascade, SPLIT=dev|test|all, ERRORS=1)
 	uv run python scripts/eval_parser.py --parser $(or $(PARSER),rules) --split $(or $(SPLIT),dev) \

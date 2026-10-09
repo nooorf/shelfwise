@@ -356,6 +356,7 @@ export interface components {
         Bench: {
             retrieval: components["schemas"]["RetrievalReport"] | null;
             parser: components["schemas"]["ParserReport"] | null;
+            grounding?: components["schemas"]["GroundingReport"] | null;
         };
         /**
          * BookDetail
@@ -612,6 +613,45 @@ export interface components {
             name: string;
             /** Books */
             books: number;
+        };
+        /**
+         * GroundingRates
+         * @description Share of a system's answers with each problem (set E, `evaluation.grounding`).
+         */
+        GroundingRates: {
+            /** Name */
+            name: string;
+            /** Answers */
+            answers: number;
+            /** Invented */
+            invented: number | null;
+            /** Availability */
+            availability: number | null;
+            /** Claim */
+            claim: number | null;
+            /** Number */
+            number: number | null;
+            /** Affirmed */
+            affirmed?: number | null;
+            /** Unowned */
+            unowned?: number | null;
+            /** Raw Invented */
+            raw_invented?: number | null;
+        };
+        /** GroundingReport */
+        GroundingReport: {
+            /** File */
+            file: string;
+            /** Created */
+            created: string;
+            /** Git */
+            git: string;
+            /** Llm */
+            llm: string;
+            /** Cases */
+            cases: number;
+            /** Systems */
+            systems: components["schemas"]["GroundingRates"][];
         };
         /** HTTPValidationError */
         HTTPValidationError: {

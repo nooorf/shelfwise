@@ -59,3 +59,22 @@ def test_the_newest_dev_reports_best_system_first(tmp_path: Path) -> None:
 def test_no_reports_is_an_empty_bench(tmp_path: Path) -> None:
     bench = load_bench(tmp_path)
     assert bench.retrieval is None and bench.parser is None
+
+
+def test_the_newest_grounding_report_in_a_fixed_system_order(tmp_path: Path) -> None:
+    rates = {"n": 10, "invented": 0.0, "availability": 0.1, "claim": 0.0, "number": 0.0}
+    report = {
+        "created": "2026-10-10T00:00:00", "git": "abc", "llm": "qwen3:4b", "cases": 10,
+        "summary": {
+            "full": {"overall": {**rates, "raw_invented": 0.2}},
+            "llm_only": {"overall": {**rates, "unowned_share": 0.75},
+                         "nonexistent": {**rates, "affirmed": 0.5}},
+        },
+    }  # fmt: skip
+    (tmp_path / "x_grounding.json").write_text(json.dumps(report))
+
+    grounding = load_bench(tmp_path).grounding
+
+    assert grounding is not None and [s.name for s in grounding.systems] == ["llm_only", "full"]
+    assert grounding.systems[0].unowned == 0.75 and grounding.systems[0].affirmed == 0.5
+    assert grounding.systems[1].raw_invented == 0.2

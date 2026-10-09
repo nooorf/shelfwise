@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { getBench } from '../api/client'
 import type { Bench } from '../api/types'
 import { CategoryHeatmap } from './CategoryHeatmap'
+import { GroundingTable } from './GroundingTable'
 import { Leaderboard } from './Leaderboard'
 import { ParetoChart } from './ParetoChart'
 
@@ -65,6 +66,13 @@ export function BenchPage() {
             <CategoryHeatmap systems={retrieval.systems} />
           </section>
         </>
+      )}
+
+      {bench?.grounding && (
+        <section aria-labelledby="grounding" className="flex flex-col gap-3">
+          <h2 id="grounding" className="text-lg font-semibold">Grounding: what reaches the reader</h2>
+          <GroundingTable grounding={bench.grounding} />
+        </section>
       )}
 
       {parser && (

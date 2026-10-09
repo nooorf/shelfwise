@@ -707,6 +707,16 @@
                 "type": "null"
               }
             ]
+          },
+          "grounding": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GroundingReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -1370,6 +1380,147 @@
           "books"
         ],
         "title": "GenreCount"
+      },
+      "GroundingRates": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "answers": {
+            "type": "integer",
+            "title": "Answers"
+          },
+          "invented": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invented"
+          },
+          "availability": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability"
+          },
+          "claim": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claim"
+          },
+          "number": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Number"
+          },
+          "affirmed": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Affirmed"
+          },
+          "unowned": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unowned"
+          },
+          "raw_invented": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Invented"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "answers",
+          "invented",
+          "availability",
+          "claim",
+          "number"
+        ],
+        "title": "GroundingRates",
+        "description": "Share of a system's answers with each problem (set E, `evaluation.grounding`)."
+      },
+      "GroundingReport": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File"
+          },
+          "created": {
+            "type": "string",
+            "title": "Created"
+          },
+          "git": {
+            "type": "string",
+            "title": "Git"
+          },
+          "llm": {
+            "type": "string",
+            "title": "Llm"
+          },
+          "cases": {
+            "type": "integer",
+            "title": "Cases"
+          },
+          "systems": {
+            "items": {
+              "$ref": "#/components/schemas/GroundingRates"
+            },
+            "type": "array",
+            "title": "Systems"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "created",
+          "git",
+          "llm",
+          "cases",
+          "systems"
+        ],
+        "title": "GroundingReport"
       },
       "HTTPValidationError": {
         "properties": {

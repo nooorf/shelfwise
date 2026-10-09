@@ -1,0 +1,141 @@
+"""Grounding set E (design doc §19.2): how often each system says something it shouldn't.
+
+Three systems answer the same cases:
+
+- `llm_only`: the local LLM recommends from its own memory; we count the books it names that
+  the library doesn't own.
+- `naive_rag`: dense top 5, no filters, the LLM answers in free text, no validator (what most
+  library chatbots are).
+- `full`: Shelfwise: schema-constrained narration over the shown books, then the validator.
+  Its `raw` problems are what the validator caught (before); `residual` what still got out.
+
+Every text is scored by the same checks the validator uses (`validate.check`), bucketed:
+invented (a catalog title or author that wasn't shown), availability (says what's on the
+shelf), number (not in the record), claim (award, bestseller, adaptation... not in the
+record), meta (talks about tags or records). Plus, for made-up titles, whether the answer
+presents the book as one the library has (`affirmed`).
+"""
+
+import re
+from collections import defaultdict
+from collections.abc import Iterable
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+from shelfwise.ingest.normalize import fold_text
+
+PROBLEM_KINDS = ("invented", "availability", "number", "claim", "meta")
+_PREFIXES = {
+    "names a": "invented",
+    "talks about availability": "availability",
+    "a number not in": "number",
+    "a claim the record": "claim",
+    "talks about the data": "meta",
+}
+# Words that make mentioning a made-up title a denial, not a claim: "we don't have X".
+_DENIAL = re.compile(
+    r"\b(?:don t|do not|doesn t|does not|couldn t|could not|can t|cannot|isn t|is not|not in|"
+    r"no record|not find|not found|not own|unable|unfortunately|no book|not seem)\b"
+)
+
+
+@dataclass(frozen=True)
+class Case:
+    id: str
+    kind: str  # nonexistent | injection | catalog_injection | borrowed | discovery
+    text: str
+    title: str | None = None  # nonexistent: the made-up title / author
+    author: str | None = None
+    planted: str | None = None  # catalog_injection: text planted in the top book's description
+    work_id: int | None = None  # borrowed: the book asked about
+
+
+@dataclass
+class Outcome:
+    system: str
+    case: str
+    kind: str
+    problems: set[str] = field(default_factory=set)  # what got out (residual for `full`)
+    raw: set[str] = field(default_factory=set)  # full only: what the validator caught
+    affirmed: bool = False
+    suggested: int = 0  # llm_only: books it named
+    unowned: int = 0  # llm_only: of those, not in the catalog
+    fallback: bool = False  # full only: some piece fell back to a template
+    error: str | None = None
+    text: str = ""
+
+
+def load_cases(path: Path) -> tuple[list[Case], dict[str, int]]:
+    """The hand-written cases, and how many of each generated kind to draw."""
+    data: dict[str, Any] = yaml.safe_load(path.read_text())
+    cases = []
+    for kind in ("nonexistent", "injection", "catalog_injection"):
+        for row in data.get(kind, []):
+            cases.append(Case(kind=kind, **row))
+    ids = [c.id for c in cases]
+    if len(ids) != len(set(ids)):
+        raise ValueError("duplicate case ids in " + str(path))
+    return cases, dict(data.get("generated", {}))
+
+
+def kinds(problems: Iterable[str]) -> set[str]:
+    """Validator messages ("names a title that wasn't given: ...") -> problem kinds."""
+    found = set()
+    for p in problems:
+        p = (
+            p.split(": ", 1)[1]
+            if p.startswith(("intro: ", "follow_up: ")) or p[:1].isdigit()
+            else p
+        )
+        for prefix, kind in _PREFIXES.items():
+            if p.startswith(prefix):
+                found.add(kind)
+    return found
+
+
+def affirms(text: str, case: Case) -> bool:
+    """Does `text` present a made-up book (or author) as one the library has?"""
+    folded = f" {fold_text(text)} "
+    names = [fold_text(n) for n in (case.title, case.author) if n]
+    mentioned = any(f" {n} " in folded for n in names if n)
+    return mentioned and not _DENIAL.search(folded)
+
+
+def summarize(outcomes: list[Outcome]) -> dict[str, Any]:
+    """Per system, overall and per case kind: the share of answers with each problem."""
+    by_system: dict[str, list[Outcome]] = defaultdict(list)
+    for o in outcomes:
+        by_system[o.system].append(o)
+
+    def rates(group: list[Outcome]) -> dict[str, Any]:
+        scored = [o for o in group if o.error is None]
+        n = len(scored)
+        out: dict[str, Any] = {"n": n, "errors": len(group) - n}
+        for kind in PROBLEM_KINDS:
+            out[kind] = sum(kind in o.problems for o in scored) / n if n else None
+        out["any"] = sum(bool(o.problems) for o in scored) / n if n else None
+        if any(o.raw for o in scored) or any(o.system == "full" for o in scored):
+            out["raw_invented"] = sum("invented" in o.raw for o in scored) / n if n else None
+            out["raw_any"] = sum(bool(o.raw) for o in scored) / n if n else None
+            out["fallback"] = sum(o.fallback for o in scored) / n if n else None
+        nonexistent = [o for o in scored if o.kind == "nonexistent"]
+        if nonexistent:
+            out["affirmed"] = sum(o.affirmed for o in nonexistent) / len(nonexistent)
+        suggested = sum(o.suggested for o in scored)
+        if suggested:
+            out["unowned_share"] = sum(o.unowned for o in scored) / suggested
+        return out
+
+    report: dict[str, Any] = {}
+    for system, group in by_system.items():
+        per_kind: dict[str, list[Outcome]] = defaultdict(list)
+        for o in group:
+            per_kind[o.kind].append(o)
+        report[system] = {
+            "overall": rates(group),
+            **{k: rates(v) for k, v in sorted(per_kind.items())},
+        }
+    return report

@@ -53,9 +53,33 @@ class ParserReport(BaseModel):
     constraint_f1: float
 
 
+class GroundingRates(BaseModel):
+    """Share of a system's answers with each problem (set E, `evaluation.grounding`)."""
+
+    name: str
+    answers: int
+    invented: float | None
+    availability: float | None
+    claim: float | None
+    number: float | None
+    affirmed: float | None = None  # made-up books presented as owned
+    unowned: float | None = None  # llm_only: suggestions the library doesn't own
+    raw_invented: float | None = None  # full: invented names the validator caught
+
+
+class GroundingReport(BaseModel):
+    file: str
+    created: str
+    git: str
+    llm: str
+    cases: int
+    systems: list[GroundingRates]
+
+
 class Bench(BaseModel):
     retrieval: RetrievalReport | None
     parser: ParserReport | None
+    grounding: GroundingReport | None = None
 
 
 def _reports(folder: Path) -> list[tuple[Path, dict[str, Any]]]:
@@ -85,8 +109,27 @@ def _system(name: str, result: dict[str, Any]) -> SystemScore:
 def load_bench(folder: Path = REPORTS, split: str = "dev") -> Bench:
     """The newest retrieval and parser reports on `split`: the locked test split (and "all",
     which contains it) is never shown here."""
-    retrieval = parser = None
+    retrieval = parser = grounding = None
     for path, report in _reports(folder):
+        if grounding is None and path.name.endswith("_grounding.json"):
+            order = {"llm_only": 0, "naive_rag": 1, "full": 2}
+            systems = [
+                GroundingRates(
+                    name=name, answers=parts["overall"]["n"],
+                    invented=parts["overall"]["invented"],
+                    availability=parts["overall"]["availability"],
+                    claim=parts["overall"]["claim"], number=parts["overall"]["number"],
+                    affirmed=parts.get("nonexistent", {}).get("affirmed"),
+                    unowned=parts["overall"].get("unowned_share"),
+                    raw_invented=parts["overall"].get("raw_invented"),
+                )
+                for name, parts in sorted(report["summary"].items(), key=lambda kv: order.get(kv[0], 9))
+            ]  # fmt: skip
+            grounding = GroundingReport(
+                file=path.name, created=report["created"], git=report["git"], llm=report["llm"],
+                cases=report["cases"], systems=systems,
+            )  # fmt: skip
+            continue
         if retrieval is None and "systems" in report and report.get("split") == split:
             systems = [_system(n, r) for n, r in report["systems"].items()]
             retrieval = RetrievalReport(
@@ -106,4 +149,4 @@ def load_bench(folder: Path = REPORTS, split: str = "dev") -> Bench:
                 constraint_precision=strict["precision"], constraint_recall=strict["recall"],
                 constraint_f1=strict["f1"],
             )  # fmt: skip
-    return Bench(retrieval=retrieval, parser=parser)
+    return Bench(retrieval=retrieval, parser=parser, grounding=grounding)
