@@ -27,7 +27,7 @@ export interface Conversation {
 }
 
 // One audio output and one microphone per page.
-const speech = new SpeechPlayer((playing) => useSession.getState().setPlaying(playing))
+export const speech = new SpeechPlayer((playing) => useSession.getState().setPlaying(playing))
 const microphone = new Microphone()
 
 function onEvent(event: ServerEvent): void {

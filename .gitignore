@@ -44,3 +44,6 @@ apps/web/dist/
 apps/web/test-results/
 apps/web/playwright-report/
 apps/web/e2e/.cache/
+
+# Avatars: fetched (make download-avatar) or your own VRoid export, not committed
+apps/web/public/avatar/*.vrm

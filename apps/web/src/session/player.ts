@@ -9,13 +9,16 @@ export interface AudioOutput {
   resume(): Promise<void>
   decodeAudioData(data: ArrayBuffer): Promise<AudioBuffer>
   createBufferSource(): AudioBufferSourceNode
+  createAnalyser?(): AnalyserNode
   readonly destination: AudioNode
+  readonly sampleRate?: number
 }
 
 const LEAD_S = 0.02 // scheduling slack so the first clip doesn't start in the past
 
 export class SpeechPlayer {
   private output: AudioOutput | null = null
+  private tap: AnalyserNode | null = null // what the avatar's lip-sync reads
   private sources: AudioBufferSourceNode[] = []
   private endsAt = 0
   private latestTurn = 0
@@ -33,6 +36,15 @@ export class SpeechPlayer {
   unlock(): void {
     this.output ??= this.makeOutput()
     void this.output.resume()
+  }
+
+  /** The analyser every clip plays through (null before unlock or without Web Audio). */
+  get analyser(): AnalyserNode | null {
+    return this.tap
+  }
+
+  get sampleRate(): number {
+    return this.output?.sampleRate ?? 48_000
   }
 
   /** A turn the server answered: stop() covers it even before its audio arrives. */
@@ -58,6 +70,16 @@ export class SpeechPlayer {
     if (wasPlaying) this.onPlaying(false)
   }
 
+  private through(output: AudioOutput): AudioNode {
+    if (!this.tap && output.createAnalyser) {
+      this.tap = output.createAnalyser()
+      this.tap.fftSize = 2048
+      this.tap.smoothingTimeConstant = 0.3
+      this.tap.connect(output.destination)
+    }
+    return this.tap ?? output.destination
+  }
+
   private async schedule(turn: number, wavBase64: string): Promise<void> {
     const output = this.output
     if (!output || turn <= this.stoppedThrough) return
@@ -66,7 +88,7 @@ export class SpeechPlayer {
     if (turn <= this.stoppedThrough) return // stopped while decoding
     const source = output.createBufferSource()
     source.buffer = buffer
-    source.connect(output.destination)
+    source.connect(this.through(output))
     const start = Math.max(output.currentTime + LEAD_S, this.endsAt)
     source.start(start)
     this.endsAt = start + buffer.duration

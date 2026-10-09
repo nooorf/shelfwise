@@ -112,3 +112,17 @@ test('a spoken question is heard, written down and answered', async ({ page }) =
   await expect(cards(page).first()).toBeVisible()
   await expect(page.getByRole('button', { name: 'Speak' })).toHaveAttribute('aria-pressed', 'false')
 })
+
+test('the avatar loads, or falls back to the orb, and can be switched off', async ({ page }) => {
+  const toggle = page.getByRole('button', { name: /^Avatar (on|off)$/ })
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true')
+  // Headless Chromium draws WebGL in software: the avatar may hand over to the orb as too slow.
+  await expect(page.locator('[data-avatar="ready"]').or(page.getByText('Ready', { exact: true }))).toBeVisible({
+    timeout: 30_000,
+  })
+
+  await toggle.click()
+
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false')
+  await expect(page.locator('[data-avatar]')).toHaveCount(0)
+})

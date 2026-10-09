@@ -7,6 +7,9 @@ import { defineConfig } from 'vite'
 // session WebSocket included, so the app and the API share an origin as they will in production.
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // three.js + the VRM loader are one lazy chunk (~1.1 MB, ~290 kB gzipped), loaded only when
+  // the avatar shows; the app itself stays far below this.
+  build: { chunkSizeWarningLimit: 1200 },
   server: {
     proxy: {
       '/api': { target: 'http://localhost:8000', ws: true },

@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations download-tts download-stt api web web-install web-test web-e2e web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -129,6 +129,11 @@ VAD_URL = https://raw.githubusercontent.com/snakers4/silero-vad/v6.2.3/src/siler
 download-stt:  ## Download Silero VAD (~2 MB) for voice input; Whisper (~0.5 GB) downloads on first use
 	mkdir -p data/models/silero
 	[ -f data/models/silero/silero_vad.onnx ] || curl -fL --progress-bar -o data/models/silero/silero_vad.onnx $(VAD_URL)
+
+AVATAR_URL = https://raw.githubusercontent.com/vrm-c/vrm-specification/master/samples/VRM1_Constraint_Twist_Sample/vrm/VRM1_Constraint_Twist_Sample.vrm
+download-avatar:  ## Download the placeholder avatar (pixiv's VRM 1.0 sample, ~11 MB) until your VRoid model exists
+	mkdir -p apps/web/public/avatar
+	[ -f apps/web/public/avatar/sample.vrm ] || curl -fL --progress-bar -o apps/web/public/avatar/sample.vrm $(AVATAR_URL)
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload
