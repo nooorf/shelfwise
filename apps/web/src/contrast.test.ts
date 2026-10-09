@@ -9,6 +9,7 @@ const PAIRS: [string, string][] = [
   ['accent', 'paper'], ['accent', 'card'], ['accent', 'accent-soft'], ['ink', 'accent-soft'],
   ['card', 'accent'], ['ok', 'ok-soft'], ['soon', 'soon-soft'], ['out', 'out-soft'],
   ['out', 'paper'], ['quiet', 'quiet-soft'],
+  ...Array.from({ length: 12 }, (_, i): [string, string] => [`seq-ink-${i}`, `seq-${i}`]),
 ]
 
 function tokens(block: string): Record<string, string> {

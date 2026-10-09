@@ -20,6 +20,37 @@
   --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
 }
 
+/* Plain variables, not @theme: Tailwind drops theme colours no utility class uses, and these
+   are only read through var() (bench heatmap). */
+:root {
+  /* Sequential blue for magnitude (bench heatmap): near zero to high; the ink is whichever
+     text colour reads best on each step (step 450 left out: no text colour reaches 4.5:1). */
+  --color-seq-0: #cde2fb;
+  --color-seq-1: #b7d3f6;
+  --color-seq-2: #9ec5f4;
+  --color-seq-3: #86b6ef;
+  --color-seq-4: #6da7ec;
+  --color-seq-5: #5598e7;
+  --color-seq-6: #3987e5;
+  --color-seq-7: #256abf;
+  --color-seq-8: #1c5cab;
+  --color-seq-9: #184f95;
+  --color-seq-10: #104281;
+  --color-seq-11: #0d366b;
+  --color-seq-ink-0: #1b1915;
+  --color-seq-ink-1: #1b1915;
+  --color-seq-ink-2: #1b1915;
+  --color-seq-ink-3: #1b1915;
+  --color-seq-ink-4: #1b1915;
+  --color-seq-ink-5: #1b1915;
+  --color-seq-ink-6: #1b1915;
+  --color-seq-ink-7: #ffffff;
+  --color-seq-ink-8: #ffffff;
+  --color-seq-ink-9: #ffffff;
+  --color-seq-ink-10: #ffffff;
+  --color-seq-ink-11: #ffffff;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-paper: #191815;
@@ -37,6 +68,31 @@
     --color-out-soft: #3d2623;
     --color-quiet: #c2c2bd;
     --color-quiet-soft: #2e2e2b;
+    /* Reversed on dark: near zero recedes into the surface, high scores stand out. */
+    --color-seq-0: #0d366b;
+    --color-seq-1: #104281;
+    --color-seq-2: #184f95;
+    --color-seq-3: #1c5cab;
+    --color-seq-4: #256abf;
+    --color-seq-5: #3987e5;
+    --color-seq-6: #5598e7;
+    --color-seq-7: #6da7ec;
+    --color-seq-8: #86b6ef;
+    --color-seq-9: #9ec5f4;
+    --color-seq-10: #b7d3f6;
+    --color-seq-11: #cde2fb;
+    --color-seq-ink-0: #ffffff;
+    --color-seq-ink-1: #ffffff;
+    --color-seq-ink-2: #ffffff;
+    --color-seq-ink-3: #ffffff;
+    --color-seq-ink-4: #ffffff;
+    --color-seq-ink-5: #1b1915;
+    --color-seq-ink-6: #1b1915;
+    --color-seq-ink-7: #1b1915;
+    --color-seq-ink-8: #1b1915;
+    --color-seq-ink-9: #1b1915;
+    --color-seq-ink-10: #1b1915;
+    --color-seq-ink-11: #1b1915;
   }
 }
 

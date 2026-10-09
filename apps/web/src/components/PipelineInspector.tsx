@@ -62,6 +62,9 @@ export function PipelineInspector({ response }: { response: TurnResponse | undef
           </span>
         )}
       </summary>
+      <p className="px-4 pb-2 md:px-6">
+        <a href="/bench" className="text-accent hover:underline">Benchmarks: every system on the dev split →</a>
+      </p>
       {!response ? (
         <p className="px-4 pb-3 text-muted md:px-6">Ask something to see how it’s handled.</p>
       ) : (

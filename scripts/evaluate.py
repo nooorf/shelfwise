@@ -11,9 +11,12 @@ for those the right behaviour is an honest "no match", which is tested elsewhere
 
 import argparse
 import json
+import time
 from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
+
+import numpy as np
 
 from shelfwise.catalog.db import make_engine
 from shelfwise.catalog.meta import get_catalog_version
@@ -89,8 +92,13 @@ def main() -> None:
         key_of = work_keys(conn)
         for name in available_systems(ctx, args.systems):
             per_query = {}
+            SYSTEMS[name](ctx, scored[0].text, K)  # untimed: lazy loads (models, caches)
+            took_ms = []
             for q in scored:
-                ranked = [key_of[w] for w in SYSTEMS[name](ctx, q.text, K)]
+                clock = time.perf_counter()
+                found = SYSTEMS[name](ctx, q.text, K)
+                took_ms.append((time.perf_counter() - clock) * 1000)
+                ranked = [key_of[w] for w in found]
                 per_query[q.id] = {"category": q.category, **query_metrics(ranked, qrels[q.id], K)}
             metrics = [m for m in next(iter(per_query.values())) if m != "category"]
             overall = {}
@@ -104,6 +112,12 @@ def main() -> None:
                 "overall": overall,
                 f"ndcg@{K}_by_category": {c: mean(v) for c, v in sorted(by_category.items())},
                 "per_query": per_query,
+                # Wall time per query on this machine. The parsed systems read the LLM answer
+                # cache, so their LLM parse time is not in here (eval-parser measures it).
+                "latency_ms": {
+                    "p50": round(float(np.percentile(took_ms, 50)), 1),
+                    "p95": round(float(np.percentile(took_ms, 95)), 1),
+                },
             }
 
     if args.parser:
@@ -118,6 +132,7 @@ def main() -> None:
     )
     header = (
         f"{'system':14} {'NDCG@10':>18} {'Recall@10':>10} {'MRR':>6} {'Hit@10':>7} {'judged@10':>9}"
+        f" {'p95 ms':>7}"
     )
     print(header)
     print("-" * len(header))
@@ -127,7 +142,7 @@ def main() -> None:
         print(
             f"{name:14} {o[f'ndcg@{K}']['mean']:.3f} [{low:.2f}-{high:.2f}] "
             f"{o[f'recall@{K}']['mean']:10.3f} {o['mrr']['mean']:6.3f} {o[f'hit@{K}']['mean']:7.3f} "
-            f"{o[f'judged@{K}']['mean']:9.2f}"
+            f"{o[f'judged@{K}']['mean']:9.2f} {result['latency_ms']['p95']:7.1f}"
         )
     print(f"\nreport: {out}")
 

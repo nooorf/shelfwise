@@ -106,6 +106,25 @@
         }
       }
     },
+    "/api/v1/bench": {
+      "get": {
+        "summary": "Bench",
+        "description": "The benchmark dashboard's data: the newest dev-split retrieval report (every system's\nscores with CIs, per category, latency) and the newest parser report.",
+        "operationId": "bench_api_v1_bench_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bench"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/genres": {
       "get": {
         "summary": "Genres",
@@ -634,6 +653,36 @@
           "unavailable"
         ],
         "title": "AvailabilityState"
+      },
+      "Bench": {
+        "properties": {
+          "retrieval": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RetrievalReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parser": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParserReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "retrieval",
+          "parser"
+        ],
+        "title": "Bench"
       },
       "BookDetail": {
         "properties": {
@@ -1403,6 +1452,34 @@
         ],
         "title": "InspectorStage"
       },
+      "Interval": {
+        "properties": {
+          "mean": {
+            "type": "number",
+            "title": "Mean"
+          },
+          "ci95": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Ci95"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mean",
+          "ci95"
+        ],
+        "title": "Interval"
+      },
       "Location": {
         "properties": {
           "branch": {
@@ -1579,6 +1656,81 @@
         ],
         "title": "ParsedRequest"
       },
+      "ParserReport": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File"
+          },
+          "created": {
+            "type": "string",
+            "title": "Created"
+          },
+          "git": {
+            "type": "string",
+            "title": "Git"
+          },
+          "split": {
+            "type": "string",
+            "title": "Split"
+          },
+          "parser": {
+            "type": "string",
+            "title": "Parser"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "queries": {
+            "type": "integer",
+            "title": "Queries"
+          },
+          "intent_accuracy": {
+            "type": "number",
+            "title": "Intent Accuracy"
+          },
+          "exact_match": {
+            "type": "number",
+            "title": "Exact Match"
+          },
+          "constraint_precision": {
+            "type": "number",
+            "title": "Constraint Precision"
+          },
+          "constraint_recall": {
+            "type": "number",
+            "title": "Constraint Recall"
+          },
+          "constraint_f1": {
+            "type": "number",
+            "title": "Constraint F1"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "created",
+          "git",
+          "split",
+          "parser",
+          "model",
+          "queries",
+          "intent_accuracy",
+          "exact_match",
+          "constraint_precision",
+          "constraint_recall",
+          "constraint_f1"
+        ],
+        "title": "ParserReport"
+      },
       "Relaxation": {
         "properties": {
           "drop": {
@@ -1688,6 +1840,71 @@
           "source"
         ],
         "title": "ReplyItem"
+      },
+      "RetrievalReport": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File"
+          },
+          "created": {
+            "type": "string",
+            "title": "Created"
+          },
+          "git": {
+            "type": "string",
+            "title": "Git"
+          },
+          "split": {
+            "type": "string",
+            "title": "Split"
+          },
+          "queries": {
+            "type": "integer",
+            "title": "Queries"
+          },
+          "embedding_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Embedding Model"
+          },
+          "parser": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parser"
+          },
+          "systems": {
+            "items": {
+              "$ref": "#/components/schemas/SystemScore"
+            },
+            "type": "array",
+            "title": "Systems"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "created",
+          "git",
+          "split",
+          "queries",
+          "embedding_model",
+          "parser",
+          "systems"
+        ],
+        "title": "RetrievalReport"
       },
       "SearchRequest": {
         "properties": {
@@ -1841,6 +2058,61 @@
         "type": "object",
         "title": "SurpriseRequest",
         "description": "The \"Surprise me\" button: picks from what is on the shelf, within the hard chips."
+      },
+      "SystemScore": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "ndcg": {
+            "$ref": "#/components/schemas/Interval"
+          },
+          "recall": {
+            "type": "number",
+            "title": "Recall"
+          },
+          "mrr": {
+            "type": "number",
+            "title": "Mrr"
+          },
+          "judged": {
+            "type": "number",
+            "title": "Judged"
+          },
+          "by_category": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "By Category"
+          },
+          "latency_ms": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Ms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "ndcg",
+          "recall",
+          "mrr",
+          "judged",
+          "by_category",
+          "latency_ms"
+        ],
+        "title": "SystemScore"
       },
       "TurnRequest": {
         "properties": {

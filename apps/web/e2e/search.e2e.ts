@@ -76,3 +76,12 @@ test('works from the keyboard alone', async ({ page }) => {
   // Focus lands on the next chip's remove button, or the search box, not the page.
   await expect(page.locator('button[data-remove]:focus, #ask:focus')).toHaveCount(1)
 })
+
+test('the bench page shows every system and the parser', async ({ page }) => {
+  await page.goto('/bench')
+
+  const board = page.getByRole('table').first()
+  await expect(board.getByRole('rowheader', { name: /parsed_hybrid/ })).toBeVisible()
+  await expect(page.getByRole('img', { name: /nDCG@10 against p95 latency/ })).toBeVisible()
+  await expect(page.getByText('Intent accuracy')).toBeVisible()
+})

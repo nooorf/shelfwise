@@ -23,6 +23,7 @@ from shelfwise.conversation.service import (
     TurnRequest,
     TurnResponse,
 )
+from shelfwise.evaluation.bench import Bench, load_bench
 from shelfwise.logging import configure_logging
 from shelfwise.pipeline import (
     BookDetail,
@@ -151,6 +152,12 @@ def create_app(
         if detail is None:
             raise HTTPException(404, "no such book")
         return detail
+
+    @v1.get("/bench")
+    def bench() -> Bench:
+        """The benchmark dashboard's data: the newest dev-split retrieval report (every system's
+        scores with CIs, per category, latency) and the newest parser report."""
+        return load_bench()
 
     @v1.get("/genres")
     def genres(

@@ -1,5 +1,5 @@
 // REST calls: sessions are created and ended over HTTP; turns go over the WebSocket.
-import type { BookDetail, GenreCount } from './types'
+import type { Bench, BookDetail, GenreCount } from './types'
 
 export async function startSession(): Promise<string> {
   const response = await fetch('/api/v1/sessions', { method: 'POST' })
@@ -30,4 +30,11 @@ export async function getGenres(): Promise<GenreCount[]> {
   const response = await fetch('/api/v1/genres')
   if (!response.ok) throw new Error(`could not load the genres (${response.status})`)
   return (await response.json()) as GenreCount[]
+}
+
+/** The benchmark dashboard: the newest dev-split retrieval and parser reports. */
+export async function getBench(): Promise<Bench> {
+  const response = await fetch('/api/v1/bench')
+  if (!response.ok) throw new Error(`could not load the benchmarks (${response.status})`)
+  return (await response.json()) as Bench
 }

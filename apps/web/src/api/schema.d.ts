@@ -63,6 +63,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/bench": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Bench
+         * @description The benchmark dashboard's data: the newest dev-split retrieval report (every system's
+         *     scores with CIs, per category, latency) and the newest parser report.
+         */
+        get: operations["bench_api_v1_bench_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/genres": {
         parameters: {
             query?: never;
@@ -310,6 +331,11 @@ export interface components {
          * @enum {string}
          */
         AvailabilityState: "available" | "in_library_only" | "due_soon" | "borrowed" | "unavailable";
+        /** Bench */
+        Bench: {
+            retrieval: components["schemas"]["RetrievalReport"] | null;
+            parser: components["schemas"]["ParserReport"] | null;
+        };
         /**
          * BookDetail
          * @description Everything the book drawer shows: the card's facts plus the record behind them.
@@ -602,6 +628,16 @@ export interface components {
             /** Top */
             top: components["schemas"]["InspectorHit"][];
         };
+        /** Interval */
+        Interval: {
+            /** Mean */
+            mean: number;
+            /** Ci95 */
+            ci95: [
+                number,
+                number
+            ];
+        };
         /** Location */
         Location: {
             /** Branch */
@@ -658,6 +694,33 @@ export interface components {
             /** Avoid Work Ids */
             avoid_work_ids?: number[];
         };
+        /** ParserReport */
+        ParserReport: {
+            /** File */
+            file: string;
+            /** Created */
+            created: string;
+            /** Git */
+            git: string;
+            /** Split */
+            split: string;
+            /** Parser */
+            parser: string;
+            /** Model */
+            model: string | null;
+            /** Queries */
+            queries: number;
+            /** Intent Accuracy */
+            intent_accuracy: number;
+            /** Exact Match */
+            exact_match: number;
+            /** Constraint Precision */
+            constraint_precision: number;
+            /** Constraint Recall */
+            constraint_recall: number;
+            /** Constraint F1 */
+            constraint_f1: number;
+        };
         /** Relaxation */
         Relaxation: {
             /** Drop */
@@ -707,6 +770,25 @@ export interface components {
              * @enum {string}
              */
             source: "llm" | "template";
+        };
+        /** RetrievalReport */
+        RetrievalReport: {
+            /** File */
+            file: string;
+            /** Created */
+            created: string;
+            /** Git */
+            git: string;
+            /** Split */
+            split: string;
+            /** Queries */
+            queries: number;
+            /** Embedding Model */
+            embedding_model: string | null;
+            /** Parser */
+            parser: string | null;
+            /** Systems */
+            systems: components["schemas"]["SystemScore"][];
         };
         /** SearchRequest */
         SearchRequest: {
@@ -763,6 +845,26 @@ export interface components {
              * @default true
              */
             narrate: boolean;
+        };
+        /** SystemScore */
+        SystemScore: {
+            /** Name */
+            name: string;
+            ndcg: components["schemas"]["Interval"];
+            /** Recall */
+            recall: number;
+            /** Mrr */
+            mrr: number;
+            /** Judged */
+            judged: number;
+            /** By Category */
+            by_category: {
+                [key: string]: number;
+            };
+            /** Latency Ms */
+            latency_ms: {
+                [key: string]: number;
+            } | null;
         };
         /** TurnRequest */
         TurnRequest: {
@@ -935,6 +1037,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bench_api_v1_bench_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Bench"];
                 };
             };
         };

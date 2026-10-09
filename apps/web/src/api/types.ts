@@ -12,6 +12,8 @@ export type Reply = Schemas['Reply']
 export type ReplyItem = Schemas['ReplyItem']
 export type Relaxation = Schemas['Relaxation']
 export type GenreCount = Schemas['GenreCount']
+export type Bench = Schemas['Bench']
+export type SystemScore = Schemas['SystemScore']
 /** The filters form; the socket message carries the same fields. */
 export type Filters = Pick<Schemas['FiltersRequest'], 'pages_max' | 'year_from' | 'year_to' | 'available_now'>
 
