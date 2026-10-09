@@ -14,6 +14,7 @@ export interface Exchange {
   reply?: Reply
   cancelled?: boolean
   pending: boolean
+  fixed?: { heard: string; catalog: string }[] // names respelled in a spoken question
 }
 
 // Routes whose books belong on the shelf. "chat" and "clarify" leave the shelf as it was.
@@ -135,7 +136,7 @@ export const useSession = create<SessionState>((set) => ({
           if (!event.text) return { error: 'I couldn’t make that out. Try again, or type it.', status: 'ready' }
           return {
             status: 'searching',
-            exchanges: [...s.exchanges, { key: nextKey++, said: event.text, pending: true }],
+            exchanges: [...s.exchanges, { key: nextKey++, said: event.text, pending: true, fixed: event.fixed }],
           }
         case 'speak':
           return { speakOn: event.on }

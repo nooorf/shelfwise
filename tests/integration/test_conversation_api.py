@@ -590,7 +590,7 @@ def test_a_spoken_question_is_transcribed_and_answered(
     kinds = [e["type"] for e in events]
     assert kinds[:4] == ["speech_start", "listening", "transcript", "turn"]
     assert events[1] == {"type": "listening", "on": False, "reason": "heard"}
-    assert events[2]["text"] == "psychological thrillers"
+    assert events[2] == {"type": "transcript", "text": "psychological thrillers", "fixed": []}
     assert events[3]["semantic_query"] == "psychological thrillers" and events[3]["results"]
     assert stt.heard == [pytest.approx(1.8, abs=0.1)]  # pre-roll + speech + 600 ms
 
@@ -605,3 +605,20 @@ def test_listening_is_refused_without_models_and_stray_audio_is_ignored(
         assert ws.receive_json() == {"type": "listening", "on": False, "reason": "unavailable"}
         ws.send_text("not json")
         assert ws.receive_json() == {"type": "error", "message": "not JSON"}
+
+
+def test_a_misheard_author_is_respelled_from_the_catalog(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    stt = FakeTranscriber("anything else by jillian flynn?")
+    with make_client(conn, FORMS, listening=(FakeVAD(), stt)) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+            ws.send_json({"type": "listen", "on": True})
+            ws.receive_json()
+            ws.send_bytes(pcm(("tone", 0.5), ("silence", 1.0)))
+            events = events_until_done(ws)
+
+    transcript = next(e for e in events if e["type"] == "transcript")
+    assert transcript["text"] == "anything else by Gillian Flynn?"
+    assert transcript["fixed"] == [{"heard": "jillian flynn", "catalog": "Gillian Flynn"}]

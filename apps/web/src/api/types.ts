@@ -28,7 +28,7 @@ export type ServerEvent =
   | { type: 'speak'; on: boolean }
   | { type: 'listening'; on: boolean; reason?: 'heard' | 'stopped' | 'no speech' | 'unavailable' }
   | { type: 'speech_start' }
-  | { type: 'transcript'; text: string }
+  | { type: 'transcript'; text: string; fixed: { heard: string; catalog: string }[] }
   | { type: 'error'; message: string }
 
 export type ClientMessage =

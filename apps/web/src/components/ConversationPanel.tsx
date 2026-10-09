@@ -8,6 +8,11 @@ export function ConversationPanel({ exchanges }: { exchanges: Exchange[] }) {
           {e.said && (
             <p className="self-end rounded-lg bg-accent-soft px-3 py-2 text-ink">{e.said}</p>
           )}
+          {e.fixed?.map((f) => (
+            <p key={f.heard} className="self-end text-xs text-muted">
+              Heard “{f.heard}” as {f.catalog}
+            </p>
+          ))}
           <div className="flex flex-col gap-1 text-ink">
             {e.response?.notes.map((note) => <p key={note}>{note}</p>)}
             {e.reply?.intro && <p className="font-serif">{e.reply.intro}</p>}

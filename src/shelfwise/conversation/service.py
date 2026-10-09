@@ -57,6 +57,7 @@ from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
 from shelfwise.ranking.soft import scored
 from shelfwise.retrieval.filters import allowed_mask, filterable, relaxations
 from shelfwise.voice.listen import VAD, Endpointer, Transcriber
+from shelfwise.voice.repair import Fix, NameRepair
 from shelfwise.voice.tts import Speech, sentences, wav_bytes
 
 Route = Literal["search", "explain", "compare", "clarify", "surprise", "chat", "start_over"]
@@ -331,6 +332,8 @@ class ConversationService:
         # Without an LLM the narrator writes templates: correct, plain.
         self.narrator = narrator or Narrator(None)
         self._names: CatalogNames | None = None
+        self._repair: NameRepair | None = None
+        self._repair_version: int | None = None
         self._names_version: int | None = None
 
     def _catalog_names(self, conn: Connection) -> CatalogNames:
@@ -372,10 +375,15 @@ class ConversationService:
             raise RuntimeError("no VAD loaded")
         return Endpointer(self.listening[0].fresh())
 
-    def transcribe(self, audio: np.ndarray) -> str:
+    def transcribe(self, conn: Connection, audio: np.ndarray) -> tuple[str, list[Fix]]:
+        """What the reader said, with misheard names put back to the catalog's spelling."""
         if self.listening is None:
             raise RuntimeError("no speech-to-text loaded")
-        return self.listening[1].transcribe(audio) if len(audio) else ""
+        heard = self.listening[1].transcribe(audio) if len(audio) else ""
+        version = self.search.catalog_version
+        if self._repair is None or version != self._repair_version:
+            self._repair, self._repair_version = NameRepair.load(conn), version
+        return self._repair.repair(heard)
 
     def audio(self, sentence: str) -> bytes:
         """One sentence as a WAV clip. Callers check `speech` first."""

@@ -343,7 +343,8 @@ def create_app(
         {"type": "listen", "on": bool} and, while listening, binary frames of 16 kHz 16-bit
         mono PCM. Listening answers {"type": "listening", "on", "reason"?}; the server finds
         the utterance's end itself ("speech_start" when it hears speech: barge-in), then sends
-        {"type": "transcript", "text"} and runs it as a typed "text" message; "listen" off
+        {"type": "transcript", "text", "fixed": [{"heard", "catalog"}]} (names respelled from
+        the catalog) and runs it as a typed "text" message; "listen" off
         before the end transcribes what was heard so far.
         Server -> client, per turn: "turn" (cards, chips, notes: everything but the narration,
         as soon as retrieval is done), then "reply" when the narration is ready, then, with
@@ -384,8 +385,11 @@ def create_app(
 
         async def transcribe(heard: Endpointer) -> dict[str, Any] | None:
             await stop_listening("heard")
-            text = await asyncio.to_thread(conversation.transcribe, heard.audio())
-            await websocket.send_json({"type": "transcript", "text": text})
+            text, fixes = await asyncio.to_thread(conversation.transcribe, conn, heard.audio())
+            await websocket.send_json(
+                {"type": "transcript", "text": text,
+                 "fixed": [{"heard": f.heard, "catalog": f.catalog} for f in fixes]}
+            )  # fmt: skip
             return {"type": "text", "text": text} if text else None
 
         async def finish(response: TurnResponse, job: Callable[[], Reply] | None) -> None:
