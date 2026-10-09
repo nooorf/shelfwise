@@ -14,6 +14,7 @@ from shelfwise.config import Settings, get_settings
 from shelfwise.conversation.service import (
     BookFeedback,
     ChipRemoval,
+    ChipStrength,
     ConversationService,
     SessionNotFound,
     TurnRequest,
@@ -180,6 +181,20 @@ def create_app(
         except SessionNotFound:
             raise HTTPException(404, "session not found or expired: start a new one") from None
 
+    @v1.post("/sessions/{session_id}/chips/strength")
+    def set_chip_strength(
+        session_id: str,
+        change: ChipStrength,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> TurnResponse:
+        """The reader switched a chip between must (a filter) and preferred (a ranking nudge);
+        the search runs again. Only chips marked `switchable` change."""
+        try:
+            return conversation.set_chip_strength(conn, session_id, change)
+        except SessionNotFound:
+            raise HTTPException(404, "session not found or expired: start a new one") from None
+
     @v1.post("/sessions/{session_id}/feedback")
     def book_feedback(
         session_id: str,
@@ -212,9 +227,10 @@ def create_app(
         """One socket per session (design doc §20.5, text events). Client -> server:
         {"type": "text", "text": ..., "limit"?, "narrate"?}, {"type": "undo"},
         {"type": "remove_chip", "field": ..., "label": ...},
-        {"type": "more_like" | "less_like", "work_id": ...}, {"type": "cancel"}. Server -> client, per turn: "turn" (cards, chips, notes: everything
-        but the narration, as soon as retrieval is done), then "reply" when the narration is
-        ready, then "done". A new message or "cancel" while narration runs drops it
+        {"type": "chip_strength", "field": ..., "label": ..., "strength": "hard" | "soft"},
+        {"type": "more_like" | "less_like", "work_id": ...}, {"type": "cancel"}.
+        Server -> client, per turn: "turn" (cards, chips, notes: everything but the narration,
+        as soon as retrieval is done), then "reply" when the narration is ready, then "done". A new message or "cancel" while narration runs drops it
         ("cancelled"): the server half of barge-in."""
         await websocket.accept()
         if conversation.store.get(session_id) is None:
@@ -252,7 +268,14 @@ def create_app(
                 if kind == "cancel":
                     await drop_narration()
                     continue
-                if kind not in ("text", "undo", "remove_chip", "more_like", "less_like"):
+                if kind not in (
+                    "text",
+                    "undo",
+                    "remove_chip",
+                    "chip_strength",
+                    "more_like",
+                    "less_like",
+                ):
                     await websocket.send_json({"type": "error", "message": f"unknown {kind!r}"})
                     continue
                 await drop_narration()  # a new message barges in
@@ -278,6 +301,17 @@ def create_app(
                             removal.model_copy(update={"narrate": False}),
                         )  # fmt: skip
                         said = f'without "{removal.label}"'
+                    elif kind == "chip_strength":
+                        change = ChipStrength.model_validate(
+                            {k: v for k, v in message.items() if k != "type"}
+                        )
+                        wants_reply = change.narrate
+                        response = await asyncio.to_thread(
+                            conversation.set_chip_strength, conn, session_id,
+                            change.model_copy(update={"narrate": False}),
+                        )  # fmt: skip
+                        words = "a must" if change.strength == "hard" else "a preference"
+                        said = f'"{change.label}" as {words}'
                     elif kind in ("more_like", "less_like"):
                         feedback = BookFeedback.model_validate(
                             {k: v for k, v in message.items() if k != "type"}

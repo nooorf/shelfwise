@@ -56,6 +56,20 @@ def _number_match(c: Constraint, value: int | None) -> int:
     return 1 if met else -1
 
 
+def scored(c: Constraint) -> bool:
+    """Whether `soft_score` counts `c` as a preference (a chip can switch to "preferred")."""
+    if c.op == "shift":
+        return False
+    if c.field.startswith("facet."):
+        return c.op in _COMPARE
+    if c.field == "genre":
+        return c.op == "in"
+    if c.field in ("pages", "year"):
+        number = isinstance(c.value, int | float) and not isinstance(c.value, bool)
+        return c.op in _COMPARE and number
+    return c.field == "popular"
+
+
 def soft_score(
     constraints: Sequence[Constraint],
     facets: Mapping[str, Any] | None,

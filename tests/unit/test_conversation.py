@@ -9,6 +9,7 @@ from shelfwise.conversation.merge import (
     remove_chip,
     removed_fields,
     resolve_shift,
+    set_chip_strength,
     undo_reset,
 )
 from shelfwise.conversation.references import resolve_references
@@ -494,3 +495,40 @@ def test_more_like_this_reseeds_and_less_like_this_hides() -> None:
     assert (less.state.seed_work_ids, less.state.avoid_work_ids) == ([], [7])
     again = book_feedback(less.state, 7, "Gone Girl", True, NOW)
     assert again.state.avoid_work_ids == []  # changed their mind
+
+
+def test_a_chip_switches_between_must_and_preferred_with_everything_behind_it() -> None:
+    state = turn(new_state("s", NOW), "x",
+                 parsed("discover", "thrillers",
+                        c("pages", "gte", 150, "hard", span="between 150 and 200 pages"),
+                        c("pages", "lte", 200, "hard", span="between 150 and 200 pages"),
+                        c("facet.darkness", "lte", 1, "soft", span="cozy"))).state  # fmt: skip
+
+    soft = set_chip_strength(state, "pages", "between 150 and 200 pages", "soft", NOW)
+    assert soft is not None and soft.kind == "strength"
+    assert active(soft.state) == {"pages gte 150 soft", "pages lte 200 soft",
+                                  "facet.darkness lte 1 soft"}  # fmt: skip
+    cozy = set_chip_strength(soft.state, "facet.darkness", "cozy", "hard", NOW)
+    assert cozy is not None and "facet.darkness lte 1 hard" in active(cozy.state)
+    assert cozy.state.turn == state.turn + 2
+    assert set_chip_strength(state, "pages", "under 300 pages", "soft", NOW) is None
+
+
+def test_only_chips_that_mean_something_both_ways_are_switchable() -> None:
+    from shelfwise.conversation.service import chips
+
+    state = turn(new_state("s", NOW), "x",
+                 parsed("discover", "thrillers",
+                        c("pages", "lt", 300, "hard", span="under 300 pages"),
+                        c("genre", "in", ["horror"], "hard", exclude=True, span="not horror"),
+                        c("facet.audience", "eq", "ya", "soft", span="for teens"),
+                        c("available_now", "eq", True, "hard"),
+                        c("theme", "eq", "grief", "soft", exclude=True))).state  # fmt: skip
+
+    switchable = {chip.label: chip.switchable for chip in chips(state)}
+
+    assert switchable == {
+        "under 300 pages": True, "not horror": True, "for teens": True,
+        "available now": False,  # filters only: there is no "preferably available"
+        "no grief": False,  # themes only nudge: no theme column to filter on
+    }  # fmt: skip

@@ -11,7 +11,7 @@ import { useConversation } from './session/useConversation'
 import { useSession } from './session/store'
 
 export default function App() {
-  const { ask, undo, removeChip, feedback, cancel, newVisitor } = useConversation()
+  const { ask, undo, removeChip, switchChip, feedback, cancel, newVisitor } = useConversation()
   const status = useSession((s) => s.status)
   const exchanges = useSession((s) => s.exchanges)
   const shelf = useSession((s) => s.shelf)
@@ -43,7 +43,7 @@ export default function App() {
 
         <main className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 md:p-6">
           <div className="flex flex-wrap items-center gap-3">
-            <ChipBar chips={latest?.chips ?? []} onRemove={removeChip} />
+            <ChipBar chips={latest?.chips ?? []} onRemove={removeChip} onSwitch={switchChip} />
             {latest?.can_undo && (
               <button
                 type="button"

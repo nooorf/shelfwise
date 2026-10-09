@@ -12,6 +12,7 @@ export interface Conversation {
   ask: (text: string) => void
   undo: () => void
   removeChip: (chip: Chip) => void
+  switchChip: (chip: Chip) => void
   feedback: (book: BookResult, more: boolean) => void
   cancel: () => void
   newVisitor: () => Promise<void>
@@ -67,6 +68,12 @@ export function useConversation(): Conversation {
     socket.current?.send({ type: 'remove_chip', field: chip.field, label: chip.label })
   }, [])
 
+  const switchChip = useCallback((chip: Chip) => {
+    const strength = chip.strength === 'hard' ? 'soft' : 'hard'
+    useSession.getState().said(`“${chip.label}”: ${strength === 'hard' ? 'must' : 'preferred'}`)
+    socket.current?.send({ type: 'chip_strength', field: chip.field, label: chip.label, strength })
+  }, [])
+
   const feedback = useCallback((book: BookResult, more: boolean) => {
     useSession.getState().said(`${more ? 'More' : 'Less'} like “${book.title}”`)
     socket.current?.send({ type: more ? 'more_like' : 'less_like', work_id: book.work_id })
@@ -81,5 +88,5 @@ export function useConversation(): Conversation {
     await openSession(socket)
   }, [sessionId])
 
-  return { ask, undo, removeChip, feedback, cancel, newVisitor }
+  return { ask, undo, removeChip, switchChip, feedback, cancel, newVisitor }
 }

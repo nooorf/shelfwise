@@ -36,7 +36,7 @@ from shelfwise.conversation.state import (
     new_state,
 )
 from shelfwise.ingest.normalize import fold_text
-from shelfwise.query.constraints import Constraint
+from shelfwise.query.constraints import Constraint, Strength
 from shelfwise.query.request import ParsedRequest
 
 # They describe the person, not the topic, so a new topic keeps them.
@@ -92,6 +92,7 @@ TurnKind = Literal[
     "chat",
     "relax",
     "remove",
+    "strength",
     "more_like",
     "less_like",
 ]
@@ -460,6 +461,32 @@ def remove_chip(
     state.offers = []
     state.constraints = [a for a in state.constraints if a not in gone]
     return TurnUpdate(state, "remove", dropped=[chip_label])
+
+
+def set_chip_strength(
+    state: ConversationState, field_name: str, chip_label: str, strength: Strength, now: datetime
+) -> TurnUpdate | None:
+    """The state with the chip the reader switched between must (a filter) and preferred (a
+    ranking nudge), every constraint behind it together. None if no such chip is active."""
+    hit = [
+        a for a in state.constraints
+        if a.constraint.field == field_name and label(a.constraint) == chip_label
+    ]  # fmt: skip
+    if not hit:
+        return None
+    state = state.model_copy(deep=True)
+    state.turn += 1
+    state.last_active = now
+    words = "must" if strength == "hard" else "preferred"
+    turns = [*state.recent_turns, Turn(text=f'"{chip_label}": {words}', intent="refine")]
+    state.recent_turns = turns[-MAX_RECENT_TURNS:]
+    state.offers = []
+    state.constraints = [
+        a.model_copy(update={"constraint": a.constraint.model_copy(update={"strength": strength})})
+        if a in hit else a
+        for a in state.constraints
+    ]  # fmt: skip
+    return TurnUpdate(state, "strength")
 
 
 def book_feedback(

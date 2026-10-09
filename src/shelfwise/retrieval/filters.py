@@ -179,6 +179,16 @@ def filter_query(constraints: Iterable[Constraint]) -> Select[int]:
     return select(schema.work.c.work_id).where(and_(true(), *work_conditions))
 
 
+def filterable(c: Constraint) -> bool:
+    """Whether `c` works as a hard filter (a chip can switch to "must"). Builds the query, runs
+    nothing."""
+    try:
+        filter_query([c.model_copy(update={"strength": "hard"})])
+    except UnsupportedConstraint:
+        return False
+    return True
+
+
 def allowed_work_ids(conn: Connection, constraints: Iterable[Constraint]) -> set[int]:
     return set(conn.execute(filter_query(constraints)).scalars())
 

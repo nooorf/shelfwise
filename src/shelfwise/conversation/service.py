@@ -37,6 +37,7 @@ from shelfwise.conversation.merge import (
     label,
     record_results,
     remove_chip,
+    set_chip_strength,
     undo_reset,
 )
 from shelfwise.conversation.state import ConversationState, Offer, ShownBook, new_state
@@ -47,9 +48,10 @@ from shelfwise.generation.narrate import Narrator, Reply
 from shelfwise.generation.templates import Task
 from shelfwise.generation.validate import CatalogNames
 from shelfwise.pipeline import BookResult, Relaxation, SearchService
-from shelfwise.query.constraints import Constraint, contradictions
+from shelfwise.query.constraints import Constraint, Strength, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
-from shelfwise.retrieval.filters import allowed_mask, relaxations
+from shelfwise.ranking.soft import scored
+from shelfwise.retrieval.filters import allowed_mask, filterable, relaxations
 
 Route = Literal["search", "explain", "compare", "clarify", "surprise", "chat", "start_over"]
 SURPRISE_PICKS = 3
@@ -72,7 +74,9 @@ class TurnRequest(BaseModel):
 
 
 class Chip(BaseModel):
-    """An active constraint as the UI shows it; removable by naming its field."""
+    """An active constraint as the UI shows it; removable by naming its field and label.
+    `switchable`: it means something both as a must (filter) and as a preference (nudge), so
+    the reader may switch it; "available now" only filters and themes only nudge."""
 
     label: str
     field: str
@@ -81,6 +85,7 @@ class Chip(BaseModel):
     strength: str
     polarity: str
     turn: int
+    switchable: bool = False
 
 
 class ChipRemoval(BaseModel):
@@ -88,6 +93,16 @@ class ChipRemoval(BaseModel):
 
     field: str
     label: str
+    limit: int = Field(default=5, ge=1, le=20)
+    narrate: bool = True
+
+
+class ChipStrength(BaseModel):
+    """Switch a chip to must ("hard") or preferred ("soft"), named as the response showed it."""
+
+    field: str
+    label: str
+    strength: Strength
     limit: int = Field(default=5, ge=1, le=20)
     narrate: bool = True
 
@@ -170,10 +185,13 @@ def chips(state: ConversationState) -> list[Chip]:
     out: dict[tuple[str, str], Chip] = {}
     for a in state.constraints:
         name = label(a.constraint)
-        out.setdefault(
-            (a.constraint.field, name),
-            Chip(label=name, turn=a.turn, **a.constraint.model_dump(include=fields)),
-        )
+        switchable = scored(a.constraint) and filterable(a.constraint)
+        key = (a.constraint.field, name)
+        if key in out:
+            out[key].switchable &= switchable
+            continue
+        out[key] = Chip(label=name, turn=a.turn, switchable=switchable,
+                        **a.constraint.model_dump(include=fields))  # fmt: skip
     return list(out.values())
 
 
@@ -427,6 +445,43 @@ class ConversationService:
         return self._respond(
             conn, ctx, state, "remove", "search", "refine", None, system, ids,
             [f'Removed "{removal.label}".'], {}, start, 0.0, said if removal.narrate else None,
+        )  # fmt: skip
+
+    def set_chip_strength(
+        self, conn: Connection, session_id: str, change: ChipStrength
+    ) -> TurnResponse:
+        """The reader switched a chip between must and preferred: search again. No parsing."""
+        start = time.perf_counter()
+        state = self._load(session_id)
+        ctx = self.search.context(conn)
+        chip = next(
+            (c for c in chips(state) if (c.field, c.label) == (change.field, change.label)), None
+        )
+        update = None
+        if chip is not None and chip.switchable:
+            update = set_chip_strength(
+                state, change.field, change.label, change.strength, self.now()
+            )
+        if update is None:
+            note = "That filter is already gone." if chip is None else (
+                f'"{change.label}" can only be a must.' if chip.strength == "hard"
+                else f'"{change.label}" can only be a preference.'
+            )  # fmt: skip
+            return self._respond(
+                conn, ctx, state, "strength", "chat", "refine", None, None, [], [note], {},
+                start, 0.0, None,
+            )  # fmt: skip
+        state = update.state
+        system, ids = self.search.retrieve(
+            ctx, state.semantic_query or "books", state_request(state, "refine"), True,
+            change.limit,
+        )  # fmt: skip
+        words = "a must" if change.strength == "hard" else "a preference"
+        said = f'"{change.label}" as {words}'
+        return self._respond(
+            conn, ctx, state, update.kind, "search", "refine", None, system, ids,
+            [f'"{change.label}" is now {words}.'], {}, start, 0.0,
+            said if change.narrate else None,
         )  # fmt: skip
 
     def book_feedback(

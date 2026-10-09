@@ -392,3 +392,38 @@ def test_more_and_less_like_a_shown_book(client: TestClient) -> None:
     assert [e["type"] for e in events] == ["turn", "done"]
     assert less["kind"] == "less_like" and less["notes"] == [f"Fewer like {other['title']}."]
     assert other["work_id"] not in {r["work_id"] for r in less["results"]}
+
+
+def test_a_chip_switches_between_must_and_preferred(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    say(client, session, "psychological thrillers")
+    narrowed = say(client, session, "under 300 pages")
+    chip = next(c for c in narrowed["chips"] if c["field"] == "pages")
+    assert (chip["strength"], chip["switchable"]) == ("hard", True)
+
+    url = f"/api/v1/sessions/{session}/chips/strength"
+    body = {"field": "pages", "label": chip["label"]}
+    preferred = client.post(url, json=body | {"strength": "soft"}).json()
+    must = client.post(url, json=body | {"strength": "hard"}).json()
+
+    assert (preferred["kind"], preferred["route"]) == ("strength", "search")
+    assert [c["strength"] for c in preferred["chips"] if c["field"] == "pages"] == ["soft"]
+    assert len(preferred["results"]) > len(narrowed["results"])
+    assert [r["work_id"] for r in must["results"]] == [r["work_id"] for r in narrowed["results"]]
+
+
+def test_a_chip_that_only_filters_stays_a_must(client: TestClient) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    narrowed = say(client, session, "psychological thrillers available now")
+    chip = next(c for c in narrowed["chips"] if c["field"] == "available_now")
+    assert chip["switchable"] is False
+
+    with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+        ws.send_json({"type": "chip_strength", "field": "available_now", "label": chip["label"],
+                      "strength": "soft", "narrate": False})  # fmt: skip
+        events = events_until_done(ws)
+
+    assert [e["type"] for e in events] == ["turn", "done"]
+    assert events[0]["route"] == "chat"
+    assert events[0]["notes"] == [f'"{chip["label"]}" can only be a must.']
+    assert chips(events[0]) == chips(narrowed)

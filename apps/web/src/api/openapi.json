@@ -269,6 +269,56 @@
         }
       }
     },
+    "/api/v1/sessions/{session_id}/chips/strength": {
+      "post": {
+        "summary": "Set Chip Strength",
+        "description": "The reader switched a chip between must (a filter) and preferred (a ranking nudge);\nthe search runs again. Only chips marked `switchable` change.",
+        "operationId": "set_chip_strength_api_v1_sessions__session_id__chips_strength_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChipStrength"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/sessions/{session_id}/feedback": {
       "post": {
         "summary": "Book Feedback",
@@ -664,6 +714,11 @@
           "turn": {
             "type": "integer",
             "title": "Turn"
+          },
+          "switchable": {
+            "type": "boolean",
+            "title": "Switchable",
+            "default": false
           }
         },
         "type": "object",
@@ -677,7 +732,7 @@
           "turn"
         ],
         "title": "Chip",
-        "description": "An active constraint as the UI shows it; removable by naming its field."
+        "description": "An active constraint as the UI shows it; removable by naming its field and label.\n`switchable`: it means something both as a must (filter) and as a preference (nudge), so\nthe reader may switch it; \"available now\" only filters and themes only nudge."
       },
       "ChipRemoval": {
         "properties": {
@@ -709,6 +764,46 @@
         ],
         "title": "ChipRemoval",
         "description": "The chip to take away, as the response showed it: its field and label."
+      },
+      "ChipStrength": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "strength": {
+            "type": "string",
+            "enum": [
+              "hard",
+              "soft"
+            ],
+            "title": "Strength"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 5
+          },
+          "narrate": {
+            "type": "boolean",
+            "title": "Narrate",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "label",
+          "strength"
+        ],
+        "title": "ChipStrength",
+        "description": "Switch a chip to must (\"hard\") or preferred (\"soft\"), named as the response showed it."
       },
       "CopyInfo": {
         "properties": {

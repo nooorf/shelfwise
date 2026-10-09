@@ -145,6 +145,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/sessions/{session_id}/chips/strength": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Set Chip Strength
+         * @description The reader switched a chip between must (a filter) and preferred (a ranking nudge);
+         *     the search runs again. Only chips marked `switchable` change.
+         */
+        post: operations["set_chip_strength_api_v1_sessions__session_id__chips_strength_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/sessions/{session_id}/feedback": {
         parameters: {
             query?: never;
@@ -281,7 +302,9 @@ export interface components {
         };
         /**
          * Chip
-         * @description An active constraint as the UI shows it; removable by naming its field.
+         * @description An active constraint as the UI shows it; removable by naming its field and label.
+         *     `switchable`: it means something both as a must (filter) and as a preference (nudge), so
+         *     the reader may switch it; "available now" only filters and themes only nudge.
          */
         Chip: {
             /** Label */
@@ -298,6 +321,11 @@ export interface components {
             polarity: string;
             /** Turn */
             turn: number;
+            /**
+             * Switchable
+             * @default false
+             */
+            switchable: boolean;
         };
         /**
          * ChipRemoval
@@ -308,6 +336,31 @@ export interface components {
             field: string;
             /** Label */
             label: string;
+            /**
+             * Limit
+             * @default 5
+             */
+            limit: number;
+            /**
+             * Narrate
+             * @default true
+             */
+            narrate: boolean;
+        };
+        /**
+         * ChipStrength
+         * @description Switch a chip to must ("hard") or preferred ("soft"), named as the response showed it.
+         */
+        ChipStrength: {
+            /** Field */
+            field: string;
+            /** Label */
+            label: string;
+            /**
+             * Strength
+             * @enum {string}
+             */
+            strength: "hard" | "soft";
             /**
              * Limit
              * @default 5
@@ -753,6 +806,41 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ChipRemoval"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_chip_strength_api_v1_sessions__session_id__chips_strength_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChipStrength"];
             };
         };
         responses: {
