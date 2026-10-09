@@ -20,10 +20,11 @@ which need the embedding clusters.
 """
 
 import random
+import threading
 import time
 from collections.abc import Callable
 from datetime import UTC, datetime
-from typing import Any, Literal
+from typing import Any, Literal, Protocol
 
 import numpy as np
 from pydantic import BaseModel, Field, model_validator
@@ -47,8 +48,9 @@ from shelfwise.conversation.merge import (
 from shelfwise.conversation.state import ConversationState, Offer, ShownBook, new_state
 from shelfwise.conversation.store import SessionStore, new_session_id
 from shelfwise.evaluation.systems import SearchContext
+from shelfwise.generation import templates
 from shelfwise.generation.context import Candidate, descriptions, matched_labels
-from shelfwise.generation.narrate import Narrator, Reply
+from shelfwise.generation.narrate import Narrator, Reply, ReplyPiece
 from shelfwise.generation.templates import Task
 from shelfwise.generation.validate import CatalogNames
 from shelfwise.pipeline import BookResult, Relaxation, SearchService
@@ -62,6 +64,17 @@ from shelfwise.voice.tts import Speech, sentences, wav_bytes
 
 Route = Literal["search", "explain", "compare", "clarify", "surprise", "chat", "start_over"]
 SURPRISE_PICKS = 3
+
+
+# The narration, run apart from the request: with `emit`, pieces stream out as they're ready.
+class NarrationJob(Protocol):
+    def __call__(
+        self, emit: Callable[[ReplyPiece], None] | None = None, stop: threading.Event | None = None
+    ) -> Reply: ...
+
+
+_TASKS: dict[str, Task] = {"search": "recommend", "surprise": "recommend", "explain": "explain",
+                           "compare": "compare"}  # fmt: skip
 SPOKEN_BOOKS = 3  # read aloud; a longer list is for the screen
 MAX_OFFERS = 3
 SURPRISE_POPULARITY_FLOOR = 0.3  # percentile: a quality floor (design doc §15.5)
@@ -349,6 +362,26 @@ class ConversationService:
         job = self._narration_job(conn, ctx, state, route, message, results)
         return job() if job else None
 
+    def opening(self, response: TurnResponse) -> list[str]:
+        """What to say the moment the cards are up, before any LLM words (Level 2 voice): the
+        turn's notes and the template intro ("Here are 5 books that fit."), always correct and
+        ready at once, so speech starts in well under a second."""
+        task = _TASKS.get(response.route)
+        lead = templates.intro(task, len(response.results)) if task and response.results else ""
+        return sentences(" ".join(p for p in [*response.notes, lead] if p.strip()))
+
+    def piece_speech(
+        self, response: TurnResponse, piece: ReplyPiece, spoken_items: int
+    ) -> list[str]:
+        """What to say for a streamed piece: a book's note by title (the first SPOKEN_BOOKS),
+        the follow-up. The LLM's intro isn't said: the opening already was."""
+        if piece.kind == "follow_up":
+            return sentences(piece.text)
+        if piece.kind == "item" and spoken_items < SPOKEN_BOOKS:
+            title = next((b.title for b in response.results if b.work_id == piece.work_id), "")
+            return sentences(f"{title}: {piece.text}" if title else piece.text)
+        return []
+
     def spoken(self, response: TurnResponse, reply: Reply | None) -> list[str]:
         """What to say aloud for a turn, sentence by sentence (design doc §21): the reply's
         intro, the notes on the first SPOKEN_BOOKS books by title, the follow-up; without a
@@ -393,7 +426,7 @@ class ConversationService:
 
     def narration_job(
         self, conn: Connection, response: TurnResponse, message: str
-    ) -> Callable[[], Reply] | None:
+    ) -> NarrationJob | None:
         """The narration for a turn already answered without it, split in two: the database
         reads happen now; the returned call only talks to the LLM, so it can run in the
         background while the connection serves the next turn (the WebSocket does this)."""
@@ -406,9 +439,8 @@ class ConversationService:
     def _narration_job(
         self, conn: Connection, ctx: SearchContext, state: ConversationState, route: Route,
         message: str, results: list[BookResult],
-    ) -> Callable[[], Reply] | None:  # fmt: skip
-        task: Task | None = {"search": "recommend", "surprise": "recommend", "explain": "explain",
-                             "compare": "compare"}.get(route)  # type: ignore[assignment]  # fmt: skip
+    ) -> NarrationJob | None:  # fmt: skip
+        task = _TASKS.get(route)
         if task is None or not results:
             return None
         facets = ctx.signals().facets
@@ -432,9 +464,15 @@ class ConversationService:
         names = self._catalog_names(conn)
         seeds, seed_ids = list(state.seed_titles), list(state.seed_work_ids)
 
-        def run() -> Reply:
-            return self.narrator.narrate(
-                task, message, books, names, [*said, *(w for w, _ in wishes)], seeds, seed_ids
+        wanted = [*said, *(w for w, _ in wishes)]
+
+        def run(
+            emit: Callable[[ReplyPiece], None] | None = None, stop: threading.Event | None = None
+        ) -> Reply:
+            if emit is None:
+                return self.narrator.narrate(task, message, books, names, wanted, seeds, seed_ids)
+            return self.narrator.narrate_stream(
+                task, message, books, names, emit, stop, wanted, seeds, seed_ids
             )
 
         return run

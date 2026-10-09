@@ -10,17 +10,20 @@ LLM down, the whole reply is templates. The reply says which source each piece c
 """
 
 import json
+import threading
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 from pydantic import BaseModel, Field, create_model
 
 from shelfwise.generation import templates
 from shelfwise.generation.context import Candidate
+from shelfwise.generation.stream import PieceParser
 from shelfwise.generation.templates import Task
 from shelfwise.generation.validate import CatalogNames, check
-from shelfwise.llm.client import LLMInvalidOutput, LLMUnavailable, StructuredLLM
+from shelfwise.llm.client import LLMInvalidOutput, LLMUnavailable, StreamingLLM, StructuredLLM
 
 PROMPT_VERSION = "narrate-v2"  # v2: talk about the story, not the tags
 MAX_WHY = 300  # characters; longer reasons are cut at a sentence end
@@ -65,6 +68,15 @@ class Reply(BaseModel):
     problems: list[str] = Field(default_factory=list)  # what the validator caught, any attempt
     attempts: int = 0  # LLM calls made
     ms: float = 0.0
+
+
+class ReplyPiece(BaseModel):
+    """One part of a reply, handed out as soon as it's ready (and checked)."""
+
+    kind: Literal["intro", "item", "follow_up"]
+    text: str
+    work_id: int | None = None
+    source: Literal["llm", "template"]
 
 
 def reply_schema(ids: list[int]) -> type[BaseModel]:
@@ -154,6 +166,79 @@ class Narrator:
         if best is None:
             return self._templates(task, books, problems, attempts, start)
         return self._assemble(task, books, best, problems, attempts, start)
+
+    def narrate_stream(
+        self, task: Task, message: str, books: list[Candidate], names: CatalogNames,
+        emit: Callable[[ReplyPiece], None], stop: threading.Event | None = None,
+        wishes: list[str] | None = None, seeds: list[str] | None = None,
+        seed_ids: list[int] | None = None,
+    ) -> Reply:  # fmt: skip
+        """`narrate`, streamed: each piece goes to `emit` the moment the model closes it,
+        after the same checks; a piece that fails becomes its template there and then (no
+        retry: it would stall the voice). Setting `stop` ends the generation (barge-in).
+        Returns the whole reply, as `narrate` would. Without a streaming LLM it narrates
+        normally and emits the pieces at the end."""
+        start = time.perf_counter()
+        streaming = self.llm is not None and hasattr(self.llm, "chat_stream")
+        if not books or not streaming:
+            reply = self.narrate(task, message, books, names, wishes, seeds, seed_ids)
+            for piece in _pieces(reply):
+                emit(piece)
+            return reply
+
+        allowed = {b.work_id for b in books} | set(seed_ids or [])
+        by_id = {b.work_id: b for b in books}
+        reader = " ".join([message, *(wishes or []), *(seeds or [])])
+        messages = self.messages(task, message, books, wishes or [], seeds or [])
+        schema = reply_schema(list(by_id))
+        attempt = _Attempt("", {}, "")
+        problems: list[str] = []
+
+        def take(kind: str, text: str, work_id: int | None) -> None:
+            if kind == "item":
+                if work_id not in by_id or work_id in attempt.whys:
+                    return  # not a shown book, or said twice
+                text, records = _cut(text), [by_id[work_id]]
+            else:
+                text, records = _cut(text, 200 if kind == "intro" else 160), books
+            found = check(text, records, allowed, names, reader) if text.strip() else ["empty"]
+            key = str(work_id) if kind == "item" else kind
+            if found:
+                attempt.problems[key] = found
+                problems.extend(f"{key}: {p}" for p in found)
+            if kind == "item" and work_id is not None:
+                attempt.whys[work_id] = text
+                book = by_id[work_id]
+                why, source = (
+                    (templates.for_task(task, book), "template") if found else (text, "llm")
+                )
+                emit(ReplyPiece(kind="item", text=why, work_id=work_id, source=source))
+            elif kind == "intro":
+                attempt.intro = text
+                fallback = templates.intro(task, len(books))
+                emit(ReplyPiece(kind="intro", text=fallback if found else text,
+                                source="template" if found else "llm"))  # fmt: skip
+            elif not found:  # a follow-up that fails is simply left out
+                attempt.follow_up = text
+                emit(ReplyPiece(kind="follow_up", text=text, source="llm"))
+
+        parser = PieceParser()
+        llm = cast(StreamingLLM, self.llm)
+        stream = llm.chat_stream(messages, schema, temperature=self.temperature, max_tokens=900)
+        try:
+            for delta in stream:
+                if stop is not None and stop.is_set():
+                    problems.append("stopped")
+                    break
+                for piece in parser.feed(delta):
+                    take(piece.kind, piece.text, piece.work_id)
+        except LLMUnavailable as exc:
+            problems.append(f"llm: {exc}")
+        finally:
+            close = getattr(stream, "close", None)
+            if close:
+                close()  # ends the HTTP stream: Ollama stops generating
+        return self._assemble(task, books, attempt, problems, 1, start)
 
     def _generate(
         self, messages: list[dict[str, str]], books: list[Candidate], names: CatalogNames,
@@ -250,3 +335,23 @@ class Narrator:
             problems=problems, attempts=attempts,
             ms=round((time.perf_counter() - start) * 1000, 1),
         )  # fmt: skip
+
+
+def _pieces(reply: Reply) -> list[ReplyPiece]:
+    pieces = (
+        [
+            ReplyPiece(
+                kind="intro",
+                text=reply.intro,
+                source=reply.source if reply.source != "mixed" else "llm",
+            )
+        ]
+        if reply.intro
+        else []
+    )
+    pieces += [
+        ReplyPiece(kind="item", text=i.why, work_id=i.work_id, source=i.source) for i in reply.items
+    ]
+    if reply.follow_up:
+        pieces.append(ReplyPiece(kind="follow_up", text=reply.follow_up, source="llm"))
+    return pieces

@@ -1,5 +1,6 @@
 """A whole conversation through the API: state merging, routing, undo and "new visitor"."""
 
+import threading
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import UTC, date, datetime
@@ -292,8 +293,12 @@ def test_the_socket_sends_cards_first_then_the_reply(client: TestClient) -> None
         ws.send_json({"type": "text", "text": "something darker", "narrate": False})
         quiet = events_until_done(ws)
 
-    assert [e["type"] for e in narrated] == ["turn", "reply", "done"]
-    turn, reply = narrated[0], narrated[1]
+    pieces = [e for e in narrated if e["type"] == "reply_piece"]
+    assert [e["type"] for e in narrated if e["type"] != "reply_piece"] == ["turn", "reply", "done"]
+    turn, reply = narrated[0], narrated[-2]
+    assert [p["work_id"] for p in pieces if p["kind"] == "item"] == [
+        i["work_id"] for i in reply["reply"]["items"]
+    ]  # the same notes, piece by piece
     assert turn["results"] and turn["reply"] is None  # cards don't wait for the LLM
     assert [i["work_id"] for i in reply["reply"]["items"]] == [
         r["work_id"] for r in turn["results"]
@@ -316,7 +321,7 @@ def test_a_new_message_cancels_the_running_narration(
             rest = events_until_done(ws)
 
     assert first["type"] == "turn" and first["turn"] == 1
-    assert [(e["type"], e["turn"]) for e in rest] == [
+    assert [(e["type"], e["turn"]) for e in rest if e["type"] != "reply_piece"] == [
         ("cancelled", 1), ("turn", 2), ("reply", 2), ("done", 2)
     ]  # fmt: skip
 
@@ -551,10 +556,14 @@ def test_speech_reads_the_reply_aloud_sentence_by_sentence(
         clip = client.post("/api/v1/speech", json={"text": "Hello there."})
 
     kinds = [e["type"] for e in events]
-    assert kinds[:2] == ["turn", "reply"] and kinds[-1] == "done"
+    assert kinds[:2] == ["turn", "audio"] and kinds[-2:] == ["reply", "done"]
     audio = [e for e in events if e["type"] == "audio"]
     assert [a["seq"] for a in audio] == list(range(len(audio))) and audio
-    assert audio[0]["text"].startswith("A few picks.")  # the reply's intro first
+    shown = events[0]["results"]
+    assert audio[0]["text"] == f"Here are {len(shown)} books that fit."  # at once, no LLM
+    notes = [a["text"] for a in audio[1:]]
+    assert notes == [f"{b['title']}: A gripping story." for b in shown[:3]]  # first 3 books
+    assert "A few picks." not in notes  # the LLM's intro is shown, not said again
     assert [a["text"] for a in audio] == speech.said[: len(audio)]
     with wave.open(io.BytesIO(base64.b64decode(audio[0]["wav"]))) as w:
         assert (w.getframerate(), w.getsampwidth(), w.getnchannels()) == (8000, 2, 1)
@@ -622,3 +631,71 @@ def test_a_misheard_author_is_respelled_from_the_catalog(
     transcript = next(e for e in events if e["type"] == "transcript")
     assert transcript["text"] == "anything else by Gillian Flynn?"
     assert transcript["fixed"] == [{"heard": "jillian flynn", "catalog": "Gillian Flynn"}]
+
+
+class StreamingNarrator(NarratingLLM):
+    """Streams its JSON a few characters at a time; one note names a book it wasn't given."""
+
+    def __init__(self, delay_s: float = 0.0) -> None:
+        super().__init__(delay_s)
+        self.closed_early = False
+
+    def chat_stream(self, messages, schema, **kwargs):  # type: ignore[no-untyped-def]
+        import json
+        import time
+
+        prop = schema.model_json_schema()["$defs"]["NarrationItem"]["properties"]["work_id"]
+        ids = prop.get("enum") or [prop["const"]]
+        items = [{"work_id": i, "why": "A gripping story."} for i in ids]
+        items[1]["why"] = "Darker than Murder at the Vicarage."  # not shown: the check fails
+        text = json.dumps({"intro": "A few picks.", "items": items, "follow_up": "Shorter?"})
+        finished = False
+        try:
+            for i in range(0, len(text), 8):
+                time.sleep(self.delay_s)
+                yield text[i : i + 8]
+            finished = True
+        finally:
+            self.closed_early = not finished
+
+
+def test_narration_streams_checked_pieces_before_the_whole_reply(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    forms = [{"intent": "discover", "genres": ["thriller"], "semantic_query": "thrillers"}]
+    with make_client(conn, forms, StreamingNarrator()) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+            ws.send_json({"type": "text", "text": "thrillers", "limit": 3})
+            events = events_until_done(ws)
+
+    pieces = [e for e in events if e["type"] == "reply_piece"]
+    assert [e["type"] for e in events] == ["turn", *["reply_piece"] * len(pieces), "reply", "done"]
+    assert [(p["kind"], p["source"]) for p in pieces] == [
+        ("intro", "llm"), ("item", "llm"), ("item", "template"), ("item", "llm"),
+        ("follow_up", "llm"),
+    ]  # fmt: skip
+    assert "Vicarage" not in pieces[2]["text"]  # replaced by its template before anyone saw it
+    reply = events[-2]["reply"]
+    assert reply["source"] == "mixed" and reply["follow_up"] == "Shorter?"
+
+
+def test_barge_in_stops_the_llm_mid_stream(conn: Connection, catalog: dict[str, int]) -> None:
+    forms = [{"intent": "discover", "semantic_query": "thrillers"},
+             {"intent": "discover", "semantic_query": "mysteries"}]  # fmt: skip
+    llm = StreamingNarrator(delay_s=0.05)
+    with make_client(conn, forms, llm) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+            ws.send_json({"type": "text", "text": "thrillers"})
+            assert ws.receive_json()["type"] == "turn"
+            assert ws.receive_json()["type"] == "reply_piece"  # the stream is under way
+            ws.send_json({"type": "cancel"})
+            while ws.receive_json()["type"] != "cancelled":
+                pass
+        for _ in range(40):  # the narration thread notices the stop at its next token
+            if llm.closed_early:
+                break
+            threading.Event().wait(0.05)
+
+    assert llm.closed_early

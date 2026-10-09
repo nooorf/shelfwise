@@ -116,6 +116,23 @@ export const useSession = create<SessionState>((set) => ({
             shelfReply: onShelf ? null : s.shelfReply,
           }
         }
+        case 'reply_piece': {
+          // The reply so far: the notes show on the cards as the model finishes each one.
+          const exchange = s.exchanges.find((e) => e.turn === event.turn)
+          if (!exchange) return {}
+          const sofar: Reply = exchange.reply ?? { intro: '', items: [], follow_up: '', source: 'llm', problems: [], attempts: 0, ms: 0 }
+          const next: Reply = { ...sofar }
+          if (event.kind === 'intro') next.intro = event.text
+          if (event.kind === 'follow_up') next.follow_up = event.text
+          if (event.kind === 'item' && event.work_id != null) {
+            next.items = [...sofar.items.filter((i) => i.work_id !== event.work_id),
+              { work_id: event.work_id, why: event.text, source: event.source }]
+          }
+          return {
+            exchanges: update(s.exchanges, event.turn, { reply: next }),
+            shelfReply: s.shelf?.turn === event.turn ? next : s.shelfReply,
+          }
+        }
         case 'reply': {
           const isShelf = s.shelf?.turn === event.turn
           return {

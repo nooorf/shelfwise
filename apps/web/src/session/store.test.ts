@@ -89,4 +89,16 @@ describe('session store', () => {
     receive({ type: 'transcript', text: '', fixed: [] })
     expect(useSession.getState().error).toContain('couldn’t make that out')
   })
+
+  it('shows the notes on the cards as each streamed piece arrives', () => {
+    const { said, receive } = useSession.getState()
+    said('thrillers')
+    receive({ type: 'turn', ...turn(1) })
+    receive({ type: 'reply_piece', turn: 1, kind: 'intro', text: 'Two picks.', work_id: null, source: 'llm' })
+    receive({ type: 'reply_piece', turn: 1, kind: 'item', text: 'Tense.', work_id: 2, source: 'llm' })
+
+    expect(useSession.getState().shelfReply).toMatchObject({ intro: 'Two picks.', items: [{ work_id: 2, why: 'Tense.' }] })
+    receive({ type: 'reply', turn: 1, reply })
+    expect(useSession.getState().shelfReply).toEqual(reply) // the whole reply replaces the pieces
+  })
 })

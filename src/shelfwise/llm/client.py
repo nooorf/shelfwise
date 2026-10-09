@@ -11,6 +11,7 @@ answer, which structured extraction doesn't need.
 
 import json
 import time
+from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -68,6 +69,21 @@ class StructuredLLM(Protocol):
         seed: int = ...,
         think: bool = ...,
     ) -> StructuredResult[T]: ...
+
+
+class StreamingLLM(StructuredLLM, Protocol):
+    """An LLM that can also hand out its JSON as it writes it (Level 2 voice)."""
+
+    def chat_stream(
+        self,
+        messages: list[Message],
+        schema: type[BaseModel],
+        *,
+        temperature: float = ...,
+        num_ctx: int = ...,
+        max_tokens: int = ...,
+        seed: int = ...,
+    ) -> Iterator[str]: ...
 
 
 class OllamaClient:
@@ -165,3 +181,44 @@ class OllamaClient:
             )
             return StructuredResult(value, stats)
         raise AssertionError("unreachable")
+
+    def chat_stream(
+        self,
+        messages: list[Message],
+        schema: type[BaseModel],
+        *,
+        temperature: float = 0.0,
+        num_ctx: int = 4096,
+        max_tokens: int = 512,
+        seed: int = 0,
+    ) -> Iterator[str]:
+        """The schema-constrained JSON as Ollama writes it, delta by delta. No retry: the
+        caller checks the pieces itself. Closing the iterator ends the HTTP stream, which
+        stops the generation (barge-in)."""
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "stream": True,
+            "format": schema.model_json_schema(),
+            "think": False,
+            "keep_alive": self._keep_alive,
+            "options": {"temperature": temperature, "num_ctx": num_ctx,
+                        "num_predict": max_tokens, "seed": seed},
+        }  # fmt: skip
+        try:
+            with self._http.stream("POST", "/api/chat", json=payload) as response:
+                if response.is_error:
+                    response.read()
+                    raise LLMUnavailable(
+                        f"Ollama error {response.status_code}: {response.text[:200]}"
+                    )
+                for line in response.iter_lines():
+                    if not line:
+                        continue
+                    data = json.loads(line)
+                    if delta := data.get("message", {}).get("content", ""):
+                        yield delta
+                    if data.get("done"):
+                        return
+        except httpx2.TransportError as exc:
+            raise LLMUnavailable(f"Ollama not reachable ({exc})") from exc

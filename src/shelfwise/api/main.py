@@ -4,7 +4,7 @@ import asyncio
 import base64
 import json
 import threading
-from collections.abc import Callable, Iterator
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -29,13 +29,14 @@ from shelfwise.conversation.service import (
     ConversationService,
     ExploreRequest,
     FiltersRequest,
+    NarrationJob,
     SessionNotFound,
     SurpriseRequest,
     TurnRequest,
     TurnResponse,
 )
 from shelfwise.evaluation.bench import Bench, load_bench
-from shelfwise.generation.narrate import Reply
+from shelfwise.generation.narrate import ReplyPiece
 from shelfwise.logging import configure_logging
 from shelfwise.pipeline import (
     BookDetail,
@@ -392,28 +393,67 @@ def create_app(
             )  # fmt: skip
             return {"type": "text", "text": text} if text else None
 
-        async def finish(response: TurnResponse, job: Callable[[], Reply] | None) -> None:
-            """The rest of a turn, in the background: narration, then speech, then "done"."""
+        stopping: threading.Event | None = None  # tells the running narration to stop
+
+        async def finish(response: TurnResponse, job: NarrationJob | None) -> None:
+            """The rest of a turn, in the background (Level 2 voice): with speech on, the
+            template opening is said at once; then the narration streams, each checked piece
+            going to the screen ("reply_piece") and, for the first books, to the speakers;
+            then the whole "reply", then "done"."""
+            nonlocal stopping
             turn = response.turn
-            reply = None
-            if job is not None:
-                reply = await asyncio.to_thread(job)
-                await websocket.send_json(
-                    {"type": "reply", "turn": turn, "reply": reply.model_dump(mode="json")}
-                )
-            if speak and conversation.speech is not None:
-                for seq, sentence in enumerate(conversation.spoken(response, reply)):
+            talk = speak and conversation.speech is not None
+            seq = 0
+
+            async def say(lines: list[str]) -> None:
+                nonlocal seq
+                for sentence in lines:
                     clip = await asyncio.to_thread(conversation.audio, sentence)
                     await websocket.send_json(
                         {"type": "audio", "turn": turn, "seq": seq, "text": sentence,
                          "wav": base64.b64encode(clip).decode("ascii")}
                     )  # fmt: skip
+                    seq += 1
+
+            if talk:
+                await say(conversation.opening(response))
+            if job is not None:
+                loop = asyncio.get_running_loop()
+                pieces: asyncio.Queue[ReplyPiece] = asyncio.Queue()
+                stopping = threading.Event()
+
+                def emit(piece: ReplyPiece) -> None:  # runs on the narration's thread
+                    loop.call_soon_threadsafe(pieces.put_nowait, piece)
+
+                worker = asyncio.ensure_future(asyncio.to_thread(job, emit, stopping))
+                items_said = 0
+                while True:
+                    getting = asyncio.ensure_future(pieces.get())
+                    await asyncio.wait({getting, worker}, return_when=asyncio.FIRST_COMPLETED)
+                    if not getting.done():
+                        getting.cancel()
+                        if pieces.empty():
+                            break
+                        continue
+                    piece = getting.result()
+                    await websocket.send_json(
+                        {"type": "reply_piece", "turn": turn, **piece.model_dump(mode="json")}
+                    )
+                    if talk:
+                        await say(conversation.piece_speech(response, piece, items_said))
+                        items_said += piece.kind == "item"
+                reply = worker.result()
+                await websocket.send_json(
+                    {"type": "reply", "turn": turn, "reply": reply.model_dump(mode="json")}
+                )
             await websocket.send_json({"type": "done", "turn": turn})
 
         async def drop_narration() -> None:
             nonlocal narrating
             if narrating is not None:
-                narrating.cancel()  # its thread finishes on its own; the result is discarded
+                if stopping is not None:
+                    stopping.set()  # the LLM stream closes: Ollama stops generating
+                narrating.cancel()
                 narrating = None
                 await websocket.send_json({"type": "cancelled", "turn": narrating_turn})
 
@@ -569,6 +609,8 @@ def create_app(
         finally:
             receive.cancel()
             if narrating is not None:
+                if stopping is not None:
+                    stopping.set()
                 narrating.cancel()
 
     app.include_router(v1)

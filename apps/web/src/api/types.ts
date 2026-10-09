@@ -10,6 +10,13 @@ export type Chip = Schemas['Chip']
 export type BookDetail = Schemas['BookDetail']
 export type Reply = Schemas['Reply']
 export type ReplyItem = Schemas['ReplyItem']
+/** One checked part of a reply, streamed before the whole (socket only, not in OpenAPI). */
+export interface ReplyPiece {
+  kind: 'intro' | 'item' | 'follow_up'
+  text: string
+  work_id: number | null
+  source: 'llm' | 'template'
+}
 export type Relaxation = Schemas['Relaxation']
 export type GenreCount = Schemas['GenreCount']
 export type Bench = Schemas['Bench']
@@ -22,6 +29,7 @@ export type Filters = Pick<Schemas['FiltersRequest'], 'pages_max' | 'year_from' 
 export type ServerEvent =
   | ({ type: 'turn' } & TurnResponse)
   | { type: 'reply'; turn: number; reply: Reply }
+  | ({ type: 'reply_piece'; turn: number } & ReplyPiece)
   | { type: 'done'; turn: number }
   | { type: 'cancelled'; turn: number }
   | { type: 'audio'; turn: number; seq: number; text: string; wav: string }
