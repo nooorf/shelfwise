@@ -35,6 +35,9 @@ class Settings(BaseSettings):
     # Text-to-speech (Kokoro): where `make download-tts` put the model, and which voice.
     tts_model_dir: str = "data/models/kokoro"
     tts_voice: str = "af_heart"
+    # Speech-to-text: Silero VAD (`make download-stt`) and the Whisper model (MLX, Apple Silicon).
+    vad_model_dir: str = "data/models/silero"
+    whisper: str = "mlx-community/whisper-large-v3-turbo-q4"
     log_level: str = "INFO"
     log_json: bool = True
 

@@ -7,6 +7,7 @@ import type { Status } from '../session/store'
 const LABELS: Record<Status, string> = {
   starting: 'Connecting',
   ready: 'Ready',
+  listening: 'Listening',
   searching: 'Thinking',
   writing: 'Writing',
   speaking: 'Speaking',

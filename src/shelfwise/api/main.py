@@ -2,6 +2,7 @@
 
 import asyncio
 import base64
+import json
 import threading
 from collections.abc import Callable, Iterator
 from pathlib import Path
@@ -44,6 +45,7 @@ from shelfwise.pipeline import (
     SearchService,
     build_service,
 )
+from shelfwise.voice.listen import Endpointer, load_listening
 from shelfwise.voice.tts import load_speech
 
 
@@ -116,8 +118,9 @@ class _Resources:
                 llm = OllamaClient(model=self.settings.llm_model, timeout=NARRATE_TIMEOUT_S)
                 narrator = Narrator(llm if llm_on else None)  # None: template replies
                 speech = load_speech(Path(self.settings.tts_model_dir), self.settings.tts_voice)
+                listening = load_listening(Path(self.settings.vad_model_dir), self.settings.whisper)
                 self._conversation = ConversationService(
-                    search, store, narrator=narrator, speech=speech
+                    search, store, narrator=narrator, speech=speech, listening=listening
                 )
             return self._conversation
 
@@ -336,7 +339,12 @@ def create_app(
         {"type": "chip_strength", "field": ..., "label": ..., "strength": "hard" | "soft"},
         {"type": "more_like" | "less_like", "work_id": ...}, {"type": "surprise"},
         {"type": "explore", "genre": ...}, {"type": "filters", "pages_max"?, "year_from"?,
-        "year_to"?, "available_now"?}, {"type": "speak", "on": bool}, {"type": "cancel"}.
+        "year_to"?, "available_now"?}, {"type": "speak", "on": bool}, {"type": "cancel"},
+        {"type": "listen", "on": bool} and, while listening, binary frames of 16 kHz 16-bit
+        mono PCM. Listening answers {"type": "listening", "on", "reason"?}; the server finds
+        the utterance's end itself ("speech_start" when it hears speech: barge-in), then sends
+        {"type": "transcript", "text"} and runs it as a typed "text" message; "listen" off
+        before the end transcribes what was heard so far.
         Server -> client, per turn: "turn" (cards, chips, notes: everything but the narration,
         as soon as retrieval is done), then "reply" when the narration is ready, then, with
         speech on, one "audio" per sentence ({"seq", "text", "wav": base64 16-bit WAV}), then
@@ -348,10 +356,37 @@ def create_app(
             await websocket.send_json({"type": "error", "message": "session not found or expired"})
             await websocket.close(code=4404)
             return
-        receive: asyncio.Task[Any] = asyncio.create_task(websocket.receive_json())
+        receive: asyncio.Task[Any] = asyncio.create_task(websocket.receive())
         narrating: asyncio.Task[Any] | None = None
         narrating_turn = 0
         speak = False
+        listener: Endpointer | None = None  # set while the microphone is open
+
+        async def stop_listening(reason: str) -> None:
+            nonlocal listener
+            listener = None
+            await websocket.send_json({"type": "listening", "on": False, "reason": reason})
+
+        async def hear(raw: bytes) -> dict[str, Any] | None:
+            """Microphone audio in; a text message out once the utterance has ended."""
+            if listener is None:
+                return None  # frames still in flight after listening stopped
+            heard = listener
+            for event in heard.feed(raw):
+                if event == "start":
+                    await websocket.send_json({"type": "speech_start"})
+                    await drop_narration()  # barge-in by voice
+                elif event == "timeout":
+                    await stop_listening("no speech")
+                else:
+                    return await transcribe(heard)
+            return None
+
+        async def transcribe(heard: Endpointer) -> dict[str, Any] | None:
+            await stop_listening("heard")
+            text = await asyncio.to_thread(conversation.transcribe, heard.audio())
+            await websocket.send_json({"type": "transcript", "text": text})
+            return {"type": "text", "text": text} if text else None
 
         async def finish(response: TurnResponse, job: Callable[[], Reply] | None) -> None:
             """The rest of a turn, in the background: narration, then speech, then "done"."""
@@ -387,9 +422,41 @@ def create_app(
                     narrating = None
                 if receive not in done:
                     continue
-                message = receive.result()
-                receive = asyncio.create_task(websocket.receive_json())
+                raw = receive.result()
+                if raw["type"] == "websocket.disconnect":
+                    raise WebSocketDisconnect(raw.get("code", 1000))
+                receive = asyncio.create_task(websocket.receive())
+                if raw.get("bytes") is not None:
+                    heard = await hear(raw["bytes"])
+                    if heard is None:
+                        continue
+                    message: Any = heard  # the transcript, handled as if typed
+                else:
+                    try:
+                        message = json.loads(raw.get("text") or "")
+                    except json.JSONDecodeError:
+                        await websocket.send_json({"type": "error", "message": "not JSON"})
+                        continue
                 kind = message.get("type") if isinstance(message, dict) else None
+                if kind == "listen":
+                    if not message.get("on"):
+                        if listener is not None and listener.heard:  # "done talking" tapped
+                            heard = await transcribe(listener)
+                            if heard is None:
+                                continue
+                            message, kind = heard, "text"
+                        else:
+                            await stop_listening("stopped")
+                            continue
+                    elif not conversation.can_listen:
+                        await websocket.send_json(
+                            {"type": "listening", "on": False, "reason": "unavailable"}
+                        )
+                        continue
+                    else:
+                        listener = conversation.endpointer()
+                        await websocket.send_json({"type": "listening", "on": True})
+                        continue
                 if kind == "cancel":
                     await drop_narration()
                     continue

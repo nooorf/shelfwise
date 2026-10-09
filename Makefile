@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations download-tts api web web-install web-test web-e2e web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations download-tts download-stt api web web-install web-test web-e2e web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -124,6 +124,11 @@ download-tts:  ## Download the Kokoro text-to-speech model (~120 MB) into data/m
 	mkdir -p data/models/kokoro
 	cd data/models/kokoro && for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do \
 		[ -f $$f ] || curl -fL --progress-bar -o $$f $(TTS_URL)/$$f; done
+
+VAD_URL = https://raw.githubusercontent.com/snakers4/silero-vad/v6.2.3/src/silero_vad/data/silero_vad.onnx
+download-stt:  ## Download Silero VAD (~2 MB) for voice input; Whisper (~0.5 GB) downloads on first use
+	mkdir -p data/models/silero
+	[ -f data/models/silero/silero_vad.onnx ] || curl -fL --progress-bar -o data/models/silero/silero_vad.onnx $(VAD_URL)
 
 api:  ## Run the API with auto-reload
 	uv run uvicorn shelfwise.api.main:app --reload

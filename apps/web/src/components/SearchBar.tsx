@@ -1,7 +1,14 @@
-import { ArrowUp } from 'lucide-react'
+import { ArrowUp, Mic, MicOff } from 'lucide-react'
 import { useState } from 'react'
 
-export function SearchBar({ onAsk, onCancel }: { onAsk: (text: string) => void; onCancel: () => void }) {
+interface SearchBarProps {
+  onAsk: (text: string) => void
+  onCancel: () => void
+  listening: boolean
+  onListen: () => void // opens the microphone, or, while listening, ends the question
+}
+
+export function SearchBar({ onAsk, onCancel, listening, onListen }: SearchBarProps) {
   const [text, setText] = useState('')
   return (
     <form
@@ -25,6 +32,17 @@ export function SearchBar({ onAsk, onCancel }: { onAsk: (text: string) => void; 
         maxLength={500}
         className="min-w-0 flex-1 bg-transparent py-1.5 outline-none placeholder:text-muted"
       />
+      <button
+        type="button"
+        onClick={onListen}
+        aria-pressed={listening}
+        aria-label={listening ? 'Stop listening' : 'Speak'}
+        className={`grid size-8 place-items-center rounded-full ${
+          listening ? 'bg-out text-card' : 'text-muted hover:text-ink'
+        }`}
+      >
+        {listening ? <MicOff className="size-4" aria-hidden="true" /> : <Mic className="size-4" aria-hidden="true" />}
+      </button>
       <button
         type="submit"
         aria-label="Ask"

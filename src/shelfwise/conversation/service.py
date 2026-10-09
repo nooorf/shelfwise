@@ -25,6 +25,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any, Literal
 
+import numpy as np
 from pydantic import BaseModel, Field, model_validator
 from sqlalchemy import Connection, text
 
@@ -55,6 +56,7 @@ from shelfwise.query.constraints import Constraint, Strength, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
 from shelfwise.ranking.soft import scored
 from shelfwise.retrieval.filters import allowed_mask, filterable, relaxations
+from shelfwise.voice.listen import VAD, Endpointer, Transcriber
 from shelfwise.voice.tts import Speech, sentences, wav_bytes
 
 Route = Literal["search", "explain", "compare", "clarify", "surprise", "chat", "start_over"]
@@ -319,10 +321,12 @@ class ConversationService:
         now: Callable[[], datetime] = lambda: datetime.now(UTC),
         narrator: Narrator | None = None,
         speech: Speech | None = None,
+        listening: tuple[VAD, Transcriber] | None = None,
     ) -> None:
         self.search = search
         self.store = store
         self.speech = speech  # None: text only
+        self.listening = listening  # (VAD, Whisper); None: no voice input
         self.now = now
         # Without an LLM the narrator writes templates: correct, plain.
         self.narrator = narrator or Narrator(None)
@@ -357,6 +361,21 @@ class ConversationService:
         ]
         parts.append(reply.follow_up)
         return sentences(" ".join(p.strip() for p in parts if p.strip()))
+
+    @property
+    def can_listen(self) -> bool:
+        return self.listening is not None
+
+    def endpointer(self) -> Endpointer:
+        """A fresh utterance detector (VAD state is per utterance). Callers check can_listen."""
+        if self.listening is None:
+            raise RuntimeError("no VAD loaded")
+        return Endpointer(self.listening[0].fresh())
+
+    def transcribe(self, audio: np.ndarray) -> str:
+        if self.listening is None:
+            raise RuntimeError("no speech-to-text loaded")
+        return self.listening[1].transcribe(audio) if len(audio) else ""
 
     def audio(self, sentence: str) -> bytes:
         """One sentence as a WAV clip. Callers check `speech` first."""

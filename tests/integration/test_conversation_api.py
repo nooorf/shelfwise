@@ -19,7 +19,7 @@ from shelfwise.embed.store import embed_missing, refresh_search_text
 from shelfwise.generation.narrate import Narrator
 from shelfwise.pipeline import SearchService
 
-from ..fakes import FakeEmbedder, FakeLLM, FakeSpeech
+from ..fakes import FakeEmbedder, FakeLLM, FakeSpeech, FakeTranscriber, FakeVAD, pcm
 from .factories import add_author, add_copy, add_edition, add_work
 
 TODAY = date(2026, 10, 8)
@@ -97,7 +97,7 @@ class NarratingLLM:
 @contextmanager
 def make_client(
     conn: Connection, forms: list[Any], narrator: NarratingLLM | None = None,
-    speech: FakeSpeech | None = None,
+    speech: FakeSpeech | None = None, listening: tuple[Any, Any] | None = None,
 ) -> Iterator[TestClient]:  # fmt: skip
     embedder = FakeEmbedder()
     embed_missing(conn, embedder)
@@ -108,6 +108,7 @@ def make_client(
         now=lambda: datetime(2026, 10, 8, 12, 0, tzinfo=UTC),
         narrator=Narrator(narrator or NarratingLLM()),
         speech=speech,
+        listening=listening,
     )
     app = create_app(
         Settings(profile="cpu", log_json=False), service=search, conversation=conversation
@@ -570,3 +571,37 @@ def test_without_a_speech_model_speak_stays_off(client: TestClient) -> None:
 
     assert "audio" not in {e["type"] for e in events}
     assert client.post("/api/v1/speech", json={"text": "Hello."}).status_code == 503
+
+
+def test_a_spoken_question_is_transcribed_and_answered(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    stt = FakeTranscriber("psychological thrillers")
+    with make_client(conn, FORMS, listening=(FakeVAD(), stt)) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+            ws.send_json({"type": "listen", "on": True})
+            assert ws.receive_json() == {"type": "listening", "on": True}
+            audio = pcm(("silence", 0.5), ("tone", 1.0), ("silence", 1.0))
+            for i in range(0, len(audio), 1024):  # 32 ms frames, as the browser sends
+                ws.send_bytes(audio[i : i + 1024])
+            events = events_until_done(ws)
+
+    kinds = [e["type"] for e in events]
+    assert kinds[:4] == ["speech_start", "listening", "transcript", "turn"]
+    assert events[1] == {"type": "listening", "on": False, "reason": "heard"}
+    assert events[2]["text"] == "psychological thrillers"
+    assert events[3]["semantic_query"] == "psychological thrillers" and events[3]["results"]
+    assert stt.heard == [pytest.approx(1.8, abs=0.1)]  # pre-roll + speech + 600 ms
+
+
+def test_listening_is_refused_without_models_and_stray_audio_is_ignored(
+    client: TestClient,
+) -> None:
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    with client.websocket_connect(f"/api/v1/sessions/{session}/stream") as ws:
+        ws.send_bytes(pcm(("tone", 0.1)))  # not listening: dropped
+        ws.send_json({"type": "listen", "on": True})
+        assert ws.receive_json() == {"type": "listening", "on": False, "reason": "unavailable"}
+        ws.send_text("not json")
+        assert ws.receive_json() == {"type": "error", "message": "not JSON"}

@@ -1,6 +1,10 @@
 // The main paths through the app (design doc §22): ask, remove a chip, explore, surprise.
+import { existsSync } from 'node:fs'
+
 import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
+
+import { QUESTION_WAV } from './warm-up.ts'
 
 async function ask(page: Page, text: string) {
   await page.getByLabel('Ask about the collection').fill(text)
@@ -96,4 +100,15 @@ test('read aloud speaks the reply and a new question interrupts it', async ({ pa
 
   await ask(page, 'cozy mysteries') // barge-in: speech stops at once
   await expect(page.getByText('Speaking', { exact: true })).toHaveCount(0, { timeout: 1_000 })
+})
+
+test('a spoken question is heard, written down and answered', async ({ page }) => {
+  test.skip(!existsSync(QUESTION_WAV), 'no TTS model to record the question with')
+  test.setTimeout(60_000) // the first transcription loads Whisper
+  await page.getByRole('button', { name: 'Speak' }).click()
+
+  const heard = page.getByRole('list', { name: 'Conversation' }).getByText(/gothic horror/i)
+  await expect(heard).toBeVisible({ timeout: 45_000 })
+  await expect(cards(page).first()).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Speak' })).toHaveAttribute('aria-pressed', 'false')
 })

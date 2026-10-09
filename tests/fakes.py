@@ -80,3 +80,29 @@ class FakeSpeech:
         self.said.append(text)
         t = np.arange(len(text) * 80) / self.sample_rate
         return (0.1 * np.sin(2 * np.pi * 440 * t)).astype(np.float32)
+
+
+class FakeVAD:
+    """Loud is speech: RMS above 0.05 counts as certain speech, below as silence."""
+
+    def fresh(self):  # type: ignore[no-untyped-def]
+        return lambda chunk: 1.0 if float(np.sqrt(np.mean(chunk**2))) > 0.05 else 0.0
+
+
+class FakeTranscriber:
+    def __init__(self, text: str) -> None:
+        self.text = text
+        self.heard: list[float] = []  # seconds of audio per call
+
+    def transcribe(self, audio: np.ndarray) -> str:
+        self.heard.append(len(audio) / 16_000)
+        return self.text
+
+
+def pcm(*parts: tuple[str, float]) -> bytes:
+    """16 kHz 16-bit PCM: ("silence" | "tone", seconds) pieces in order."""
+    out = []
+    for kind, seconds in parts:
+        t = np.arange(int(seconds * 16_000)) / 16_000
+        out.append(0.3 * np.sin(2 * np.pi * 220 * t) if kind == "tone" else 0 * t)
+    return (np.concatenate(out) * 32767).astype("<i2").tobytes()

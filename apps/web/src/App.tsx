@@ -16,10 +16,12 @@ import { useSession } from './session/store'
 
 export default function App() {
   const {
-    ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech, newVisitor,
+    ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech, listen,
+    newVisitor,
   } = useConversation()
   const status = useSession((s) => s.status)
   const playing = useSession((s) => s.playing)
+  const listening = useSession((s) => s.listening)
   const speakWanted = useSession((s) => s.speakWanted)
   const speakOn = useSession((s) => s.speakOn)
   const exchanges = useSession((s) => s.exchanges)
@@ -40,7 +42,7 @@ export default function App() {
       <header className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-line px-4 py-3 md:px-6">
         <h1 className="font-serif text-xl font-semibold tracking-tight">Shelfwise</h1>
         <div className="order-last w-full md:order-none md:max-w-2xl md:flex-1">
-          <SearchBar onAsk={ask} onCancel={cancel} />
+          <SearchBar onAsk={ask} onCancel={cancel} listening={listening} onListen={listen} />
           <div className="mt-2 px-1">
             <ModeBar onSurprise={surprise} onExplore={explore} onFilters={filter} />
           </div>

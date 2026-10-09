@@ -6,6 +6,7 @@ import type { MutableRefObject } from 'react'
 
 import { endSession, socketUrl, startSession } from '../api/client'
 import type { BookResult, Chip, ClientMessage, Filters, ServerEvent } from '../api/types'
+import { Microphone } from './microphone'
 import { SpeechPlayer } from './player'
 import { SessionSocket } from './socket'
 import { useSession } from './store'
@@ -21,14 +22,18 @@ export interface Conversation {
   filter: (filters: Filters) => void
   cancel: () => void
   toggleSpeech: () => void
+  listen: () => void
   newVisitor: () => Promise<void>
 }
 
-// One audio output per page.
+// One audio output and one microphone per page.
 const speech = new SpeechPlayer((playing) => useSession.getState().setPlaying(playing))
+const microphone = new Microphone()
 
 function onEvent(event: ServerEvent): void {
   if (event.type === 'turn') speech.seen(event.turn)
+  if (event.type === 'speech_start') speech.stop() // barge-in by voice
+  if (event.type === 'listening' && !event.on) microphone.stop() // the server heard the end
   if (event.type === 'audio') void speech.play(event.turn, event.wav)
   useSession.getState().receive(event)
 }
@@ -147,8 +152,23 @@ export function useConversation(): Conversation {
     send({ type: 'speak', on })
   }, [send])
 
+  const listen = useCallback(() => {
+    if (microphone.open) {
+      microphone.stop()
+      send({ type: 'listen', on: false }) // "done talking": transcribe what was heard
+      return
+    }
+    send({ type: 'listen', on: true })
+    microphone.start((pcm) => socket.current?.sendAudio(pcm)).catch(() => {
+      microphone.stop()
+      send({ type: 'listen', on: false })
+      useSession.setState({ error: 'The microphone isn’t available: check the browser’s permission.' })
+    })
+  }, [send])
+
   const newVisitor = useCallback(async () => {
     speech.stop()
+    microphone.stop()
     socket.current?.close()
     socket.current = null // until the new session's socket exists, sends wait in the outbox
     outbox.current.splice(0) // nothing from the previous visitor carries over
@@ -159,6 +179,6 @@ export function useConversation(): Conversation {
 
   return {
     ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech,
-    newVisitor,
+    listen, newVisitor,
   }
 }

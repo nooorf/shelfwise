@@ -64,4 +64,29 @@ describe('session store', () => {
     expect(useSession.getState().error).toBe('session expired')
     expect(useSession.getState().exchanges.every((e) => !e.pending)).toBe(true)
   })
+
+  it('listens, then shows what was heard as the question', () => {
+    const { receive } = useSession.getState()
+    receive({ type: 'listening', on: true })
+    expect(useSession.getState()).toMatchObject({ listening: true, status: 'listening' })
+
+    receive({ type: 'speech_start' })
+    receive({ type: 'listening', on: false, reason: 'heard' })
+    expect(useSession.getState()).toMatchObject({ listening: false, status: 'searching', error: null })
+    receive({ type: 'transcript', text: 'gothic horror' })
+    expect(useSession.getState().exchanges.at(-1)).toMatchObject({ said: 'gothic horror', pending: true })
+
+    receive({ type: 'turn', ...turn(1) })
+    expect(useSession.getState().exchanges).toHaveLength(1) // the turn fills the heard question
+  })
+
+  it('says when nothing was heard or voice is off', () => {
+    const { receive } = useSession.getState()
+    receive({ type: 'listening', on: false, reason: 'no speech' })
+    expect(useSession.getState()).toMatchObject({ status: 'ready', error: expect.stringContaining('didn’t hear') })
+    receive({ type: 'listening', on: false, reason: 'unavailable' })
+    expect(useSession.getState().error).toContain('isn’t set up')
+    receive({ type: 'transcript', text: '' })
+    expect(useSession.getState().error).toContain('couldn’t make that out')
+  })
 })

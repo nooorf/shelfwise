@@ -62,6 +62,11 @@ export class SessionSocket {
     else this.queue.push(message)
   }
 
+  /** Microphone audio: sent if the socket is open, dropped otherwise (it's live, not queued). */
+  sendAudio(pcm: ArrayBuffer): void {
+    if (this.ws?.readyState === WebSocket.OPEN) this.ws.send(pcm)
+  }
+
   close(): void {
     this.closed = true
     if (this.retry) clearTimeout(this.retry)
