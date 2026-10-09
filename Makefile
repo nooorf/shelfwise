@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations api web web-install web-test web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-parser eval-conversations api web web-install web-test web-e2e web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -135,6 +135,9 @@ web-install:  ## Install the web app's packages exactly as locked
 
 web-test:  ## Run the web app's tests
 	$(WEB) npx vitest run
+
+web-e2e:  ## Browser tests against the real API and database (needs `make up`; starts the API and web app unless they're running)
+	$(WEB) npx playwright test
 
 web-build:  ## Type-check and build the web app into apps/web/dist
 	$(WEB) npm run build
