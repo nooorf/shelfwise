@@ -16,6 +16,8 @@ from shelfwise.conversation.service import (
     ChipRemoval,
     ChipStrength,
     ConversationService,
+    ExploreRequest,
+    FiltersRequest,
     SessionNotFound,
     SurpriseRequest,
     TurnRequest,
@@ -24,6 +26,7 @@ from shelfwise.conversation.service import (
 from shelfwise.logging import configure_logging
 from shelfwise.pipeline import (
     BookDetail,
+    GenreCount,
     SearchRequest,
     SearchResponse,
     SearchService,
@@ -33,7 +36,17 @@ from shelfwise.pipeline import (
 NARRATE_TIMEOUT_S = 60.0  # a whole reply; past it the reply falls back to templates
 # What the session socket accepts besides "cancel" (see `stream`).
 SOCKET_MESSAGES = frozenset(
-    {"text", "undo", "remove_chip", "chip_strength", "more_like", "less_like", "surprise"}
+    {
+        "text",
+        "undo",
+        "remove_chip",
+        "chip_strength",
+        "more_like",
+        "less_like",
+        "surprise",
+        "explore",
+        "filters",
+    }
 )
 
 
@@ -139,6 +152,14 @@ def create_app(
             raise HTTPException(404, "no such book")
         return detail
 
+    @v1.get("/genres")
+    def genres(
+        conn: Annotated[Connection, Depends(resources.connection)],
+        service: Annotated[SearchService, Depends(search_service)],
+    ) -> list[GenreCount]:
+        """Every genre in the catalog with its number of books, largest first (Explore)."""
+        return service.genres(conn)
+
     @v1.post("/sessions", status_code=201)
     def start_session(
         conversation: Annotated[ConversationService, Depends(conversation_service)],
@@ -200,6 +221,34 @@ def create_app(
         except SessionNotFound:
             raise HTTPException(404, "session not found or expired: start a new one") from None
 
+    @v1.post("/sessions/{session_id}/explore")
+    def explore(
+        session_id: str,
+        request: ExploreRequest,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> TurnResponse:
+        """Explore a genre: a new search (undo-able) for its books, those on the shelf now and
+        most borrowed first. No parsing."""
+        try:
+            return conversation.explore(conn, session_id, request)
+        except SessionNotFound:
+            raise HTTPException(404, "session not found or expired: start a new one") from None
+
+    @v1.post("/sessions/{session_id}/filters")
+    def filters(
+        session_id: str,
+        request: FiltersRequest,
+        conn: Annotated[Connection, Depends(resources.connection)],
+        conversation: Annotated[ConversationService, Depends(conversation_service)],
+    ) -> TurnResponse:
+        """The filters form: page limit, years and "available now" as musts on the current
+        search (or the start of one). No parsing."""
+        try:
+            return conversation.filters(conn, session_id, request)
+        except SessionNotFound:
+            raise HTTPException(404, "session not found or expired: start a new one") from None
+
     @v1.post("/sessions/{session_id}/surprise")
     def surprise(
         session_id: str,
@@ -248,6 +297,8 @@ def create_app(
         {"type": "remove_chip", "field": ..., "label": ...},
         {"type": "chip_strength", "field": ..., "label": ..., "strength": "hard" | "soft"},
         {"type": "more_like" | "less_like", "work_id": ...}, {"type": "surprise"},
+        {"type": "explore", "genre": ...}, {"type": "filters", "pages_max"?, "year_from"?,
+        "year_to"?, "available_now"?},
         {"type": "cancel"}.
         Server -> client, per turn: "turn" (cards, chips, notes: everything but the narration,
         as soon as retrieval is done), then "reply" when the narration is ready, then "done". A new message or "cancel" while narration runs drops it
@@ -325,6 +376,24 @@ def create_app(
                         )  # fmt: skip
                         words = "a must" if change.strength == "hard" else "a preference"
                         said = f'"{change.label}" as {words}'
+                    elif kind == "explore":
+                        genre = ExploreRequest.model_validate(
+                            {k: v for k, v in message.items() if k != "type"}
+                        )
+                        wants_reply, said = genre.narrate, genre.said()
+                        response = await asyncio.to_thread(
+                            conversation.explore, conn, session_id,
+                            genre.model_copy(update={"narrate": False}),
+                        )  # fmt: skip
+                    elif kind == "filters":
+                        form = FiltersRequest.model_validate(
+                            {k: v for k, v in message.items() if k != "type"}
+                        )
+                        wants_reply, said = form.narrate, form.said()
+                        response = await asyncio.to_thread(
+                            conversation.filters, conn, session_id,
+                            form.model_copy(update={"narrate": False}),
+                        )  # fmt: skip
                     elif kind == "surprise":
                         press = SurpriseRequest.model_validate(
                             {k: v for k, v in message.items() if k != "type"}

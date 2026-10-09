@@ -493,6 +493,35 @@ def set_chip_strength(
     return TurnUpdate(state, "strength")
 
 
+def explore(state: ConversationState, genre: str, now: datetime) -> TurnUpdate:
+    """Explore a genre: a new topic with no topic words, the genre a must. Who the reader is
+    (availability, language) stays, and undo brings the previous search back."""
+    state = pressed(state, f"explore {genre}", "discover", now)
+    kind: TurnKind = "new_topic" if state.has_search else "new_search"
+    if kind == "new_topic":
+        state.before_reset = state.snapshot()
+    kept = [a for a in state.constraints if a.constraint.field in USER_FIELDS]
+    chosen = Constraint(field="genre", op="in", value=[genre], strength="hard", source="chip")
+    state.constraints = merge_constraints(kept, [chosen], state.turn)
+    state.semantic_query, state.lookup = "", None
+    state.seed_titles, state.seed_work_ids = [], []
+    return TurnUpdate(state, kind, kept=[label(a.constraint) for a in kept])
+
+
+def add_filters(
+    state: ConversationState, constraints: list[Constraint], drop: list[str], now: datetime
+) -> TurnUpdate:
+    """The filters form: its musts join the search (replacing the same slot, as a typed
+    "under 200 pages" would), and the fields in `drop` go."""
+    said = ", ".join([label(c) for c in constraints] + [f"no {f} filter" for f in drop])
+    state = pressed(state, f"filters: {said}", "refine", now)
+    kind: TurnKind = "refine" if state.has_search else "new_search"
+    present = {a.constraint.field for a in state.constraints}
+    state.constraints = [a for a in state.constraints if a.constraint.field not in drop]
+    state.constraints = merge_constraints(state.constraints, constraints, state.turn)
+    return TurnUpdate(state, kind, removed=[f for f in drop if f in present])
+
+
 def book_feedback(
     state: ConversationState, work_id: int, title: str, more: bool, now: datetime
 ) -> TurnUpdate:

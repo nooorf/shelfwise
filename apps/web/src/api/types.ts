@@ -11,6 +11,9 @@ export type BookDetail = Schemas['BookDetail']
 export type Reply = Schemas['Reply']
 export type ReplyItem = Schemas['ReplyItem']
 export type Relaxation = Schemas['Relaxation']
+export type GenreCount = Schemas['GenreCount']
+/** The filters form; the socket message carries the same fields. */
+export type Filters = Pick<Schemas['FiltersRequest'], 'pages_max' | 'year_from' | 'year_to' | 'available_now'>
 
 /** Server -> client, per turn: "turn" (cards, chips, notes) as soon as retrieval is done,
  * then "reply" once the narration is written, then "done". */
@@ -28,4 +31,6 @@ export type ClientMessage =
   | { type: 'chip_strength'; field: string; label: string; strength: 'hard' | 'soft'; narrate?: boolean }
   | { type: 'more_like' | 'less_like'; work_id: number; narrate?: boolean }
   | { type: 'surprise'; narrate?: boolean }
+  | { type: 'explore'; genre: string; narrate?: boolean }
+  | ({ type: 'filters'; narrate?: boolean } & Filters)
   | { type: 'cancel' }

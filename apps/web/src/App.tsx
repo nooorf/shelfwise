@@ -12,7 +12,7 @@ import { useConversation } from './session/useConversation'
 import { useSession } from './session/store'
 
 export default function App() {
-  const { ask, undo, removeChip, switchChip, feedback, surprise, cancel, newVisitor } =
+  const { ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, newVisitor } =
     useConversation()
   const status = useSession((s) => s.status)
   const exchanges = useSession((s) => s.exchanges)
@@ -28,7 +28,7 @@ export default function App() {
         <div className="order-last w-full md:order-none md:max-w-2xl md:flex-1">
           <SearchBar onAsk={ask} onCancel={cancel} />
           <div className="mt-2 px-1">
-            <ModeBar onSurprise={surprise} />
+            <ModeBar onSurprise={surprise} onExplore={explore} onFilters={filter} />
           </div>
         </div>
         <button

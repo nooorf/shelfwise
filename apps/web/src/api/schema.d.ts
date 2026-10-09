@@ -63,6 +63,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/genres": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Genres
+         * @description Every genre in the catalog with its number of books, largest first (Explore).
+         */
+        get: operations["genres_api_v1_genres_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/sessions": {
         parameters: {
             query?: never;
@@ -160,6 +180,48 @@ export interface paths {
          *     the search runs again. Only chips marked `switchable` change.
          */
         post: operations["set_chip_strength_api_v1_sessions__session_id__chips_strength_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/sessions/{session_id}/explore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Explore
+         * @description Explore a genre: a new search (undo-able) for its books, those on the shelf now and
+         *     most borrowed first. No parsing.
+         */
+        post: operations["explore_api_v1_sessions__session_id__explore_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/sessions/{session_id}/filters": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Filters
+         * @description The filters form: page limit, years and "available now" as musts on the current
+         *     search (or the start of one). No parsing.
+         */
+        post: operations["filters_api_v1_sessions__session_id__filters_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -418,6 +480,55 @@ export interface components {
             pages: number | null;
             /** Format */
             format: string | null;
+        };
+        /**
+         * ExploreRequest
+         * @description Explore: browse one genre (a name from `GET /genres`).
+         */
+        ExploreRequest: {
+            /** Genre */
+            genre: string;
+            /**
+             * Limit
+             * @default 5
+             */
+            limit: number;
+            /**
+             * Narrate
+             * @default true
+             */
+            narrate: boolean;
+        };
+        /**
+         * FiltersRequest
+         * @description The filters form: each field set becomes a must; `available_now` false drops that one.
+         */
+        FiltersRequest: {
+            /** Pages Max */
+            pages_max?: number | null;
+            /** Year From */
+            year_from?: number | null;
+            /** Year To */
+            year_to?: number | null;
+            /** Available Now */
+            available_now?: boolean | null;
+            /**
+             * Limit
+             * @default 5
+             */
+            limit: number;
+            /**
+             * Narrate
+             * @default true
+             */
+            narrate: boolean;
+        };
+        /** GenreCount */
+        GenreCount: {
+            /** Name */
+            name: string;
+            /** Books */
+            books: number;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -738,6 +849,26 @@ export interface operations {
             };
         };
     };
+    genres_api_v1_genres_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenreCount"][];
+                };
+            };
+        };
+    };
     start_session_api_v1_sessions_post: {
         parameters: {
             query?: never;
@@ -873,6 +1004,76 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ChipStrength"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    explore_api_v1_sessions__session_id__explore_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExploreRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    filters_api_v1_sessions__session_id__filters_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FiltersRequest"];
             };
         };
         responses: {

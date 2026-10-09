@@ -106,6 +106,29 @@
         }
       }
     },
+    "/api/v1/genres": {
+      "get": {
+        "summary": "Genres",
+        "description": "Every genre in the catalog with its number of books, largest first (Explore).",
+        "operationId": "genres_api_v1_genres_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GenreCount"
+                  },
+                  "type": "array",
+                  "title": "Response Genres Api V1 Genres Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/sessions": {
       "post": {
         "summary": "Start Session",
@@ -291,6 +314,106 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ChipStrength"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{session_id}/explore": {
+      "post": {
+        "summary": "Explore",
+        "description": "Explore a genre: a new search (undo-able) for its books, those on the shelf now and\nmost borrowed first. No parsing.",
+        "operationId": "explore_api_v1_sessions__session_id__explore_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExploreRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{session_id}/filters": {
+      "post": {
+        "summary": "Filters",
+        "description": "The filters form: page limit, years and \"available now\" as musts on the current\nsearch (or the start of one). No parsing.",
+        "operationId": "filters_api_v1_sessions__session_id__filters_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FiltersRequest"
               }
             }
           }
@@ -977,6 +1100,121 @@
           "format"
         ],
         "title": "EditionInfo"
+      },
+      "ExploreRequest": {
+        "properties": {
+          "genre": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Genre"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 5
+          },
+          "narrate": {
+            "type": "boolean",
+            "title": "Narrate",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "genre"
+        ],
+        "title": "ExploreRequest",
+        "description": "Explore: browse one genre (a name from `GET /genres`)."
+      },
+      "FiltersRequest": {
+        "properties": {
+          "pages_max": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3000.0,
+                "minimum": 10.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pages Max"
+          },
+          "year_from": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year From"
+          },
+          "year_to": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year To"
+          },
+          "available_now": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Available Now"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 5
+          },
+          "narrate": {
+            "type": "boolean",
+            "title": "Narrate",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "FiltersRequest",
+        "description": "The filters form: each field set becomes a must; `available_now` false drops that one."
+      },
+      "GenreCount": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "books": {
+            "type": "integer",
+            "title": "Books"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "books"
+        ],
+        "title": "GenreCount"
       },
       "HTTPValidationError": {
         "properties": {

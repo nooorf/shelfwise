@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 
 import { endSession, socketUrl, startSession } from '../api/client'
-import type { BookResult, Chip } from '../api/types'
+import type { BookResult, Chip, Filters } from '../api/types'
 import { SessionSocket } from './socket'
 import { useSession } from './store'
 
@@ -15,6 +15,8 @@ export interface Conversation {
   switchChip: (chip: Chip) => void
   feedback: (book: BookResult, more: boolean) => void
   surprise: () => void
+  explore: (genre: string) => void
+  filter: (filters: Filters) => void
   cancel: () => void
   newVisitor: () => Promise<void>
 }
@@ -39,6 +41,18 @@ async function openSession(socket: MutableRefObject<SessionSocket | null>): Prom
     setOnline(false)
     setTimeout(() => void openSession(socket), 3000) // the API isn't up yet
   }
+}
+
+/** "at most 300 pages, 2010–2020, available now", for the conversation column. */
+export function filtersInWords(f: Filters): string {
+  const words: string[] = []
+  if (f.pages_max != null) words.push(`at most ${f.pages_max} pages`)
+  if (f.year_from != null && f.year_to != null) words.push(`${f.year_from}–${f.year_to}`)
+  else if (f.year_from != null) words.push(`${f.year_from} or later`)
+  else if (f.year_to != null) words.push(`${f.year_to} or earlier`)
+  if (f.available_now === true) words.push('available now')
+  if (f.available_now === false) words.push('not only available now')
+  return words.join(', ')
 }
 
 export function useConversation(): Conversation {
@@ -85,6 +99,16 @@ export function useConversation(): Conversation {
     socket.current?.send({ type: 'surprise' })
   }, [])
 
+  const explore = useCallback((genre: string) => {
+    useSession.getState().said(`Explore ${genre}`)
+    socket.current?.send({ type: 'explore', genre })
+  }, [])
+
+  const filter = useCallback((filters: Filters) => {
+    useSession.getState().said(`Filters: ${filtersInWords(filters)}`)
+    socket.current?.send({ type: 'filters', ...filters })
+  }, [])
+
   const cancel = useCallback(() => socket.current?.send({ type: 'cancel' }), [])
 
   const newVisitor = useCallback(async () => {
@@ -94,5 +118,5 @@ export function useConversation(): Conversation {
     await openSession(socket)
   }, [sessionId])
 
-  return { ask, undo, removeChip, switchChip, feedback, surprise, cancel, newVisitor }
+  return { ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, newVisitor }
 }

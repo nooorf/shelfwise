@@ -25,15 +25,17 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from sqlalchemy import Connection, text
 
 from shelfwise.conversation.merge import (
     TurnUpdate,
+    add_filters,
     answer_offer,
     answer_turn,
     apply_turn,
     book_feedback,
+    explore,
     label,
     pressed,
     record_results,
@@ -107,6 +109,52 @@ class ChipStrength(BaseModel):
     strength: Strength
     limit: int = Field(default=5, ge=1, le=20)
     narrate: bool = True
+
+
+class ExploreRequest(BaseModel):
+    """Explore: browse one genre (a name from `GET /genres`)."""
+
+    genre: str = Field(min_length=1, max_length=60)
+    limit: int = Field(default=5, ge=1, le=20)
+    narrate: bool = True
+
+    def said(self) -> str:
+        return f"explore {self.genre}"
+
+
+class FiltersRequest(BaseModel):
+    """The filters form: each field set becomes a must; `available_now` false drops that one."""
+
+    pages_max: int | None = Field(default=None, ge=10, le=3000)
+    year_from: int | None = Field(default=None, ge=0, le=2100)
+    year_to: int | None = Field(default=None, ge=0, le=2100)
+    available_now: bool | None = None
+    limit: int = Field(default=5, ge=1, le=20)
+    narrate: bool = True
+
+    @model_validator(mode="after")
+    def _something_set(self) -> "FiltersRequest":
+        fields = (self.pages_max, self.year_from, self.year_to, self.available_now)
+        if all(v is None for v in fields):
+            raise ValueError("set at least one filter")
+        return self
+
+    def constraints(self) -> list[Constraint]:
+        wanted = [("pages", "lte", self.pages_max), ("year", "gte", self.year_from),
+                  ("year", "lte", self.year_to),
+                  ("available_now", "eq", True if self.available_now else None)]  # fmt: skip
+        return [
+            Constraint(field=f, op=op, value=v, strength="hard", source="chip")
+            for f, op, v in wanted
+            if v is not None
+        ]
+
+    def said(self) -> str:
+        """What the form amounts to, in words: "filters: at most 300 pages, available now"."""
+        words = [label(c) for c in self.constraints()]
+        if self.available_now is False:
+            words.append("not only available now")
+        return "filters: " + ", ".join(words)
 
 
 class SurpriseRequest(BaseModel):
@@ -359,6 +407,11 @@ class ConversationService:
             if route == "clarify":
                 notes.append('Which one? You can say "the second one" or tap a book.')
             facets = {w: ctx.signals().facets.get(w, {}) for w in ids}
+        elif update.kind == "refine" and not (
+            state.semantic_query or state.seed_work_ids or state.lookup
+        ):
+            route = "search"  # refining an Explore or filters-only search: keep browsing
+            system, ids = self._rerun(ctx, state, request.limit)
         else:
             route = "search"
             # Rules-only, a new topic is better found from the raw words (known items);
@@ -445,10 +498,7 @@ class ConversationService:
                 ["That filter is already gone."], {}, start, 0.0, None,
             )  # fmt: skip
         state = update.state
-        system, ids = self.search.retrieve(
-            ctx, state.semantic_query or "books", state_request(state, "refine"), True,
-            removal.limit,
-        )  # fmt: skip
+        system, ids = self._rerun(ctx, state, removal.limit)
         said = f'without "{removal.label}"'
         return self._respond(
             conn, ctx, state, "remove", "search", "refine", None, system, ids,
@@ -480,10 +530,7 @@ class ConversationService:
                 start, 0.0, None,
             )  # fmt: skip
         state = update.state
-        system, ids = self.search.retrieve(
-            ctx, state.semantic_query or "books", state_request(state, "refine"), True,
-            change.limit,
-        )  # fmt: skip
+        system, ids = self._rerun(ctx, state, change.limit)
         words = "a must" if change.strength == "hard" else "a preference"
         said = f'"{change.label}" as {words}'
         return self._respond(
@@ -491,6 +538,41 @@ class ConversationService:
             [f'"{change.label}" is now {words}.'], {}, start, 0.0,
             said if change.narrate else None,
         )  # fmt: skip
+
+    def explore(self, conn: Connection, session_id: str, request: ExploreRequest) -> TurnResponse:
+        """Explore: the genre's books, those on the shelf now and most borrowed first."""
+        start = time.perf_counter()
+        update = explore(self._load(session_id), request.genre, self.now())
+        ctx = self.search.context(conn)
+        system, ids = self._rerun(ctx, update.state, request.limit)
+        return self._respond(
+            conn, ctx, update.state, update.kind, "search", "discover", None, system, ids,
+            notes_for(update), {}, start, 0.0,
+            request.said() if request.narrate else None,
+        )  # fmt: skip
+
+    def filters(self, conn: Connection, session_id: str, request: FiltersRequest) -> TurnResponse:
+        """The filters form: musts added to the search (or the start of one), no parsing."""
+        start = time.perf_counter()
+        drop = ["available_now"] if request.available_now is False else []
+        update = add_filters(self._load(session_id), request.constraints(), drop, self.now())
+        ctx = self.search.context(conn)
+        system, ids = self._rerun(ctx, update.state, request.limit)
+        return self._respond(
+            conn, ctx, update.state, update.kind, "search", "refine", None, system, ids,
+            notes_for(update), {}, start, 0.0, request.said() if request.narrate else None,
+        )  # fmt: skip
+
+    def _rerun(
+        self, ctx: SearchContext, state: ConversationState, limit: int
+    ) -> tuple[str, list[int]]:
+        """Search again on the state after a button press. With no topic words, seed or
+        lookup (Explore, filters alone) there is nothing to match text against: browse."""
+        if not (state.semantic_query or state.seed_work_ids or state.lookup):
+            return "browse", self.search.browse(ctx, state.active, state.avoid_work_ids, limit)
+        return self.search.retrieve(
+            ctx, state.semantic_query or "books", state_request(state, "refine"), True, limit
+        )
 
     def surprise(self, conn: Connection, session_id: str, request: SurpriseRequest) -> TurnResponse:
         """The "Surprise me" button: the same picks as saying it, without parsing."""

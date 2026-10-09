@@ -21,6 +21,7 @@ from dataclasses import replace
 from datetime import date
 from typing import Any
 
+import numpy as np
 from pydantic import BaseModel, Field
 from sqlalchemy import Connection, text
 
@@ -41,9 +42,12 @@ from shelfwise.query.constraints import Constraint, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest, from_rules
 from shelfwise.query.rules import parse_rules
 from shelfwise.ranking.rerank import CachedReranker
-from shelfwise.retrieval.filters import relaxations
+from shelfwise.ranking.soft import soft_score
+from shelfwise.retrieval.filters import allowed_mask, allowed_work_ids, relaxations
 
 MAX_RELAXATIONS = 3
+_AVAILABLE = Constraint(field="available_now", op="eq", value=True, strength="hard",
+                        source="state")  # fmt: skip
 PARSE_TIMEOUT_S = 20.0  # a slow LLM costs one fallback to the rules, not a hung request
 
 
@@ -116,6 +120,11 @@ class Relaxation(BaseModel):
     drop: str  # the words of the constraint to drop, e.g. "under 100 pages"
     count: int  # how many books match without it
     earliest_due: date | None = None  # dropping "available now": the first one back
+
+
+class GenreCount(BaseModel):
+    name: str
+    books: int
 
 
 class SearchResponse(BaseModel):
@@ -238,6 +247,41 @@ class SearchService:
         avoid = set(parsed.avoid_work_ids)  # "less like this": never shown again
         ids = [w for w in system(ctx, query, limit + len(avoid)) if w not in avoid]
         return system.__name__, ids[:limit]
+
+    def browse(
+        self, ctx: SearchContext, constraints: list[Constraint], avoid: list[int], limit: int
+    ) -> list[int]:
+        """No topic words to search for (Explore, or filters alone): the books that pass the
+        hard constraints, those meeting the preferred ones first, then those on the shelf now,
+        then the most borrowed (design doc §22.3)."""
+        if contradictions(constraints):
+            return []
+        hard = [c for c in constraints if c.strength == "hard"]
+        ids = ctx.index.work_ids
+        mask = allowed_mask(ctx.conn, [*hard, *ctx.extra_constraints], ids)
+        on_shelf = allowed_work_ids(ctx.conn, [*hard, _AVAILABLE])
+        signals, hidden = ctx.signals(), set(avoid)
+
+        def order(i: int) -> tuple[float, bool, float]:
+            w = int(ids[i])
+            soft = soft_score(
+                constraints, signals.facets.get(w), signals.genres.get(w, []),
+                signals.popularity_rank.get(w), signals.pages.get(w), signals.year.get(w),
+            )  # fmt: skip
+            return -soft, w not in on_shelf, -float(ctx.popularity[i])
+
+        candidates = [int(i) for i in np.flatnonzero(mask) if int(ids[i]) not in hidden]
+        return [int(ids[i]) for i in sorted(candidates, key=order)[:limit]]
+
+    def genres(self, conn: Connection) -> list[GenreCount]:
+        """Every genre in the catalog with its number of books, largest first (Explore)."""
+        rows = conn.execute(
+            text(
+                "SELECT g AS name, count(*) AS books FROM work, unnest(genres) AS g "
+                "GROUP BY g ORDER BY books DESC, g"
+            )
+        )
+        return [GenreCount(name=r.name, books=r.books) for r in rows]
 
     def relax(self, conn: Connection, constraints: list[Constraint]) -> list[Relaxation]:
         """When nothing matched: which hard constraint to drop, and how many books that gives."""

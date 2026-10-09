@@ -3,8 +3,10 @@ from datetime import UTC, datetime
 import pytest
 
 from shelfwise.conversation.merge import (
+    add_filters,
     apply_turn,
     book_feedback,
+    explore,
     record_results,
     remove_chip,
     removed_fields,
@@ -532,3 +534,21 @@ def test_only_chips_that_mean_something_both_ways_are_switchable() -> None:
         "available now": False,  # filters only: there is no "preferably available"
         "no grief": False,  # themes only nudge: no theme column to filter on
     }  # fmt: skip
+
+
+def test_explore_is_a_new_topic_and_filters_add_or_drop_musts() -> None:
+    state = turn(new_state("s", NOW), "x",
+                 parsed("discover", "thrillers", c("available_now", "eq", True, "hard"),
+                        c("pages", "lt", 300, "hard"), seed_work_ids=[3],
+                        seed_titles=["Gone Girl"])).state  # fmt: skip
+
+    explored = explore(state, "horror", NOW)
+    assert (explored.kind, explored.kept) == ("new_topic", ["available now"])
+    assert active(explored.state) == {"available_now eq True hard", "genre in ['horror'] hard"}
+    assert explored.state.semantic_query == "" and explored.state.seed_work_ids == []
+    assert explored.state.before_reset is not None
+
+    year = c("year", "gte", 2010, "hard")
+    filtered = add_filters(explored.state, [year], ["available_now", "language"], NOW)
+    assert (filtered.kind, filtered.removed) == ("refine", ["available_now"])
+    assert active(filtered.state) == {"genre in ['horror'] hard", "year gte 2010 hard"}

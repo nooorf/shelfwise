@@ -1,5 +1,5 @@
 // REST calls: sessions are created and ended over HTTP; turns go over the WebSocket.
-import type { BookDetail } from './types'
+import type { BookDetail, GenreCount } from './types'
 
 export async function startSession(): Promise<string> {
   const response = await fetch('/api/v1/sessions', { method: 'POST' })
@@ -23,4 +23,11 @@ export async function getBook(workId: number): Promise<BookDetail> {
   const response = await fetch(`/api/v1/books/${workId}`)
   if (!response.ok) throw new Error(`could not load the book (${response.status})`)
   return (await response.json()) as BookDetail
+}
+
+/** Explore: every genre in the catalog with its number of books, largest first. */
+export async function getGenres(): Promise<GenreCount[]> {
+  const response = await fetch('/api/v1/genres')
+  if (!response.ok) throw new Error(`could not load the genres (${response.status})`)
+  return (await response.json()) as GenreCount[]
 }

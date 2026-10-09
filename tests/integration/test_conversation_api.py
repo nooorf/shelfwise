@@ -456,3 +456,54 @@ def test_the_surprise_button_says_when_nothing_fits(client: TestClient) -> None:
     assert body["results"] == [] and body["notes"] == [
         "Nothing on the shelf right now fits your filters. Try removing one."
     ]
+
+
+def test_genres_for_explore(client: TestClient) -> None:
+    assert client.get("/api/v1/genres").json() == [
+        {"name": "thriller", "books": 4},
+        {"name": "mystery", "books": 2},
+    ]
+
+
+def test_explore_browses_a_genre_on_the_shelf_first_then_by_popularity(
+    conn: Connection, client: TestClient, catalog: dict[str, int]
+) -> None:
+    lend(conn, catalog["The Silent Patient"], date(2026, 10, 20))  # the most borrowed is out
+    session = client.post("/api/v1/sessions").json()["session_id"]
+    url = f"/api/v1/sessions/{session}/explore"
+
+    body = client.post(url, json={"genre": "thriller", "narrate": False}).json()
+
+    assert (body["kind"], body["route"], body["system"]) == ("new_search", "search", "browse")
+    assert [r["title"] for r in body["results"]] == [
+        "Gone Girl", "Sharp Objects", "The Girl on the Train", "The Silent Patient",
+    ]  # fmt: skip
+    assert chips(body) == {"genre in ['thriller']"} and body["semantic_query"] == ""
+
+
+def test_filters_narrow_an_explore_search_and_explore_again_can_be_undone(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    with make_client(conn, [{"intent": "refine"}]) as client:  # "under 260 pages"
+        session = client.post("/api/v1/sessions").json()["session_id"]
+        base = f"/api/v1/sessions/{session}"
+        client.post(f"{base}/explore", json={"genre": "thriller", "narrate": False})
+
+        short = client.post(f"{base}/filters", json={"pages_max": 300, "available_now": True,
+                                                     "narrate": False}).json()  # fmt: skip
+        typed = say(client, session, "under 260 pages")  # a typed refinement keeps browsing
+        other = client.post(f"{base}/explore", json={"genre": "mystery", "narrate": False})
+        back = client.post(f"{base}/undo").json()
+        empty_form = client.post(f"{base}/filters", json={})
+
+    assert (short["kind"], short["system"]) == ("refine", "browse")
+    assert [r["title"] for r in short["results"]] == ["Sharp Objects"]
+    assert chips(short) == {"genre in ['thriller']", "pages lte 300", "available_now eq True"}
+    assert typed["system"] == "browse" and "pages lt 260" in chips(typed)
+    other = other.json()
+    assert other["kind"] == "new_topic" and other["notes"] == ["New search (kept: available now)."]
+    assert {r["title"] for r in other["results"]} == {
+        "Murder at the Vicarage", "The Thursday Murder Club"
+    }  # fmt: skip
+    assert other["can_undo"] and "genre in ['thriller']" in chips(back)
+    assert empty_form.status_code == 422
