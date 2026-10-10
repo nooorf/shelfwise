@@ -20,7 +20,10 @@ from pydantic import BaseModel, Field
 # v2: the model answers in words, themes first (v1's 0-3 digits collapsed to 0 on small models).
 # v3: first-published year in the record, TAGGING.md's ~20-year historical threshold, the poetry
 # rule, and reading level only for technical or course books (also enforced in code).
-PROMPT_VERSION = "facets-v3"
+# v4: the year may be a reprint's (judge by the original if known); teenage books are ya even
+# when the genres also say children's (qwen3:14b on v3: Gatsby "historical" from a 2019
+# edition, The Fault in Our Stars "children").
+PROMPT_VERSION = "facets-v4"
 MAX_DESCRIPTION_CHARS = 1500
 MAX_SUBJECTS = 15
 
@@ -106,11 +109,15 @@ class BookFacetsLLM(BaseModel):
         "and poetry collections"
     )
     audience: Literal["children", "ya", "adult"] = Field(
-        description="children: under ~12; ya: teenage readers; adult: everyone else"
+        description="children: picture books and stories for under ~12. ya: teenage readers; "
+        "a teenage main character or 'young adult' in the genres means ya, even when the "
+        "genres also say children's. adult: everyone else"
     )
     historical_setting: YesNoUnclear = Field(
-        description="Compare the story's era with the record's 'First published' year. yes if "
-        "the story is set at least ~20 years (a generation) before that year: A Tale of Two "
+        description="Compare the story's era with when the book was first written: the "
+        "original publication year if you know the book, else the record's year (which may be "
+        "a later edition's). yes if the story is set at least ~20 years (a generation) before "
+        "it was written: A Tale of Two "
         "Cities (1859, set 1775-1793) yes; a 2015 novel set in World War II yes; any clearly "
         "past era (ancient Rome, medieval, Victorian) in a modern book yes; a collection with "
         "some tales in clearly past eras yes. no: set in the author's own time (Pride and "
@@ -186,7 +193,7 @@ def build_messages(book: BookRecord) -> list[dict[str, str]]:
         [
             f"Title: {book.title}",
             f"Author: {', '.join(book.authors) or 'unknown'}",
-            f"First published: {book.first_pub_year or 'unknown'}",
+            f"Year (may be a later edition): {book.first_pub_year or 'unknown'}",
             f"Genres: {', '.join(book.genres) or 'none listed'}",
             f"Subjects: {', '.join(list(book.subjects)[:MAX_SUBJECTS]) or 'none listed'}",
             f"Description: {description}",

@@ -117,3 +117,14 @@ def test_tags_drive_the_negation_filter(engine_with_books: tuple[Engine, list[in
 
     assert ids[0] not in allowed  # tagged supernatural
     assert ids[1] in allowed and ids[2] in allowed  # tagged no / not tagged
+
+
+def test_only_the_chosen_works_are_tagged(engine_with_books: tuple[Engine, list[int]]) -> None:
+    engine, ids = engine_with_books
+
+    stats = tag_books(engine, FakeLLM(DARK, model="qwen3:4b"), only=[ids[0]])
+
+    assert stats.tagged == 1
+    with engine.connect() as conn:
+        assert facets_of(conn, ids[0]) is not None
+        assert all(facets_of(conn, i) is None for i in ids[1:])

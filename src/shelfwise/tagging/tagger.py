@@ -41,16 +41,21 @@ _UNTAGGED_SQL = text(
                       WHERE wa.work_id = w.work_id), '{}') AS authors
     FROM work w
     LEFT JOIN work_facets f ON f.work_id = w.work_id
-    WHERE f.work_id IS NULL
-       OR (f.source = 'llm' AND f.model_version IS DISTINCT FROM :version)
+    WHERE (f.work_id IS NULL
+           OR (f.source = 'llm' AND f.model_version IS DISTINCT FROM :version))
+      AND (CAST(:only AS bigint[]) IS NULL OR w.work_id = ANY(:only))
     ORDER BY w.work_id
     LIMIT :limit
     """
 )
 
 
-def books_to_tag(conn: Connection, version: str, limit: int | None = None) -> list[BookRecord]:
-    rows = conn.execute(_UNTAGGED_SQL, {"version": version, "limit": limit or 1_000_000})
+def books_to_tag(
+    conn: Connection, version: str, limit: int | None = None, only: list[int] | None = None
+) -> list[BookRecord]:
+    rows = conn.execute(
+        _UNTAGGED_SQL, {"version": version, "limit": limit or 1_000_000, "only": only}
+    )
     return [
         BookRecord(r.work_id, r.title, r.authors, r.genres, r.tags, r.description, r.first_pub_year)
         for r in rows
@@ -83,10 +88,12 @@ def tag_books(
     llm: StructuredLLM,
     limit: int | None = None,
     progress: Callable[[int, int, BookRecord], None] | None = None,
+    only: list[int] | None = None,
 ) -> TagRunStats:
+    """`only`: just these works (e.g. the hand-labelled ones, to score a prompt first)."""
     version = model_version(llm.model)
     with engine.connect() as conn:
-        books = books_to_tag(conn, version, limit)
+        books = books_to_tag(conn, version, limit, only)
     stats = TagRunStats()
     for i, book in enumerate(books, start=1):
         try:

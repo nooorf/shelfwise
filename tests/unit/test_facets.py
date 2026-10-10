@@ -62,7 +62,7 @@ def test_missing_fields_are_stated_not_left_blank() -> None:
     _, user = build_messages(BookRecord(1, "Untitled", [], [], [], None))
 
     assert "Author: unknown" in user["content"]
-    assert "First published: unknown" in user["content"]
+    assert "Year (may be a later edition): unknown" in user["content"]
     assert "Description: (no description)" in user["content"]
 
 
@@ -154,7 +154,7 @@ def test_record_states_the_first_published_year() -> None:
 
     _, user = build_messages(book)
 
-    assert "First published: 1859" in user["content"]
+    assert "Year (may be a later edition): 1859" in user["content"]
 
 
 @pytest.mark.parametrize(
