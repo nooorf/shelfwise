@@ -15,8 +15,8 @@ For each book: **what would a reader who has finished it say?** Use the record s
 | darkness | 0 light · 1 some serious moments · 2 dark · 3 very dark | 2: crime, abuse, grief or violence are central. 3: bleak, disturbing, horror |
 | romance | 0 none · 1 minor subplot · 2 significant subplot · 3 the central story | Romance novels are 3 |
 | violence | 0 none · 1 mild or off-page · 2 on-page · 3 graphic or gory | |
-| pace | slow · medium · fast | Nonfiction is medium unless clearly otherwise |
-| supernatural | yes · no · unclear | Magic, ghosts, vampires, curses, psychic powers. Science-fiction technology is **not** supernatural |
+| pace | slow · medium · fast | Nonfiction is medium unless clearly otherwise (the tagger always says medium for nonfiction) |
+| supernatural | yes · no · unclear | Magic, ghosts, vampires, curses, psychic powers. Science-fiction technology is **not** supernatural. Nonfiction: no |
 | historical setting | yes · no · unclear | Fiction only. Yes if the story is set at least ~20 years (a generation) before the book was written: *A Tale of Two Cities* yes, *Pride and Prejudice* no, *Darkness at Noon* (written 1940 about 1936–38) no. A collection whose tales include clearly past eras: yes. Add the period if you know it |
 | reading level | intro · intermediate · advanced · none | Nonfiction only. Technical, academic or course books; none for general-audience nonfiction (memoir, popular history) |
 

@@ -98,6 +98,8 @@ def test_consistency_rules_fix_contradictions() -> None:
             "historical_setting": "yes",
             "setting_period": "1990s",
             "reading_level": "intro",
+            "supernatural": "yes",
+            "pace": "slow",
         }
     )
 
@@ -107,6 +109,7 @@ def test_consistency_rules_fix_contradictions() -> None:
     assert fixed_novel.reading_level is None and fixed_novel.setting_period is None
     assert fixed_textbook.historical_setting == "no" and fixed_textbook.setting_period is None
     assert fixed_textbook.reading_level == "intro"
+    assert (fixed_textbook.supernatural, fixed_textbook.pace) == ("no", "medium")
 
 
 def test_consistency_rules_keep_a_real_historical_setting() -> None:
@@ -186,3 +189,13 @@ def test_record_rules_include_the_consistency_rules() -> None:
         apply_record_rules(facets, BookRecord(1, "A", [], ["programming"], [], None)).reading_level
         is None
     )
+
+
+def test_the_model_says_teen_and_it_is_stored_as_ya() -> None:
+    llm = BookFacetsLLM(
+        themes=["first love"], fiction=True, audience="teen", historical_setting="no",
+        setting_period=None, darkness="dark", romance="central", violence="none",
+        supernatural="no", pace="medium", reading_level=None,
+    )  # fmt: skip
+
+    assert llm.to_facets().audience == "ya"

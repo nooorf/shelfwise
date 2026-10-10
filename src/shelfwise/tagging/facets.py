@@ -23,7 +23,11 @@ from pydantic import BaseModel, Field
 # v4: the year may be a reprint's (judge by the original if known); teenage books are ya even
 # when the genres also say children's (qwen3:14b on v3: Gatsby "historical" from a 2019
 # edition, The Fault in Our Stars "children").
-PROMPT_VERSION = "facets-v4"
+# v5 (v4 scored on the 200 labels): the model says "teen" (it chose "ya" for 1 of 27 YA books),
+# historical defaults to no for stories set in their own time (v4: 59 "unclear"), science
+# fiction isn't supernatural, medium is the usual pace (v4: 97 of 137 medium books "slow");
+# nonfiction is never supernatural and its pace is medium, in code.
+PROMPT_VERSION = "facets-v5"
 MAX_DESCRIPTION_CHARS = 1500
 MAX_SUBJECTS = 15
 
@@ -108,21 +112,19 @@ class BookFacetsLLM(BaseModel):
         "narrative poem that tells an invented story is fiction. false for nonfiction, memoirs "
         "and poetry collections"
     )
-    audience: Literal["children", "ya", "adult"] = Field(
-        description="children: picture books and stories for under ~12. ya: teenage readers; "
-        "a teenage main character or 'young adult' in the genres means ya, even when the "
-        "genres also say children's. adult: everyone else"
+    audience: Literal["children", "teen", "adult"] = Field(
+        description="children: picture books and stories for under ~12. teen: young adult "
+        "(YA) books for readers ~12-18; a teenage main character or 'young adult' in the "
+        "genres means teen, even when the genres also say children's. adult: everyone else"
     )
     historical_setting: YesNoUnclear = Field(
-        description="Compare the story's era with when the book was first written: the "
-        "original publication year if you know the book, else the record's year (which may be "
-        "a later edition's). yes if the story is set at least ~20 years (a generation) before "
-        "it was written: A Tale of Two "
-        "Cities (1859, set 1775-1793) yes; a 2015 novel set in World War II yes; any clearly "
-        "past era (ancient Rome, medieval, Victorian) in a modern book yes; a collection with "
-        "some tales in clearly past eras yes. no: set in the author's own time (Pride and "
-        "Prejudice, 1813: no; a 1940 novel set in 1937: no) or the future. unclear: can't tell. "
-        "Nonfiction: no"
+        description="no is the usual answer: stories set in their author's own time, however "
+        "long ago that is for us (Oliver Twist, Sherlock Holmes, Pride and Prejudice, The "
+        "Invisible Man, Darkness at Noon: no), in the present day, or in the future. yes only "
+        "if the story is set at least ~20 years before it was first written (use what you know "
+        "of the book; the record's year may be a later edition's): A Tale of Two Cities yes; a "
+        "2015 novel set in World War II yes; ancient Rome or medieval times in a modern book "
+        "yes. unclear: only when nothing tells you when it is set. Nonfiction: no"
     )
     setting_period: str | None = Field(
         description="short name of that past era when historical_setting is yes, e.g. "
@@ -139,10 +141,12 @@ class BookFacetsLLM(BaseModel):
     violence: Literal["none", "mild or off-page", "on-page", "graphic"]
     supernatural: YesNoUnclear = Field(
         description="yes: magic, ghosts, vampires, curses, psychic or paranormal powers. "
-        "Science-fiction technology is NOT supernatural. no: realistic or scientific"
+        "no: realistic stories, and science fiction: aliens, invisibility or time travel by "
+        "science (The Invisible Man, The Host) are no. Nonfiction: no"
     )
     pace: Literal["slow", "medium", "fast"] = Field(
-        description="how fast the story moves; nonfiction: medium unless clearly otherwise"
+        description="medium is the usual answer. fast: thrillers, action, page-turners. slow: "
+        "only books known as slow-burning, dense or contemplative. Nonfiction: medium"
     )
     reading_level: Literal["intro", "intermediate", "advanced"] | None = Field(
         description="null unless the book is a textbook, course book or technical manual "
@@ -155,7 +159,7 @@ class BookFacetsLLM(BaseModel):
     def to_facets(self) -> BookFacets:
         return BookFacets(
             fiction=self.fiction,
-            audience=self.audience,
+            audience="ya" if self.audience == "teen" else self.audience,
             darkness=DARKNESS.index(self.darkness),
             romance=ROMANCE.index(self.romance),
             violence=VIOLENCE.index(self.violence),
@@ -213,8 +217,8 @@ def apply_consistency_rules(facets: BookFacets) -> BookFacets:
     updates: dict[str, object] = {}
     if facets.fiction:
         updates["reading_level"] = None  # reading level is for technical/course books
-    else:
-        updates["historical_setting"] = "no"  # nonfiction has no story setting
+    else:  # nonfiction has no story: no setting, nothing supernatural, pace by convention
+        updates.update(historical_setting="no", supernatural="no", pace="medium")
     if updates.get("historical_setting", facets.historical_setting) != "yes":
         updates["setting_period"] = None
     return facets.model_copy(update=updates)
