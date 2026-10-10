@@ -371,6 +371,7 @@ def apply_turn(
             if work_id not in state.seed_work_ids:
                 state.seed_titles.append(title)
                 state.seed_work_ids.append(work_id)
+        state.not_found = list(dict.fromkeys([*state.not_found, *parsed.not_found]))
     else:
         if kind == "new_topic":
             state.before_reset = state.snapshot()
@@ -380,6 +381,7 @@ def apply_turn(
         state.lookup = parsed.lookup
         state.seed_titles = list(parsed.seed_titles)
         state.seed_work_ids = list(parsed.seed_work_ids)
+        state.not_found = list(parsed.not_found)
     state.constraints = merge_constraints(state.constraints, constraints, state.turn)
     return TurnUpdate(state, kind, kept=kept, removed=removed, unresolved=unresolved)
 
@@ -504,7 +506,7 @@ def explore(state: ConversationState, genre: str, now: datetime) -> TurnUpdate:
     chosen = Constraint(field="genre", op="in", value=[genre], strength="hard", source="chip")
     state.constraints = merge_constraints(kept, [chosen], state.turn)
     state.semantic_query, state.lookup = "", None
-    state.seed_titles, state.seed_work_ids = [], []
+    state.seed_titles, state.seed_work_ids, state.not_found = [], [], []
     return TurnUpdate(state, kind, kept=[label(a.constraint) for a in kept])
 
 

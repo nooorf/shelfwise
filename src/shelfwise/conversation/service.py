@@ -310,6 +310,13 @@ def _humanize_field(field: str) -> str:
     return _FIELD_WORDS.get(field) or field.removeprefix("facet.").replace("_", " ")
 
 
+def not_found_note(names: list[str], others: bool) -> str:
+    """A named book or author the catalog doesn't have: said plainly, before anything else."""
+    quoted = " or ".join(f'"{n}"' for n in names)
+    rest = " Here are the closest books I have." if others else ""
+    return f"I couldn't find {quoted} in this library.{rest}"
+
+
 def notes_for(update: TurnUpdate) -> list[str]:
     notes = []
     if update.kind == "new_topic":
@@ -463,6 +470,7 @@ class ConversationService:
         said = [state.semantic_query] if state.semantic_query else []
         names = self._catalog_names(conn)
         seeds, seed_ids = list(state.seed_titles), list(state.seed_work_ids)
+        missing = list(state.not_found)
 
         wanted = [*said, *(w for w, _ in wishes)]
 
@@ -470,9 +478,11 @@ class ConversationService:
             emit: Callable[[ReplyPiece], None] | None = None, stop: threading.Event | None = None
         ) -> Reply:
             if emit is None:
-                return self.narrator.narrate(task, message, books, names, wanted, seeds, seed_ids)
+                return self.narrator.narrate(
+                    task, message, books, names, wanted, seeds, seed_ids, missing
+                )
             return self.narrator.narrate_stream(
-                task, message, books, names, emit, stop, wanted, seeds, seed_ids
+                task, message, books, names, emit, stop, wanted, seeds, seed_ids, missing
             )
 
         return run
@@ -500,6 +510,10 @@ class ConversationService:
             return self._answer_offer(conn, ctx, state, request, answer, start)
         state.offers = []  # not an answer: the offers lapse
         parsed, parse_error = self.search.parse(conn, request.message, ctx)
+        if parsed.not_found:  # only what the catalog has nothing close to
+            names = self._catalog_names(conn)
+            missing = [n for n in parsed.not_found if not names.has(n)]
+            parsed = parsed.model_copy(update={"not_found": missing})
         parse_ms = (time.perf_counter() - start) * 1000
         update = apply_turn(state, request.message, parsed, self.now())
         state = update.state
@@ -537,6 +551,8 @@ class ConversationService:
             system, ids = self.search.retrieve(
                 ctx, query, state_request(state, parsed.intent), use_parse, request.limit
             )
+            if parsed.not_found:
+                notes.insert(0, not_found_note(parsed.not_found, bool(ids)))
         return self._respond(
             conn, ctx, state, update.kind, route, parsed.intent, parse_error, system, ids,
             notes, facets, start, parse_ms, request.message if request.narrate else None, parsed,

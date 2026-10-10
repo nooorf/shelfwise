@@ -4,7 +4,7 @@ import pytest
 
 from shelfwise.ingest.genres import GENRES
 from shelfwise.llm.client import LLMInvalidOutput, LLMUnavailable
-from shelfwise.query.cascade import CascadeParser, Link, strip_words
+from shelfwise.query.cascade import CascadeParser, Link, cut_short, strip_words
 from shelfwise.query.extract import QueryLLM, build_messages, to_constraints
 from shelfwise.query.request import constraint_problems
 from tests.fakes import FakeLLM
@@ -486,3 +486,44 @@ def test_a_negated_title_is_a_hard_exclusion(
                for c in request.constraints if c.field == "title")  # fmt: skip
     for title in titles:
         assert title.lower() not in request.semantic_query.lower()
+
+
+def test_names_the_catalog_lacks_are_reported_in_the_readers_capitals() -> None:
+    request, _ = parse(
+        "is Bellwether Station by Iona Pryce on the shelf",
+        intent="lookup", lookup_title="bellwether station", lookup_author="iona pryce",
+    )  # fmt: skip
+
+    assert request.not_found == ["Bellwether Station", "Iona Pryce"]
+
+
+def test_unlinked_seeds_are_not_found_and_linked_ones_are_not() -> None:
+    request, _ = parse(
+        "I loved The Saltwater Detective and Gone Girl",
+        intent="similar", similar_to=["The Saltwater Detective", "Gone Girl"],
+    )  # fmt: skip
+
+    assert request.not_found == ["The Saltwater Detective"]
+    assert request.seed_work_ids == [11]
+
+
+def test_catalog_books_are_never_not_found() -> None:
+    request, _ = parse("do you have dune by stephen king", intent="lookup",
+                       lookup_title="dune", lookup_author="stephen king")  # fmt: skip
+
+    assert request.not_found == []
+
+
+@pytest.mark.parametrize(
+    ("title", "message", "longer"),
+    [
+        ("The Hollow", "the new book by Corin Vale, The Hollow Census", "The Hollow Census"),
+        ("Rise", "Rise of the Fallen King please", "Rise of the Fallen King"),
+        ("Gone Girl", "is Gone Girl Available", None),
+        ("Gone Girl", "do you have Gone Girl By Gillian Flynn", None),
+        ("the hobbit", "do you have the hobbit", None),
+        ("Dune", "I loved Dune. Anything like it", None),
+    ],
+)
+def test_a_title_the_llm_cut_short(title: str, message: str, longer: str | None) -> None:
+    assert cut_short(title, message) == longer

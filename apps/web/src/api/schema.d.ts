@@ -750,6 +750,8 @@ export interface components {
             seed_titles?: string[];
             /** Seed Work Ids */
             seed_work_ids?: number[];
+            /** Not Found */
+            not_found?: string[];
             /** Constraints */
             constraints?: components["schemas"]["Constraint"][];
             /** Avoid Work Ids */

@@ -15,6 +15,7 @@ from shelfwise.conversation.merge import (
     undo_reset,
 )
 from shelfwise.conversation.references import resolve_references
+from shelfwise.conversation.service import not_found_note
 from shelfwise.conversation.state import ConversationState, ShownBook, new_state
 from shelfwise.conversation.store import MemorySessionStore
 from shelfwise.query.constraints import Constraint
@@ -552,3 +553,28 @@ def test_explore_is_a_new_topic_and_filters_add_or_drop_musts() -> None:
     filtered = add_filters(explored.state, [year], ["available_now", "language"], NOW)
     assert (filtered.kind, filtered.removed) == ("refine", ["available_now"])
     assert active(filtered.state) == {"genre in ['horror'] hard", "year gte 2010 hard"}
+
+
+def test_names_the_library_lacks_last_while_the_topic_does() -> None:
+    state = new_state("s1", NOW)
+    one = turn(state, "I loved The Saltwater Detective",
+               parsed("similar", "mystery", seed_titles=["The Saltwater Detective"],
+                      not_found=["The Saltwater Detective"]))  # fmt: skip
+    assert one.state.not_found == ["The Saltwater Detective"]
+
+    two = turn(one.state, "something shorter", parsed("refine"))
+    assert two.state.not_found == ["The Saltwater Detective"]  # still never narrated
+
+    three = turn(two.state, "space opera", parsed("discover", "space opera"))
+    assert three.state.not_found == []
+    assert explore(two.state, "fantasy", NOW).state.not_found == []
+
+
+def test_the_reply_says_what_it_could_not_find() -> None:
+    assert not_found_note(["Bellwether Station", "Iona Pryce"], others=True) == (
+        'I couldn\'t find "Bellwether Station" or "Iona Pryce" in this library. '
+        "Here are the closest books I have."
+    )
+    assert not_found_note(["Harry Potter 8"], others=False) == (
+        'I couldn\'t find "Harry Potter 8" in this library.'
+    )

@@ -58,6 +58,7 @@ class ConversationState(BaseModel):
     lookup: LookupSpec | None = None
     seed_titles: list[str] = Field(default_factory=list)
     seed_work_ids: list[int] = Field(default_factory=list)
+    not_found: list[str] = Field(default_factory=list)  # named, not in the catalog: never narrated
     avoid_work_ids: list[int] = Field(default_factory=list)  # "less like this", newest last
     last_results: list[ShownBook] = Field(default_factory=list)  # ordered, as shown
     shown_ids: list[int] = Field(default_factory=list)  # everything shown this session

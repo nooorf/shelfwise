@@ -168,8 +168,10 @@ def exclusions(out: QueryLLM, text: str, linker: Linker) -> tuple[QueryLLM, list
     return out.model_copy(update=update), found
 
 
-def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
-    """Combine the rule parse and the LLM's form into one request (steps 3-5)."""
+def merge(rules: RuleParse, out: QueryLLM, linker: Linker, message: str = "") -> ParsedRequest:
+    """Combine the rule parse and the LLM's form into one request (steps 3-5). `message`: the
+    reader's words as typed (for names in their own capitals); defaults to the rules' text."""
+    message = message or rules.text
     out = check_evidence(out, rules.text)
     out, excluded = exclusions(out, fold_text(rules.text), linker)
     llm_constraints = [
@@ -184,18 +186,28 @@ def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
         constraints.append(c)
 
     title = author = title_link = None
+    not_found: list[str] = []
     if out.lookup_title:
         title_link = linker.title(out.lookup_title)
         title = title_link.name if title_link else out.lookup_title
+        longer = cut_short(out.lookup_title, message)
+        if title_link is not None and longer and linker.title(longer) is None:
+            title, title_link = longer, None  # "The Hollow" of "The Hollow Census": not it
+        if title_link is None:
+            not_found.append(as_written(title, message))
     if out.lookup_author:
         link = linker.author(out.lookup_author)
         author = link.name if link else out.lookup_author
+        if link is None:
+            not_found.append(as_written(out.lookup_author, message))
     seeds, seed_ids = [], []
     for name in dict.fromkeys(out.similar_to):
         link = linker.title(name)
         seeds.append(link.name if link else name)
         if link and link.work_id is not None:
             seed_ids.append(link.work_id)
+        else:
+            not_found.append(as_written(name, message))
 
     intent = out.intent
     if intent == "similar" and not seeds and title:  # the model put the seed in the wrong slot
@@ -227,7 +239,43 @@ def merge(rules: RuleParse, out: QueryLLM, linker: Linker) -> ParsedRequest:
         seed_titles=seeds,
         seed_work_ids=seed_ids,
         constraints=constraints,
+        not_found=list(dict.fromkeys(not_found)),
     )
+
+
+# Capitalised words straight after a title: the title the reader typed goes on. Small words may
+# sit between them ("Rise of the Fallen"); request words end it ("Gone Girl By ...").
+_TITLE_GOES_ON = re.compile(r"(?:\s+(?:(?:of|the|and|a|an|in|on|to|for)\s+)*[A-Z][\w'\u2019-]*)+")
+_NOT_TITLE = {"by", "available", "please", "in", "on", "at", "from", "and", "or", "is", "are"}
+
+
+def cut_short(title: str, message: str) -> str | None:
+    """The longer title the reader typed when the LLM wrote only its start ("The Hollow" for
+    "The Hollow Census"), else None. Only typed capitals count: a lowercase message never
+    triggers it."""
+    start = message.lower().find(title.lower())
+    if start < 0:
+        return None
+    end = start + len(title)
+    goes_on = _TITLE_GOES_ON.match(message, end)
+    if goes_on is None:
+        return None
+    words = goes_on.group(0).split()
+    while words and words[-1].lower() in _NOT_TITLE | {"of", "the", "a", "an", "to", "for"}:
+        words.pop()
+    kept = []
+    for word in words:
+        if word.lower() in _NOT_TITLE:
+            break
+        kept.append(word)
+    return f"{message[start:end]} {' '.join(kept)}" if kept else None
+
+
+def as_written(name: str, message: str) -> str:
+    """`name` in the reader's own capitals when the message has it ("corin vale" ->
+    "Corin Vale"), else as the LLM wrote it."""
+    start = message.lower().find(name.lower())
+    return message[start : start + len(name)] if start >= 0 else name
 
 
 # "do you have X", "is X in", "looking for X", "a copy of X", "where can I find X", "X by Y".
@@ -311,7 +359,7 @@ class CascadeParser:
             log.warning("parser.llm_failed", error=str(exc))
             return CascadeResult(from_rules(rules), used_llm=False, error=str(exc))
         elapsed = (time.perf_counter() - start) * 1000
-        request = merge(rules, result.value, self.linker)
+        request = merge(rules, result.value, self.linker, query)
         cached = result.stats.attempts == 0
         return CascadeResult(
             request, used_llm=True, llm_ms=0.0 if cached else elapsed, cached=cached

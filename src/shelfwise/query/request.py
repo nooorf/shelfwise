@@ -38,6 +38,9 @@ class ParsedRequest(BaseModel):
     lookup: LookupSpec | None = None
     seed_titles: list[str] = Field(default_factory=list)  # "like Gone Girl", catalog spelling
     seed_work_ids: list[int] = Field(default_factory=list)  # the seeds found in the catalog
+    # Titles and authors the reader named that the catalog doesn't have, as they wrote them:
+    # the reply says so, and the narration may not name them.
+    not_found: list[str] = Field(default_factory=list)
     constraints: list[Constraint] = Field(default_factory=list)
     # "Less like this": never shown again, and the books nearest them are pushed down.
     avoid_work_ids: list[int] = Field(default_factory=list)

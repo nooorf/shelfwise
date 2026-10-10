@@ -42,6 +42,16 @@ def test_mentioning_a_made_up_book_counts_unless_it_is_denied() -> None:
     assert not affirms("Here are some coastal mysteries.", FAKE)
 
 
+def test_a_denial_excuses_its_own_sentence_only() -> None:
+    assert affirms(
+        "I couldn't find The Silent Lighthouse. If you loved The Silent Lighthouse, try these.",
+        FAKE,
+    )
+    assert not affirms(
+        "I couldn't find The Silent Lighthouse in this library.\nHere are coastal mysteries.", FAKE
+    )
+
+
 def test_summary_rates_per_system_and_kind() -> None:
     outcomes = [
         Outcome("full", "N01", "nonexistent", raw={"invented"}, fallback=True),

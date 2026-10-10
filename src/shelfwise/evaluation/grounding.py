@@ -37,6 +37,7 @@ _PREFIXES = {
     "a claim the record": "claim",
     "talks about the data": "meta",
 }
+_SENTENCE = re.compile(r"(?<=[.!?])\s+|\n+")
 # Words that make mentioning a made-up title a denial, not a claim: "we don't have X".
 _DENIAL = re.compile(
     r"\b(?:don t|do not|doesn t|does not|couldn t|could not|can t|cannot|isn t|is not|not in|"
@@ -151,11 +152,15 @@ def kinds(problems: Iterable[str]) -> set[str]:
 
 
 def affirms(text: str, case: Case) -> bool:
-    """Does `text` present a made-up book (or author) as one the library has?"""
-    folded = f" {fold_text(text)} "
+    """Does `text` present a made-up book (or author) as one the library has? Sentence by
+    sentence: "We don't have X." excuses that sentence, not a later "If you loved X, try...".
+    """
     names = [fold_text(n) for n in (case.title, case.author) if n]
-    mentioned = any(f" {n} " in folded for n in names if n)
-    return mentioned and not _DENIAL.search(folded)
+    for sentence in _SENTENCE.split(text):
+        folded = f" {fold_text(sentence)} "
+        if any(f" {n} " in folded for n in names if n) and not _DENIAL.search(folded):
+            return True
+    return False
 
 
 def summarize(outcomes: list[Outcome]) -> dict[str, Any]:

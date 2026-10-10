@@ -4,7 +4,7 @@ from pydantic import ValidationError
 from shelfwise.generation import templates
 from shelfwise.generation.context import Candidate, matched_labels
 from shelfwise.generation.narrate import Narrator, reply_schema
-from shelfwise.generation.validate import CatalogNames, check
+from shelfwise.generation.validate import CatalogNames, check, missing_key
 from shelfwise.llm.client import LLMUnavailable
 from shelfwise.query.constraints import Constraint
 from tests.fakes import FakeLLM
@@ -20,9 +20,10 @@ SHARP = Candidate(
     genres=["thriller"], facets={"darkness": 3}, matched=["dark", "under 300 pages"],
     description="A reporter returns to her hometown to cover the murders of two girls.",
 )  # fmt: skip
+NAMES_PAIRS = [(1, "The Silent Patient"), (2, "Sharp Objects"), (3, "Gone Girl"), (4, "The Road"),
+               (5, "The Hunger Games")]  # fmt: skip
 NAMES = CatalogNames.from_pairs(
-    titles=[(1, "The Silent Patient"), (2, "Sharp Objects"), (3, "Gone Girl"), (4, "The Road"),
-            (5, "The Hunger Games")],
+    titles=NAMES_PAIRS,
     authors=[(1, "Alex Michaelides"), (2, "Gillian Flynn"), (3, "Gillian Flynn"),
              (4, "Cormac McCarthy")],
 )  # fmt: skip
@@ -160,3 +161,66 @@ def test_templates_and_matches() -> None:
         "romance a little, fast pace."
     )
     assert templates.explain(PATIENT).startswith("Alicia Berenson shoots her husband")
+
+
+@pytest.mark.parametrize(
+    "words",
+    [
+        "If you loved The Saltwater Detective, try this.",
+        "Like the saltwater detective, it is set by the sea.",
+        "The next Saltwater Detective book is not here, but this one is close.",
+    ],
+)
+def test_a_book_the_library_lacks_is_never_named(words: str) -> None:
+    problems = check(words, [PATIENT], {1}, NAMES, reader="I loved The Saltwater Detective",
+                     missing=["The Saltwater Detective"])  # fmt: skip
+
+    assert problems == ["names a book the library doesn't have: 'saltwater detective'"]
+
+
+@pytest.mark.parametrize(
+    ("name", "key"),
+    [
+        ("the third book in the Sundial Wars trilogy", "sundial wars"),
+        ("Pemberton Lane Mysteries book 4", "pemberton lane mysteries"),
+        ("the sequel to The Iron Psalter", "iron psalter"),
+        ("Corin Vale", "corin vale"),
+        ("Kestrel", None),  # one word: too common to look for
+    ],
+)
+def test_missing_names_are_looked_for_without_series_words(name: str, key: str | None) -> None:
+    assert missing_key(name) == key
+
+
+@pytest.mark.parametrize(
+    ("name", "has"),
+    [
+        ("gillian flynn thrillers", True),  # an author inside the words
+        ("the silent patient alex michaelides", True),  # a title inside the words
+        ("the silent pateint", True),  # close spelling
+        ("sharp", True),  # "Sharp: Stories" by its main title
+        ("1984", True),  # spelled out in the catalog
+        ("1985", False),
+        ("The Saltwater Detective", False),
+        ("Mara Quill", False),
+    ],
+)
+def test_what_the_catalog_has_something_close_to(name: str, has: bool) -> None:
+    names = CatalogNames.from_pairs(
+        titles=[*NAMES_PAIRS, (6, "Sharp: Stories"), (7, "Nineteen Eighty-Four")],
+        authors=[(1, "Alex Michaelides"), (2, "Gillian Flynn")],
+    )
+
+    assert names.has(name) is has
+
+
+def test_the_narrator_is_told_what_the_library_lacks() -> None:
+    llm = FakeLLM(GOOD)
+    Narrator(llm).narrate(  # type: ignore[arg-type]
+        "recommend", "I loved The Saltwater Detective and Gone Girl", [PATIENT, SHARP], NAMES,
+        [], ["The Saltwater Detective", "Gone Girl"], [3], missing=["The Saltwater Detective"],
+    )  # fmt: skip
+
+    prompt = llm.calls[0][-1]["content"]
+    assert "Their reference books: Gone Girl\n" in prompt
+    assert "Not in this library: The Saltwater Detective." in prompt

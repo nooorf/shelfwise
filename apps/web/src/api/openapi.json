@@ -1818,6 +1818,13 @@
             "type": "array",
             "title": "Seed Work Ids"
           },
+          "not_found": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Not Found"
+          },
           "constraints": {
             "items": {
               "$ref": "#/components/schemas/Constraint"
