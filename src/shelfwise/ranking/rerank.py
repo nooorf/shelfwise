@@ -14,6 +14,7 @@ import math
 from collections import OrderedDict
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Protocol
 
 from shelfwise.embed.encoder import own_memory, pick_device
@@ -27,6 +28,11 @@ class RerankModel:
     hf_id: str
     max_length: int = 384  # query + book text, in tokens: covers title, genres and the blurb
 
+    @property
+    def available(self) -> bool:
+        """Hub models download on first use; a local checkpoint exists only once trained."""
+        return not self.hf_id.startswith("models/") or Path(self.hf_id).is_dir()
+
 
 MODELS: dict[str, RerankModel] = {
     m.name: m
@@ -37,6 +43,9 @@ MODELS: dict[str, RerankModel] = {
         RerankModel("bge-base", "BAAI/bge-reranker-base"),
         # Fallback and fast baseline: 22M parameters, fine on CPU.
         RerankModel("minilm", "cross-encoder/ms-marco-MiniLM-L6-v2", max_length=256),
+        # Fine-tuned on this catalog (scripts/train_reranker.py).
+        RerankModel("bge-base-ft", "models/bge-base-rerank-ft"),
+        RerankModel("minilm-ft", "models/minilm-rerank-ft", max_length=256),
     )
 }
 
@@ -137,4 +146,6 @@ def rerank(
 def load_reranker(name: str) -> CachedReranker:
     if name not in MODELS:
         raise ValueError(f"unknown reranker {name!r}; choose from {sorted(MODELS)}")
+    if not MODELS[name].available:
+        raise LookupError(f"{name!r} isn't trained yet: no {MODELS[name].hf_id}/ (Phase 7)")
     return CachedReranker(CrossEncoderReranker(MODELS[name]))

@@ -23,7 +23,7 @@ def main() -> None:
     )
     parser.add_argument("--model", default=get_settings().embedding_model, choices=[*MODELS, "all"])
     args = parser.parse_args()
-    names = list(MODELS) if args.model == "all" else [args.model]
+    names = [n for n, m in MODELS.items() if m.available] if args.model == "all" else [args.model]
 
     with make_engine().begin() as conn:
         print(f"search text updated for {refresh_search_text(conn)} books")
