@@ -200,6 +200,7 @@ def test_missing_names_are_looked_for_without_series_words(name: str, key: str |
         ("the silent pateint", True),  # close spelling
         ("sharp", True),  # "Sharp: Stories" by its main title
         ("1984", True),  # spelled out in the catalog
+        ("the six wives of henry the eighth", True),  # "Henry VIII"
         ("1985", False),
         ("The Saltwater Detective", False),
         ("Mara Quill", False),
@@ -207,7 +208,12 @@ def test_missing_names_are_looked_for_without_series_words(name: str, key: str |
 )
 def test_what_the_catalog_has_something_close_to(name: str, has: bool) -> None:
     names = CatalogNames.from_pairs(
-        titles=[*NAMES_PAIRS, (6, "Sharp: Stories"), (7, "Nineteen Eighty-Four")],
+        titles=[
+            *NAMES_PAIRS,
+            (6, "Sharp: Stories"),
+            (7, "Nineteen Eighty-Four"),
+            (8, "The Six Wives of Henry VIII"),
+        ],
         authors=[(1, "Alex Michaelides"), (2, "Gillian Flynn")],
     )
 

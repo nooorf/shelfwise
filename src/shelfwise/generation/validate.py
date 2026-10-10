@@ -22,7 +22,7 @@ from rapidfuzz import fuzz, process
 from sqlalchemy import Connection, text
 
 from shelfwise.generation.context import Candidate
-from shelfwise.ingest.normalize import fold_text
+from shelfwise.ingest.normalize import fold_text, number_variants
 
 MAX_PHRASE = 8  # words; longer titles are still caught by their first eight words
 CLOSE_SPELLING = 88  # rapidfuzz ratio: "frankenstien", "to kill a mocking bird" are owned
@@ -46,24 +46,6 @@ _SUBTITLE = re.compile(r"\s*(?::|\s-\s|\(|—)")  # "Title: A Novel", "Title (Se
 _NUMBER = re.compile(r"\b\d[\d,]*\b")
 # The machinery showing through ("the tags show no violence"): the reader never sees tags.
 _META = re.compile(r"\b(?:tags?|tagged|records?|matches field|the data)\b")
-
-
-_ONES = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-         "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen",
-         "eighteen", "nineteen"]  # fmt: skip
-_TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
-
-
-def _pair(n: int) -> str:
-    return _ONES[n] if n < 20 else f"{_TENS[n // 10]} {_ONES[n % 10]}".strip()
-
-
-def year_words(text: str) -> str | None:
-    """A title that is a year, as words: "1984" -> "nineteen eighty four" (the catalog spells
-    out "Nineteen Eighty-Four"). Years 1010-1999 with no zero tens ("1905" is left alone)."""
-    if not re.fullmatch(r"1[0-9][1-9][0-9]", text):
-        return None
-    return f"{_pair(int(text[:2]))} {_pair(int(text[2:]))}"
 
 
 def _strip_article(folded: str) -> str:
@@ -144,13 +126,14 @@ class CatalogNames:
                 _strip_article(fold_text(_SUBTITLE.split(t, maxsplit=1)[0])) for t in self.titles
             }
             self._spellings = [*self.titles, *mains, *self.authors, *self.short]
-        key = _strip_article(fold_text(name))
-        if key in self.short or (year_words(key) or key) in self.titles:
-            return True
-        found = process.extractOne(
-            key, self._spellings, scorer=fuzz.ratio, score_cutoff=CLOSE_SPELLING
-        )
-        return found is not None
+        for key in (spelled := _strip_article(fold_text(name)), *number_variants(spelled)):
+            if key in self.short or key in self.titles:
+                return True
+            if process.extractOne(
+                key, self._spellings, scorer=fuzz.ratio, score_cutoff=CLOSE_SPELLING
+            ):
+                return True
+        return False
 
     def mentions(self, words: str) -> list[tuple[str, str, set[int]]]:
         """("title" | "author", phrase, its works) for every catalog name in `words`."""

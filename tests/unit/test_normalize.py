@@ -4,6 +4,7 @@ from shelfwise.ingest.normalize import (
     normalize_author,
     normalize_isbn,
     normalize_text,
+    number_variants,
     split_title,
     title_norm,
 )
@@ -76,3 +77,22 @@ def test_split_title_on_colon() -> None:
 )
 def test_normalize_author(raw: str, display: str, key: str) -> None:
     assert normalize_author(raw) == (display, key)
+
+
+@pytest.mark.parametrize(
+    ("folded", "variants"),
+    [
+        ("books like 1984", ["books like nineteen eighty four"]),
+        ("the six wives of henry the eighth", ["the six wives of henry viii"]),
+        ("henry v", ["henry the fifth"]),
+        ("the second book", []),  # not a name
+        ("part ii", []),
+        ("fahrenheit 451", []),
+        ("2001 a space odyssey", []),
+        ("gone girl", []),
+    ],
+)
+def test_numbers_are_also_tried_as_the_catalog_may_spell_them(
+    folded: str, variants: list[str]
+) -> None:
+    assert number_variants(folded) == variants

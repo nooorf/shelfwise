@@ -58,6 +58,48 @@ def fold_text(text: str) -> str:
     return " ".join(_NON_WORD.sub(" ", without_marks).split())
 
 
+_ONES = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+         "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen",
+         "eighteen", "nineteen"]  # fmt: skip
+_TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+_ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth",
+             "ninth", "tenth", "eleventh", "twelfth"]  # fmt: skip
+_ROMAN = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii"]
+_YEAR = re.compile(r"\b1[0-9][1-9][0-9]\b")  # 1010-1999 without a zero tens digit
+_NAME_THE_ORDINAL = re.compile(rf"\b([a-z]+) the ({'|'.join(_ORDINALS)})\b")
+_NAME_ROMAN = re.compile(rf"\b([a-z]+) ({'|'.join(_ROMAN[1:])})\b")  # not "i": a word
+_NOT_NAMES = {"the", "a", "an", "of", "in", "is", "and", "book", "part", "volume", "chapter"}
+
+
+def _pair(n: int) -> str:
+    return _ONES[n] if n < 20 else f"{_TENS[n // 10]} {_ONES[n % 10]}".strip()
+
+
+def year_words(year: str) -> str:
+    """ "1984" -> "nineteen eighty four"."""
+    return f"{_pair(int(year[:2]))} {_pair(int(year[2:]))}"
+
+
+def number_variants(folded: str) -> list[str]:
+    """Other ways the catalog may spell the numbers in a folded title or query: a year as words
+    ("1984" / "Nineteen Eighty-Four") and a regnal number ("henry the eighth" / "Henry VIII",
+    both ways). [] when there is nothing to respell."""
+    variants = [_YEAR.sub(lambda m: year_words(m.group(0)), folded)]
+
+    def roman(m: re.Match[str]) -> str:
+        if m.group(1) in _NOT_NAMES:
+            return m.group(0)
+        return f"{m.group(1)} {_ROMAN[_ORDINALS.index(m.group(2))]}"
+
+    def ordinal(m: re.Match[str]) -> str:
+        if m.group(1) in _NOT_NAMES:
+            return m.group(0)
+        return f"{m.group(1)} the {_ORDINALS[_ROMAN.index(m.group(2))]}"
+
+    variants += [_NAME_THE_ORDINAL.sub(roman, folded), _NAME_ROMAN.sub(ordinal, folded)]
+    return [v for v in dict.fromkeys(variants) if v != folded]
+
+
 def split_title(title: str, subtitle: str | None = None) -> tuple[str, str | None]:
     """Split "Sapiens: A Brief History" into title and subtitle when no subtitle is given."""
     title = normalize_text(title)

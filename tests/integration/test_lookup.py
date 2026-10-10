@@ -16,6 +16,8 @@ BOOKS = [
     ("It", "Stephen King", None),
     ("Dune", "Frank Herbert", None),
     ("Principia", "Isaac Newton", None),
+    ("Nineteen Eighty-Four", "George Orwell", None),
+    ("The Six Wives of Henry VIII", "Alison Weir", None),
 ]
 
 
@@ -44,6 +46,8 @@ def titles_found(conn: Connection, query: str) -> list[str]:
         ("murder on the orient expres", "Agatha Christie's Murder on the Orient Express"),
         ("harry potter goblet of fire", "Harry Potter and the Goblet of Fire"),
         ("do you have dune", "Dune"),
+        ("1984", "Nineteen Eighty-Four"),
+        ("the six wives of henry the eighth", "The Six Wives of Henry VIII"),
     ],
 )
 def test_finds_titles_despite_typos_and_extra_words(

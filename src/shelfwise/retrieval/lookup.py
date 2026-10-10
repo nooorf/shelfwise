@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from rapidfuzz import fuzz
 from sqlalchemy import Connection, text
 
-from shelfwise.ingest.normalize import fold_text, normalize_isbn
+from shelfwise.ingest.normalize import fold_text, normalize_isbn, number_variants
 from shelfwise.retrieval.lexical import QUERY_FILLER
 
 MIN_TITLE_SCORE = 0.45
@@ -91,9 +91,21 @@ def title_coverage(title_norm: str, query_words: list[str]) -> float:
 def find_titles(
     conn: Connection, query: str, limit: int = 5, min_score: float = MIN_TITLE_SCORE
 ) -> list[TitleMatch]:
+    """Catalog titles matching `query`, best first. Numbers are also tried as the catalog may
+    spell them ("1984" finds Nineteen Eighty-Four, "henry the eighth" finds Henry VIII)."""
     folded = fold_text(query)
     if not folded:
         return []
+    best: dict[int, TitleMatch] = {}
+    for spelling in (folded, *number_variants(folded)):
+        for match in _score_titles(conn, spelling):
+            if match.work_id not in best or match.score > best[match.work_id].score:
+                best[match.work_id] = match
+    scored = sorted(best.values(), key=lambda m: (-m.score, m.work_id))
+    return [m for m in scored if m.score >= min_score][:limit]
+
+
+def _score_titles(conn: Connection, folded: str) -> list[TitleMatch]:
     rows = conn.execute(
         text(
             """
@@ -109,7 +121,7 @@ def find_titles(
     )
     query_words = folded.split()
     request = [w for w in query_words if w not in REQUEST_WORDS] or query_words
-    scored = [
+    return [
         TitleMatch(
             r.work_id,
             r.title,
@@ -123,8 +135,6 @@ def find_titles(
         )
         for r in rows
     ]
-    scored.sort(key=lambda m: (-m.score, m.work_id))
-    return [m for m in scored if m.score >= min_score][:limit]
 
 
 def find_authors(
