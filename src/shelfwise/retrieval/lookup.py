@@ -25,7 +25,7 @@ not Samantha Young); then the first name must be there too.
 import re
 from dataclasses import dataclass
 
-from rapidfuzz import fuzz
+from rapidfuzz import fuzz, process
 from sqlalchemy import Connection, text
 
 from shelfwise.ingest.normalize import (
@@ -55,6 +55,12 @@ _FULL_CONFIDENCE_LENGTH = 6  # titles shorter than this (folded chars) get a pro
 SPELLING_MIN_CHARS = 6  # shorter requests never match on spelling alone ("the girl" ~ The Girls)
 EXACT_MIN_CHARS = 4  # "dune" is Dune; "it" in "is it checked out" is just a word
 SPELLING_SCORE = 0.85  # a spelling this close counts as the title; below, it's only a guess
+# "Did you mean": a title is worth offering at this score or spelling, an author at this
+# spelling. Made-up titles in grounding set E reach 0.74 spelling at most; misspelled and
+# misheard real ones 0.75-0.85 ("frank and steen" ~ Frankenstein 0.80).
+GUESS_SCORE = 0.6
+GUESS_SPELLING = 0.75
+MAX_GUESSES = 3
 _SPELLING_CANDIDATES = 10
 _DIGITS = re.compile(r"\d+")
 _ISBN_CANDIDATE = re.compile(r"(?<![\dXx])[\dXx][\dXx-]{8,15}[\dXx](?![\dXx])")
@@ -111,16 +117,54 @@ def find_titles(
 ) -> list[TitleMatch]:
     """Catalog titles matching `query`, best first. Numbers are also tried as the catalog may
     spell them ("1984" finds Nineteen Eighty-Four, "henry the eighth" finds Henry VIII)."""
+    scored = sorted(_title_matches(conn, query), key=lambda m: (-m.score, m.work_id))
+    return [m for m in scored if m.score >= min_score][:limit]
+
+
+def guess_titles(conn: Connection, name: str) -> list[TitleMatch]:
+    """Titles the reader may have meant by a `name` that didn't match ("frank and steen",
+    "the hobit"), most likely first, one per spelling; [] when nothing is close."""
+    close = [
+        m for m in _title_matches(conn, name)
+        if m.score >= GUESS_SCORE or m.spelling >= GUESS_SPELLING
+    ]  # fmt: skip
+    close.sort(key=lambda m: (-(m.score + m.spelling), m.work_id))
+    seen: set[str] = set()
+    out = []
+    for m in close:
+        if (key := fold_text(m.title)) not in seen:
+            seen.add(key)
+            out.append(m)
+    return out[:MAX_GUESSES]
+
+
+def guess_authors(conn: Connection, name: str) -> list[str]:
+    """Catalog authors spelled like `name` ("neil gayman", "steven king"), closest first."""
+    asked = fold_text(name).replace(" ", "")
+    if len(asked) < SPELLING_MIN_CHARS:
+        return []
+    names = conn.execute(
+        text("SELECT DISTINCT a.display FROM author a JOIN work_author wa USING (author_id)")
+    ).scalars()
+    spelled = {display: fold_text(display).replace(" ", "") for display in names}
+    found = process.extract(
+        asked, spelled, scorer=fuzz.ratio, score_cutoff=GUESS_SPELLING * 100, limit=MAX_GUESSES
+    )
+    return [display for _, _, display in found]
+
+
+def _title_matches(conn: Connection, query: str) -> list[TitleMatch]:
+    """Every candidate title for `query`, best per work over its number spellings."""
     folded = fold_text(query)
     if not folded:
         return []
     best: dict[int, TitleMatch] = {}
     for spelled in (folded, *number_variants(folded)):
         for match in _score_titles(conn, spelled):
-            if match.work_id not in best or match.score > best[match.work_id].score:
+            old = best.get(match.work_id)
+            if old is None or (match.score, match.spelling) > (old.score, old.spelling):
                 best[match.work_id] = match
-    scored = sorted(best.values(), key=lambda m: (-m.score, m.work_id))
-    return [m for m in scored if m.score >= min_score][:limit]
+    return list(best.values())
 
 
 def _score_titles(conn: Connection, folded: str) -> list[TitleMatch]:

@@ -18,6 +18,7 @@ export interface ReplyPiece {
   source: 'llm' | 'template'
 }
 export type Relaxation = Schemas['Relaxation']
+export type Guess = Schemas['Guess']
 export type GenreCount = Schemas['GenreCount']
 export type Bench = Schemas['Bench']
 export type SystemScore = Schemas['SystemScore']

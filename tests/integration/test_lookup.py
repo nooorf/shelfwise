@@ -3,7 +3,14 @@ from sqlalchemy import Connection, insert
 
 from shelfwise.catalog import schema
 from shelfwise.retrieval.lexical import build_lexical_index
-from shelfwise.retrieval.lookup import find_authors, find_by_isbn, find_titles, isbns_in
+from shelfwise.retrieval.lookup import (
+    find_authors,
+    find_by_isbn,
+    find_titles,
+    guess_authors,
+    guess_titles,
+    isbns_in,
+)
 
 from .factories import add_author, add_edition, add_work
 
@@ -154,3 +161,10 @@ def test_spelling_and_main_titles_do_not_overreach(
     matches = find_titles(conn, query, limit=1, min_score=0.7)
 
     assert [m.title for m in matches] != [not_first]
+
+
+def test_guesses_for_names_that_did_not_match(conn: Connection, catalog: dict[str, int]) -> None:
+    assert [m.title for m in guess_titles(conn, "frank and steen")] == ["Frankenstein"]
+    assert guess_titles(conn, "the iron psalter") == []  # made up: nothing close enough
+    assert guess_authors(conn, "jk rolling") == ["J. K. Rowling"]
+    assert guess_authors(conn, "Mara Quill") == []

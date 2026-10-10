@@ -4,6 +4,7 @@ import pytest
 
 from shelfwise.conversation.merge import (
     add_filters,
+    answer_guess,
     apply_turn,
     book_feedback,
     explore,
@@ -15,8 +16,8 @@ from shelfwise.conversation.merge import (
     undo_reset,
 )
 from shelfwise.conversation.references import resolve_references
-from shelfwise.conversation.service import not_found_note
-from shelfwise.conversation.state import ConversationState, ShownBook, new_state
+from shelfwise.conversation.service import ask_instead, not_found_note
+from shelfwise.conversation.state import ConversationState, Guess, ShownBook, new_state
 from shelfwise.conversation.store import MemorySessionStore
 from shelfwise.query.constraints import Constraint
 from shelfwise.query.request import LookupSpec, ParsedRequest
@@ -578,3 +579,47 @@ def test_the_reply_says_what_it_could_not_find() -> None:
     assert not_found_note(["Harry Potter 8"], others=False) == (
         'I couldn\'t find "Harry Potter 8" in this library.'
     )
+
+
+GUESSES = [
+    Guess(title="The Return of Sherlock Holmes", ask="I loved The Return of Sherlock Holmes"),
+    Guess(title="The Memoirs of Sherlock Holmes", ask="I loved The Memoirs of Sherlock Holmes"),
+]
+
+
+@pytest.mark.parametrize(
+    ("message", "picked"),
+    [
+        ("yes", 0),
+        ("yes please", 0),
+        ("the second one", 1),
+        ("the memoirs of sherlock holmes", 1),
+        ("something else entirely", None),
+    ],
+)
+def test_a_did_you_mean_answer(message: str, picked: int | None) -> None:
+    assert answer_guess(message, GUESSES) == picked
+    assert answer_guess(message, []) is None
+
+
+def test_guesses_last_one_turn() -> None:
+    state = new_state("s1", NOW).model_copy(update={"guesses": GUESSES})
+
+    assert turn(state, "thrillers", parsed("discover", "thrillers")).state.guesses == []
+
+
+def test_the_reply_offers_its_guesses() -> None:
+    assert not_found_note(["frank and steen"], others=True, guesses=["Frankenstein"]) == (
+        'I couldn\'t find "frank and steen" in this library. Did you mean Frankenstein? '
+        "Meanwhile, here are the closest books I have."
+    )
+    assert not_found_note([], others=True, guesses=["The Hobbit", "Hobbit Tales", "Hoot"]) == (
+        "Did you mean The Hobbit, Hobbit Tales or Hoot?"
+    )
+
+
+def test_choosing_a_guess_corrects_the_message() -> None:
+    assert ask_instead("do you have frank and steen?", "Frank and Steen", "Frankenstein") == (
+        "do you have Frankenstein?"
+    )
+    assert ask_instead("that one", "frank and steen", "Frankenstein") == "Frankenstein"

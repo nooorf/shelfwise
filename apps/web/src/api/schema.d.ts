@@ -653,6 +653,16 @@ export interface components {
             /** Systems */
             systems: components["schemas"]["GroundingRates"][];
         };
+        /**
+         * Guess
+         * @description "Did you mean...": a catalog title or author for a name that didn't match.
+         */
+        Guess: {
+            /** Title */
+            title: string;
+            /** Ask */
+            ask: string;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -993,6 +1003,8 @@ export interface components {
             };
             /** Relaxations */
             relaxations: components["schemas"]["Relaxation"][];
+            /** Guesses */
+            guesses: components["schemas"]["Guess"][];
             /** Can Undo */
             can_undo: boolean;
             /** Timings Ms */

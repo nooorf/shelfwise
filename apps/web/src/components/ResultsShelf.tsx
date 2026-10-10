@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import type { BookResult, Relaxation, Reply, TurnResponse } from '../api/types'
+import type { BookResult, Guess, Relaxation, Reply, TurnResponse } from '../api/types'
 import { BookCard } from './BookCard'
 import { BookDrawer } from './BookDrawer'
 
@@ -39,6 +39,28 @@ function Offers({ offers, onAsk }: { offers: Relaxation[]; onAsk: (text: string)
   )
 }
 
+/** "Did you mean": a name that didn't match, and the catalog titles or authors it may be.
+ * Choosing one sends the reader's message with the name corrected. */
+function Guesses({ guesses, onAsk }: { guesses: Guess[]; onAsk: (text: string) => void }) {
+  return (
+    <div className="rounded-md border border-line bg-card p-4">
+      <p className="mb-3">Did you mean…</p>
+      <div className="flex flex-wrap gap-2">
+        {guesses.map((guess) => (
+          <button
+            key={guess.title}
+            type="button"
+            onClick={() => onAsk(guess.ask)}
+            className="rounded-md border border-accent px-3 py-1.5 text-sm text-accent hover:bg-accent-soft"
+          >
+            {guess.title}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function ResultsShelf({ shelf, reply, writing, onAsk, onFeedback }: Props) {
   const [openId, setOpenId] = useState<number | null>(null)
   if (!shelf) {
@@ -55,6 +77,7 @@ export function ResultsShelf({ shelf, reply, writing, onAsk, onFeedback }: Props
   return (
     <section aria-label="Books" className="flex flex-col gap-4">
       {reply?.intro && <p className="font-serif text-lg">{reply.intro}</p>}
+      {shelf.guesses.length > 0 && <Guesses guesses={shelf.guesses} onAsk={onAsk} />}
       {shelf.relaxations.length > 0 && <Offers offers={shelf.relaxations} onAsk={onAsk} />}
       <div className="grid grid-cols-[repeat(auto-fill,minmax(10.5rem,1fr))] gap-4">
         {shelf.results.map((book, i) => (

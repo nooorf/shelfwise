@@ -1522,6 +1522,25 @@
         ],
         "title": "GroundingReport"
       },
+      "Guess": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "ask": {
+            "type": "string",
+            "title": "Ask"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "ask"
+        ],
+        "title": "Guess",
+        "description": "\"Did you mean...\": a catalog title or author for a name that didn't match."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2480,6 +2499,13 @@
             "type": "array",
             "title": "Relaxations"
           },
+          "guesses": {
+            "items": {
+              "$ref": "#/components/schemas/Guess"
+            },
+            "type": "array",
+            "title": "Guesses"
+          },
           "can_undo": {
             "type": "boolean",
             "title": "Can Undo"
@@ -2514,6 +2540,7 @@
           "reply",
           "facets",
           "relaxations",
+          "guesses",
           "can_undo",
           "timings_ms",
           "inspector"

@@ -33,6 +33,7 @@ from sqlalchemy import Connection, text
 from shelfwise.conversation.merge import (
     TurnUpdate,
     add_filters,
+    answer_guess,
     answer_offer,
     answer_turn,
     apply_turn,
@@ -45,7 +46,7 @@ from shelfwise.conversation.merge import (
     set_chip_strength,
     undo_reset,
 )
-from shelfwise.conversation.state import ConversationState, Offer, ShownBook, new_state
+from shelfwise.conversation.state import ConversationState, Guess, Offer, ShownBook, new_state
 from shelfwise.conversation.store import SessionStore, new_session_id
 from shelfwise.evaluation.systems import SearchContext
 from shelfwise.generation import templates
@@ -53,11 +54,13 @@ from shelfwise.generation.context import Candidate, descriptions, matched_labels
 from shelfwise.generation.narrate import Narrator, Reply, ReplyPiece
 from shelfwise.generation.templates import Task
 from shelfwise.generation.validate import CatalogNames
+from shelfwise.ingest.normalize import fold_text
 from shelfwise.pipeline import BookResult, Relaxation, SearchService
 from shelfwise.query.constraints import Constraint, Strength, contradictions
 from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
 from shelfwise.ranking.soft import scored
 from shelfwise.retrieval.filters import allowed_mask, filterable, relaxations
+from shelfwise.retrieval.lookup import MAX_GUESSES, guess_authors, guess_titles
 from shelfwise.voice.listen import VAD, Endpointer, Transcriber
 from shelfwise.voice.repair import Fix, NameRepair
 from shelfwise.voice.tts import Speech, sentences, wav_bytes
@@ -230,6 +233,7 @@ class TurnResponse(BaseModel):
     reply: Reply | None  # intro, one validated note per book, follow-up; None if not asked for
     facets: dict[int, dict[str, Any]]  # explain / compare: the tags of the books discussed
     relaxations: list[Relaxation]
+    guesses: list[Guess]  # "did you mean": choosing one sends its `ask`
     can_undo: bool
     timings_ms: dict[str, float]
     inspector: Inspector
@@ -310,11 +314,30 @@ def _humanize_field(field: str) -> str:
     return _FIELD_WORDS.get(field) or field.removeprefix("facet.").replace("_", " ")
 
 
-def not_found_note(names: list[str], others: bool) -> str:
-    """A named book or author the catalog doesn't have: said plainly, before anything else."""
-    quoted = " or ".join(f'"{n}"' for n in names)
-    rest = " Here are the closest books I have." if others else ""
-    return f"I couldn't find {quoted} in this library.{rest}"
+def not_found_note(names: list[str], others: bool, guesses: list[str] | None = None) -> str:
+    """A named book or author the catalog doesn't have, and what the reader may have meant:
+    said plainly, before anything else."""
+    parts = []
+    if names:
+        parts.append(f"I couldn't find {' or '.join(f'"{n}"' for n in names)} in this library.")
+    if guesses:
+        parts.append(f"Did you mean {_or(guesses)}?")
+    if names and others:
+        parts.append(f"{'Meanwhile, here' if guesses else 'Here'} are the closest books I have.")
+    return " ".join(parts)
+
+
+def _or(items: list[str]) -> str:
+    return items[0] if len(items) == 1 else f"{', '.join(items[:-1])} or {items[-1]}"
+
+
+def ask_instead(message: str, heard: str, meant: str) -> str:
+    """The message with what was heard replaced by what was meant ("do you have frank and
+    steen" -> "do you have Frankenstein"); just `meant` when the words aren't in it."""
+    start = message.lower().find(heard.lower())
+    if start < 0:
+        return meant
+    return f"{message[:start]}{meant}{message[start + len(heard) :]}"
 
 
 def notes_for(update: TurnUpdate) -> list[str]:
@@ -487,6 +510,20 @@ class ConversationService:
 
         return run
 
+    def _guesses(self, conn: Connection, parsed: ParsedRequest, message: str) -> list[Guess]:
+        """ "Did you mean" for each name the parser couldn't link: catalog authors spelled
+        like a missing author, titles like anything else."""
+        lookup_author = parsed.lookup.author if parsed.lookup else None
+        out: list[Guess] = []
+        for name in parsed.not_found:
+            if lookup_author and fold_text(name) == fold_text(lookup_author):
+                meant = guess_authors(conn, name)
+            else:
+                meant = [m.title for m in guess_titles(conn, name)]
+            out += [Guess(title=m, ask=ask_instead(message, name, m)) for m in meant]
+        unique = {fold_text(g.title): g for g in reversed(out)}  # first one of each wins
+        return list(reversed(unique.values()))[:MAX_GUESSES]
+
     def start(self) -> str:
         session_id = new_session_id()
         self.store.put(new_state(session_id, self.now()))
@@ -506,17 +543,22 @@ class ConversationService:
         start = time.perf_counter()
         state = self._load(session_id)
         ctx = self.search.context(conn)
+        if (pick := answer_guess(request.message, state.guesses)) is not None:
+            request = request.model_copy(update={"message": state.guesses[pick].ask})
         if (answer := answer_offer(request.message, state.offers)) is not None:
             return self._answer_offer(conn, ctx, state, request, answer, start)
         state.offers = []  # not an answer: the offers lapse
         parsed, parse_error = self.search.parse(conn, request.message, ctx)
-        if parsed.not_found:  # only what the catalog has nothing close to
-            names = self._catalog_names(conn)
+        guesses: list[Guess] = []
+        if parsed.not_found:
+            guesses = self._guesses(conn, parsed, request.message)
+            names = self._catalog_names(conn)  # "couldn't find": only with nothing close
             missing = [n for n in parsed.not_found if not names.has(n)]
             parsed = parsed.model_copy(update={"not_found": missing})
         parse_ms = (time.perf_counter() - start) * 1000
         update = apply_turn(state, request.message, parsed, self.now())
         state = update.state
+        state.guesses = guesses
         notes = notes_for(update)
         facets: dict[int, dict[str, Any]] = {}
         system = None
@@ -551,8 +593,9 @@ class ConversationService:
             system, ids = self.search.retrieve(
                 ctx, query, state_request(state, parsed.intent), use_parse, request.limit
             )
-            if parsed.not_found:
-                notes.insert(0, not_found_note(parsed.not_found, bool(ids)))
+            if parsed.not_found or guesses:
+                titles = [g.title for g in guesses]
+                notes.insert(0, not_found_note(parsed.not_found, bool(ids), titles))
         return self._respond(
             conn, ctx, state, update.kind, route, parsed.intent, parse_error, system, ids,
             notes, facets, start, parse_ms, request.message if request.narrate else None, parsed,
@@ -843,6 +886,7 @@ class ConversationService:
             reply=reply,
             facets=facets,
             relaxations=relaxations_out,
+            guesses=state.guesses,
             can_undo=state.before_reset is not None,
             inspector=self._inspector(conn, ctx, state, intent, system, parsed),
             timings_ms={

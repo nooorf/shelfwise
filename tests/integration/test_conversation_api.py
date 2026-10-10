@@ -699,3 +699,25 @@ def test_barge_in_stops_the_llm_mid_stream(conn: Connection, catalog: dict[str, 
             threading.Event().wait(0.05)
 
     assert llm.closed_early
+
+
+def test_a_misspelt_name_gets_did_you_mean_and_yes_takes_it(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    forms = [
+        {"intent": "lookup", "lookup_author": "jillian flin"},
+        {"intent": "lookup", "lookup_author": "Gillian Flynn"},
+    ]
+    with make_client(conn, forms) as client:
+        session = client.post("/api/v1/sessions").json()["session_id"]
+
+        asked = say(client, session, "books by jillian flin")
+        taken = say(client, session, "yes")
+
+    assert asked["guesses"] == [{"title": "Gillian Flynn", "ask": "books by Gillian Flynn"}]
+    assert asked["notes"][0].startswith(
+        'I couldn\'t find "jillian flin" in this library. Did you mean Gillian Flynn?'
+    )
+    assert taken["guesses"] == []
+    assert taken["lookup"] == {"title": None, "author": "Gillian Flynn"}
+    assert {r["title"] for r in taken["results"][:2]} == {"Gone Girl", "Sharp Objects"}

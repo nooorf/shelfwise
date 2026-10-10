@@ -43,6 +43,13 @@ class Offer(BaseModel):
     earliest_due: date | None = None  # for "available now": the first copy back
 
 
+class Guess(BaseModel):
+    """ "Did you mean...": a catalog title or author for a name that didn't match."""
+
+    title: str  # as the catalog spells it
+    ask: str  # the reader's message with the name corrected: what choosing it sends
+
+
 class Turn(BaseModel):
     text: str
     intent: Intent
@@ -64,6 +71,7 @@ class ConversationState(BaseModel):
     shown_ids: list[int] = Field(default_factory=list)  # everything shown this session
     declined_relaxations: list[str] = Field(default_factory=list)  # labels: never re-offered
     offers: list[Offer] = Field(default_factory=list)  # awaiting an answer, most results first
+    guesses: list[Guess] = Field(default_factory=list)  # "did you mean", for the next turn only
     recent_turns: list[Turn] = Field(default_factory=list)  # the last MAX_RECENT_TURNS
     # The state just before a topic reset, so "undo" can bring it back (one level).
     before_reset: "ConversationState | None" = None

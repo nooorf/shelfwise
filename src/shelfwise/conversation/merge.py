@@ -30,6 +30,7 @@ from shelfwise.conversation.state import (
     MAX_RECENT_TURNS,
     ActiveConstraint,
     ConversationState,
+    Guess,
     Offer,
     ShownBook,
     Turn,
@@ -292,6 +293,7 @@ def apply_turn(
     state = state.model_copy(deep=True)
     state.turn += 1
     state.last_active = now
+    state.guesses = []  # answered or not, they lapse
     turns = [*state.recent_turns, Turn(text=message, intent=parsed.intent)]
     state.recent_turns = turns[-MAX_RECENT_TURNS:]
 
@@ -426,6 +428,22 @@ def answer_offer(message: str, offers: list[Offer]) -> int | Literal["decline"] 
     return None
 
 
+def answer_guess(message: str, guesses: list[Guess]) -> int | None:
+    """Which "did you mean" guess the message picks (its index), or None: naming it
+    ("frankenstein"), pointing ("the second one"), or a bare yes for the first."""
+    if not guesses:
+        return None
+    text = fold_text(message)
+    for i, guess in enumerate(guesses):
+        if (words := fold_text(guess.title)) and f" {words} " in f" {text} ":
+            return i
+    if picked := resolve_references(message, list(range(len(guesses)))):
+        return picked[0]
+    if _YES.search(text):
+        return 0
+    return None
+
+
 def answer_turn(
     state: ConversationState, message: str, answer: int | Literal["decline"], now: datetime
 ) -> TurnUpdate:
@@ -436,6 +454,7 @@ def answer_turn(
     turns = [*state.recent_turns, Turn(text=message, intent="refine")]
     state.recent_turns = turns[-MAX_RECENT_TURNS:]
     offers, state.offers = state.offers, []
+    state.guesses = []
     if answer == "decline":
         declined = [o.label for o in offers]
         state.declined_relaxations = list(dict.fromkeys([*state.declined_relaxations, *declined]))
@@ -454,7 +473,7 @@ def pressed(
     state.turn += 1
     state.last_active = now
     state.recent_turns = [*state.recent_turns, Turn(text=said, intent=intent)][-MAX_RECENT_TURNS:]
-    state.offers = []
+    state.offers, state.guesses = [], []
     return state
 
 

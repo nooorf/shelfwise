@@ -39,6 +39,7 @@ export function turn(n: number, overrides: Partial<TurnResponse> = {}): TurnResp
     reply: null,
     facets: {},
     relaxations: [],
+    guesses: [],
     can_undo: false,
     timings_ms: {},
     inspector: { parsed: null, searched: null, stages: [] },
