@@ -1,6 +1,9 @@
+from pathlib import Path
+
 import pytest
 from pydantic import ValidationError
 
+from shelfwise.ingest.normalize import fold_text
 from shelfwise.tagging.facets import (
     PROMPT_VERSION,
     BookFacets,
@@ -12,6 +15,7 @@ from shelfwise.tagging.facets import (
     model_version,
     normalize_themes,
 )
+from shelfwise.tagging.labels import load_labels
 
 VALID = {
     "fiction": True,
@@ -208,4 +212,11 @@ def test_the_model_reads_every_field_and_its_rules_in_the_prompt() -> None:
     for name in BookFacetsLLM.model_fields:
         assert f"- {name} (" in system["content"]
     assert "audience (children | teen | adult)" in system["content"]
-    assert "Oliver Twist, Sherlock Holmes" in system["content"]  # a historical rule, verbatim
+    assert "Pride and Prejudice, Dracula" in system["content"]  # a historical rule, verbatim
+
+
+def test_prompt_examples_are_not_books_the_tagger_is_scored_on() -> None:
+    labelled = {fold_text(row.title) for row in load_labels(Path("eval/data/facet_labels.csv"))}
+    system = fold_text(build_messages(BookRecord(1, "A", [], [], [], None))[0]["content"])
+
+    assert not [t for t in labelled if len(t.split()) > 1 and f" {t} " in f" {system} "]

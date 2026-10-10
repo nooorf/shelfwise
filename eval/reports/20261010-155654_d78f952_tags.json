@@ -1,0 +1,83 @@
+{
+  "created": "2026-10-10T10:56:54+00:00",
+  "git": "d78f952",
+  "compared": "NF-review vs llm",
+  "model_versions": {
+    "facets-v6/qwen3:14b": 200
+  },
+  "books": 200,
+  "tags": {
+    "fiction": {
+      "n": 198,
+      "accuracy": 1.0,
+      "kappa": 1.0,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.5252525252525253
+    },
+    "audience": {
+      "n": 200,
+      "accuracy": 0.95,
+      "kappa": 0.8639548330045574,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.785
+    },
+    "darkness": {
+      "n": 200,
+      "accuracy": 0.555,
+      "kappa": 0.6673189823874756,
+      "kappa_weights": "quadratic",
+      "within_one": 0.95,
+      "majority": 0.38
+    },
+    "romance": {
+      "n": 200,
+      "accuracy": 0.66,
+      "kappa": 0.7196870925684484,
+      "kappa_weights": "quadratic",
+      "within_one": 0.97,
+      "majority": 0.56
+    },
+    "violence": {
+      "n": 200,
+      "accuracy": 0.655,
+      "kappa": 0.7044746394269378,
+      "kappa_weights": "quadratic",
+      "within_one": 0.97,
+      "majority": 0.51
+    },
+    "pace": {
+      "n": 198,
+      "accuracy": 0.7626262626262627,
+      "kappa": 0.40642939150401836,
+      "kappa_weights": "quadratic",
+      "within_one": null,
+      "majority": 0.6919191919191919
+    },
+    "supernatural": {
+      "n": 198,
+      "accuracy": 0.9595959595959596,
+      "kappa": 0.7775905644481886,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8939393939393939
+    },
+    "historical_setting": {
+      "n": 94,
+      "accuracy": 0.9042553191489362,
+      "kappa": 0.7307447485677913,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8085106382978723
+    },
+    "reading_level": {
+      "n": 104,
+      "accuracy": 0.75,
+      "kappa": 0.4845596645062905,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.7019230769230769
+    }
+  }
+}

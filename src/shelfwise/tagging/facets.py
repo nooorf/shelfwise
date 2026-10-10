@@ -32,7 +32,10 @@ from pydantic import BaseModel, Field
 # schema's field descriptions, which Ollama uses to constrain the output's shape but never
 # shows the model: v1-v5 tagged from field names and allowed values alone (v5 still called
 # Oliver Twist "historical" though the description names it as "no").
-PROMPT_VERSION = "facets-v6"
+# v7: darkness by subject, with a scale of examples (v6: 54 of 74 "dark" books one step low);
+# middle grade is children. Every example is a book outside the 200 hand-labelled ones (v5-v6
+# named some labelled books, which would flatter their score).
+PROMPT_VERSION = "facets-v7"
 MAX_DESCRIPTION_CHARS = 1500
 MAX_SUBJECTS = 15
 
@@ -118,26 +121,31 @@ class BookFacetsLLM(BaseModel):
         "and poetry collections"
     )
     audience: Literal["children", "teen", "adult"] = Field(
-        description="children: picture books and stories for under ~12. teen: young adult "
-        "(YA) books for readers ~12-18; a teenage main character or 'young adult' in the "
-        "genres means teen, even when the genres also say children's. adult: everyone else"
+        description="children: picture books, early readers and middle-grade books for ~8-12 "
+        "(Charlotte's Web, Diary of a Wimpy Kid, Percy Jackson). teen: young adult (YA) books "
+        "for readers ~13-18; a teenage main character or 'young adult' in the genres means "
+        "teen, even when the genres also say children's. adult: everyone else"
     )
     historical_setting: YesNoUnclear = Field(
         description="no is the usual answer: stories set in their author's own time, however "
-        "long ago that is for us (Oliver Twist, Sherlock Holmes, Pride and Prejudice, The "
-        "Invisible Man, Darkness at Noon: no), in the present day, or in the future. yes only "
-        "if the story is set at least ~20 years before it was first written (use what you know "
-        "of the book; the record's year may be a later edition's): A Tale of Two Cities yes; a "
-        "2015 novel set in World War II yes; ancient Rome or medieval times in a modern book "
-        "yes. unclear: only when nothing tells you when it is set. Nonfiction: no"
+        "long ago that is for us (Pride and Prejudice, Dracula, The Great Gatsby: no), in the "
+        "present day, or in the future. yes only if the story is set at least ~20 years before "
+        "it was first written (use what you know of the book; the record's year may be a later "
+        "edition's): A Tale of Two Cities yes; The Book Thief (2005, set in World War II) yes; "
+        "ancient Rome or medieval times in a modern book yes. unclear: only when nothing tells "
+        "you when it is set. Nonfiction: no"
     )
     setting_period: str | None = Field(
         description="short name of that past era when historical_setting is yes, e.g. "
         "'French Revolution, 1789-1793'; otherwise null"
     )
     darkness: Literal["light", "some serious moments", "dark", "very dark"] = Field(
-        description="light: uplifting or gentle. some serious moments. dark: crime, abuse, grief, "
-        "despair or violence are central. very dark: bleak, disturbing, horror"
+        description="judge by what the book is about, not how calmly it is told; nonfiction "
+        "too. light: uplifting, gentle or comic. some serious moments: a mostly light book with "
+        "a few sad or tense scenes (Wonder). dark: crime, abuse, grief, war, despair or violence "
+        "are central: most thrillers, crime novels and war stories (The Kite Runner, Gone Girl). "
+        "very dark: bleak or disturbing at its core: genocide, the Holocaust, torture, horror "
+        "(Night by Elie Wiesel)"
     )
     romance: Literal["none", "minor subplot", "significant subplot", "central"] = Field(
         description="how much of the story is a romantic or sexual relationship; central for "
@@ -147,7 +155,7 @@ class BookFacetsLLM(BaseModel):
     supernatural: YesNoUnclear = Field(
         description="yes: magic, ghosts, vampires, curses, psychic or paranormal powers. "
         "no: realistic stories, and science fiction: aliens, invisibility or time travel by "
-        "science (The Invisible Man, The Host) are no. Nonfiction: no"
+        "science (The Time Machine, The War of the Worlds, Ender's Game) are no. Nonfiction: no"
     )
     pace: Literal["slow", "medium", "fast"] = Field(
         description="medium is the usual answer. fast: thrillers, action, page-turners. slow: "
