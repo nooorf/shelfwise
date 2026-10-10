@@ -47,6 +47,18 @@ def test_repeated_pairs_come_from_the_cache() -> None:
     assert inner.calls[-1][1] == [TEXTS[3]]  # only the new book reached the model
 
 
+def test_clear_makes_every_pair_score_again() -> None:
+    inner = FakeReranker()
+    reranker = CachedReranker(inner)
+    rerank(reranker, "dark thriller", [1, 2], TEXTS, depth=2)
+
+    reranker.clear()
+    rerank(reranker, "dark thriller", [1, 2], TEXTS, depth=2)
+
+    assert (reranker.hits, reranker.misses) == (0, 2)
+    assert len(inner.calls) == 2
+
+
 def test_cache_is_bounded() -> None:
     reranker = CachedReranker(FakeReranker(), size=2)
 

@@ -111,6 +111,11 @@ class CachedReranker:
         self.hits = 0
         self.misses = 0
 
+    def clear(self) -> None:
+        """Forget every score (latency measurements must not reuse earlier runs' work)."""
+        self._cache.clear()
+        self.hits = self.misses = 0
+
     def score_keyed(self, query: str, documents: Mapping[int, str]) -> dict[int, float]:
         missing = [key for key in documents if (query, key) not in self._cache]
         self.hits += len(documents) - len(missing)

@@ -36,7 +36,26 @@ MAX_GAP = 0.20
 # "Less like this": a list of the books nearest an avoided one, fused with this negative weight,
 # so a book ranked first near it loses what a first place in one search list gives. Untuned.
 AVOID_WEIGHT = 1.0
-RERANK_DEPTH = 50  # default until the depth sweep picks one (design doc §14.2)
+# Books the cross-encoder reorders. Dev sweep with MiniLM (2026-10-10): 20 0.590, 50 0.600,
+# 100 0.548, 200 0.524 NDCG@10; deeper lets a weak reranker promote more wrong books. Re-sweep for
+# each new reranker (the fine-tuned ones may want more).
+RERANK_DEPTH = 50
+
+
+@dataclass(frozen=True)
+class Fusion:
+    """How the ranked lists are merged (RRF, `retrieval.fusion`): k, and a weight per kind of
+    list. The defaults are the literature values, kept after the dev sweep (scripts/sweep.py
+    fusion, 2026-10-10, 40 settings): parsed_hybrid's best gained +0.003 NDCG@10 (95% CI -0.002 to
+    +0.009), noise. hybrid_lookup did gain, +0.052 at k=10 with the semantic list x4, which is
+    just the dense ranking again (0.639 vs dense 0.643): on free text BM25 adds nothing here."""
+
+    k: int = 60
+    lexical: float = 1.0  # BM25
+    semantic: float = 1.0  # embedding similarity to the request
+    seed: float = 1.0  # embedding similarity to the book a "like X" request names
+
+
 # The LLM's answers for every evaluated query, so benchmark runs don't need Ollama (committed).
 LLM_CACHE = Path("eval/data/llm_cache.jsonl")
 PARSERS = ("cascade",)
@@ -88,6 +107,7 @@ class SearchContext:
     reranker: CachedReranker | None = None
     texts: dict[int, str] | None = None  # search_text per work, what the reranker reads
     rerank_depth: int = RERANK_DEPTH
+    fusion: Fusion = field(default_factory=Fusion)
     # Hard constraints added to every query's own, e.g. a facet filter under study.
     extra_constraints: tuple[Constraint, ...] = ()
     parser: Parser | None = None  # for the parsed systems; the others use the rules directly
@@ -231,7 +251,9 @@ def _hybrid_ranking(ctx: SearchContext, query: str, mask: np.ndarray, residual: 
     lexical = [h.work_id for h in ctx.index.search(residual, CANDIDATES, allowed=mask)]
     vector = embedder.encode_query(_semantic_text(query, residual))
     semantic = [h.work_id for h in index.search(vector, CANDIDATES, allowed=mask)]
-    return [doc for doc, _ in rrf([lexical, semantic])]
+    fusion = ctx.fusion
+    fused = rrf([lexical, semantic], fusion.k, [fusion.lexical, fusion.semantic])
+    return [doc for doc, _ in fused]
 
 
 def hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
@@ -319,17 +341,22 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
         ctx.record("bm25", [(h.work_id, h.score) for h in hits], f'BM25 on "{text}"')
         return [h.work_id for h in hits]
 
+    fusion = ctx.fusion
     rankings: list[list[int]] = []
+    weights: list[float] = []
     semantic = request.semantic_query.strip()
     if semantic:
         rankings.append(keyword(semantic))
         vector = embedder.encode_query(semantic)
         rankings.append(_near(index, vector, mask, trace=(ctx, "dense")))
+        weights += [fusion.lexical, fusion.semantic]
     if (seed := _seed_vector(index, request.seed_work_ids)) is not None:
         rankings.append(_near(index, seed, mask, request.seed_work_ids, (ctx, "seed")))
+        weights.append(fusion.seed)
     if not rankings:  # nothing parsed out: fall back to the words as typed
         rankings.append(keyword(query))
         rankings.append(_near(index, embedder.encode_query(query), mask, trace=(ctx, "dense")))
+        weights += [fusion.lexical, fusion.semantic]
 
     penalty = dict(rrf([
         _near(index, index.matrix[row], mask, ignore=[w])
@@ -352,7 +379,7 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
                 signals.year.get(work_id),
             ),
         )
-        for work_id, score in rrf(rankings)
+        for work_id, score in rrf(rankings, fusion.k, weights)
     ]
     scored.sort(key=lambda item: (-item[1], item[0]))
     ctx.record("fused", scored, "RRF, then preferred chips nudge and less-like-this pushes down")
