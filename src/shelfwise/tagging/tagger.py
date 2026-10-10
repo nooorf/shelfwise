@@ -18,6 +18,7 @@ from shelfwise.tagging.facets import (
     BookFacetsLLM,
     BookRecord,
     apply_consistency_rules,
+    apply_record_rules,
     build_messages,
     model_version,
     normalize_themes,
@@ -34,7 +35,7 @@ class TagRunStats:
 
 _UNTAGGED_SQL = text(
     """
-    SELECT w.work_id, w.title, w.genres, w.tags, w.description,
+    SELECT w.work_id, w.title, w.genres, w.tags, w.description, w.first_pub_year,
            coalesce((SELECT array_agg(a.display ORDER BY wa.position)
                        FROM work_author wa JOIN author a USING (author_id)
                       WHERE wa.work_id = w.work_id), '{}') AS authors
@@ -51,7 +52,8 @@ _UNTAGGED_SQL = text(
 def books_to_tag(conn: Connection, version: str, limit: int | None = None) -> list[BookRecord]:
     rows = conn.execute(_UNTAGGED_SQL, {"version": version, "limit": limit or 1_000_000})
     return [
-        BookRecord(r.work_id, r.title, r.authors, r.genres, r.tags, r.description) for r in rows
+        BookRecord(r.work_id, r.title, r.authors, r.genres, r.tags, r.description, r.first_pub_year)
+        for r in rows
     ]
 
 
@@ -101,7 +103,8 @@ def tag_books(
             stats.failed += 1
         else:
             with engine.begin() as conn:
-                save_facets(conn, book.work_id, result.value.to_facets(), version)
+                facets = apply_record_rules(result.value.to_facets(), book)
+                save_facets(conn, book.work_id, facets, version)
             stats.tagged += 1
             stats.seconds += result.stats.total_ms / 1000
             stats.completion_tokens += result.stats.completion_tokens

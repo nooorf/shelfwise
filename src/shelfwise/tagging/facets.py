@@ -18,11 +18,19 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 # v2: the model answers in words, themes first (v1's 0-3 digits collapsed to 0 on small models).
-PROMPT_VERSION = "facets-v2"
+# v3: first-published year in the record, TAGGING.md's ~20-year historical threshold, the poetry
+# rule, and reading level only for technical or course books (also enforced in code).
+PROMPT_VERSION = "facets-v3"
 MAX_DESCRIPTION_CHARS = 1500
 MAX_SUBJECTS = 15
 
 YesNoUnclear = Literal["yes", "no", "unclear"]
+
+# Genres whose books get a reading level; any other book needs the `textbook` tag (from Open
+# Library's course-book subjects). "science" alone is mostly popular science, so it isn't here.
+TECHNICAL_GENRES = frozenset(
+    {"artificial intelligence", "programming", "computer science", "mathematics", "engineering"}
+)
 
 
 class BookFacets(BaseModel):
@@ -92,15 +100,22 @@ class BookFacetsLLM(BaseModel):
         min_length=0,
         max_length=6,
     )
-    fiction: bool = Field(description="true for novels and stories; false for nonfiction")
+    fiction: bool = Field(
+        description="true for novels, stories, graphic novels and short-story collections; a "
+        "narrative poem that tells an invented story is fiction. false for nonfiction, memoirs "
+        "and poetry collections"
+    )
     audience: Literal["children", "ya", "adult"] = Field(
         description="children: under ~12; ya: teenage readers; adult: everyone else"
     )
     historical_setting: YesNoUnclear = Field(
-        description="yes ONLY if the story is set in a period that was already the past when the "
-        "book was written (e.g. the French Revolution in a 19th-century novel, World War II in a "
-        "2010s novel). Stories set in the author's own present, or in the future, are no. "
-        "unclear: can't tell. Nonfiction: no"
+        description="Compare the story's era with the record's 'First published' year. yes if "
+        "the story is set at least ~20 years (a generation) before that year: A Tale of Two "
+        "Cities (1859, set 1775-1793) yes; a 2015 novel set in World War II yes; any clearly "
+        "past era (ancient Rome, medieval, Victorian) in a modern book yes; a collection with "
+        "some tales in clearly past eras yes. no: set in the author's own time (Pride and "
+        "Prejudice, 1813: no; a 1940 novel set in 1937: no) or the future. unclear: can't tell. "
+        "Nonfiction: no"
     )
     setting_period: str | None = Field(
         description="short name of that past era when historical_setting is yes, e.g. "
@@ -123,9 +138,11 @@ class BookFacetsLLM(BaseModel):
         description="how fast the story moves; nonfiction: medium unless clearly otherwise"
     )
     reading_level: Literal["intro", "intermediate", "advanced"] | None = Field(
-        description="ONLY for technical, academic or course books: intro (no prior knowledge), "
-        "intermediate (some background), advanced (graduate or specialist). null for fiction "
-        "and general-audience nonfiction"
+        description="null unless the book is a textbook, course book or technical manual "
+        "(programming, mathematics, computer science, engineering): then intro (no prior "
+        "knowledge), intermediate (some background) or advanced (graduate or specialist). "
+        "Fiction, memoir, biography, popular science, popular history, self-help, business "
+        "and essays: null"
     )
 
     def to_facets(self) -> BookFacets:
@@ -152,6 +169,7 @@ class BookRecord:
     genres: Sequence[str]
     subjects: Sequence[str]
     description: str | None
+    first_pub_year: int | None = None
 
 
 SYSTEM_PROMPT = (
@@ -168,6 +186,7 @@ def build_messages(book: BookRecord) -> list[dict[str, str]]:
         [
             f"Title: {book.title}",
             f"Author: {', '.join(book.authors) or 'unknown'}",
+            f"First published: {book.first_pub_year or 'unknown'}",
             f"Genres: {', '.join(book.genres) or 'none listed'}",
             f"Subjects: {', '.join(list(book.subjects)[:MAX_SUBJECTS]) or 'none listed'}",
             f"Description: {description}",
@@ -192,6 +211,20 @@ def apply_consistency_rules(facets: BookFacets) -> BookFacets:
     if updates.get("historical_setting", facets.historical_setting) != "yes":
         updates["setting_period"] = None
     return facets.model_copy(update=updates)
+
+
+def is_technical(book: BookRecord) -> bool:
+    return bool(TECHNICAL_GENRES.intersection(book.genres)) or "textbook" in book.subjects
+
+
+def apply_record_rules(facets: BookFacets, book: BookRecord) -> BookFacets:
+    """Drop answers the record gives no grounds for. Small models give general nonfiction a
+    reading level (facets-v2/qwen3:4b: 52 of 81 such books tagged advanced), so it stands only
+    for technical or course books."""
+    facets = apply_consistency_rules(facets)
+    if facets.reading_level and not is_technical(book):
+        facets = facets.model_copy(update={"reading_level": None})
+    return facets
 
 
 def model_version(llm_model: str) -> str:

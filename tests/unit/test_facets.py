@@ -7,6 +7,7 @@ from shelfwise.tagging.facets import (
     BookFacetsLLM,
     BookRecord,
     apply_consistency_rules,
+    apply_record_rules,
     build_messages,
     model_version,
     normalize_themes,
@@ -61,6 +62,7 @@ def test_missing_fields_are_stated_not_left_blank() -> None:
     _, user = build_messages(BookRecord(1, "Untitled", [], [], [], None))
 
     assert "Author: unknown" in user["content"]
+    assert "First published: unknown" in user["content"]
     assert "Description: (no description)" in user["content"]
 
 
@@ -145,3 +147,42 @@ def test_llm_words_map_to_stored_scales() -> None:
 
     assert (facets.darkness, facets.romance, facets.violence) == (2, 3, 1)
     assert facets.themes == ["grief"]
+
+
+def test_record_states_the_first_published_year() -> None:
+    book = BookRecord(1, "A Tale of Two Cities", ["Charles Dickens"], [], [], None, 1859)
+
+    _, user = build_messages(book)
+
+    assert "First published: 1859" in user["content"]
+
+
+@pytest.mark.parametrize(
+    ("genres", "subjects", "kept"),
+    [
+        (["programming"], [], True),
+        (["mathematics", "history"], [], True),
+        (["science"], ["textbook"], True),
+        (["science"], [], False),  # popular science
+        (["history", "biography"], [], False),
+        (["self-help"], ["psychology"], False),
+    ],
+)
+def test_reading_level_stands_only_for_technical_or_course_books(
+    genres: list[str], subjects: list[str], kept: bool
+) -> None:
+    facets = BookFacets.model_validate({**VALID, "fiction": False, "reading_level": "advanced"})
+    book = BookRecord(1, "A Book", [], genres, subjects, None)
+
+    level = apply_record_rules(facets, book).reading_level
+
+    assert level == ("advanced" if kept else None)
+
+
+def test_record_rules_include_the_consistency_rules() -> None:
+    facets = BookFacets.model_validate({**VALID, "reading_level": "intro"})  # fiction
+
+    assert (
+        apply_record_rules(facets, BookRecord(1, "A", [], ["programming"], [], None)).reading_level
+        is None
+    )
