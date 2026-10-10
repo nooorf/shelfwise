@@ -12,11 +12,13 @@ labels, never from the LLM tags the facet filter uses, or the study would grade 
 """
 
 import csv
+import random
 import re
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
+from shelfwise.evaluation.agreement import accuracy, cohen_kappa
 from shelfwise.evaluation.judgments import Judgment
 from shelfwise.evaluation.queries import Query
 from shelfwise.tagging.labels import FACET_BY_NAME, FacetLabel
@@ -163,7 +165,7 @@ def save_violation_labels(path: Path, rows: Iterable[ViolationLabel]) -> None:
         writer = csv.writer(f)
         writer.writerow(LABEL_COLUMNS)
         for r in sorted(rows, key=lambda r: (r.facet, r.work_key, r.judge)):
-            writer.writerow([r.work_key, r.judge, r.facet, r.value, r.title])
+            writer.writerow([r.work_key, r.judge, r.facet, r.value, r.title.strip()])
     tmp.replace(path)  # atomic: a crash mid-write never corrupts the file
 
 
@@ -228,3 +230,68 @@ def questions(
         Question(key, facet, titles[key], tuple(pair_ids))
         for (key, facet), pair_ids in found.items()
     ]
+
+
+# --- Blind check of one judge's answers by another -----------------------------------------
+
+
+def blind_sample(
+    labels: Iterable[ViolationLabel], reference: str, per_tag: int = 10, seed: int = 0
+) -> list[tuple[str, str]]:
+    """(work_key, tag) questions to ask a second person, drawn from `reference`'s answers: up to
+    `per_tag` per tag, spread evenly over the values given (so rare answers like supernatural=yes
+    on a mystery shelf are checked too), deterministic for a seed. "Can't tell" answers are left
+    out: there is nothing to agree with."""
+    rng = random.Random(seed)
+    by_tag: dict[str, dict[str, list[str]]] = {}
+    for label in labels:
+        if label.judge == reference and label.value:
+            by_tag.setdefault(label.facet, {}).setdefault(label.value, []).append(label.work_key)
+    picked: list[tuple[str, str]] = []
+    for tag in sorted(by_tag):
+        pools = {value: sorted(keys) for value, keys in sorted(by_tag[tag].items())}
+        for keys in pools.values():
+            rng.shuffle(keys)
+        chosen: list[str] = []
+        while len(chosen) < per_tag and any(pools.values()):
+            for value in list(pools):
+                if pools[value] and len(chosen) < per_tag:
+                    chosen.append(pools[value].pop())
+        picked += [(key, tag) for key in chosen]
+    return picked
+
+
+def violation_agreement(
+    labels: Iterable[ViolationLabel], pairs: Iterable[NegationPair], judge_a: str, judge_b: str
+) -> dict[str, dict]:
+    """Per tag, over the questions both judges answered (neither "can't tell"): how often they
+    gave the same value, Cohen's kappa (quadratic on the 0-3 scales and pace), and how often
+    they agree on what the study counts: whether the book breaks each pair's negation."""
+    answers: dict[tuple[str, str], dict[str, str]] = {}
+    for label in labels:
+        if label.judge in (judge_a, judge_b) and label.value:
+            answers.setdefault((label.work_key, label.facet), {})[label.judge] = label.value
+    both = {k: v for k, v in answers.items() if judge_a in v and judge_b in v}
+    violations: dict[str, list[Violation]] = {}
+    for pair in pairs:
+        violations.setdefault(pair.attribute, []).append(pair.violation)
+    results: dict[str, dict] = {}
+    for tag in sorted({tag for _, tag in both}):
+        a = [v[judge_a] for (_, t), v in both.items() if t == tag]
+        b = [v[judge_b] for (_, t), v in both.items() if t == tag]
+        spec = FACET_BY_NAME[tag]
+        weights = "quadratic" if spec.scale == "ordinal" else "none"
+        decided = [
+            (rule.check({tag: x}), rule.check({tag: y}))
+            for x, y in zip(a, b, strict=True)
+            for rule in {str(r): r for r in violations.get(tag, [])}.values()
+        ]
+        results[tag] = {
+            "n": len(a),
+            "accuracy": accuracy(a, b),
+            "kappa": cohen_kappa(a, b, spec.values, weights),
+            "violation_agreement": (
+                sum(x == y for x, y in decided) / len(decided) if decided else None
+            ),
+        }
+    return results

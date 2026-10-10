@@ -8,12 +8,14 @@ from shelfwise.evaluation.negation import (
     NegationPair,
     Violation,
     ViolationLabel,
+    blind_sample,
     human_tags,
     load_pairs,
     load_violation_labels,
     questions,
     save_violation_labels,
     upsert_violation_label,
+    violation_agreement,
 )
 from shelfwise.evaluation.queries import COLUMNS, QUERY_FILES, load_query_files
 from shelfwise.tagging.labels import FacetLabel
@@ -186,3 +188,43 @@ def test_human_tags_are_per_judge_and_one_tag_answers_win() -> None:
 
     assert tags == {"978A": {"romance": "2", "pace": "slow"}}
     assert Violation.parse("romance>=2").check({"romance": "2"}) is True
+
+
+def _label(key: str, judge: str, facet: str, value: str) -> ViolationLabel:
+    return ViolationLabel(key, judge, facet, value)
+
+
+def test_blind_sample_spreads_over_answers_and_is_stable() -> None:
+    labels = [_label(f"n{i}", "claude", "supernatural", "no") for i in range(20)]
+    labels += [_label(f"y{i}", "claude", "supernatural", "yes") for i in range(3)]
+    labels += [_label("q", "claude", "supernatural", "")]  # can't tell: never asked
+    labels += [_label("other", "NF", "supernatural", "yes")]  # someone else's answer
+
+    sample = blind_sample(labels, "claude", per_tag=8, seed=1)
+
+    keys = [k for k, _ in sample]
+    assert len(sample) == 8 and len(set(keys)) == 8
+    assert sum(k.startswith("y") for k in keys) == 3  # every rare answer gets in
+    assert "q" not in keys and "other" not in keys
+    assert sample == blind_sample(labels, "claude", per_tag=8, seed=1)
+
+
+def test_violation_agreement_counts_values_and_decisions() -> None:
+    labels = [
+        _label("a", "claude", "romance", "3"),
+        _label("a", "NF", "romance", "2"),  # different value, same decision (>=2)
+        _label("b", "claude", "romance", "1"),
+        _label("b", "NF", "romance", "1"),
+        _label("c", "claude", "romance", "2"),
+        _label("c", "NF", "romance", "1"),  # decision differs
+        _label("d", "claude", "romance", "0"),  # NF never answered
+        _label("e", "claude", "romance", "2"),
+        _label("e", "NF", "romance", ""),  # can't tell: left out
+    ]
+    pair = NegationPair("X", "romance", Violation.parse("romance>=2"), "B", "N")
+
+    result = violation_agreement(labels, [pair], "claude", "NF")["romance"]
+
+    assert result["n"] == 3
+    assert result["accuracy"] == pytest.approx(1 / 3)
+    assert result["violation_agreement"] == pytest.approx(2 / 3)

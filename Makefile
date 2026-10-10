@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations negation-study synth-requests training-set train-embedder train-reranker score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations violation-agreement negation-study synth-requests training-set train-embedder train-reranker score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -66,9 +66,13 @@ import-tags:  ## Save your reviewed eval/tags_review.md: make import-tags JUDGE=
 	@test -n "$(JUDGE)" || (echo "usage: make import-tags JUDGE=<your initials>" && exit 1)
 	uv run python scripts/tags_doc.py import --judge $(JUDGE)
 
-label-violations:  ## Negation study: one tag question per pooled book, make label-violations JUDGE=<initials>
+label-violations:  ## Negation study tags: make label-violations JUDGE=<initials> (SAMPLE=claude: blind check of ~60 of Claude's)
 	@test -n "$(JUDGE)" || (echo "usage: make label-violations JUDGE=<your initials>" && exit 1)
-	uv run python scripts/label_violations.py --judge $(JUDGE)
+	uv run python scripts/label_violations.py --judge $(JUDGE) $(if $(SAMPLE),--sample-of $(SAMPLE),)
+
+violation-agreement:  ## Blind check of the negation-study tags: make violation-agreement JUDGE=<initials> (after SAMPLE=claude labelling)
+	@test -n "$(JUDGE)" || (echo "usage: make violation-agreement JUDGE=<your initials>" && exit 1)
+	uv run python scripts/violation_agreement.py --judges claude $(JUDGE)
 
 negation-study:  ## Run the negation study: make negation-study JUDGE=<initials> (RERANKER=minilm adds rerank)
 	@test -n "$(JUDGE)" || (echo "usage: make negation-study JUDGE=<your initials>" && exit 1)

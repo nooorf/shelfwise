@@ -3,6 +3,11 @@ romance, ... for every book pooled for a negation pair (base and negated query).
 
     uv run python scripts/label_violations.py --judge NF
     uv run python scripts/label_violations.py --judge NF --pair X05   # just one pair's books
+    uv run python scripts/label_violations.py --judge NF --sample-of claude   # blind check, ~60
+
+With --sample-of, only a fixed sample of the other judge's questions is asked (10 per tag, spread
+over their answers), so the agreement script can measure how far their labels can be trusted.
+Their answers are never shown.
 
 The study counts a negation as violated from these answers, never from the LLM's tags (which the
 facet filter under test uses). The query isn't shown either: judge the book, not the request.
@@ -19,7 +24,9 @@ from shelfwise.catalog.db import make_engine
 from shelfwise.evaluation.book_card import BOOK_SQL, show
 from shelfwise.evaluation.judgments import key_aliases, load_judgments, work_keys
 from shelfwise.evaluation.negation import (
+    Question,
     ViolationLabel,
+    blind_sample,
     human_tags,
     load_pairs,
     load_violation_labels,
@@ -43,6 +50,8 @@ def main() -> None:
     parser.add_argument("--judge", required=True, help="your initials, recorded with each answer")
     parser.add_argument("--pair", help="only this pair's books, e.g. X05")
     parser.add_argument("--labels", type=Path, default=VIOLATION_LABELS)
+    parser.add_argument("--sample-of", help="blind check: ask a sample of this judge's questions")
+    parser.add_argument("--per-tag", type=int, default=10, help="sample size per tag")
     args = parser.parse_args()
 
     queries = {q.id: q for q in load_query_files(QUERY_FILES)}
@@ -55,9 +64,19 @@ def main() -> None:
         aliases = key_aliases(conn)
         books = {key_of[r.work_id]: r for r in conn.execute(BOOK_SQL)}
     known = human_tags(rows, load_labels(FACET_LABELS), args.judge, aliases)
-    todo = [
-        q for q in questions(pairs, load_judgments(QRELS), known, aliases) if q.work_key in books
-    ]
+    if args.sample_of:
+        mine = {(r.work_key, r.facet) for r in rows if r.judge == args.judge}
+        todo = [
+            Question(key, tag, books[key].title, ())
+            for key, tag in blind_sample(rows, args.sample_of, args.per_tag)
+            if (key, tag) not in mine and key in books
+        ]
+    else:
+        todo = [
+            q
+            for q in questions(pairs, load_judgments(QRELS), known, aliases)
+            if q.work_key in books
+        ]
     if not todo:
         pooled = any(j.query_id in {p.negated for p in pairs} for j in load_judgments(QRELS))
         print(
