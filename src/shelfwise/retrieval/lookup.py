@@ -11,6 +11,12 @@ Title score, in two steps:
    lookup names a book; a title that explains one word of a longer request ("take *home* today")
    isn't one, and the full title beats fragments of it (*Half-Blood* vs *...Half-Blood Prince*).
 
+The same score is also taken for the main title alone ("seabiscuit" is *Seabiscuit: An American
+Legend*), and a *spelling* score stands in when higher: the request and the title compared letter
+by letter without spaces, which forgives typos and misheard splits ("frankenstien", "frank and
+steen"). Numbers must agree exactly ("harry potter 8" is not *Harry Potter*), and short requests
+never count on spelling alone.
+
 Authors: people often give only a surname ("works by Dickens"), so an exact surname counts
 strongly, unless the surname is also an ordinary word in the catalog's titles ("young adult" is
 not Samantha Young); then the first name must be there too.
@@ -22,7 +28,13 @@ from dataclasses import dataclass
 from rapidfuzz import fuzz
 from sqlalchemy import Connection, text
 
-from shelfwise.ingest.normalize import fold_text, normalize_isbn, number_variants
+from shelfwise.ingest.normalize import (
+    fold_text,
+    normalize_isbn,
+    number_variants,
+    split_title,
+    title_norm,
+)
 from shelfwise.retrieval.lexical import QUERY_FILLER
 
 MIN_TITLE_SCORE = 0.45
@@ -40,6 +52,11 @@ REQUEST_WORDS = QUERY_FILLER | _TITLE_STOPWORDS | {
 QUERY_COVERAGE_FLOOR = 0.4  # a title covering none of the request keeps this share of its score
 COMMON_WORD_TITLES = 2  # a surname found in this many titles is also an ordinary word
 _FULL_CONFIDENCE_LENGTH = 6  # titles shorter than this (folded chars) get a proportional penalty
+SPELLING_MIN_CHARS = 6  # shorter requests never match on spelling alone ("the girl" ~ The Girls)
+EXACT_MIN_CHARS = 4  # "dune" is Dune; "it" in "is it checked out" is just a word
+SPELLING_SCORE = 0.85  # a spelling this close counts as the title; below, it's only a guess
+_SPELLING_CANDIDATES = 10
+_DIGITS = re.compile(r"\d+")
 _ISBN_CANDIDATE = re.compile(r"(?<![\dXx])[\dXx][\dXx-]{8,15}[\dXx](?![\dXx])")
 
 
@@ -48,6 +65,7 @@ class TitleMatch:
     work_id: int
     title: str
     score: float
+    spelling: float = 0.0  # letter-by-letter closeness to the main title, for "did you mean"
 
 
 @dataclass(frozen=True)
@@ -97,8 +115,8 @@ def find_titles(
     if not folded:
         return []
     best: dict[int, TitleMatch] = {}
-    for spelling in (folded, *number_variants(folded)):
-        for match in _score_titles(conn, spelling):
+    for spelled in (folded, *number_variants(folded)):
+        for match in _score_titles(conn, spelled):
             if match.work_id not in best or match.score > best[match.work_id].score:
                 best[match.work_id] = match
     scored = sorted(best.values(), key=lambda m: (-m.score, m.work_id))
@@ -106,35 +124,75 @@ def find_titles(
 
 
 def _score_titles(conn: Connection, folded: str) -> list[TitleMatch]:
+    query_words = folded.split()
+    request = [w for w in query_words if w not in REQUEST_WORDS] or query_words
+    asked = title_norm(" ".join(w for w in query_words if w not in _ASKING)).replace(" ", "")
     rows = conn.execute(
         text(
             """
-            SELECT work_id, title, title_norm,
-                   greatest(word_similarity(title_norm, :q), word_similarity(:q, title_norm))
-                     * least(1.0, length(title_norm)::float / :full) AS trigram
-            FROM work
-            ORDER BY trigram DESC, work_id
-            LIMIT :candidates
+            (SELECT work_id, title, title_norm,
+                    greatest(word_similarity(title_norm, :q), word_similarity(:q, title_norm))
+                      * least(1.0, length(title_norm)::float / :full) AS trigram
+             FROM work ORDER BY trigram DESC, work_id LIMIT :candidates)
+            UNION
+            (SELECT work_id, title, title_norm,
+                    greatest(word_similarity(title_norm, :q), word_similarity(:q, title_norm))
+                      * least(1.0, length(title_norm)::float / :full) AS trigram
+             FROM work ORDER BY similarity(replace(title_norm, ' ', ''), :spelled) DESC, work_id
+             LIMIT :spelling_candidates)
             """
         ),
-        {"q": folded, "full": _FULL_CONFIDENCE_LENGTH, "candidates": _CANDIDATES},
-    )
-    query_words = folded.split()
-    request = [w for w in query_words if w not in REQUEST_WORDS] or query_words
-    return [
-        TitleMatch(
-            r.work_id,
-            r.title,
-            float(r.trigram)
-            * (0.5 + 0.5 * title_coverage(r.title_norm, query_words))
-            * (
-                QUERY_COVERAGE_FLOOR
-                + (1 - QUERY_COVERAGE_FLOOR)
-                * title_coverage(" ".join(request), r.title_norm.split())
-            ),
+        {"q": folded, "full": _FULL_CONFIDENCE_LENGTH, "candidates": _CANDIDATES,
+         "spelled": asked, "spelling_candidates": _SPELLING_CANDIDATES},
+    )  # fmt: skip
+    rows = list(rows)
+    # How many titles start with the request: two or more and it names a series ("harry
+    # potter"), not the one book whose main title it happens to be (*Harry Potter: Film
+    # Wizardry*); then main titles get no boost.
+    spaced = title_norm(" ".join(w for w in query_words if w not in _ASKING))
+    series = sum(r.title_norm.startswith(f"{spaced} ") for r in rows) >= 2
+    matches = []
+    for r in rows:
+        main = title_norm(split_title(r.title)[0])
+        if series and main != r.title_norm:
+            main = r.title_norm
+        norms = [r.title_norm, *([main] if _numbers(main) == _numbers(asked) else [])]
+        score = max(_word_score(float(r.trigram), n, query_words, request) for n in norms)
+        spelled = spelling(asked, main)
+        matches.append(TitleMatch(
+            r.work_id, r.title, max(score, spelled if spelled >= SPELLING_SCORE else 0.0), spelled
+        ))  # fmt: skip
+    return matches
+
+
+# Words that ask for a book rather than name it; title words ("the", "of") stay in.
+_ASKING = REQUEST_WORDS - _TITLE_STOPWORDS
+
+
+def _word_score(trigram: float, norm: str, query_words: list[str], request: list[str]) -> float:
+    return (
+        trigram
+        * (0.5 + 0.5 * title_coverage(norm, query_words))
+        * (
+            QUERY_COVERAGE_FLOOR
+            + (1 - QUERY_COVERAGE_FLOOR) * title_coverage(" ".join(request), norm.split())
         )
-        for r in rows
-    ]
+    )
+
+
+def _numbers(text: str) -> list[str]:
+    return _DIGITS.findall(text)
+
+
+def spelling(asked: str, title: str) -> float:
+    """How alike the request and a title are letter by letter (spaces removed), 0-1: 1 when
+    they're the same (4+ letters); else 0 when the request is short or their numbers differ."""
+    title = title.replace(" ", "")
+    if asked == title and len(title) >= EXACT_MIN_CHARS:
+        return 1.0
+    if len(asked) < SPELLING_MIN_CHARS or _numbers(asked) != _numbers(title):
+        return 0.0
+    return fuzz.ratio(asked, title) / 100
 
 
 def find_authors(

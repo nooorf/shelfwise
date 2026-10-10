@@ -18,6 +18,11 @@ BOOKS = [
     ("Principia", "Isaac Newton", None),
     ("Nineteen Eighty-Four", "George Orwell", None),
     ("The Six Wives of Henry VIII", "Alison Weir", None),
+    ("Frankenstein", "Mary Shelley", None),
+    ("Seabiscuit: An American Legend", "Laura Hillenbrand", None),
+    ("Gone Girl", "Gillian Flynn", None),
+    ("The Iron Daughter", "Julie Kagawa", None),
+    ("Harry Potter: Film Wizardry", "Brian Sibley", None),
 ]
 
 
@@ -48,6 +53,10 @@ def titles_found(conn: Connection, query: str) -> list[str]:
         ("do you have dune", "Dune"),
         ("1984", "Nineteen Eighty-Four"),
         ("the six wives of henry the eighth", "The Six Wives of Henry VIII"),
+        ("frankenstien", "Frankenstein"),
+        ("seabiscuit", "Seabiscuit: An American Legend"),  # main title, before the subtitle
+        ("seabiscut", "Seabiscuit: An American Legend"),
+        ("gone gurl", "Gone Girl"),
     ],
 )
 def test_finds_titles_despite_typos_and_extra_words(
@@ -129,3 +138,19 @@ def test_a_surname_that_is_also_a_common_word_needs_the_first_name(
     assert [a.name for a in find_authors(conn, "available young adult fantasy")] == []
     assert [a.name for a in find_authors(conn, "books by samantha young")] == ["Samantha Young"]
     assert [a.name for a in find_authors(conn, "works by dickens")] == ["Charles Dickens"]
+
+
+@pytest.mark.parametrize(
+    ("query", "not_first"),
+    [
+        ("the iron psalter", "The Iron Daughter"),  # spelling 0.70: a guess at most
+        ("harry potter 8", "Harry Potter: Film Wizardry"),  # numbers must agree
+        ("harry potter", "Harry Potter: Film Wizardry"),  # a series, not that book
+    ],
+)
+def test_spelling_and_main_titles_do_not_overreach(
+    conn: Connection, catalog: dict[str, int], query: str, not_first: str
+) -> None:
+    matches = find_titles(conn, query, limit=1, min_score=0.7)
+
+    assert [m.title for m in matches] != [not_first]

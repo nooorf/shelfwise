@@ -7,6 +7,7 @@ from shelfwise.catalog import schema
 from shelfwise.llm.client import LLMInvalidOutput
 from shelfwise.query.constraints import Constraint
 from shelfwise.retrieval.filters import allowed_work_ids
+from shelfwise.tagging.facets import model_version
 from shelfwise.tagging.tagger import tag_books
 
 from ..fakes import FakeLLM
@@ -53,7 +54,7 @@ def test_tags_are_saved_with_version_and_themes(
         ).scalar_one()
     assert saved is not None
     assert saved["darkness"] == 3 and saved["source"] == "llm"
-    assert saved["model_version"] == "facets-v2/qwen3:4b"
+    assert saved["model_version"] == model_version("qwen3:4b")
     assert themes == ["obsession", "trauma"]
 
 
