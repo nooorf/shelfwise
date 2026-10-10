@@ -23,6 +23,7 @@ work_key,judge,facet,value,title
 9780062117182,claude,audience,ya,Defiance
 9780062124364,claude,audience,ya,Hana
 9780062217134,claude,audience,ya,The Beginning of Everything
+9780062240194,NF,audience,adult,Romancing the Duke
 9780062240194,claude,audience,adult,Romancing the Duke
 9780062267689,claude,audience,ya,Taking Chances
 9780062278784,claude,audience,ya,Divergent Series Complete Box Set
@@ -101,6 +102,7 @@ work_key,judge,facet,value,title
 9780440226703,claude,audience,children,The Incredible Journey
 9780441014897,claude,audience,adult,Magic Bites
 9780441014941,claude,audience,adult,All Together Dead
+9780441015832,NF,audience,adult,Magic Burns
 9780441015832,claude,audience,adult,Magic Burns
 9780441017027,claude,audience,adult,Magic Strikes
 9780441018529,claude,audience,adult,Magic Bleeds
@@ -110,8 +112,11 @@ work_key,judge,facet,value,title
 9780448421650,claude,audience,children,The Story About Ping
 9780448456942,claude,audience,children,The Story of Ferdinand
 9780451230546,claude,audience,ya,"The Morganville Vampires, Volume 1"
+9780517092910,NF,audience,children,The Complete Fairy Tales
 9780517092910,claude,audience,children,The Complete Fairy Tales
+9780525423348,NF,audience,children,A Tale Dark & Grimm
 9780525423348,claude,audience,children,A Tale Dark & Grimm
+9780525423645,NF,audience,ya,Matched
 9780525423645,claude,audience,ya,Matched
 9780525425922,claude,audience,ya,Just One Year
 9780544025837,claude,audience,adult,Coming Clean
@@ -144,6 +149,7 @@ work_key,judge,facet,value,title
 9780765329585,claude,audience,ya,Article 5
 9780765346520,claude,audience,adult,Wizard's First Rule
 9780765356154,claude,audience,adult,Jonathan Strange & Mr Norrell
+9780765376459,NF,audience,ya,A Darker Shade of Magic
 9780765376459,claude,audience,adult,A Darker Shade of Magic
 9780786818594,claude,audience,ya,The Amulet of Samarkand
 9780786837465,claude,audience,children,Don't Let the Pigeon Stay Up Late!
@@ -160,6 +166,7 @@ work_key,judge,facet,value,title
 9780899190358,claude,audience,children,The Three Billy Goats Gruff
 9781250012579,claude,audience,ya,Eleanor & Park
 9781310501593,claude,audience,adult,Until Lilly
+9781401200770,NF,audience,adult,"Fables, Volume 2: Animal Farm"
 9781401200770,claude,audience,adult,"Fables, Volume 2: Animal Farm"
 9781402277825,claude,audience,ya,If He Had Been With Me
 9781408319468,claude,audience,ya,Slated
@@ -167,12 +174,14 @@ work_key,judge,facet,value,title
 9781416903437,claude,audience,ya,Wild Magic
 9781416909835,claude,audience,children,No Talking
 9781416936497,claude,audience,ya,Just Ella
+9781419717017,NF,audience,children,Old School
 9781419717017,claude,audience,children,Old School
 9781423104872,claude,audience,ya,The Wizard Heir
 9781423109600,claude,audience,children,The Pigeon Wants a Puppy!
 9781442408944,claude,audience,ya,Aristotle and Dante Discover the Secrets of the Universe
 9781442409057,claude,audience,ya,Wither
 9781442409095,claude,audience,ya,Sever
+9781442413337,NF,audience,ya,Where Things Come Back
 9781442413337,claude,audience,ya,Where Things Come Back
 9781442426733,claude,audience,ya,P.S. I Still Love You
 9781442430006,claude,audience,ya,Rebel Heart
@@ -200,6 +209,7 @@ work_key,judge,facet,value,title
 9781595143976,claude,audience,ya,Across the Universe
 9781596435704,claude,audience,ya,Prized
 9781599900513,claude,audience,ya,Book of a Thousand Days
+9781599903224,NF,audience,ya,Princess of the Midnight Ball
 9781599903224,claude,audience,ya,Princess of the Midnight Ball
 9781599904788,claude,audience,ya,Princess of Glass
 9781608198061,claude,audience,adult,Can't We Talk about Something More Pleasant?
@@ -260,6 +270,7 @@ work_key,judge,facet,value,title
 9780099554783,claude,darkness,3,Phantom
 9780099580485,claude,darkness,2,Wool
 9780131173347,claude,darkness,0,C[plus plus]
+9780140367355,NF,darkness,0,Five Children and It
 9780140367355,claude,darkness,0,Five Children and It
 9780140558647,claude,darkness,0,Rumpelstiltskin
 9780141321318,claude,darkness,0,The Eternity Code
@@ -268,18 +279,21 @@ work_key,judge,facet,value,title
 9780142421710,claude,darkness,1,Crossed
 9780142422052,claude,darkness,2,The Name of the Star
 9780142427835,claude,darkness,3,The Long Walk
+9780143123231,NF,darkness,2,The Silent Wife
 9780143123231,claude,darkness,2,The Silent Wife
 9780143126683,claude,darkness,2,The Truth About the Harry Quebert Affair
 9780143135692,claude,darkness,2,The Color Purple
 9780143418764,claude,darkness,2,I Too Had A Love Story..
 9780152053109,claude,darkness,2,A Northern Light
 9780152063115,claude,darkness,2,The Dead and the Gone
+9780292764996,NF,darkness,0,The Poetic Edda
 9780292764996,claude,darkness,1,The Poetic Edda
 9780307276902,claude,darkness,3,A Million Little Pieces
 9780307341549,claude,darkness,3,Sharp Objects
 9780307341563,claude,darkness,3,Dark Places
 9780307594778,claude,darkness,3,The Millennium Trilogy
 9780307959850,claude,darkness,1,Death Comes to Pemberley
+9780307960498,NF,darkness,3,Police
 9780307960498,claude,darkness,3,Police
 9780312342029,claude,darkness,3,A Wolf at the Table
 9780312364687,claude,darkness,0,Shoe Addicts Anonymous
@@ -310,10 +324,12 @@ work_key,judge,facet,value,title
 9780345807953,claude,darkness,1,Mad About the Boy
 9780373210053,claude,darkness,1,My Soul to Keep
 9780375423802,claude,darkness,3,Black Hole
+9780375701290,NF,darkness,2,Autobiography of Red
 9780375701290,claude,darkness,1,Autobiography of Red
 9780375704024,claude,darkness,2,Norwegian Wood
 9780375990694,claude,darkness,1,Teardrop
 9780380729401,claude,darkness,2,Something Wicked This Way Comes
+9780380753024,NF,darkness,1,Gentle Rogue
 9780380753024,claude,darkness,0,Gentle Rogue
 9780385199575,claude,darkness,3,The Stand
 9780385339155,claude,darkness,2,Darkfever
@@ -379,6 +395,7 @@ work_key,judge,facet,value,title
 9780593388013,claude,darkness,2,One of Us Is Lying TR 9-Copy Floor Display
 9780593906101,claude,darkness,3,Girl in Pieces Deluxe Edition
 9780606212342,claude,darkness,0,The Hobbit: An Illustrated Edition of the Fantasy Classic (Graphic Novel)
+9780615680040,NF,darkness,3,Seduced in the Dark
 9780615680040,claude,darkness,3,Seduced in the Dark
 9780670026326,claude,darkness,2,The Secret Place
 9780671744212,claude,darkness,0,The Secret
@@ -432,6 +449,7 @@ work_key,judge,facet,value,title
 9781402277825,claude,darkness,2,If He Had Been With Me
 9781405224031,claude,darkness,0,First Term at Malory Towers
 9781405230278,claude,darkness,0,The Enchanted Wood
+9781405240925,NF,darkness,0,The Magic Faraway Tree Collection
 9781405240925,claude,darkness,0,The Magic Faraway Tree Collection
 9781405293181,claude,darkness,2,A Good Girl's Guide to Murder
 9781406310252,claude,darkness,2,The Knife of Never Letting Go
@@ -454,6 +472,7 @@ work_key,judge,facet,value,title
 9781442413337,claude,darkness,2,Where Things Come Back
 9781442430006,claude,darkness,2,Rebel Heart
 9781442445802,claude,darkness,2,The Program
+9781471134692,NF,darkness,1,Forever Too Far
 9781471134692,claude,darkness,1,Forever Too Far
 9781475070309,claude,darkness,1,UnEnchanted
 9781476730943,claude,darkness,2,The Sea of Tranquility
@@ -467,6 +486,7 @@ work_key,judge,facet,value,title
 9781540324160,claude,darkness,3,Too Late
 9781542722827,claude,darkness,3,Silent Child
 9781554682744,claude,darkness,1,Wondrous Strange
+9781563893308,NF,darkness,1,Kingdom Come
 9781563893308,claude,darkness,2,Kingdom Come
 9781563899805,claude,darkness,2,"Y: The Last Man, Vol. 1: Unmanned"
 9781579124588,claude,darkness,1,The Right Stuff
@@ -501,6 +521,7 @@ work_key,judge,facet,value,title
 9781984899668,claude,darkness,3,The Handmaid's Tale
 9789812692368,claude,darkness,2,"Fruits Basket, Vol. 20"
 9780007208005,claude,pace,medium,The Tea Rose
+9780007423293,NF,pace,fast,Prince of Thorns
 9780007423293,claude,pace,fast,Prince of Thorns
 9780060007195,claude,pace,medium,Lemony Snicket: The Unauthorized Autobiography (A Series of Unfortunate Events)
 9780060090371,claude,pace,medium,Lucy Sullivan Is Getting Married
@@ -515,6 +536,7 @@ work_key,judge,facet,value,title
 9780061921261,claude,pace,medium,Epic Fail
 9780061974588,claude,pace,fast,The Rise of Nine
 9780062060556,claude,pace,fast,Before I Go to Sleep
+9780062067753,NF,pace,slow,The Long Earth
 9780062067753,claude,pace,slow,The Long Earth
 9780062085481,claude,pace,fast,Shatter me
 9780062278784,claude,pace,fast,Divergent Series Complete Box Set
@@ -536,6 +558,7 @@ work_key,judge,facet,value,title
 9780141439808,claude,pace,slow,Mansfield Park
 9780142001806,claude,pace,medium,The Eyre Affair
 9780142415245,claude,pace,medium,The Siege of Macindaw
+9780142437018,NF,pace,medium,A Little Princess
 9780142437018,claude,pace,medium,A Little Princess
 9780142437209,claude,pace,slow,Jane Eyre
 9780143039099,claude,pace,slow,The Wind in the Willows
@@ -575,6 +598,7 @@ work_key,judge,facet,value,title
 9780345536150,claude,pace,medium,"A Game of Thrones: Comic Book, Issue 1"
 9780349116655,claude,pace,slow,Tears of the Giraffe
 9780373210183,claude,pace,fast,The Iron Queen
+9780373210336,NF,pace,medium,The Girl in the Steel Corset
 9780373210336,claude,pace,fast,The Girl in the Steel Corset
 9780375840401,claude,pace,slow,Eldest
 9780385336697,claude,pace,fast,The Hard Way
@@ -680,9 +704,11 @@ work_key,judge,facet,value,title
 9781092633550,claude,pace,medium,Pride and Prejudice
 9781101904220,claude,pace,fast,Dark Matter
 9781250049377,claude,pace,medium,Landline
+9781250186935,NF,pace,fast,Artificial Condition
 9781250186935,claude,pace,fast,Artificial Condition
 9781250191786,claude,pace,fast,Rogue protocol
 9781301163748,claude,pace,medium,Hard to Love
+9781400034680,NF,pace,slow,Love in the Time of Cholera
 9781400034680,claude,pace,slow,Love in the Time of Cholera
 9781400078431,claude,pace,medium,The Year of Magical Thinking
 9781402245794,claude,pace,medium,Rock Hard
@@ -695,10 +721,12 @@ work_key,judge,facet,value,title
 9781416990659,claude,pace,medium,Amy & Roger's Epic Detour
 9781419711329,claude,pace,fast,Hard Luck
 9781420925531,claude,pace,medium,A Study in Scarlet
+9781434101693,NF,pace,slow,"The Wasteland, Prufrock and Other Poems"
 9781434101693,claude,pace,medium,"The Wasteland, Prufrock and Other Poems"
 9781439152782,claude,pace,slow,The Distant Hours
 9781444730203,claude,pace,medium,The Lost Wife
 9781451681734,claude,pace,slow,The Light Between Oceans
+9781451693591,NF,pace,medium,The Marriage of Opposites
 9781451693591,claude,pace,slow,The Marriage of Opposites
 9781455520657,claude,pace,medium,The Longest Ride
 9781476717517,claude,pace,medium,The Marriage Trap
@@ -709,6 +737,7 @@ work_key,judge,facet,value,title
 9781565125964,claude,pace,slow,A Reliable Wife
 9781590171998,claude,pace,slow,Stoner
 9781593080402,claude,pace,medium,"The Complete Sherlock Holmes, Volume II"
+9781593081485,NF,pace,medium,The Three Musketeers
 9781593081485,claude,pace,fast,The Three Musketeers
 9781593082642,claude,pace,medium,Northanger Abbey
 9781594487019,claude,pace,slow,The Chaperone
@@ -733,9 +762,11 @@ work_key,judge,facet,value,title
 9781974272846,claude,pace,medium,Nineteen Eighty-Four
 9781980021711,claude,pace,fast,Network Effect
 9788129115300,claude,pace,medium,2 States: The Story of My Marriage
+9789812692368,NF,pace,fast,"Fruits Basket, Vol. 20"
 9789812692368,claude,pace,medium,"Fruits Basket, Vol. 20"
 9789997555625,claude,pace,medium,My Sweet Orange Tree
 9780007119301,claude,romance,1,Peril at End House
+9780007119356,NF,romance,1,Appointment with Death
 9780007119356,claude,romance,1,Appointment with Death
 9780007202300,claude,romance,0,Prince Caspian
 9780007435319,claude,romance,0,The Vampire Prince
@@ -752,6 +783,7 @@ work_key,judge,facet,value,title
 9780061132230,claude,romance,2,Dance with a Vampire
 9780061214653,claude,romance,3,Wicked Lovely
 9780061214714,claude,romance,3,Fragile Eternity
+9780061444852,NF,romance,3,Romancing Mister Bridgerton
 9780061444852,claude,romance,3,Romancing Mister Bridgerton
 9780061448768,claude,romance,1,Gone
 9780061449123,claude,romance,1,Plague
@@ -761,6 +793,7 @@ work_key,judge,facet,value,title
 9780061670855,claude,romance,2,The Initiation / The Captive Part I
 9780061726835,claude,romance,3,Delirium
 9780061779817,claude,romance,2,The Body Finder
+9780061791055,NF,romance,0,The Mysterious Howling
 9780061791055,claude,romance,0,The Mysterious Howling
 9780061797026,claude,romance,1,The Gathering
 9780061963865,claude,romance,3,The Vampire Diaries
@@ -792,6 +825,7 @@ work_key,judge,facet,value,title
 9780142425992,claude,romance,2,Reached
 9780152063115,claude,romance,0,The Dead and the Gone
 9780152063849,claude,romance,3,Jessica's Guide to Dating on the Dark Side
+9780307346605,NF,romance,0,World War Z: An Oral History of the Zombie War
 9780307346605,claude,romance,0,World War Z: An Oral History of the Zombie War
 9780307394965,claude,romance,2,Skeletons at the Feast
 9780307460202,claude,romance,2,The Baker's Daughter
@@ -824,6 +858,7 @@ work_key,judge,facet,value,title
 9780316606844,claude,romance,0,The Vampire's Assistant
 9780316905749,claude,romance,0,Vampire Mountain
 9780316952668,claude,romance,2,The Winds of War
+9780316954990,NF,romance,2,War and Remembrance
 9780316954990,claude,romance,2,War and Remembrance
 9780330268073,claude,romance,1,The Eagle Has Landed
 9780330348775,claude,romance,0,N is for Noose
@@ -894,6 +929,7 @@ work_key,judge,facet,value,title
 9780451234872,claude,romance,2,Last Breath
 9780451419927,claude,romance,2,Secrets of a Charmed Life
 9780451458926,claude,romance,1,Summer Knight
+9780451461551,NF,romance,1,White Night
 9780451461551,claude,romance,1,White Night
 9780451475602,claude,romance,3,Hero
 9780452270077,claude,romance,1,Regeneration
@@ -922,6 +958,7 @@ work_key,judge,facet,value,title
 9780613824224,claude,romance,0,Ender's Game
 9780618724833,claude,romance,1,The Wednesday Wars
 9780646418438,claude,romance,1,The Mysterious Affair at Styles
+9780670061105,NF,romance,1,That Summer
 9780670061105,claude,romance,1,That Summer
 9780670072811,claude,romance,2,Finnikin of the Rock
 9780671758899,claude,romance,1,"Loves Music, Loves to Dance"
@@ -930,6 +967,7 @@ work_key,judge,facet,value,title
 9780689875342,claude,romance,1,A Great and Terrible Beauty
 9780689878565,claude,romance,2,In the Hand of the Goddess
 9780692577790,claude,romance,3,Wildest Dreams
+9780722194393,NF,romance,0,Nine Princes in Amber
 9780722194393,claude,romance,0,Nine Princes in Amber
 9780738713700,claude,romance,3,Lament: The Faerie Queen's Deception
 9780739328279,claude,romance,1,Plum Spooky
@@ -990,6 +1028,7 @@ work_key,judge,facet,value,title
 9781442430006,claude,romance,2,Rebel Heart
 9781442445802,claude,romance,3,The Program
 9781442488694,claude,romance,3,Breathe
+9781444901665,NF,romance,2,Origins
 9781444901665,claude,romance,3,Origins
 9781447205722,claude,romance,2,Wake
 9781451626339,claude,romance,2,Triangles
@@ -1021,6 +1060,7 @@ work_key,judge,facet,value,title
 9781595141743,claude,romance,2,Vampire Academy
 9781595142528,claude,romance,2,Betrayals
 9781595143976,claude,romance,2,Across the Universe
+9781596435698,NF,romance,2,Birthmarked
 9781596435698,claude,romance,2,Birthmarked
 9781596435704,claude,romance,2,Prized
 9781596437135,claude,romance,1,Anya's Ghost
@@ -1093,6 +1133,7 @@ work_key,judge,facet,value,title
 9780062220967,claude,supernatural,yes,Asylum
 9780062225436,claude,supernatural,no,Reconstructing Amelia
 9780062225467,claude,supernatural,no,Where They Found Her
+9780062240194,NF,supernatural,no,Romancing the Duke
 9780062240194,claude,supernatural,no,Romancing the Duke
 9780062248473,claude,supernatural,no,Beyond Belief: My Secret Life Inside Scientology and My Harrowing Escape
 9780062255655,claude,supernatural,yes,The Ocean at the End of the Lane
@@ -1141,6 +1182,7 @@ work_key,judge,facet,value,title
 9780312979973,claude,supernatural,yes,Fantasy Lover
 9780312981662,claude,supernatural,no,Crooked House
 9780312984823,claude,supernatural,yes,Night Embrace
+9780316024495,NF,supernatural,no,The Heretic's Daughter
 9780316024495,claude,supernatural,no,The Heretic's Daughter
 9780316032544,claude,supernatural,yes,New Moon
 9780316036245,claude,supernatural,yes,Witch & Wizard
@@ -1150,6 +1192,7 @@ work_key,judge,facet,value,title
 9780316196994,claude,supernatural,no,The House of Silk
 9780316254779,claude,supernatural,no,The Geography of You and Me
 9780316380867,claude,supernatural,no,The Thing About Jellyfish
+9780316393874,NF,supernatural,no,The Wonder
 9780316393874,claude,supernatural,no,The Wonder
 9780316410984,claude,supernatural,no,The Murder House
 9780330448444,claude,supernatural,no,The House at Riverton
@@ -1158,6 +1201,7 @@ work_key,judge,facet,value,title
 9780345419620,claude,supernatural,yes,The Queen of the Damned
 9780345419637,claude,supernatural,yes,The Tale of the Body Thief
 9780345422385,claude,supernatural,yes,Pandora
+9780345434807,NF,supernatural,yes,The Vampire Armand
 9780345434807,claude,supernatural,yes,The Vampire Armand
 9780345470638,claude,supernatural,yes,Black House
 9780345476876,claude,supernatural,yes,Interview with the Vampire
@@ -1178,6 +1222,7 @@ work_key,judge,facet,value,title
 9780385518338,claude,supernatural,,Dexter in the Dark
 9780385521383,claude,supernatural,no,New York
 9780385537858,claude,supernatural,no,Inferno
+9780385538497,NF,supernatural,yes,The Winter People
 9780385538497,claude,supernatural,yes,The Winter People
 9780385611077,claude,supernatural,yes,I Shall Wear Midnight
 9780393068573,claude,supernatural,no,Stitches
@@ -1229,7 +1274,9 @@ work_key,judge,facet,value,title
 9780451197962,claude,supernatural,no,The Running Man
 9780451199867,claude,supernatural,no,A Pocket Full of Rye
 9780451208187,claude,supernatural,no,The English Assassin
+9780451219947,NF,supernatural,yes,Glass Houses
 9780451219947,claude,supernatural,yes,Glass Houses
+9780451222350,NF,supernatural,yes,Lover Unbound
 9780451222350,claude,supernatural,yes,Lover Unbound
 9780451230546,claude,supernatural,yes,"The Morganville Vampires, Volume 1"
 9780451231611,claude,supernatural,yes,Ghost Town
@@ -1244,6 +1291,7 @@ work_key,judge,facet,value,title
 9780515136265,claude,supernatural,no,Chesapeake Blue
 9780515142860,claude,supernatural,yes,Midnight Bayou
 9780515144598,claude,supernatural,yes,The Hollow
+9780525421559,NF,supernatural,no,Hold Still
 9780525421559,claude,supernatural,no,Hold Still
 9780525422945,claude,supernatural,no,Where She Went
 9780525423270,claude,supernatural,no,Anna and the French Kiss
@@ -1278,6 +1326,7 @@ work_key,judge,facet,value,title
 9780618001903,claude,supernatural,no,King Leopold's Ghost
 9780618477944,claude,supernatural,no,Fun Home: A Family Tragicomic
 9780646418438,claude,supernatural,no,The Mysterious Affair at Styles
+9780670015672,NF,supernatural,yes,The Magician's Land
 9780670015672,claude,supernatural,yes,The Magician's Land
 9780670022410,claude,supernatural,yes,A Discovery of Witches
 9780670023486,claude,supernatural,yes,Shadow of Night
@@ -1317,6 +1366,7 @@ work_key,judge,facet,value,title
 9781101911600,claude,supernatural,no,Fifty Shades of Grey
 9781101946343,claude,supernatural,no,Grey
 9781101946596,claude,supernatural,no,Life 3.0
+9781250010117,NF,supernatural,no,Every Fifteen Minutes
 9781250010117,claude,supernatural,no,Every Fifteen Minutes
 9781250022066,claude,supernatural,no,The Long Way Home
 9781250022080,claude,supernatural,no,The Nature of the Beast
@@ -1461,6 +1511,7 @@ work_key,judge,facet,value,title
 9780340280942,claude,violence,0,"Not a Penny More, Not a Penny Less"
 9780340798737,claude,violence,0,On Writing Poster King
 9780345348104,claude,violence,2,The Killer Angels
+9780345475817,NF,violence,3,We Were Soldiers Once... and Young: Ia Drang - The Battle that Changed the War in Vietnam
 9780345475817,claude,violence,3,We Were Soldiers Once... and Young: Ia Drang - The Battle that Changed the War in Vietnam
 9780345504982,claude,violence,3,The Twelve
 9780345528506,claude,violence,3,Criminal
@@ -1499,6 +1550,7 @@ work_key,judge,facet,value,title
 9780439796637,claude,violence,2,War Horse
 9780439829113,claude,violence,2,The Dead of Night
 9780439895972,claude,violence,1,Beauty Queens
+9780439903448,NF,violence,0,Swindle
 9780439903448,claude,violence,0,Swindle
 9780440174646,claude,violence,2,Roots: The Saga of an American Family
 9780440243670,claude,violence,2,Nothing to Lose
@@ -1513,12 +1565,14 @@ work_key,judge,facet,value,title
 9780441016556,claude,violence,2,Captain's Fury
 9780441018642,claude,violence,2,Dead in the Family
 9780446354738,claude,violence,1,Nothing Lasts Forever
+9780446360852,NF,violence,2,The Gold Coast
 9780446360852,claude,violence,2,The Gold Coast
 9780446539753,claude,violence,2,First Family
 9780446547598,claude,violence,2,Safe Haven
 9780446581196,claude,violence,2,The Monster of Florence
 9780446602280,claude,violence,1,No One Here Gets Out Alive
 9780446611626,claude,violence,2,Chasing the Dime
+9780446612739,NF,violence,2,The Black Echo
 9780446612739,claude,violence,2,The Black Echo
 9780446616492,claude,violence,2,Hour Game
 9780446617581,claude,violence,2,The Concrete Blonde
@@ -1549,6 +1603,7 @@ work_key,judge,facet,value,title
 9780545654746,claude,violence,1,All Fall Down
 9780547248042,claude,violence,1,This World We Live In
 9780547959214,claude,violence,2,Graduation Day
+9780553116601,NF,violence,2,The Amityville Horror
 9780553116601,claude,violence,1,The Amityville Horror
 9780553376050,claude,violence,2,How I Live Now
 9780553381696,claude,violence,3,A Clash of Kings
@@ -1565,6 +1620,7 @@ work_key,judge,facet,value,title
 9780553817805,claude,violence,3,The Mephisto Club
 9780575077904,claude,violence,3,Last Argument of Kings
 9780590431972,claude,violence,1,Scary Stories to Tell in the Dark
+9780618477944,NF,violence,3,Fun Home: A Family Tragicomic
 9780618477944,claude,violence,0,Fun Home: A Family Tragicomic
 9780670018703,claude,violence,2,City of Thieves
 9780671685638,claude,violence,2,Ghost Story
@@ -1573,6 +1629,7 @@ work_key,judge,facet,value,title
 9780679745587,claude,violence,2,In Cold Blood
 9780679763970,claude,violence,2,Corelli's Mandolin
 9780679776819,claude,violence,3,Birdsong
+9780679826422,NF,violence,0,Junie B. Jones and the  Stupid Smelly Bus
 9780679826422,claude,violence,0,Junie B. Jones and the  Stupid Smelly Bus
 9780684815251,claude,violence,2,"Citizen Soldiers: The U.S. Army from the Normandy Beaches to the Bulge to the Surrender of Germany -- June 7, 1944-May 7, 1945"
 9780684826806,claude,violence,2,Survival in Auschwitz
@@ -1605,6 +1662,7 @@ work_key,judge,facet,value,title
 9781311736420,claude,violence,2,Bound by Honor
 9781400031573,claude,violence,2,Faceless Killers
 9781400043873,claude,violence,3,The Ruins
+9781400095926,NF,violence,3,Dearly Devoted Dexter
 9781400095926,claude,violence,3,Dearly Devoted Dexter
 9781401203146,claude,violence,2,Pride of Baghdad
 9781401226923,claude,violence,2,Batwoman: Elegy
@@ -1626,6 +1684,7 @@ work_key,judge,facet,value,title
 9781423157311,claude,violence,2,The Archived
 9781423166009,claude,violence,0,Perfect Scoundrels
 9781427818768,claude,violence,0,"Hetalia: Axis Powers, Vol. 1"
+9781440641565,NF,violence,2,Father Mine: Zsadist and Bella's Story
 9781440641565,claude,violence,1,Father Mine: Zsadist and Bella's Story
 9781442429987,claude,violence,2,Blood Red Road
 9781447209225,claude,violence,1,The Sins of the Father
@@ -1660,6 +1719,7 @@ work_key,judge,facet,value,title
 9781605980928,claude,violence,2,The Ice Princess
 9781606841754,claude,violence,3,Ashes
 9781616201326,claude,violence,0,The Art Forger
+9781616960926,NF,violence,1,The Emperor's Soul
 9781616960926,claude,violence,1,The Emperor's Soul
 9781619636071,claude,violence,2,Empire of Storms
 9781627792134,claude,violence,2,Crooked Kingdom

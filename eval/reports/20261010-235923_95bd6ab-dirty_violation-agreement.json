@@ -1,0 +1,46 @@
+{
+  "created": "2026-10-10T18:59:23+00:00",
+  "git": "95bd6ab-dirty",
+  "judges": [
+    "claude",
+    "NF"
+  ],
+  "by_tag": {
+    "audience": {
+      "n": 10,
+      "accuracy": 0.9,
+      "kappa": 0.8507462686567164,
+      "violation_agreement": 0.95
+    },
+    "darkness": {
+      "n": 10,
+      "accuracy": 0.6,
+      "kappa": 0.8347107438016529,
+      "violation_agreement": 0.9
+    },
+    "pace": {
+      "n": 10,
+      "accuracy": 0.5,
+      "kappa": 0.6153846153846154,
+      "violation_agreement": 0.8
+    },
+    "romance": {
+      "n": 10,
+      "accuracy": 0.9,
+      "kappa": 0.9541284403669725,
+      "violation_agreement": 0.95
+    },
+    "supernatural": {
+      "n": 10,
+      "accuracy": 1.0,
+      "kappa": 1.0,
+      "violation_agreement": 1.0
+    },
+    "violence": {
+      "n": 10,
+      "accuracy": 0.7,
+      "kappa": 0.5801526717557252,
+      "violation_agreement": 0.8
+    }
+  }
+}

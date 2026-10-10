@@ -107,7 +107,18 @@ Of the 209 books graded relevant (2–3) for the negated requests, the hard filt
 
 ## Limitations
 
-- **The violation labels are Claude's**, an LLM's, not a person's. They were made without looking at the tagger's output, from the record and general knowledge of the books, by the written rules; but a model judging a model is weaker evidence than human labels. A person's blind check of 60 labels (`make label-violations JUDGE=NF SAMPLE=claude`, then `make violation-agreement JUDGE=NF`) bounds this; its result goes here when done.
+- **The violation labels are Claude's**, an LLM's, not a person's. They were made without looking at the tagger's output, from the record and general knowledge of the books, by the written rules; but a model judging a model is weaker evidence than human labels. A person graded a blind sample of 60 of them (10 per tag, spread over Claude's answers, Claude's answers hidden; `eval/reports/20261010-235923_95bd6ab-dirty_violation-agreement.json`):
+
+  | Tag | Same answer | κ | Same violation decision |
+  | --- | --- | --- | --- |
+  | supernatural | 10/10 | 1.00 | 100% |
+  | romance | 9/10 | 0.95 (quadratic) | 95% |
+  | audience | 9/10 | 0.85 | 95% |
+  | darkness | 6/10 | 0.83 (quadratic) | 90% |
+  | violence | 7/10 | 0.58 (quadratic) | 80% |
+  | pace | 5/10 | 0.62 (quadratic) | 80% |
+
+  The same split as between the tagger and the labels: categorical tags agree, graded ones differ by a step (13 of the 14 disagreements are one step apart). So the violation rates for supernatural, romance and audience pairs are trustworthy; for violence and pace, read them as ±1 level. Ten questions per tag is a small sample.
 - **Small:** 37 removal pairs, 3 lure pairs, 5–7 pairs per tag. Differences under ~10 points between conditions are within the noise.
 - **Perfect stripping:** "stripped" is the base request itself. A real negation remover would do no better and could do worse.
 - **Drafted queries:** the pairs were drafted (by Claude) and reviewed by a person, not collected from real readers.
