@@ -11533,3 +11533,800 @@ X40N,9781599900513,1,claude-review,Book of a Thousand Days,Shannon Hale
 X40N,9781599903224,1,claude-review,Princess of the Midnight Ball,Jessica Day George
 X40N,9780060874162,1,claude-review,Beastly,Alex Flinn
 X40N,9780152052218,1,claude-review,East,Edith Pattou
+L02,9780349117041,0,claude-review,The Kalahari Typing School for Men,Alexander McCall Smith
+L03,9780007120819,1,claude-review,The Big Four,Agatha Christie
+L03,9781846554001,0,claude-review,The Leopard,Jo Nesbo
+L03,9780316224185,0,claude-review,Confessions of a Murder Suspect,James Patterson
+L03,9780316024648,0,claude-review,Cross Country,James Patterson
+L03,9780316018760,0,claude-review,The 8th Confession,James Patterson
+L04,9780525467267,0,claude-review,The Complete Tales and Poems of Winnie-the-Pooh,A.A. Milne
+A01,9781476754451,3,claude-review,Mr. Mercedes,Stephen King
+A02,9780451199867,3,claude-review,A Pocket Full of Rye,Agatha Christie
+A03,9780679444329,0,claude-review,The Warmth of Other Suns: The Epic Story of America's Great Migration,Isabel Wilkerson
+A04,9780140259445,0,claude-review,The Complete Novels,Jane Austen
+A04,9781593081485,0,claude-review,The Three Musketeers,Alexandre Dumas
+A04,9781959979128,0,claude-review,Alice's Adventures in Wonderland (Illustrated),Lewis Carroll
+A04,9780192723710,0,claude-review,The Lady of Shalott,Alfred Tennyson
+G01,9781618680525,1,claude-review,14,Peter Clines
+G01,9781579126261,3,claude-review,The Body in the Library,Agatha Christie
+G02,9781980021711,2,claude-review,Network Effect,Martha Wells
+G03,9780425195482,3,claude-review,The Bad Place,Dean Koontz
+G03,9781563890529,2,claude-review,Hellblazer: Original Sins,Jamie Delano
+G04,9780446696128,3,claude-review,The Rescue,Nicholas Sparks
+G04,9780615766416,3,claude-review,Raid,Kristen Ashley
+G04,9781301027705,3,claude-review,Sweet Home,Tillie Cole
+G04,9781476145389,3,claude-review,Breathe,Kristen Ashley
+G04,9780062391742,2,claude-review,My Lady Jane,Cynthia Hand
+G04,9781455599080,3,claude-review,Sweet Dreams,Kristen Ashley
+S01,9780316213073,1,claude-review,The Darkest Part of the Forest,Holly Black
+S01,9780615680040,1,claude-review,Seduced in the Dark,C.J. Roberts
+S01,9780450524684,2,claude-review,The Dark Half,Stephen King
+S01,9780385738590,1,claude-review,The Dark and Hollow Places,Carrie Ryan
+S01,9781439192566,2,claude-review,"Full Dark, No Stars",Stephen King
+S02,9781502830821,0,claude-review,The Law of Moses,Amy Harmon
+S03,9781477808702,2,claude-review,Wayward,Blake Crouch
+S03,9780547959207,2,claude-review,Independent Study,Joelle Charbonneau
+S04,9781608198061,1,claude-review,Can't We Talk about Something More Pleasant?,Roz Chast
+S04,9780688009144,1,claude-review,A Chair for My Mother,Vera B. Williams
+S05,9780751554151,1,claude-review,I Let You Go,Clare Mackintosh
+S05,9780062225467,1,claude-review,Where They Found Her,Kimberly McCreight
+S05,9780446547567,3,claude-review,The Last Song,Nicholas Sparks
+S06,9780743437325,2,claude-review,The Lost City of Faar,D.J. MacHale
+S06,9780316002899,2,claude-review,Max,James Patterson
+S06,9780545284172,2,claude-review,The Shadow Throne,Jennifer A. Nielsen
+S06,9781741663020,2,claude-review,Halt's Peril,John Flanagan
+S07,9780060748128,1,claude-review,When Nietzsche Wept,Irvin D. Yalom
+S08,9780156031660,3,claude-review,Those Who Save Us,Jenna Blum
+M02,9780345455680,0,claude-review,London,Edward Rutherfurd
+M02,9780763601355,1,claude-review,Rikki-Tikki-Tavi,Rudyard Kipling
+M04,9780399254833,1,claude-review,Wolfsbane,Andrea Cremer
+M04,9780152046927,1,claude-review,Calling on Dragons,Patricia C. Wrede
+M04,9780062085610,1,claude-review,Sweet Evil,Wendy Higgins
+M04,9780061985843,1,claude-review,Paranormalcy,Kiersten White
+M04,9780061132230,1,claude-review,Dance with a Vampire,Ellen Schreiber
+M04,9780061670855,1,claude-review,The Initiation / The Captive Part I,L.J. Smith
+M04,9780312624699,1,claude-review,Taken at Dusk,C.C. Hunter
+M05,9780007137817,2,claude-review,Killers of the Dawn,Darren Shan
+M05,9781582404875,2,claude-review,"The Walking Dead, Vol. 03: Safety Behind Bars",Robert Kirkman
+N01,9780553580228,3,claude-review,False Memory,Dean Koontz
+N01,9780441020317,0,claude-review,Dead Reckoning,Charlaine Harris
+N01,9780735276475,2,claude-review,Normal People,Sally Rooney
+N02,9780345533234,0,claude-review,Never Seduce a Scot,Maya Banks
+N02,9780446401036,0,claude-review,Pleasure Unbound,Larissa Ione
+N02,9780152046927,2,claude-review,Calling on Dragons,Patricia C. Wrede
+N02,9780006486039,2,claude-review,Fool's Fate,Robin Hobb
+N02,9780553573411,1,claude-review,Royal Assassin,Robin Hobb
+N03,9780312352561,3,claude-review,A Fatal Grace,Louise Penny
+N04,9780345404473,3,claude-review,Do Androids Dream of Electric Sheep?,Philip K. Dick
+N04,9780804139021,0,claude-review,The Martian,Andy Weir
+N04,9780345453747,0,claude-review,The Ultimate Hitchhiker's Guide to the Galaxy,Douglas Adams
+N05,9780440243670,0,claude-review,Nothing to Lose,Lee Child
+N05,9780446528054,1,claude-review,Dear John,Nicholas Sparks
+V01,9780752863887,2,claude-review,The Bourne Supremacy,Robert Ludlum
+V01,9781416595236,2,claude-review,The Last Man,Vince Flynn
+V01,9780307278272,3,claude-review,A Simple Plan,Scott B. Smith
+V01,9780061015731,3,claude-review,State of Fear,Michael Crichton
+V02,9781595142511,2,claude-review,Strange Angels,Lili St. Crow
+V02,9781439123126,1,claude-review,Demon from the Dark,Kresley Cole
+V02,9780553580228,2,claude-review,False Memory,Dean Koontz
+V02,9780425142486,3,claude-review,The Funhouse,Dean Koontz
+V03,9780061985867,2,claude-review,Supernaturally,Kiersten White
+V03,9780786851478,2,claude-review,The Arctic Incident,Eoin Colfer
+V03,9780007241620,3,claude-review,Skulduggery Pleasant,Derek Landy
+V04,9781501129742,1,claude-review,End of Watch,Stephen King
+V04,9781941098110,0,claude-review,Alpha,Jasinda Wilder
+P01,9780441017157,0,claude-review,Dead and Gone,Charlaine Harris
+P01,9780307269751,2,claude-review,The Girl with the Dragon Tattoo,Stieg Larsson
+P01,9781416502609,2,claude-review,Two Little Girls In Blue,Mary Higgins Clark
+P02,9780099642619,0,claude-review,The Fourth Protocol,Frederick Forsyth
+P02,9780451187840,2,claude-review,We the Living,Ayn Rand
+P02,9780763622596,2,claude-review,Feed,M.T. Anderson
+P02,9780553265958,3,claude-review,Darkness at Noon,Arthur Koestler
+P03,9780803736993,0,claude-review,My Life Next Door,Huntley Fitzpatrick
+P04,9780446580342,1,claude-review,Simple Genius,David Baldacci
+P05,9780385611077,1,claude-review,I Shall Wear Midnight,Terry Pratchett
+P05,9780451459879,2,claude-review,Blood Rites,Jim Butcher
+P05,9780451464408,2,claude-review,Cold Days,Jim Butcher
+U01,9780836218251,2,claude-review,Something Under the Bed Is Drooling,Bill Watterson
+U01,9781400075713,1,claude-review,Blue Shoes and Happiness,Alexander McCall Smith
+U02,9780316069359,2,claude-review,The Fifth Witness,Michael Connelly
+U03,9780307118394,0,claude-review,Just Me and My Dad,Mercer Mayer
+U04,9780062390851,2,claude-review,Everybody lies,Seth Stephens-Davidowitz
+T01,9780241404829,0,claude-review,Artificial Intelligence,Melanie Mitchell
+T01,9780713914825,1,claude-review,Soul of a New Machine,Tracy Kidder
+T01,9781593274245,1,claude-review,Think like a Programmer,V. Anton Spraul
+T01,9780471722571,2,claude-review,Systems Analysis and Design,Alan Dennis
+T01,9781119485544,0,claude-review,Hacking for Dummies,Kevin Beaver
+T02,9781783555147,0,claude-review,Python Machine Learning,Sebastian Raschka
+T02,9781535483834,0,claude-review,Python,Byron Francis
+T02,9780789751980,1,claude-review,C Programming Absolute Beginner's Guide,Greg Perry
+T02,9781119137863,0,claude-review,CompTIA a+ Complete Study Guide,Quentin Docter
+T02,9780138546625,1,claude-review,Structured computer organization,Andrew S. Tanenbaum
+T02,9781323170564,0,claude-review,Linear algebra and its applications,David C. Lay
+T02,9780131437401,0,claude-review,Introductory Linear Algebra,Bernard Kolman
+T04,9781722834920,1,claude-review,Learn Programming,Antti Salonen
+T04,9780789751980,0,claude-review,C Programming Absolute Beginner's Guide,Greg Perry
+T04,9781593279929,1,claude-review,Automate the Boring Stuff with Python,Al Sweigart
+T04,9781118057315,1,claude-review,Beginning Python,James Payne
+T04,9781098155438,1,claude-review,Think Python,Allen Downey
+T04,9780596004651,0,claude-review,Head First Java,Kathy Sierra
+T06,9781108569323,1,claude-review,Mathematics for Machine Learning,Marc Peter Deisenroth
+T06,9780131860612,1,claude-review,Differential Equations and Linear Algebra (2nd Edition),Jerry Farlow
+T06,9780133214314,1,claude-review,Advanced engineering mathematics,Michael D. Greenberg
+T06,9780262306164,0,claude-review,Machine Learning,Kevin P. Murphy
+T06,9780262035613,0,claude-review,Deep Learning,Ian Goodfellow
+T06,9781098122461,0,claude-review,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",Aurélien Géron
+T06,9781782369219,0,claude-review,C++,Paul J. Deitel
+T06,9781292061429,0,claude-review,Modern Operating Systems,Andrew S. Tanenbaum
+T06,9780470274262,1,claude-review,Matrices and tensors in physics,A. W. Joshi
+T08,9780141985428,0,claude-review,Weapons of Math Destruction,Cathy O'Neil
+T08,9780134847993,2,claude-review,Data Structures and Algorithms in Java,Robert Lafore
+T08,9780132100670,1,claude-review,Pragmatic Programmer,Andrew Hunt
+T09,9781476708690,0,claude-review,"The Innovators: How a Group of  Hackers, Geniuses and Geeks Created the Digital Revolution",Walter Isaacson
+T09,9780262035613,0,claude-review,Deep Learning,Ian Goodfellow
+T10,9780789751980,0,claude-review,C Programming Absolute Beginner's Guide,Greg Perry
+T10,9781118290279,1,claude-review,Data Structures and Algorithms in Python,Michael T. Goodrich
+T11,9780061733642,0,claude-review,"Game Change: Obama and the Clintons, McCain and Palin, and the Race of a Lifetime",John Heilemann
+L07,9780062081018,0,claude-review,Twisted,Sara Shepard
+L07,9780525952060,0,claude-review,Live Wire,Harlan Coben
+L07,9780394758282,0,claude-review,The Big Sleep,Raymond Chandler
+L07,9780140367539,0,claude-review,Little Lord Fauntleroy,Frances Hodgson Burnett
+L07,9780007120819,0,claude-review,The Big Four,Agatha Christie
+L08,9780345504982,0,claude-review,The Twelve,Justin Cronin
+L10,9780007442911,0,claude-review,Insurgent,Veronica Roth
+L12,9780156029025,0,claude-review,A Drink Before the War,Dennis Lehane
+L12,9780805096668,0,claude-review,Killing Kennedy: The End of Camelot,Bill O'Reilly
+L12,9780553116601,0,claude-review,The Amityville Horror,Jay Anson
+L13,9780316030892,0,claude-review,Rose in Bloom,Louisa May Alcott
+L13,9780743272490,0,claude-review,The Constant Princess,Philippa Gregory
+L14,9780307341563,0,claude-review,Dark Places,Gillian Flynn
+L14,9780345533623,0,claude-review,Tricked,Kevin Hearne
+L14,9780345363138,0,claude-review,The Sunne in Splendour,Sharon Kay Penman
+L14,9781416983095,0,claude-review,"Thirst No. 2: Phantom, Evil Thirst, and Creatures of Forever",Christopher Pike
+L15,9780688040451,0,claude-review,Mufaro's Beautiful Daughters: An African Tale,John Steptoe
+L17,9780131984615,0,claude-review,Software engineering,Shari Lawrence Pfleeger
+L17,9780596528980,0,claude-review,Python Pocket Reference,Mark Lutz
+L17,9781782168492,0,claude-review,Kali Linux,Wolf Halton
+L18,9780316025058,0,claude-review,North of Beautiful,Justina Chen
+L18,9780060987527,0,claude-review,Confessions of an Ugly Stepsister,Gregory Maguire
+L18,9781301673872,0,claude-review,Making Faces,Amy Harmon
+L19,9781416927884,0,claude-review,"Stormy, Misty's Foal",Marguerite Henry
+L19,9781405209496,0,claude-review,National Velvet,Enid Bagnold
+L19,9781481406734,0,claude-review,Misbehaving,Abbi Glines
+L22,9780312621681,0,claude-review,The Witch's Daughter,Paula Brackston
+L23,9780062409928,0,claude-review,The Muse,Jessie Burton
+L23,9781903434772,0,claude-review,The Thief Lord,Cornelia Funke
+L23,9780312857066,0,claude-review,Stone of Tears,Terry Goodkind
+L23,9780312348670,0,claude-review,Love the One You're With,Emily Giffin
+L23,9780486234113,0,claude-review,Concerning the Spiritual in Art,Wassily Kandinsky
+L24,9781579126933,0,claude-review,4:50 from Paddington,Agatha Christie
+L24,9780062413864,0,claude-review,What She Knew,Gilly Macmillan
+A06,9780385619264,3,claude-review,Snuff,Terry Pratchett
+A09,9780515141429,2,claude-review,Killing Floor,Lee Child
+A14,9780615408989,0,claude-review,That Boy,Jillian Dodd
+A14,9781599909868,1,claude-review,The Assassin and the Underworld,Sarah J. Maas
+G05,9780374173951,2,claude-review,The Hypnotist,Lars Kepler
+G05,9780804177993,3,claude-review,Black-Eyed Susans,Julia Heaberlin
+G05,9780399153938,1,claude-review,Book of the Dead,Patricia Cornwell
+G06,9781595324061,2,claude-review,"Fruits Basket, Vol. 11",Natsuki Takaya
+G06,9781421508221,3,claude-review,"Vampire Knight, Vol. 1",Matsuri Hino
+G06,9781421501703,2,claude-review,"Death Note, Vol. 3: Hard Run",Tsugumi Ohba
+G06,9781421503318,2,claude-review,"Death Note, Vol. 4: Love",Tsugumi Ohba
+G07,9780749934439,0,claude-review,Imitation in Death,J.D. Robb
+G07,9780679751526,3,claude-review,Midnight in the Garden of Good and Evil,John Berendt
+G08,9780812974041,1,claude-review,In the Company of the Courtesan,Sarah Dunant
+G08,9780743467216,3,claude-review,The Wedding,Julie Garwood
+G08,9780743457262,2,claude-review,A Knight in Shining Armor,Jude Deveraux
+G08,9780375703829,2,claude-review,Silk,Alessandro Baricco
+G09,9781416971733,1,claude-review,Leviathan,Scott Westerfeld
+G09,9781907411052,1,claude-review,Under the Never Sky,Veronica Rossi
+G09,9780345391803,2,claude-review,The Hitchhiker's Guide to the Galaxy,Douglas Adams
+G11,9780767919388,1,claude-review,At Home: A Short History of Private Life,Bill Bryson
+G12,9780307594884,3,claude-review,My Beloved World,Sonia Sotomayor
+G13,9781416914280,3,claude-review,City of Bones,Cassandra Clare
+G13,9780758216410,3,claude-review,Succubus Blues,Richelle Mead
+G14,9780345503800,0,claude-review,The Warded Man,Peter V. Brett
+G14,9780345404312,2,claude-review,Taltos,Anne Rice
+G14,9780893753573,3,claude-review,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+G14,9781411415935,2,claude-review,The Picture of Dorian Gray: A Graphic Novel,Oscar Wilde
+G15,9780810979772,0,claude-review,Do-It-Yourself Book,Jeff Kinney
+G16,9780312948559,3,claude-review,Still Life,Louise Penny
+G16,9780375422713,2,claude-review,In the Company of Cheerful Ladies,Alexander McCall Smith
+S09,9780330371230,3,claude-review,High Five,Janet Evanovich
+S10,9780375422713,1,claude-review,In the Company of Cheerful Ladies,Alexander McCall Smith
+S10,9780525425922,1,claude-review,Just One Year,Gayle Forman
+S11,9780312377021,3,claude-review,A Rule Against Murder,Louise Penny
+S11,9780743477154,1,claude-review,Postmortem,Patricia Cornwell
+S11,9780399157448,1,claude-review,Chasing Fire,Nora Roberts
+S12,9780061161537,1,claude-review,Inés of My Soul,Isabel Allende
+S12,9780688163181,2,claude-review,The Given Day,Dennis Lehane
+S12,9781451693560,2,claude-review,The Museum of Extraordinary Things,Alice Hoffman
+S13,9780192840509,1,claude-review,Aesop's Fables,Aesop
+S14,9780399171086,1,claude-review,The Collector,Nora Roberts
+S14,9780060839789,3,claude-review,"The Professor and the Madman: A Tale of Murder, Insanity and the Making of the Oxford English Dictionary",Simon Winchester
+S14,9780061147937,1,claude-review,Heart-Shaped Box,Joe Hill
+S14,9780752861746,3,claude-review,The Postman Always Rings Twice,James M. Cain
+S14,9781455559312,1,claude-review,Promised,Jodi Ellen Malpas
+S15,9780099498599,2,claude-review,Circle of Friends,Maeve Binchy
+S15,9780763625894,3,claude-review,The Miraculous Journey of Edward Tulane,Kate DiCamillo
+S15,9780374382216,2,claude-review,Hidden,Helen Frost
+S16,9780345459404,3,claude-review,Perdido Street Station,China Mieville
+S16,9780876856833,1,claude-review,You Get So Alone at Times That it Just Makes Sense,Charles Bukowski
+S17,9780345533456,2,claude-review,Ticktock,Dean Koontz
+S17,9780064410144,1,claude-review,The Grim Grotto,Lemony Snicket
+S18,9780763625894,1,claude-review,The Miraculous Journey of Edward Tulane,Kate DiCamillo
+S19,9780312546601,2,claude-review,Retribution,Sherrilyn Kenyon
+S19,9780140443332,3,claude-review,The Oresteia,Aeschylus
+S19,9780590431972,1,claude-review,Scary Stories to Tell in the Dark,Alvin Schwartz
+S19,9780451463791,1,claude-review,Ghost Story,Jim Butcher
+S20,9780373775811,0,claude-review,The Darkest Surrender,Gena Showalter
+S21,9780590920681,3,claude-review,Ella Enchanted,Gail Carson Levine
+S21,9780743298025,1,claude-review,The Thirteenth Tale,Diane Setterfield
+S21,9780316068680,3,claude-review,Sisters Red,Jackson Pearce
+S21,9780060874193,3,claude-review,A Kiss in Time,Alex Flinn
+S21,9780670844876,1,claude-review,The Stinky Cheese Man and Other Fairly Stupid Tales,Jon Scieszka
+S22,9780316084253,0,claude-review,"Black Butler, Vol. 2",Yana Toboso
+S22,9780505524478,0,claude-review,Dark Fire,Christine Feehan
+S22,9781563898686,0,claude-review,Batman: Dark Victory,Jeph Loeb
+S22,9780307341563,0,claude-review,Dark Places,Gillian Flynn
+S22,9780399167850,0,claude-review,The Midnight Star,Marie Lu
+S23,9780452287020,0,claude-review,Girl with a Pearl Earring,Tracy Chevalier
+S24,9780553805550,0,claude-review,No Time for Goodbye,Linwood Barclay
+S24,9780316399623,3,claude-review,The First Fifteen Lives of Harry August,Claire North
+S24,9780743457262,1,claude-review,A Knight in Shining Armor,Jude Deveraux
+S25,9780099505969,1,claude-review,The Redeemer,Jo Nesbo
+S25,9781595541567,1,claude-review,House,Frank E. Peretti
+S26,9780547248042,1,claude-review,This World We Live In,Susan Beth Pfeffer
+S28,9780373211395,3,claude-review,Talon,Julie Kagawa
+S29,9780380731862,3,claude-review,Shutter Island,Dennis Lehane
+S29,9781250105608,3,claude-review,The Dry,Jane Harper
+S29,9781503934719,3,claude-review,The Butterfly Garden,Dot Hutchison
+S30,9780141321318,1,claude-review,The Eternity Code,Eoin Colfer
+M08,9780312575939,1,claude-review,Glimmerglass,Jenna Black
+M08,9780786930708,1,claude-review,Dragons of Spring Dawning,Margaret Weis
+M08,9780552124478,1,claude-review,Enchanters' End Game,David Eddings
+M09,9780723247708,0,claude-review,The Tale of Peter Rabbit,Beatrix Potter
+M09,9781593080501,1,claude-review,The Collected Poems of Emily Dickinson,Emily Dickinson
+M09,9780060775858,0,claude-review,Goodnight Moon,Margaret Wise Brown
+M10,9780061985867,2,claude-review,Supernaturally,Kiersten White
+M10,9781595145840,3,claude-review,Falling Kingdoms,Morgan Rhodes
+M10,9781406310276,2,claude-review,Monsters of Men,Patrick Ness
+M10,9780375866562,3,claude-review,Seraphina,Rachel Hartman
+M10,9781402784033,3,claude-review,Tiger's Curse,Colleen Houck
+M10,9780373210183,2,claude-review,The Iron Queen,Julie Kagawa
+M10,9781594744761,3,claude-review,Miss Peregrine’s Home for Peculiar Children,Ransom Riggs
+M10,9780765330420,1,claude-review,The Alloy of Law,Brandon Sanderson
+M11,9780739429334,3,claude-review,Q is for Quarry,Sue Grafton
+M11,9781618680525,2,claude-review,14,Peter Clines
+M13,9781455521203,3,claude-review,The Target,David Baldacci
+M13,9781455536252,3,claude-review,The Guilty,David Baldacci
+M13,9780752880785,2,claude-review,Gone,Lisa Gardner
+M13,9780451194008,1,claude-review,Rosemary's Baby,Ira Levin
+M13,9780307278272,1,claude-review,A Simple Plan,Scott B. Smith
+M13,9780006158042,1,claude-review,Where Eagles Dare,Alistair MacLean
+M14,9781455502752,1,claude-review,Mortality,Christopher Hitchens
+M14,9781400069224,0,claude-review,Zealot: The Life and Times of Jesus of Nazareth,Reza Aslan
+M14,9781593275907,1,claude-review,Black Hat Python,Justin Seitz
+M16,9780316079914,2,claude-review,The Blinding Knife,Brent Weeks
+M16,9780345350497,3,claude-review,The Mists of Avalon,Marion Zimmer Bradley
+M17,9780064407311,1,claude-review,Monster,Walter Dean Myers
+M17,9781503934719,3,claude-review,The Butterfly Garden,Dot Hutchison
+M17,9780060092573,3,claude-review,The Terminal Man,Michael Crichton
+M19,9780060244057,0,claude-review,If You Give a Moose a Muffin,Laura Joffe Numeroff
+M19,9781419710209,2,claude-review,El Deafo,Cece Bell
+M19,9780061944383,2,claude-review,Big Nate on a Roll,Lincoln Peirce
+M19,9781419711329,2,claude-review,Hard Luck,Jeff Kinney
+M20,9780425192733,0,claude-review,Portrait of a Killer: Jack the Ripper - Case Closed,Patricia Cornwell
+M20,9781476731902,1,claude-review,The Short and Tragic Life of Robert Peace: A Brilliant Young Man Who Left Newark for the Ivy League,Jeff Hobbs
+M20,9781400067893,1,claude-review,Elizabeth the Queen: The Life of a Modern Monarch,Sally Bedell Smith
+M20,9780812966008,1,claude-review,Theodore Rex,Edmund Morris
+M21,9780006925262,3,claude-review,The Secret of Shadow Ranch,Carolyn Keene
+M21,9780743484381,1,claude-review,Where Are The Children?,Mary Higgins Clark
+M21,9780545060424,2,claude-review,One False Note,Gordon Korman
+M21,9780007120703,1,claude-review,Poirot Investigates,Agatha Christie
+M22,9780345539847,1,claude-review,Morning Star,Pierce Brown
+M22,9780062310712,2,claude-review,King's Cage,Victoria Aveyard
+M23,9780553816716,3,claude-review,The Notebook,Nicholas Sparks
+M23,9780986416705,3,claude-review,Kaleidoscope Hearts,Claire Contreras
+M23,9781402271519,3,claude-review,Double Time,Olivia Cunning
+M23,9781622669103,3,claude-review,Tempting the Best Man,J. Lynn
+N06,9781421511306,2,claude-review,"Vampire Knight, Vol. 2",Matsuri Hino
+N07,9780312605391,0,claude-review,Love in the Afternoon,Lisa Kleypas
+N07,9781478329459,0,claude-review,On Dublin Street,Samantha Young
+N07,9781482332575,0,claude-review,Fight with Me,Kristen Proby
+N07,9781476271415,0,claude-review,Avoiding Commitment,K.A. Linde
+N07,9780451474704,2,claude-review,Saint Anything,Sarah Dessen
+N07,9780670061051,2,claude-review,Just Listen,Sarah Dessen
+N07,9780142401767,2,claude-review,Keeping the Moon,Sarah Dessen
+N07,9780545224901,2,claude-review,The Scorpio Races,Maggie Stiefvater
+N07,9781301442430,2,claude-review,Silence,Natasha Preston
+N07,9780064431835,0,claude-review,The Little Old Lady Who Was Not Afraid of Anything,Linda Williams
+N07,9780425189030,0,claude-review,Portrait in Death,J.D. Robb
+N07,9780061253102,1,claude-review,Prom Nights from Hell,Meg Cabot
+N08,9780451194008,2,claude-review,Rosemary's Baby,Ira Levin
+N08,9781455501496,1,claude-review,Lethal,Sandra Brown
+N08,9780553804324,0,claude-review,Hide,Lisa Gardner
+N09,9780061142024,3,claude-review,Stardust,Neil Gaiman
+N09,9780803730021,0,claude-review,Impossible,Nancy Werlin
+N09,9780060557812,3,claude-review,Neverwhere,Neil Gaiman
+N09,9780312575939,0,claude-review,Glimmerglass,Jenna Black
+N09,9780786930708,2,claude-review,Dragons of Spring Dawning,Margaret Weis
+N09,9780006486039,2,claude-review,Fool's Fate,Robin Hobb
+N10,9780064410144,1,claude-review,The Grim Grotto,Lemony Snicket
+N10,9780451169518,0,claude-review,It,Stephen King
+N10,9780345533456,2,claude-review,Ticktock,Dean Koontz
+N10,9780751530490,0,claude-review,Unnatural Exposure,Patricia Cornwell
+N11,9780345494856,0,claude-review,Innocent Traitor,Alison Weir
+N11,9780062391742,0,claude-review,My Lady Jane,Cynthia Hand
+N11,9780517223543,2,claude-review,Sarum: The Novel of England,Edward Rutherfurd
+N12,9780446696135,3,claude-review,A Bend in the Road,Nicholas Sparks
+N12,9780553805550,1,claude-review,No Time for Goodbye,Linwood Barclay
+N13,9780061974588,0,claude-review,The Rise of Nine,Pittacus Lore
+N13,9780099580485,3,claude-review,Wool,Hugh Howey
+N14,9780007113804,1,claude-review,Murder in Mesopotamia,Agatha Christie
+N14,9780007151660,2,claude-review,The Man in the Brown Suit,Agatha Christie
+N14,9780743292764,2,claude-review,The Colorado Kid,Stephen King
+N14,9780224085618,1,claude-review,Her Fearful Symmetry,Audrey Niffenegger
+N15,9781405230278,2,claude-review,The Enchanted Wood,Enid Blyton
+N15,9780786939534,0,claude-review,Homeland,R.A. Salvatore
+N15,9780786942466,0,claude-review,The Crystal Shard,R.A. Salvatore
+N15,9780006486039,2,claude-review,Fool's Fate,Robin Hobb
+N15,9780803730021,1,claude-review,Impossible,Nancy Werlin
+N16,9780385722223,3,claude-review,Stranger than Fiction,Chuck Palahniuk
+N16,9781882577675,0,claude-review,The Declaration of Independence and the Constitution of the United States of America,Founding Fathers
+N16,9780307594884,2,claude-review,My Beloved World,Sonia Sotomayor
+N16,9780091909109,0,claude-review,Confessions of an Economic Hit Man,John Perkins
+N17,9780451194008,0,claude-review,Rosemary's Baby,Ira Levin
+N17,9780399135798,0,claude-review,Cold Fire,Dean Koontz
+N17,9780446609401,0,claude-review,Cradle and All,James Patterson
+N17,9780525955108,3,claude-review,Home,Harlan Coben
+N18,9780399252648,1,claude-review,Mockingbird,Kathryn Erskine
+N18,9780312367466,1,claude-review,Elsewhere,Gabrielle Zevin
+N18,9780545132053,3,claude-review,Smile,Raina Telgemeier
+N18,9780857078629,0,claude-review,UnWholly,Neal Shusterman
+N18,9781451635751,3,claude-review,Between the Lines,Jodi Picoult
+N18,9781596437135,2,claude-review,Anya's Ghost,Vera Brosgol
+N18,9780399162596,2,claude-review,Fish in a Tree,Lynda Mullaly Hunt
+N18,9780061132230,2,claude-review,Dance with a Vampire,Ellen Schreiber
+N18,9780064472777,3,claude-review,All-American Girl,Meg Cabot
+N19,9780062012012,1,claude-review,Dreamless,Josephine Angelini
+N19,9780062267726,0,claude-review,From Ashes,Molly McAdams
+N19,9780374346676,1,claude-review,Love Letters to the Dead,Ava Dellaira
+N19,9780064472807,0,claude-review,Princess in Love,Meg Cabot
+N19,9780553807257,0,claude-review,Love You More,Lisa Gardner
+N19,9781421513430,2,claude-review,"Love★Com, Vol. 1",Aya Nakahara
+N19,9780553535648,2,claude-review,Tell Me Three Things,Julie Buxbaum
+N19,9781421503318,0,claude-review,"Death Note, Vol. 4: Love",Tsugumi Ohba
+N19,9780061124266,1,claude-review,Veronika Decides to Die,Paulo Coelho
+N19,9780671042851,0,claude-review,The Girl Who Loved Tom Gordon,Stephen King
+N19,9780385523233,1,claude-review,At the Water's Edge,Sara Gruen
+N19,9780763600136,0,claude-review,Guess How Much I Love You,Sam McBratney
+N20,9781301347940,0,claude-review,Real,Katy Evans
+N20,9780552152945,3,claude-review,Moving Pictures,Terry Pratchett
+N20,9780671742515,3,claude-review,The Long Dark Tea-Time of the Soul,Douglas Adams
+N20,9780330348775,3,claude-review,N is for Noose,Sue Grafton
+N20,9780060513061,2,claude-review,A Light in the Attic,Shel Silverstein
+V05,9780739429334,3,claude-review,Q is for Quarry,Sue Grafton
+V05,9780448095028,2,claude-review,The Hidden Staircase,Carolyn Keene
+V05,9781579126285,3,claude-review,Evil Under the Sun,Agatha Christie
+V06,9780439992602,2,claude-review,Magic Steps,Tamora Pierce
+V06,9780141321318,2,claude-review,The Eternity Code,Eoin Colfer
+V06,9780786930708,2,claude-review,Dragons of Spring Dawning,Margaret Weis
+V06,9780060557812,3,claude-review,Neverwhere,Neil Gaiman
+V06,9780152046927,2,claude-review,Calling on Dragons,Patricia C. Wrede
+V07,9781591163275,3,claude-review,"Case Closed, Vol. 1",Gosho Aoyama
+V07,9781607062547,2,claude-review,"The Walking Dead, Vol. 12: Life Among Them",Robert Kirkman
+V07,9781593074494,3,claude-review,Those Left Behind,Joss Whedon
+V07,9781591169284,3,claude-review,"Full Moon o Sagashite, Vol. 1",Arina Tanemura
+V07,9781607060758,2,claude-review,"The Walking Dead, Vol. 10: What We Become",Robert Kirkman
+V08,9781622669103,3,claude-review,Tempting the Best Man,J. Lynn
+V08,9780553816716,3,claude-review,The Notebook,Nicholas Sparks
+V08,9780986416705,3,claude-review,Kaleidoscope Hearts,Claire Contreras
+V08,9781402271519,3,claude-review,Double Time,Olivia Cunning
+V09,9781476754451,3,claude-review,Mr. Mercedes,Stephen King
+V09,9780452284692,3,claude-review,The Gunslinger,Stephen King
+V10,9780688177768,3,claude-review,The Nazi Officer's Wife: How One Jewish Woman Survived the Holocaust,Edith Hahn Beer
+V10,9780684804484,3,claude-review,No Ordinary Time: Franklin and Eleanor Roosevelt: The Home Front in World War II,Doris Kearns Goodwin
+V10,9781842323007,2,claude-review,A Town Like Alice,Nevil Shute
+V11,9781910751770,3,claude-review,The Girl In The Ice,Robert Bryndza
+V11,9780380731862,3,claude-review,Shutter Island,Dennis Lehane
+V11,9780553804324,3,claude-review,Hide,Lisa Gardner
+V11,9780451194008,2,claude-review,Rosemary's Baby,Ira Levin
+V12,9780141311425,2,claude-review,Going Solo,Roald Dahl
+V12,9781551927008,1,claude-review,Harry Potter and the Philosopher's Stone [Adult Edition],J. K. Rowling
+V12,9780451207142,0,claude-review,The Pillars of the Earth,Ken Follett
+V12,9780007165162,0,claude-review,Are You Afraid of the Dark?,Sidney Sheldon
+V12,9780670844876,0,claude-review,The Stinky Cheese Man and Other Fairly Stupid Tales,Jon Scieszka
+V13,9780060855901,2,claude-review,Equal Rites,Terry Pratchett
+V13,9780060855925,2,claude-review,The Color of Magic,Terry Pratchett
+V14,9780547248042,2,claude-review,This World We Live In,Susan Beth Pfeffer
+V15,9780552152945,0,claude-review,Moving Pictures,Terry Pratchett
+V15,9780061125270,0,claude-review,The Voyage of the Dawn Treader,C. S. Lewis
+V15,9780064440028,0,claude-review,Danny and the Dinosaur (An I Can Read Book),Syd Hoff
+V16,9780807068779,3,claude-review,"New and Selected Poems, Volume One",Mary Oliver
+P06,9780812550283,2,claude-review,A Crown of Swords,Robert Jordan
+P07,9781423111443,0,claude-review,Deadly Little Secret,Laurie Faria Stolarz
+P07,9781250061775,0,claude-review,A Little Something Different,Sandy Hall
+P07,9780525952060,0,claude-review,Live Wire,Harlan Coben
+P07,9780060525125,1,claude-review,Size 14 Is Not Fat Either,Meg Cabot
+P08,9781434101693,0,claude-review,"The Wasteland, Prufrock and Other Poems",T.S. Eliot
+P09,9780553807257,2,claude-review,Love You More,Lisa Gardner
+P09,9781910751770,1,claude-review,The Girl In The Ice,Robert Bryndza
+P11,9780062224071,1,claude-review,"Fortunately, the Milk",Neil Gaiman
+P13,9781593082642,1,claude-review,Northanger Abbey,Jane Austen
+P14,9780553214321,0,claude-review,The Island of Dr. Moreau,H. G. Wells
+P14,9781451681734,0,claude-review,The Light Between Oceans,M.L. Stedman
+P14,9780064400206,1,claude-review,Sounder,William H. Armstrong
+P14,9780312662752,0,claude-review,First Grave on the Right,Darynda Jones
+P14,9781442488663,0,claude-review,While It Lasts,Abbi Glines
+P14,9780439796637,1,claude-review,War Horse,Michael Morpurgo
+P14,9781405209496,1,claude-review,National Velvet,Enid Bagnold
+P14,9780671447540,2,claude-review,"Mornings on Horseback: The Story of an Extraordinary Family, a Vanished Way of Life, and the Unique Child Who Became Theodore Roosevelt",David McCullough
+P15,9780312382858,0,claude-review,Patient Zero,Jonathan Maberry
+P17,9780141325026,0,claude-review,The Enemy,Charlie Higson
+P19,9780062026514,1,claude-review,The Crown of Embers,Rae Carson
+P19,9781476792484,0,claude-review,After,Anna Todd
+P20,9780062071040,0,claude-review,Partials,Dan Wells
+P20,9780340893616,0,claude-review,Sapphique,Catherine Fisher
+P20,9780451463654,0,claude-review,Side Jobs: Stories from the Dresden Files,Jim Butcher
+U05,9780375829130,0,claude-review,The Monster at the End of this Book,Jon Stone
+U05,9780312311353,2,claude-review,"The Pianist: The Extraordinary True Story of One Man's Survival in Warsaw, 1939-1945",Wladyslaw Szpilman
+U05,9780590316811,0,claude-review,How Do Dinosaurs Say Good Night?,Jane Yolen
+U05,9780307118387,0,claude-review,Just for You,Mercer Mayer
+U06,9781301120185,1,claude-review,Fighting for Flight,J.B. Salsbury
+U06,9780679847595,1,claude-review,Ballet Shoes,Noel Streatfeild
+U07,9780006280835,0,claude-review,Surprised by Joy: The Shape of My Early Life,C. S. Lewis
+U08,9781593276034,0,claude-review,lol,Eric Matthes
+U08,9780553535648,2,claude-review,Tell Me Three Things,Julie Buxbaum
+U08,9780684868073,1,claude-review,In His Own Write,John Lennon
+U08,9781455559312,1,claude-review,Promised,Jodi Ellen Malpas
+U08,9780439050234,0,claude-review,Duck On A Bike,David Shannon
+U08,9781451617818,2,claude-review,Who Do You Love,Jennifer Weiner
+U09,9781722502058,1,claude-review,The Science of Getting Rich,Wallace D. Wattles
+U09,9780312323868,2,claude-review,Something Blue,Emily Giffin
+U10,9781608198061,2,claude-review,Can't We Talk about Something More Pleasant?,Roz Chast
+U10,9780307118394,0,claude-review,Just Me and My Dad,Mercer Mayer
+U10,9780803740815,1,claude-review,The War that Saved My Life,Kimberly Brubaker Bradley
+U10,9780062294807,1,claude-review,Stay with Me,J. Lynn
+U11,9780312323868,1,claude-review,Something Blue,Emily Giffin
+U12,9780375836947,1,claude-review,Looking for Alibrandi,Melina Marchetta
+U12,9781416938743,1,claude-review,Assholes Finish First,Tucker Max
+U12,9780525425922,1,claude-review,Just One Year,Gayle Forman
+U12,9780425195208,2,claude-review,The Cat Who Could Read Backwards,Lilian Jackson Braun
+U12,9780988812512,1,claude-review,Vain,Fisher Amelie
+U12,9780785135821,1,claude-review,"Ender's Game, Volume 2: Command School",Christopher Yost
+U13,9780525421030,2,claude-review,If I Stay,Gayle Forman
+U13,9780804178778,2,claude-review,Make Me,Lee Child
+U13,9780525952763,1,claude-review,Catch Me,Lisa Gardner
+U13,9781665182768,1,claude-review,The 48 Laws of Power,Robert Greene
+U13,9780805080483,2,claude-review,The Book of Three,Lloyd Alexander
+U14,9780545326995,2,claude-review,Drama,Raina Telgemeier
+U14,9780373210022,1,claude-review,Intertwined,Gena Showalter
+U14,9781407149073,2,claude-review,To All The Boys I've Loved Before,Jenny Han
+H08,9781452615516,0,claude-review,You are a badass,Jen Sincero
+H08,9780380728855,1,claude-review,The True Confessions of Charlotte Doyle,Avi
+H09,9781491946251,0,claude-review,Fluent Python,Luciano Ramalho
+H09,9780385671101,0,claude-review,Damned,Chuck Palahniuk
+H09,9780399154485,0,claude-review,T is for Trespass,Sue Grafton
+H09,9780449221501,0,claude-review,K is for Killer,Sue Grafton
+H09,9780805019377,0,claude-review,L is for Lawless,Sue Grafton
+H10,9781490339979,0,claude-review,Leo,Mia Sheridan
+H10,9780380753024,0,claude-review,Gentle Rogue,Johanna Lindsey
+H10,9781451666175,0,claude-review,"Hyperbole and a Half: Unfortunate Situations, Flawed Coping Mechanisms, Mayhem, and Other Things That Happened",Allie Brosh
+H10,9780670061105,0,claude-review,That Summer,Sarah Dessen
+H10,9780330441551,0,claude-review,Seventh Heaven,Meg Cabot
+H10,9781416990659,0,claude-review,Amy & Roger's Epic Detour,Morgan Matson
+H10,9780425155189,0,claude-review,Rapture in Death,J.D. Robb
+H10,9780451471475,0,claude-review,I Was Here,Gayle Forman
+H13,9780064410151,0,claude-review,The Penultimate Peril,Lemony Snicket
+H13,9780425243213,0,claude-review,The Next Always,Nora Roberts
+H13,9781423176374,0,claude-review,All Our Yesterdays,Cristin Terrill
+H13,9780670022410,0,claude-review,A Discovery of Witches,Deborah Harkness
+H13,9780330418881,0,claude-review,Every Boy's Got One,Meg Cabot
+H14,9781890774820,0,claude-review,Murach's MySQL,Joel Murach
+H14,9780007158515,0,claude-review,I Can Read With My Eyes Shut!,Dr. Seuss
+H14,9781599903385,0,claude-review,Need,Carrie Jones
+H15,9780525425922,0,claude-review,Just One Year,Gayle Forman
+H15,9781301027705,0,claude-review,Sweet Home,Tillie Cole
+H15,9780394758282,0,claude-review,The Big Sleep,Raymond Chandler
+H15,9781502830821,0,claude-review,The Law of Moses,Amy Harmon
+H15,9780689852237,0,claude-review,The House of the Scorpion,Nancy Farmer
+T13,9780596001674,0,claude-review,Python cookbook,Alex Martelli
+T13,9781119137863,0,claude-review,CompTIA a+ Complete Study Guide,Quentin Docter
+T13,9780201398151,1,claude-review,Software Engineering (6th Edition),Ian Sommerville
+T13,9781306451024,0,claude-review,SQL for Dummies,Allen G. Taylor
+T13,9780077122799,0,claude-review,Software Project Management,Bob Hughes
+T13,9780596004651,0,claude-review,Head First Java,Kathy Sierra
+T14,9781119485544,0,claude-review,Hacking for Dummies,Kevin Beaver
+T14,9780596004651,0,claude-review,Head First Java,Kathy Sierra
+T14,9781423954392,1,claude-review,CompTIA A+ Certification,CompTIA
+T15,9780130195708,1,claude-review,"Microprocessor Architecture, Programming, and Applications with the 8085 (5th Edition)",Ramesh S. Gaonkar
+T15,9780697268518,1,claude-review,Linear Algebra With Applications,Gareth Williams
+T15,9780813812700,1,claude-review,Analysis of faulted power systems,P. M. Anderson
+X01B,9780312934323,1,claude-review,Sins of the Night,Sherrilyn Kenyon
+X01B,9780345490650,1,claude-review,A Kiss of Shadows,Laurell K. Hamilton
+X01B,9780307277886,1,claude-review,Darkly Dreaming Dexter,Jeff Lindsay
+X01B,9780451464408,2,claude-review,Cold Days,Jim Butcher
+X01N,9780061020704,0,claude-review,The Light Fantastic,Terry Pratchett
+X01N,9780778303763,0,claude-review,The Darkest Passion,Gena Showalter
+X01N,9780843955286,0,claude-review,Dark Prince,Christine Feehan
+X01N,9780586066881,0,claude-review,A Darkness At Sethanon,Raymond E. Feist
+X01N,9780582823044,1,claude-review,Heart of darkness,Joseph Conrad
+X01N,9780553265958,0,claude-review,Darkness at Noon,Arthur Koestler
+X02B,9780393970128,3,claude-review,Dracula,Bram Stoker
+X02B,9780670023486,1,claude-review,Shadow of Night,Deborah Harkness
+X02B,9781844286195,1,claude-review,Raven's Gate,Anthony Horowitz
+X02B,9781599903385,1,claude-review,Need,Carrie Jones
+X02B,9780451119674,3,claude-review,The Shining,Stephen King
+X02B,9781411415935,2,claude-review,The Picture of Dorian Gray: A Graphic Novel,Oscar Wilde
+X02N,9780061138065,0,claude-review,Pale Demon,Kim Harrison
+X02N,9780007214143,0,claude-review,Cirque Du Freak,Darren Shan
+X02N,9780440496038,2,claude-review,The Wolves of Willoughby Chase,Joan Aiken
+X02N,9780425118702,0,claude-review,Midnight,Dean Koontz
+X02N,9780590477383,0,claude-review,One Day at Horrorland,R.L. Stine
+X03B,9780312377021,1,claude-review,A Rule Against Murder,Louise Penny
+X03B,9780002317856,3,claude-review,Sleeping Murder,Agatha Christie
+X03B,9781250022080,2,claude-review,The Nature of the Beast,Louise Penny
+X03B,9780312948559,2,claude-review,Still Life,Louise Penny
+X03B,9780316045520,0,claude-review,The Mysterious Benedict Society and the Prisoner's Dilemma,Trenton Lee Stewart
+X03N,9780312377021,1,claude-review,A Rule Against Murder,Louise Penny
+X03N,9780755328949,1,claude-review,The Cruelest Month,Louise Penny
+X03N,9781250022080,2,claude-review,The Nature of the Beast,Louise Penny
+X03N,9780316045520,0,claude-review,The Mysterious Benedict Society and the Prisoner's Dilemma,Trenton Lee Stewart
+X04B,9781439152782,1,claude-review,The Distant Hours,Kate Morton
+X04B,9780385538497,1,claude-review,The Winter People,Jennifer McMahon
+X04N,9781618680525,0,claude-review,14,Peter Clines
+X04N,9780062220967,0,claude-review,Asylum,Madeleine Roux
+X04N,9780152053109,2,claude-review,A Northern Light,Jennifer Donnelly
+X04N,9780062225436,1,claude-review,Reconstructing Amelia,Kimberly McCreight
+X05B,9780525422945,0,claude-review,Where She Went,Gayle Forman
+X05N,9781461091110,0,claude-review,Thoughtless,S.C. Stephens
+X05N,9780316032544,0,claude-review,New Moon,Stephenie Meyer
+X05N,9781444901665,0,claude-review,Origins,L.J. Smith
+X05N,9781416974512,0,claude-review,"Night World, No. 2",L.J. Smith
+X05N,9780525422945,0,claude-review,Where She Went,Gayle Forman
+X06B,9780062363237,1,claude-review,A Head Full of Ghosts,Paul Tremblay
+X06B,9780749935337,1,claude-review,Blue Dahlia,Nora Roberts
+X06B,9781781162644,2,claude-review,Joyland,Stephen King
+X06N,9781781162644,1,claude-review,Joyland,Stephen King
+X06N,9780375990694,1,claude-review,Teardrop,Lauren Kate
+X07B,9780385504225,1,claude-review,The Lost Symbol,Dan Brown
+X07B,9780553804324,0,claude-review,Hide,Lisa Gardner
+X07B,9780385537858,0,claude-review,Inferno,Dan Brown
+X07N,9780385537858,0,claude-review,Inferno,Dan Brown
+X07N,9780399900433,1,claude-review,The Matarese Circle,Robert Ludlum
+X08B,9780385611077,3,claude-review,I Shall Wear Midnight,Terry Pratchett
+X08B,9780670023486,2,claude-review,Shadow of Night,Deborah Harkness
+X08N,9780061138065,0,claude-review,Pale Demon,Kim Harrison
+X08N,9780552153157,0,claude-review,Lords and Ladies,Terry Pratchett
+X08N,9781401308209,0,claude-review,Wicked: The Grimmerie,David Cote
+X08N,9780064431835,0,claude-review,The Little Old Lady Who Was Not Afraid of Anything,Linda Williams
+X08N,9780061978067,0,claude-review,Pandemonium,Lauren Oliver
+X09B,9780061668067,2,claude-review,Spells,Aprilynne Pike
+X09B,9781416580959,0,claude-review,Pleasure of a Dark Prince,Kresley Cole
+X09B,9781619630628,1,claude-review,Crown of Midnight,Sarah J. Maas
+X09N,9780061214653,0,claude-review,Wicked Lovely,Melissa Marr
+X09N,9781408888186,0,claude-review,A Court of Thorns and Roses,Sarah J. Maas
+X09N,9781408810446,0,claude-review,Entice,Carrie Jones
+X09N,9780689878565,0,claude-review,In the Hand of the Goddess,Tamora Pierce
+X09N,9780312575939,0,claude-review,Glimmerglass,Jenna Black
+X09N,9780060734084,0,claude-review,Fairest,Gail Carson Levine
+X09N,9780007435319,1,claude-review,The Vampire Prince,Darren Shan
+X09N,9780722194393,1,claude-review,Nine Princes in Amber,Roger Zelazny
+X09N,9781582349060,0,claude-review,Enna Burning,Shannon Hale
+X09N,9780670072811,0,claude-review,Finnikin of the Rock,Melina Marchetta
+X10B,9780061974588,1,claude-review,The Rise of Nine,Pittacus Lore
+X10B,9780439829106,0,claude-review,"Tomorrow, When the War Began",John Marsden
+X10B,9780061969553,1,claude-review,I Am Number Four,Pittacus Lore
+X10N,9780345453747,2,claude-review,The Ultimate Hitchhiker's Guide to the Galaxy,Douglas Adams
+X10N,9781620610084,0,claude-review,Shadows,Jennifer L. Armentrout
+X11B,9781620401392,2,claude-review,The Bone Season,Samantha Shannon
+X11B,9781606841754,3,claude-review,Ashes,Ilsa J. Bick
+X11B,9781596435698,3,claude-review,Birthmarked,Caragh M. O'Brien
+X11N,9781481837125,0,claude-review,Collide,Gail McHugh
+X11N,9780547959214,2,claude-review,Graduation Day,Joelle Charbonneau
+X11N,9781408319468,2,claude-review,Slated,Teri Terry
+X11N,9780062014535,0,claude-review,Requiem,Lauren Oliver
+X11N,9780547959108,3,claude-review,The Testing,Joelle Charbonneau
+X12B,9780451419927,3,claude-review,Secrets of a Charmed Life,Susan Meissner
+X12N,9781477818299,2,claude-review,In Farleigh Field,Rhys Bowen
+X12N,9780385721790,1,claude-review,Atonement,Ian McEwan
+X12N,9780618724833,0,claude-review,The Wednesday Wars,Gary D. Schmidt
+X13N,9780525952893,0,claude-review,The Absent One,Jussi Adler-Olsen
+X13N,9780646418438,1,claude-review,The Mysterious Affair at Styles,Agatha Christie
+X13N,9780385344012,1,claude-review,I Am Half-Sick of Shadows,Alan Bradley
+X14N,9781447205722,0,claude-review,Wake,Amanda Hocking
+X14N,9780440420477,2,claude-review,"The Penderwicks: A Summer Tale of Four Sisters, Two Rabbits, and a Very Interesting Boy",Jeanne Birdsall
+X15N,9780425194850,0,claude-review,Undead and Unwed,MaryJanice Davidson
+X15N,9780316015844,0,claude-review,Twilight,Stephenie Meyer
+X15N,9781416509882,0,claude-review,No Rest for the Wicked,Kresley Cole
+X15N,9781416983088,1,claude-review,"Thirst No. 1: The Last Vampire, Black Blood, and Red Dice",Christopher Pike
+X15N,9781421511306,0,claude-review,"Vampire Knight, Vol. 2",Matsuri Hino
+X15N,9781401228309,2,claude-review,"American Vampire, Vol. 1",Stephen King
+X15N,9781421531724,0,claude-review,"Vampire Knight, Vol. 9",Matsuri Hino
+X16B,9780451234872,2,claude-review,Last Breath,Rachel Caine
+X16B,9781596437135,2,claude-review,Anya's Ghost,Vera Brosgol
+X16B,9780312624682,2,claude-review,Awake at Dawn,C.C. Hunter
+X16N,9780060093365,0,claude-review,Vampire Kisses,Ellen Schreiber
+X16N,9781416978930,0,claude-review,The Hollow,Jessica Verday
+X16N,9780060776251,0,claude-review,Vampireville,Ellen Schreiber
+X16N,9780061797026,1,claude-review,The Gathering,Kelley Armstrong
+X16N,9780316057776,1,claude-review,The Mysterious Benedict Society,Trenton Lee Stewart
+X16N,9781594744761,1,claude-review,Miss Peregrine’s Home for Peculiar Children,Ransom Riggs
+X16N,9780142422052,2,claude-review,The Name of the Star,Maureen Johnson
+X16N,9780061662690,2,claude-review,The Summoning,Kelley Armstrong
+X16N,9781416963981,2,claude-review,Doll Bones,Holly Black
+X17B,9780446690454,3,claude-review,The Poet,Michael Connelly
+X17B,9780553584523,3,claude-review,The Killing Hour,Lisa Gardner
+X17N,9780060534059,0,claude-review,A Faint Cold Fear,Karin Slaughter
+X17N,9780425201442,0,claude-review,The Body Farm,Patricia Cornwell
+X17N,9780307277886,1,claude-review,Darkly Dreaming Dexter,Jeff Lindsay
+X18B,9781580495868,3,claude-review,The Red Badge of Courage,Stephen Crane
+X18B,9781594489860,3,claude-review,The Cellist of Sarajevo,Steven Galloway
+X18N,9781401226923,0,claude-review,Batwoman: Elegy,Greg Rucka
+X18N,9781106927026,0,claude-review,Saga #1,Brian K. Vaughan
+X19N,9780553573428,0,claude-review,A Storm of Swords,George R. R. Martin
+X19N,9780441016556,1,claude-review,Captain's Fury,Jim Butcher
+X19N,9781681195773,1,claude-review,Tower of Dawn,Sarah J. Maas
+X19N,9780553564938,1,claude-review,Magician: Master,Raymond E. Feist
+X19N,9780765379283,1,claude-review,Truthwitch,Susan Dennard
+X19N,9780439441728,2,claude-review,The Will of the Empress,Tamora Pierce
+X19N,9780316134071,1,claude-review,Dreams of Gods & Monsters,Laini Taylor
+X20B,9780743477116,0,claude-review,Romeo and Juliet,William Shakespeare
+X20B,9781497585362,2,claude-review,Monster in His Eyes,J.M. Darhower
+X20B,9781490436524,1,claude-review,Killing Sarai,J.A. Redmerski
+X20B,9780330371230,1,claude-review,High Five,Janet Evanovich
+X20N,9780525955108,0,claude-review,Home,Harlan Coben
+X20N,9780316010702,0,claude-review,Case Histories,Kate Atkinson
+X20N,9780385732956,0,claude-review,All-of-a-Kind Family,Sydney Taylor
+X21B,9780747235224,2,claude-review,Night Chills,Dean Koontz
+X21B,9780425118702,3,claude-review,Midnight,Dean Koontz
+X21B,9780451161352,3,claude-review,Cujo,Stephen King
+X21B,9780345533456,2,claude-review,Ticktock,Dean Koontz
+X21N,9781423108764,2,claude-review,Bad Girls Don't Die,Katie Alender
+X21N,9780345533456,1,claude-review,Ticktock,Dean Koontz
+X21N,9780451161352,0,claude-review,Cujo,Stephen King
+X21N,9780425118702,0,claude-review,Midnight,Dean Koontz
+X21N,9780505525529,0,claude-review,Single White Vampire,Lynsay Sands
+X21N,9780340798737,0,claude-review,On Writing Poster King,Stephen King
+X21N,9781558611580,3,claude-review,The Yellow Wall-Paper,Charlotte Perkins Gilman
+X21N,9781933718002,0,claude-review,The Kissing Hand,Audrey Penn
+X21N,9781419710209,0,claude-review,El Deafo,Cece Bell
+X21N,9780316043137,0,claude-review,Twilight: The Complete Illustrated Movie Companion,Mark Cotta Vaz
+X21N,9780316087377,0,claude-review,Eclipse: The Complete Illustrated Movie Companion,Mark Cotta Vaz
+X21N,9780316075800,0,claude-review,New Moon: The Complete Illustrated Movie Companion,Mark Cotta Vaz
+X22B,9780062048547,2,claude-review,Once,Anna Carey
+X22B,9780099580485,2,claude-review,Wool,Hugh Howey
+X22B,9780857078629,2,claude-review,UnWholly,Neal Shusterman
+X22B,9780439023481,3,claude-review,The Hunger Games,Suzanne Collins
+X22N,9780062048547,1,claude-review,Once,Anna Carey
+X22N,9780547959214,0,claude-review,Graduation Day,Joelle Charbonneau
+X22N,9781606841754,0,claude-review,Ashes,Ilsa J. Bick
+X22N,9780312569037,1,claude-review,Monument 14,Emmy Laybourne
+X22N,9781416912040,0,claude-review,Unwind,Neal Shusterman
+X22N,9780385742375,1,claude-review,Starters,Lissa Price
+X22N,9781907411052,1,claude-review,Under the Never Sky,Veronica Rossi
+X23B,9781605980928,0,claude-review,The Ice Princess,Camilla Lackberg
+X23B,9781501100130,1,claude-review,Finders Keepers,Stephen King
+X23N,9780316013949,0,claude-review,Step on a Crack,James Patterson
+X24B,9780778304371,3,claude-review,These Things Hidden,Heather Gudenkauf
+X24B,9780525953074,2,claude-review,Touch & Go,Lisa Gardner
+X24N,9780525953074,1,claude-review,Touch & Go,Lisa Gardner
+X24N,9780316231077,2,claude-review,You Will Know Me,Megan Abbott
+X24N,9781400067886,0,claude-review,Night Film,Marisha Pessl
+X25B,9780062220967,1,claude-review,Asylum,Madeleine Roux
+X25B,9781405224031,1,claude-review,First Term at Malory Towers,Enid Blyton
+X25B,9780425205969,3,claude-review,Cat Among the Pigeons,Agatha Christie
+X25N,9780060534059,0,claude-review,A Faint Cold Fear,Karin Slaughter
+X25N,9780152053109,1,claude-review,A Northern Light,Jennifer Donnelly
+X26B,9780988812512,0,claude-review,Vain,Fisher Amelie
+X26N,9780312423797,2,claude-review,Dry,Augusten Burroughs
+X26N,9780988812512,0,claude-review,Vain,Fisher Amelie
+X26N,9781628780079,1,claude-review,Rock Bottom,R.K. Lilley
+X27N,9780060012380,2,claude-review,The Wee Free Men,Terry Pratchett
+X27N,9780385339162,0,claude-review,Bloodfever,Karen Marie Moning
+X27N,9780552153157,0,claude-review,Lords and Ladies,Terry Pratchett
+X27N,9780061659225,0,claude-review,Radiant Shadows,Melissa Marr
+X27N,9780441018192,0,claude-review,Silver Borne,Patricia Briggs
+X27N,9781599903422,0,claude-review,Captivate,Carrie Jones
+X27N,9781408810446,0,claude-review,Entice,Carrie Jones
+X28B,9780345522481,0,claude-review,Hammered,Kevin Hearne
+X28N,9780062255655,0,claude-review,The Ocean at the End of the Lane,Neil Gaiman
+X28N,9780099554783,1,claude-review,Phantom,Jo Nesbo
+X28N,9780385199575,0,claude-review,The Stand,Stephen King
+X28N,9780752861746,0,claude-review,The Postman Always Rings Twice,James M. Cain
+X28N,9780446698870,0,claude-review,The Black Dahlia,James Ellroy
+X29B,9781419701764,2,claude-review,Me and Earl and the Dying Girl,Jesse Andrews
+X29B,9780399231155,3,claude-review,Locomotion,Jacqueline Woodson
+X29B,9781490916637,2,claude-review,More Than This,Jay McLean
+X29B,9780064410472,2,claude-review,So B. It,Sarah Weeks
+X29B,9780375701290,1,claude-review,Autobiography of Red,Anne Carson
+X29B,9780385613460,2,claude-review,Before I Die,Jenny Downham
+X29N,9781419701764,2,claude-review,Me and Earl and the Dying Girl,Jesse Andrews
+X29N,9780399231155,1,claude-review,Locomotion,Jacqueline Woodson
+X29N,9780440910817,2,claude-review,A Ring of Endless Light,Madeleine L'Engle
+X29N,9780393068573,0,claude-review,Stitches,David Small
+X29N,9780380729401,0,claude-review,Something Wicked This Way Comes,Ray Bradbury
+X30B,9781620401392,3,claude-review,The Bone Season,Samantha Shannon
+X30B,9780152063115,2,claude-review,The Dead and the Gone,Susan Beth Pfeffer
+X30N,9780857078629,1,claude-review,UnWholly,Neal Shusterman
+X30N,9780062085481,2,claude-review,Shatter me,Tahereh Mafi
+X30N,9780061449154,1,claude-review,Fear,Michael Grant
+X30N,9781406350487,1,claude-review,More Than This,Patrick Ness
+X30N,9781984899668,0,claude-review,The Handmaid's Tale,Margaret Atwood
+X31B,9780743467216,1,claude-review,The Wedding,Julie Garwood
+X31B,9780060090371,1,claude-review,Lucy Sullivan Is Getting Married,Marian Keyes
+X31B,9780446698467,1,claude-review,At First Sight,Nicholas Sparks
+X31B,9781400078431,2,claude-review,The Year of Magical Thinking,Joan Didion
+X31N,9780312605384,1,claude-review,Married By Morning,Lisa Kleypas
+X31N,9780671737795,1,claude-review,The Bride,Julie Garwood
+X32B,9780552124478,2,claude-review,Enchanters' End Game,David Eddings
+X32B,9780552148030,2,claude-review,King of the Murgos,David Eddings
+X32N,9780812550283,0,claude-review,A Crown of Swords,Robert Jordan
+X32N,9780062290366,2,claude-review,The Queen of the Tearling,Erika Johansen
+X32N,9780765348784,2,claude-review,Gardens of the Moon,Steven Erikson
+X32N,9780778324331,2,claude-review,Poison Study,Maria V. Snyder
+X32N,9780345335654,2,claude-review,Queen of Sorcery,David Eddings
+X33B,9780451527882,3,claude-review,The Hunchback of Notre-Dame,Victor Hugo
+X33B,9789997555625,3,claude-review,My Sweet Orange Tree,Jose Mauro de Vasconcelos
+X33B,9780345455680,1,claude-review,London,Edward Rutherfurd
+X33N,9781593081485,3,claude-review,The Three Musketeers,Alexandre Dumas
+X33N,9780349116655,0,claude-review,Tears of the Giraffe,Alexander McCall Smith
+X33N,9780812976144,1,claude-review,The Alienist,Caleb Carr
+X33N,9780679751526,0,claude-review,Midnight in the Garden of Good and Evil,John Berendt
+X33N,9780143126683,1,claude-review,The Truth About the Harry Quebert Affair,Joel Dicker
+X33N,9780781805506,2,claude-review,Quo Vadis,Henryk Sienkiewicz
+X34B,9781593082642,1,claude-review,Northanger Abbey,Jane Austen
+X34B,9781959979128,2,claude-review,Alice's Adventures in Wonderland (Illustrated),Lewis Carroll
+X34B,9781593080402,2,claude-review,"The Complete Sherlock Holmes, Volume II",Arthur Conan Doyle
+X34N,9780007208005,1,claude-review,The Tea Rose,Jennifer Donnelly
+X34N,9780893753573,3,claude-review,The Strange Case of Dr. Jekyll and Mr. Hyde,Robert Louis Stevenson
+X35B,9780099580485,1,claude-review,Wool,Hugh Howey
+X35B,9781250186935,1,claude-review,Artificial Condition,Martha Wells
+X35B,9780792753216,1,claude-review,Brave New World,Aldous Huxley
+X35N,9780061974588,0,claude-review,The Rise of Nine,Pittacus Lore
+X35N,9780399162411,1,claude-review,The 5th Wave,Rick Yancey
+X35N,9780062067753,1,claude-review,The Long Earth,Terry Pratchett
+X35N,9780553803198,0,claude-review,Blackout,Connie Willis
+X35N,9780553214321,1,claude-review,The Island of Dr. Moreau,H. G. Wells
+X35N,9780553499117,2,claude-review,Illuminae,Amie Kaufman
+X36B,9780749748012,0,claude-review,The Magic Faraway Tree,Enid Blyton
+X36N,9780385733588,0,claude-review,The Magician,Michael Scott
+X36N,9780152020682,0,claude-review,Half Magic,Edward Eager
+X36N,9780756404079,3,claude-review,The Name of the Wind,Patrick Rothfuss
+X37B,9780553117462,0,claude-review,All Things Wise and Wonderful,James Herriot
+X37B,9780230747722,0,claude-review,Dear Zoo,Rod Campbell
+X37N,9780671666071,2,claude-review,Bambi,Felix Salten
+X37N,9780142403877,0,claude-review,The Gruffalo,Julia Donaldson
+X37N,9780230747722,0,claude-review,Dear Zoo,Rod Campbell
+X38B,9781442409095,2,claude-review,Sever,Lauren DeStefano
+X38B,9780062317148,2,claude-review,The Guard,Kiera Cass
+X38B,9781595143976,3,claude-review,Across the Universe,Beth Revis
+X38B,9780062014535,2,claude-review,Requiem,Lauren Oliver
+X38N,9780062085481,0,claude-review,Shatter me,Tahereh Mafi
+X38N,9781595143976,0,claude-review,Across the Universe,Beth Revis
+X38N,9780062124364,0,claude-review,Hana,Lauren Oliver
+X38N,9780312650094,0,claude-review,Outpost,Ann Aguirre
+X38N,9780099580485,1,claude-review,Wool,Hugh Howey
+X38N,9781477808702,1,claude-review,Wayward,Blake Crouch
+X38N,9781612183954,1,claude-review,Pines,Blake Crouch
+X38N,9780345544117,0,claude-review,Release Me,J. Kenner
+X38N,9780345545831,0,claude-review,Claim Me,J. Kenner
+X38N,9780007149827,1,claude-review,The Yiddish Policemen's Union,Michael Chabon
+X38N,9781310501593,0,claude-review,Until Lilly,Aurora Rose Reynolds
+X38N,9781491208298,0,claude-review,Thief,Tarryn Fisher
+X39B,9781250012579,3,claude-review,Eleanor & Park,Rainbow Rowell
+X39B,9780330397803,3,claude-review,Forever . . .,Judy Blume
+X39B,9780735276475,3,claude-review,Normal People,Sally Rooney
+X39N,9781250012579,0,claude-review,Eleanor & Park,Rainbow Rowell
+X39N,9780446547567,0,claude-review,The Last Song,Nicholas Sparks
+X39N,9780545509893,0,claude-review,Openly Straight,Bill Konigsberg
+X39N,9781482658149,0,claude-review,A Different Blue,Amy Harmon
+X39N,9780609807910,0,claude-review,Second Helpings,Megan McCafferty
+X39N,9780330397803,0,claude-review,Forever . . .,Judy Blume
+X39N,9780786890750,1,claude-review,P.S. I Love You,Cecelia Ahern
+X39N,9781476753188,1,claude-review,Ugly Love,Colleen Hoover
+X40B,9780613608329,1,claude-review,Rapunzel,Paul O. Zelinsky
+X40B,9780316201575,2,claude-review,The Wishing Spell,Chris Colfer
+X40N,9780810993235,0,claude-review,The Unusual Suspects,Michael Buckley
+X40N,9780062104892,0,claude-review,The School for Good and Evil,Soman Chainani
