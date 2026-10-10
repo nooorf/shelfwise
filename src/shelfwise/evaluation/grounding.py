@@ -16,10 +16,12 @@ record), meta (talks about tags or records). Plus, for made-up titles, whether t
 presents the book as one the library has (`affirmed`).
 """
 
+import hashlib
+import json
 import re
 from collections import defaultdict
 from collections.abc import Iterable
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -66,6 +68,58 @@ class Outcome:
     fallback: bool = False  # full only: some piece fell back to a template
     error: str | None = None
     text: str = ""
+
+
+def case_key(case: Case, llm_model: str, code: str = "") -> str:
+    """What a saved outcome was produced from: the case as drawn (borrowed books and planted
+    text included), the model and, for Shelfwise, the code version. A saved outcome is reused
+    only while this is unchanged."""
+    blob = json.dumps([asdict(case), llm_model, code], sort_keys=True)
+    return hashlib.sha1(blob.encode()).hexdigest()[:16]
+
+
+def outcome_to_json(outcome: Outcome) -> dict[str, Any]:
+    return {**asdict(outcome), "problems": sorted(outcome.problems), "raw": sorted(outcome.raw)}
+
+
+class Progress:
+    """Outcomes saved as they are scored (one JSON line each), so a stopped run resumes where it
+    stopped and a later run can redo one system while keeping the others' answers."""
+
+    def __init__(self, path: Path) -> None:
+        self.path = path
+        self.saved: dict[tuple[str, str], tuple[str, Outcome]] = {}
+        if path.exists():
+            for line in path.read_text().splitlines():
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                key = row.pop("key")
+                row["problems"], row["raw"] = set(row["problems"]), set(row["raw"])
+                outcome = Outcome(**row)
+                self.saved[(outcome.system, outcome.case)] = (key, outcome)
+
+    def get(self, system: str, case: Case, key: str) -> Outcome | None:
+        found = self.saved.get((system, case.id))
+        return found[1] if found and found[0] == key else None
+
+    def add(self, outcome: Outcome, key: str) -> None:
+        self.saved[(outcome.system, outcome.case)] = (key, outcome)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with self.path.open("a") as f:
+            f.write(json.dumps({"key": key, **outcome_to_json(outcome)}) + "\n")
+
+    def forget(self, systems: Iterable[str]) -> int:
+        """Drop these systems' saved outcomes (to answer them again); returns how many."""
+        drop = [k for k in self.saved if k[0] in set(systems)]
+        for k in drop:
+            del self.saved[k]
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text(
+            "".join(json.dumps({"key": key, **outcome_to_json(o)}) + "\n"
+                    for key, o in self.saved.values())
+        )  # fmt: skip
+        return len(drop)
 
 
 def load_cases(path: Path) -> tuple[list[Case], dict[str, int]]:

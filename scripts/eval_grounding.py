@@ -2,17 +2,25 @@
 
     uv run python scripts/eval_grounding.py                    # all cases, all systems
     uv run python scripts/eval_grounding.py --per-kind 2       # a quick look
-    uv run python scripts/eval_grounding.py --systems full
+    uv run python scripts/eval_grounding.py --redo full        # answer again with Shelfwise only
+    uv run python scripts/eval_grounding.py --model qwen3:8b
 
 Needs Docker (the catalog) and Ollama (`make llm`): every system calls the local LLM. Planted
 catalog text lives inside a savepoint that is rolled back. Writes eval/reports/*_grounding.json.
+
+Every answer is saved to eval/reports/.grounding-progress.jsonl as soon as it's scored, so a
+stopped run continues where it stopped: re-run the same command. A saved answer is reused while
+its case (as drawn) and the model are unchanged, and Shelfwise's answers only while the code is
+too (commit + uncommitted diff), so after a change to Shelfwise only it answers again and the
+baselines' answers are kept. `--redo` drops a system's answers regardless.
 """
 
 import argparse
+import hashlib
 import json
+import subprocess
 import sys
 import time
-from dataclasses import asdict, replace
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -25,7 +33,17 @@ from shelfwise.catalog.db import make_engine
 from shelfwise.config import get_settings
 from shelfwise.conversation.service import ConversationService, TurnRequest
 from shelfwise.conversation.store import MemorySessionStore
-from shelfwise.evaluation.grounding import Case, Outcome, affirms, kinds, load_cases, summarize
+from shelfwise.evaluation.grounding import (
+    Case,
+    Outcome,
+    Progress,
+    affirms,
+    case_key,
+    kinds,
+    load_cases,
+    outcome_to_json,
+    summarize,
+)
 from shelfwise.evaluation.queries import load_queries
 from shelfwise.evaluation.reports import git_version, report_path
 from shelfwise.evaluation.splits import split_of
@@ -39,8 +57,15 @@ from shelfwise.pipeline import SearchService, build_service
 
 GROUNDING = Path("eval/data/grounding.yaml")
 QUERIES = Path("eval/data/queries.csv")
+PROGRESS = Path("eval/reports/.grounding-progress.jsonl")
 SYSTEMS = ("full", "naive_rag", "llm_only")
 OWNED_SCORE = 90.0  # rapidfuzz ratio: an LLM-named title this close to a catalog title is owned
+
+
+def code_version() -> str:
+    """The commit, plus a hash of uncommitted changes to tracked files."""
+    diff = subprocess.run(["git", "diff", "HEAD"], capture_output=True, check=False).stdout
+    return f"{git_version()}:{hashlib.sha1(diff).hexdigest()[:12]}"
 
 
 class Answer(BaseModel):
@@ -195,16 +220,21 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Grounding set E")
     parser.add_argument("--systems", nargs="+", default=list(SYSTEMS), choices=SYSTEMS)
     parser.add_argument("--per-kind", type=int, help="at most this many cases of each kind")
+    parser.add_argument("--model", default=get_settings().llm_model)
+    parser.add_argument("--redo", nargs="+", default=[], choices=SYSTEMS,
+                        help="drop these systems' saved answers and answer again")  # fmt: skip
     args = parser.parse_args()
 
-    settings = get_settings()
-    llm = OllamaClient(model=settings.llm_model, timeout=180)
+    llm = OllamaClient(model=args.model, timeout=180)
     try:
         llm.available_models()
     except LLMUnavailable as exc:
         print(f"error: {exc}\nStart it in another terminal: make llm", file=sys.stderr)
         return 1
 
+    progress = Progress(PROGRESS)
+    if args.redo:
+        print(f"dropped {progress.forget(args.redo)} saved answers ({', '.join(args.redo)})")
     cases, generated = load_cases(GROUNDING)
     outcomes: list[Outcome] = []
     with make_engine().connect() as conn:
@@ -228,17 +258,36 @@ def main() -> int:
                 if taken[case.kind] <= args.per_kind:
                     kept.append(case)
             cases = kept
+        code = code_version()
+        keys = {
+            (system, case.id): case_key(case, llm.model, code if system == "full" else "")
+            for case in cases
+            for system in args.systems
+        }
+        todo = [
+            (case, [s for s in args.systems if progress.get(s, case, keys[s, case.id]) is None])
+            for case in cases
+        ]
+        reused = len(cases) * len(args.systems) - sum(len(systems) for _, systems in todo)
+        if reused:
+            print(f"{reused} answers already saved in {PROGRESS}; answering the rest")
         start = time.perf_counter()
-        for i, case in enumerate(cases, 1):
+        for i, (case, systems) in enumerate(todo, 1):
+            if not systems:
+                continue
             savepoint = conn.begin_nested() if case.kind == "catalog_injection" else None
             if savepoint:
                 runner.plant(case)
-            for system in args.systems:
+            for system in systems:
                 try:
                     outcome = getattr(runner, system)(case)
-                except (LLMUnavailable, LLMInvalidOutput) as exc:
+                except LLMUnavailable as exc:
+                    print(f"\nerror: {exc}\nEvery answer so far is saved; re-run the same "
+                          "command to continue.", file=sys.stderr)  # fmt: skip
+                    return 1
+                except LLMInvalidOutput as exc:
                     outcome = Outcome(system, case.id, case.kind, error=str(exc)[:200])
-                outcomes.append(outcome)
+                progress.add(outcome, keys[system, case.id])
                 flags = ",".join(
                     sorted(outcome.problems | ({"AFFIRMED"} if outcome.affirmed else set()))
                 )
@@ -246,19 +295,22 @@ def main() -> int:
             if savepoint:
                 savepoint.rollback()
         minutes = (time.perf_counter() - start) / 60
+        for case in cases:
+            for system in args.systems:
+                saved = progress.get(system, case, keys[system, case.id])
+                assert saved is not None
+                outcomes.append(saved)
 
     report: dict[str, Any] = {
         "created": datetime.now(UTC).isoformat(timespec="seconds"),
         "git": git_version(),
         "split": "dev",
-        "llm": settings.llm_model,
+        "llm": llm.model,
         "cases": len(cases),
-        "minutes": round(minutes, 1),
+        "minutes": round(minutes, 1),  # this run only; `reused` answers came from earlier runs
+        "reused": reused,
         "summary": summarize(outcomes),
-        "outcomes": [
-            {**asdict(replace(o)), "problems": sorted(o.problems), "raw": sorted(o.raw)}
-            for o in outcomes
-        ],
+        "outcomes": [outcome_to_json(o) for o in outcomes],
     }
     out = report_path(report["git"], "grounding")
     out.write_text(json.dumps(report, indent=2) + "\n")

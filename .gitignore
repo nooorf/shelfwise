@@ -47,3 +47,6 @@ apps/web/e2e/.cache/
 
 # Avatars: fetched (make download-avatar) or your own VRoid export, not committed
 apps/web/public/avatar/*.vrm
+
+# Grounding run answers, saved as they come (resumable; make eval-grounding)
+eval/reports/.grounding-progress.jsonl

@@ -112,8 +112,8 @@ agreement:  ## Agreement between your blind grades and Claude's: make agreement 
 eval:  ## Score all systems on the dev split and save a report (RERANKER=minilm adds hybrid_rerank, PARSER=cascade adds parsed_hybrid)
 	uv run python scripts/evaluate.py $(if $(RERANKER),--reranker $(RERANKER),) $(if $(PARSER),--parser $(PARSER),)
 
-eval-grounding:  ## Grounding set E: invented books, availability talk, claims; full system vs naive RAG vs LLM-only (needs make llm; PER_KIND=2 for a quick look)
-	uv run python scripts/eval_grounding.py $(if $(PER_KIND),--per-kind $(PER_KIND),)
+eval-grounding:  ## Grounding set E: invented books, availability talk, claims; full system vs naive RAG vs LLM-only (needs make llm; resumable; PER_KIND=2 for a quick look, MODEL=qwen3:8b, REDO=full)
+	uv run python scripts/eval_grounding.py $(if $(PER_KIND),--per-kind $(PER_KIND),) $(if $(MODEL),--model $(MODEL),) $(if $(REDO),--redo $(REDO),)
 
 eval-parser:  ## Score the query parser against gold set B (PARSER=rules|cascade, SPLIT=dev|test|all, ERRORS=1)
 	uv run python scripts/eval_parser.py --parser $(or $(PARSER),rules) --split $(or $(SPLIT),dev) \
