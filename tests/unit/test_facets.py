@@ -199,3 +199,13 @@ def test_the_model_says_teen_and_it_is_stored_as_ya() -> None:
     )  # fmt: skip
 
     assert llm.to_facets().audience == "ya"
+
+
+def test_the_model_reads_every_field_and_its_rules_in_the_prompt() -> None:
+    """The JSON schema only shapes the output; Ollama never shows the model its descriptions."""
+    system, _ = build_messages(BookRecord(1, "Oliver Twist", ["Charles Dickens"], [], [], None))
+
+    for name in BookFacetsLLM.model_fields:
+        assert f"- {name} (" in system["content"]
+    assert "audience (children | teen | adult)" in system["content"]
+    assert "Oliver Twist, Sherlock Holmes" in system["content"]  # a historical rule, verbatim

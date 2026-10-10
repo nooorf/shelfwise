@@ -1,0 +1,83 @@
+{
+  "created": "2026-10-10T10:42:26+00:00",
+  "git": "64959f0",
+  "compared": "NF-review vs llm",
+  "model_versions": {
+    "facets-v5/qwen3:14b": 200
+  },
+  "books": 200,
+  "tags": {
+    "fiction": {
+      "n": 198,
+      "accuracy": 0.98989898989899,
+      "kappa": 0.9797463175122749,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.5252525252525253
+    },
+    "audience": {
+      "n": 200,
+      "accuracy": 0.97,
+      "kappa": 0.9194468684970128,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.785
+    },
+    "darkness": {
+      "n": 200,
+      "accuracy": 0.71,
+      "kappa": 0.8497854077253219,
+      "kappa_weights": "quadratic",
+      "within_one": 0.98,
+      "majority": 0.38
+    },
+    "romance": {
+      "n": 200,
+      "accuracy": 0.635,
+      "kappa": 0.7410308236483072,
+      "kappa_weights": "quadratic",
+      "within_one": 0.985,
+      "majority": 0.56
+    },
+    "violence": {
+      "n": 200,
+      "accuracy": 0.61,
+      "kappa": 0.6042830540037245,
+      "kappa_weights": "quadratic",
+      "within_one": 0.94,
+      "majority": 0.51
+    },
+    "pace": {
+      "n": 198,
+      "accuracy": 0.7121212121212122,
+      "kappa": 0.47164776517678453,
+      "kappa_weights": "quadratic",
+      "within_one": null,
+      "majority": 0.6919191919191919
+    },
+    "supernatural": {
+      "n": 198,
+      "accuracy": 0.9343434343434344,
+      "kappa": 0.6988416988416988,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8939393939393939
+    },
+    "historical_setting": {
+      "n": 94,
+      "accuracy": 0.19148936170212766,
+      "kappa": 0.11802469135802474,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8085106382978723
+    },
+    "reading_level": {
+      "n": 104,
+      "accuracy": 0.6538461538461539,
+      "kappa": 0.32124728063814356,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.7019230769230769
+    }
+  }
+}

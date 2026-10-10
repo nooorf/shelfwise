@@ -5,15 +5,16 @@ supernatural" becomes `supernatural != 'yes'`, "something darker" becomes `darkn
 "for a beginner" becomes `reading_level = 'intro'`. Embeddings can't do this reliably; a negated
 word in a query pulls matching books *closer*.
 
-The rubric lives in each field's description, so the JSON schema Ollama enforces also tells the
-model what every value means. "unclear" is always allowed: blurbs rarely reveal everything, and a
-forced yes/no produces confident errors. Bump PROMPT_VERSION whenever the schema or prompt
-changes, so old and new tags can be compared against the human labels.
+The rubric lives in each field's description and is written into the system prompt from
+there (`rubric`): Ollama's JSON schema only constrains the output's shape, the model never reads
+it. "unclear" is always allowed: blurbs rarely reveal everything, and a forced yes/no produces
+confident errors. Bump PROMPT_VERSION whenever the schema or prompt changes, so old and new tags
+can be compared against the human labels.
 """
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -27,7 +28,11 @@ from pydantic import BaseModel, Field
 # historical defaults to no for stories set in their own time (v4: 59 "unclear"), science
 # fiction isn't supernatural, medium is the usual pace (v4: 97 of 137 medium books "slow");
 # nonfiction is never supernatural and its pace is medium, in code.
-PROMPT_VERSION = "facets-v5"
+# v6: the rubric is written into the system prompt. Until now it lived only in the JSON
+# schema's field descriptions, which Ollama uses to constrain the output's shape but never
+# shows the model: v1-v5 tagged from field names and allowed values alone (v5 still called
+# Oliver Twist "historical" though the description names it as "no").
+PROMPT_VERSION = "facets-v6"
 MAX_DESCRIPTION_CHARS = 1500
 MAX_SUBJECTS = 15
 
@@ -183,12 +188,34 @@ class BookRecord:
     first_pub_year: int | None = None
 
 
+def _values(spec: dict[str, Any]) -> str:
+    options: list[str] = []
+    for option in spec.get("anyOf", [spec]):
+        if "enum" in option:
+            options += [str(v) for v in option["enum"]]
+        else:
+            options.append({"null": "null", "boolean": "true | false",
+                            "array": "list of short phrases"}.get(option.get("type"), "text"))  # fmt: skip
+    return " | ".join(options)
+
+
+def rubric() -> str:
+    """Every field the model fills, its allowed values and its definition, in answer order:
+    the JSON schema only constrains the output, so the model reads the rules here."""
+    properties = BookFacetsLLM.model_json_schema()["properties"]
+    return "\n".join(
+        f"- {name} ({_values(spec)}): {spec.get('description', '')}".rstrip(": ")
+        for name, spec in properties.items()
+    )
+
+
 SYSTEM_PROMPT = (
     "You tag library books for a search system. Read the record and fill every field. "
-    "Base your answers on the description and subjects. You may use general knowledge of "
-    "well-known books, but answer 'unclear' (or a cautious value) rather than guess about "
-    "books you don't recognise. Follow each field's definition exactly."
-)
+    "Base your answers on the description and subjects, and on what you know of well-known "
+    "books. Where a field allows 'unclear', use it only when the record and your knowledge "
+    "really don't tell; never guess about books you don't recognise. Follow each field's "
+    "definition exactly.\n\nFields:\n"
+) + rubric()
 
 
 def build_messages(book: BookRecord) -> list[dict[str, str]]:
