@@ -1,0 +1,83 @@
+{
+  "created": "2026-10-10T11:06:33+00:00",
+  "git": "4c151f4",
+  "compared": "NF-review vs llm",
+  "model_versions": {
+    "facets-v7/qwen3:14b": 200
+  },
+  "books": 200,
+  "tags": {
+    "fiction": {
+      "n": 198,
+      "accuracy": 1.0,
+      "kappa": 1.0,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.5252525252525253
+    },
+    "audience": {
+      "n": 200,
+      "accuracy": 0.965,
+      "kappa": 0.9049816750373286,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.785
+    },
+    "darkness": {
+      "n": 200,
+      "accuracy": 0.57,
+      "kappa": 0.7613301153124162,
+      "kappa_weights": "quadratic",
+      "within_one": 0.995,
+      "majority": 0.38
+    },
+    "romance": {
+      "n": 200,
+      "accuracy": 0.66,
+      "kappa": 0.721364307774943,
+      "kappa_weights": "quadratic",
+      "within_one": 0.975,
+      "majority": 0.56
+    },
+    "violence": {
+      "n": 200,
+      "accuracy": 0.665,
+      "kappa": 0.7526605265727211,
+      "kappa_weights": "quadratic",
+      "within_one": 0.985,
+      "majority": 0.51
+    },
+    "pace": {
+      "n": 198,
+      "accuracy": 0.7626262626262627,
+      "kappa": 0.40642939150401836,
+      "kappa_weights": "quadratic",
+      "within_one": null,
+      "majority": 0.6919191919191919
+    },
+    "supernatural": {
+      "n": 198,
+      "accuracy": 0.9545454545454546,
+      "kappa": 0.7441860465116279,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8939393939393939
+    },
+    "historical_setting": {
+      "n": 94,
+      "accuracy": 0.925531914893617,
+      "kappa": 0.7825512227362855,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.8085106382978723
+    },
+    "reading_level": {
+      "n": 104,
+      "accuracy": 0.7692307692307693,
+      "kappa": 0.5107800862406899,
+      "kappa_weights": "none",
+      "within_one": null,
+      "majority": 0.7019230769230769
+    }
+  }
+}
