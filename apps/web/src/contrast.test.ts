@@ -1,4 +1,4 @@
-// WCAG AA for every text/background pair the components use, in both themes (design doc
+// WCAG AA for every text/background pair the components use, in every theme (design doc
 // §22.4): 4.5:1 for text. Reads the tokens from index.css, so a colour edit can't regress it.
 import { describe, expect, it } from 'vitest'
 
@@ -29,9 +29,17 @@ function ratio(a: string, b: string): number {
   return (hi + 0.05) / (lo + 0.05)
 }
 
-const [lightCss, darkCss] = css.split('@media (prefers-color-scheme: dark)')
+// The reading room's own colour roles: butter and coral fields and buttons carry ink, and the
+// dark pills (nav, ask box) carry their own light ink.
+const ROOM_PAIRS: [string, string][] = [
+  ['ink', 'butter'], ['ink', 'coral'], ['butter', 'ink'], ['night-ink', 'night'], ['night-muted', 'night'],
+]
+
+const [systemCss, roomCss] = css.split('\n.reading-room {')
+const [lightCss, darkCss] = systemCss.split('@media (prefers-color-scheme: dark)')
 const light = tokens(lightCss)
-const themes = { light, dark: { ...light, ...tokens(darkCss) } }
+const room = { ...light, ...tokens(roomCss.split('}')[0]) }
+const themes = { light, dark: { ...light, ...tokens(darkCss) }, 'reading room': room }
 
 describe('colour contrast', () => {
   it('checks the formula against known values', () => {
@@ -47,4 +55,11 @@ describe('colour contrast', () => {
       expect(failing).toEqual([])
     })
   }
+
+  it('meets AA for the reading room\'s colour roles', () => {
+    const failing = ROOM_PAIRS.filter(([fg, bg]) => ratio(room[fg], room[bg]) < 4.5).map(
+      ([fg, bg]) => `${fg} on ${bg}: ${ratio(room[fg], room[bg]).toFixed(2)}`,
+    )
+    expect(failing).toEqual([])
+  })
 })

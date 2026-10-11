@@ -54,3 +54,11 @@ export function copyLine(copy: BookDetail['copies'][number], today?: Date): stri
       : (STATUS[copy.status] ?? copy.status)
   return `${status} — ${where}`
 }
+
+/** The title without its subtitle, for one-line captions: "Wicked: The Life and Times of the
+ * Wicked Witch of the West" is "Wicked". A head too short to stand alone ("Y: The Last Man")
+ * keeps the whole title. */
+export function shortTitle(title: string): string {
+  const head = title.split(': ')[0]
+  return head.length >= 4 ? head : title
+}

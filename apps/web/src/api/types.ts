@@ -8,6 +8,7 @@ export type BookResult = Schemas['BookResult']
 export type Availability = Schemas['Availability']
 export type Chip = Schemas['Chip']
 export type BookDetail = Schemas['BookDetail']
+export type FeaturedBook = Schemas['FeaturedBook']
 export type Reply = Schemas['Reply']
 export type ReplyItem = Schemas['ReplyItem']
 /** One checked part of a reply, streamed before the whole (socket only, not in OpenAPI). */

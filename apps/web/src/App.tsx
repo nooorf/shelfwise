@@ -1,6 +1,7 @@
 // Layout (design doc §22.1): the results shelf is the main surface; the conversation is a
 // narrow column that steers it; the active constraints are always visible as chips.
 import { RotateCcw, UserPlus } from 'lucide-react'
+import { useEffect } from 'react'
 
 import { Announcer } from './components/Announcer'
 import { AvatarSlot } from './components/AvatarSlot'
@@ -30,6 +31,15 @@ export default function App() {
   const shelfReply = useSession((s) => s.shelfReply)
   const error = useSession((s) => s.error)
   const latest = [...exchanges].reverse().find((e) => e.response)?.response
+
+  // A question asked on the landing page arrives as ?q=; ask it once, then drop it from the
+  // address so a reload doesn't ask again.
+  useEffect(() => {
+    const question = new URLSearchParams(window.location.search).get('q')?.trim()
+    if (!question) return
+    window.history.replaceState(null, '', window.location.pathname)
+    ask(question)
+  }, [ask])
 
   return (
     <div className="flex h-full flex-col">

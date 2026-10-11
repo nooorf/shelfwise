@@ -3,15 +3,15 @@
 // listening, thinking, speaking) and moves its mouth from the speech audio the speakers are
 // playing (lipsync.ts), so sound and lips can't drift apart. When playback stops the mouth
 // closes on that frame. Any failure (no WebGL, the file missing, too slow) hands back to the orb.
-import { VRMLoaderPlugin, VRMUtils } from '@pixiv/three-vrm'
-import type { VRM, VRMHumanBoneName } from '@pixiv/three-vrm'
+import { VRMUtils } from '@pixiv/three-vrm'
+import type { VRM } from '@pixiv/three-vrm'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useRef, useState } from 'react'
 import { Vector3 } from 'three'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
 import type { Status } from '../session/store'
 import { bands, CLOSED, loudness, smooth, VISEMES, visemes } from './lipsync'
+import { blinkAt, bone, loadVrm } from './load'
 import type { Visemes } from './lipsync'
 
 export type Fallback = 'load' | 'slow'
@@ -27,10 +27,6 @@ interface StageProps {
 const MIN_FPS = 20 // averaged over the first SAMPLE_S seconds after loading
 const SAMPLE_S = 3
 
-function bone(vrm: VRM, name: VRMHumanBoneName) {
-  return vrm.humanoid.getNormalizedBoneNode(name)
-}
-
 function Model({ url, status, analyser, onFallback, onReady }: StageProps) {
   const [vrm, setVrm] = useState<VRM | null>(null)
   const camera = useThree((s) => s.camera)
@@ -40,21 +36,9 @@ function Model({ url, status, analyser, onFallback, onReady }: StageProps) {
 
   useEffect(() => {
     let live = true
-    const loader = new GLTFLoader()
-    loader.register((parser) => new VRMLoaderPlugin(parser))
-    loader
-      .loadAsync(url)
-      .then((gltf) => {
-        const loaded = gltf.userData.vrm as VRM | undefined
-        if (!live || !loaded) return
-        VRMUtils.removeUnnecessaryVertices(gltf.scene)
-        VRMUtils.combineSkeletons(gltf.scene)
-        VRMUtils.rotateVRM0(loaded) // VRM 0.x faces away; 1.0 already faces the camera
-        bone(loaded, 'leftUpperArm')?.rotation.set(0, 0, -1.2) // out of the T-pose
-        bone(loaded, 'rightUpperArm')?.rotation.set(0, 0, 1.2)
-        bone(loaded, 'leftLowerArm')?.rotation.set(0, 0, -0.15)
-        bone(loaded, 'rightLowerArm')?.rotation.set(0, 0, 0.15)
-        loaded.update(0)
+    loadVrm(url)
+      .then((loaded) => {
+        if (!live) return
         const head = new Vector3()
         bone(loaded, 'head')?.getWorldPosition(head)
         camera.position.set(0, head.y + 0.04, 1.15) // the head bone sits at the skull's base:
@@ -103,11 +87,9 @@ function Model({ url, status, analyser, onFallback, onReady }: StageProps) {
       head.rotation.z += (target.z - head.rotation.z) * k
     }
 
-    // Blink every 2.5-6 s: the eyelids close and open over the last 150 ms before nextBlink.
-    if (c.t >= c.nextBlink) c.nextBlink = c.t + 2.5 + Math.random() * 3.5
-    const untilBlink = c.nextBlink - c.t
-    const blink = untilBlink < 0.15 ? Math.sin((1 - untilBlink / 0.15) * Math.PI) : 0
-    expressions?.setValue('blink', blink)
+    const blink = blinkAt(c.t, c.nextBlink)
+    c.nextBlink = blink.next
+    expressions?.setValue('blink', blink.closed)
 
     // Mood: a slight smile at rest, attentive when listening.
     expressions?.setValue('happy', status === 'ready' ? 0.15 : 0)

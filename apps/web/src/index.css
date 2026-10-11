@@ -18,6 +18,7 @@
   --color-quiet: #5c5c5c;
   --color-quiet-soft: #ebebe8;
   --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-display: 'Source Serif 4 Variable', 'Iowan Old Style', Georgia, serif;
 }
 
 /* Plain variables, not @theme: Tailwind drops theme colours no utility class uses, and these
@@ -94,6 +95,41 @@
     --color-seq-ink-10: #1b1915;
     --color-seq-ink-11: #1b1915;
   }
+}
+
+/* Reading room (the landing page; chat and live to follow): cool light ground, near-black
+   ink, butter and coral as flat colour roles. The tokens are redefined for everything inside
+   .reading-room, whatever the system theme, so shared components (the drawer) follow. */
+.reading-room {
+  --color-paper: #e6e7e9;
+  --color-card: #f6f7f8;
+  --color-ink: #141416;
+  --color-muted: #55565b;
+  --color-line: #cdcdca;
+  --color-accent: #a8381f;
+  --color-accent-soft: #f4ddd6;
+  --color-ok: #2e6b3a;
+  --color-ok-soft: #dcebdf;
+  --color-soon: #7f530a;
+  --color-soon-soft: #f4e7c9;
+  --color-out: #9a2f2f;
+  --color-out-soft: #f5dcd9;
+  --color-quiet: #545454;
+  --color-quiet-soft: #e1e1de;
+  --color-butter: #f6ee86;
+  --color-coral: #ec6a4f;
+  --color-night: #161618;
+  --color-night-ink: #f4f4f1;
+  --color-night-muted: #a6a6ab;
+  font-family: 'Schibsted Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  color-scheme: light;
+}
+
+:root:has(.reading-room) {
+  background: #e6e7e9;
+  scrollbar-color: #a3a4a8 #e6e7e9;
 }
 
 html,

@@ -157,6 +157,29 @@
         }
       }
     },
+    "/api/v1/featured": {
+      "get": {
+        "summary": "Featured",
+        "description": "The landing page's moving shelf: popular books with a cover, in a fixed order.",
+        "operationId": "featured_api_v1_featured_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FeaturedBook"
+                  },
+                  "type": "array",
+                  "title": "Response Featured Api V1 Featured Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/genres": {
       "get": {
         "summary": "Genres",
@@ -1293,6 +1316,91 @@
         ],
         "title": "ExploreRequest",
         "description": "Explore: browse one genre (a name from `GET /genres`)."
+      },
+      "FeaturedBook": {
+        "properties": {
+          "work_id": {
+            "type": "integer",
+            "title": "Work Id"
+          },
+          "work_key": {
+            "type": "string",
+            "title": "Work Key"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtitle"
+          },
+          "authors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Authors"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "pages": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pages"
+          },
+          "genres": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Genres"
+          },
+          "availability": {
+            "$ref": "#/components/schemas/Availability"
+          },
+          "cover_id": {
+            "type": "integer",
+            "title": "Cover Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "work_id",
+          "work_key",
+          "title",
+          "subtitle",
+          "authors",
+          "year",
+          "pages",
+          "genres",
+          "availability",
+          "cover_id"
+        ],
+        "title": "FeaturedBook",
+        "description": "A book on the landing page's moving shelf, with its Open Library cover id."
       },
       "FiltersRequest": {
         "properties": {

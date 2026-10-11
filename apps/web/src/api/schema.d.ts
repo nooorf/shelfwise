@@ -105,6 +105,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/featured": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Featured
+         * @description The landing page's moving shelf: popular books with a cover, in a fixed order.
+         */
+        get: operations["featured_api_v1_featured_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/genres": {
         parameters: {
             query?: never;
@@ -582,6 +602,31 @@ export interface components {
              * @default true
              */
             narrate: boolean;
+        };
+        /**
+         * FeaturedBook
+         * @description A book on the landing page's moving shelf, with its Open Library cover id.
+         */
+        FeaturedBook: {
+            /** Work Id */
+            work_id: number;
+            /** Work Key */
+            work_key: string;
+            /** Title */
+            title: string;
+            /** Subtitle */
+            subtitle: string | null;
+            /** Authors */
+            authors: string[];
+            /** Year */
+            year: number | null;
+            /** Pages */
+            pages: number | null;
+            /** Genres */
+            genres: string[];
+            availability: components["schemas"]["Availability"];
+            /** Cover Id */
+            cover_id: number;
         };
         /**
          * FiltersRequest
@@ -1168,6 +1213,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Bench"];
+                };
+            };
+        };
+    };
+    featured_api_v1_featured_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeaturedBook"][];
                 };
             };
         };

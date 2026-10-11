@@ -15,7 +15,7 @@ const cards = (page: Page) => page.getByRole('region', { name: 'Books' }).getByR
 const chips = (page: Page) => page.getByRole('list', { name: 'Active filters' })
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/live')
 })
 
 test('a typed question shows book cards', async ({ page }) => {

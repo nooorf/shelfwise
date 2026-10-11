@@ -40,6 +40,7 @@ from shelfwise.generation.narrate import ReplyPiece
 from shelfwise.logging import configure_logging
 from shelfwise.pipeline import (
     BookDetail,
+    FeaturedBook,
     GenreCount,
     SearchRequest,
     SearchResponse,
@@ -193,6 +194,14 @@ def create_app(
         """The benchmark dashboard's data: the newest dev-split retrieval report (every system's
         scores with CIs, per category, latency) and the newest parser report."""
         return load_bench()
+
+    @v1.get("/featured")
+    def featured(
+        conn: Annotated[Connection, Depends(resources.connection)],
+        service: Annotated[SearchService, Depends(search_service)],
+    ) -> list[FeaturedBook]:
+        """The landing page's moving shelf: popular books with a cover, in a fixed order."""
+        return service.featured(conn, service.today())
 
     @v1.get("/genres")
     def genres(

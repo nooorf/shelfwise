@@ -26,6 +26,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import Connection, text
 
 from shelfwise.catalog.availability import AvailabilityState, fetch_live_availability
+from shelfwise.catalog.featured import featured_works, load_featured
 from shelfwise.catalog.meta import get_catalog_version
 from shelfwise.embed.encoder import Embedder
 from shelfwise.evaluation.judgments import work_keys
@@ -120,6 +121,12 @@ class Relaxation(BaseModel):
     drop: str  # the words of the constraint to drop, e.g. "under 100 pages"
     count: int  # how many books match without it
     earliest_due: date | None = None  # dropping "available now": the first one back
+
+
+class FeaturedBook(BookResult):
+    """A book on the landing page's moving shelf, with its Open Library cover id."""
+
+    cover_id: int
 
 
 class GenreCount(BaseModel):
@@ -289,6 +296,15 @@ class SearchService:
             )
         )
         return [GenreCount(name=r.name, books=r.books) for r in rows]
+
+    def featured(self, conn: Connection, today: date) -> list[FeaturedBook]:
+        """The landing page's shelf (data/seed/featured.csv), with live availability."""
+        works = featured_works(conn, load_featured())
+        books = self.details(conn, [work_id for work_id, _ in works], today)
+        return [
+            FeaturedBook(**book.model_dump(), cover_id=cover_id)
+            for book, (_, cover_id) in zip(books, works, strict=True)
+        ]
 
     def relax(self, conn: Connection, constraints: list[Constraint]) -> list[Relaxation]:
         """When nothing matched: which hard constraint to drop, and how many books that gives."""

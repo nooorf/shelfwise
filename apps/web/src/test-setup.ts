@@ -4,3 +4,6 @@ import { afterEach } from 'vitest'
 
 // Vitest runs without globals, so Testing Library can't unmount between tests on its own.
 afterEach(cleanup)
+
+// jsdom has no layout, so no scrolling; page changes call it.
+window.scrollTo = () => {}

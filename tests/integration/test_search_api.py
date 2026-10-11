@@ -1,5 +1,6 @@
 from collections.abc import Iterator
 from datetime import date
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -7,6 +8,7 @@ from sqlalchemy import Connection, insert, update
 
 from shelfwise.api.main import create_app
 from shelfwise.catalog import schema
+from shelfwise.catalog.featured import Featured, load_featured, save_featured
 from shelfwise.catalog.meta import bump_catalog_version
 from shelfwise.config import Settings
 from shelfwise.embed.store import embed_missing, refresh_search_text
@@ -258,3 +260,24 @@ def test_book_endpoint_shows_the_record_behind_a_card(
     assert book["copies"][1]["due_date"] == "2026-10-10"
     assert book["availability"]["available_copies"] == 1
     assert client.get("/api/v1/books/999999999").status_code == 404
+
+
+def test_featured_shelf_keeps_the_files_order_and_skips_missing_books(
+    client: TestClient, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    path = tmp_path / "featured.csv"
+    rows = [
+        Featured("9780307341556", 101, "Sharp Objects"),
+        Featured("9780000000000", 102, "Not in the catalog"),
+        Featured("9781250301697", 103, "The Silent Patient"),
+    ]
+    save_featured(rows, path)
+    assert load_featured(path) == rows
+    monkeypatch.setattr("shelfwise.pipeline.load_featured", lambda: load_featured(path))
+
+    books = client.get("/api/v1/featured").json()
+
+    assert [(b["title"], b["cover_id"]) for b in books] == [
+        ("Sharp Objects", 101), ("The Silent Patient", 103),
+    ]  # fmt: skip
+    assert books[0]["availability"]["state"] == "available"

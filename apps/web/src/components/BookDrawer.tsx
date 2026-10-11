@@ -54,7 +54,7 @@ export function BookDrawer({ book, note, onClose, onFeedback }: Props) {
       aria-labelledby="drawer-title"
       onClose={onClose}
       onClick={(e) => e.target === dialog.current && onClose()} // the backdrop
-      className="m-0 ml-auto h-full max-h-none w-full max-w-md overflow-y-auto bg-card p-0 text-ink shadow-xl backdrop:bg-ink/30"
+      className="m-0 ml-auto h-full max-h-none w-full max-w-md overflow-y-auto bg-card p-0 text-ink shadow-xl backdrop:bg-black/45"
     >
       <div className="flex flex-col gap-4 p-5">
         <div className="flex items-start gap-4">

@@ -1,5 +1,5 @@
 // REST calls: sessions are created and ended over HTTP; turns go over the WebSocket.
-import type { Bench, BookDetail, GenreCount } from './types'
+import type { Bench, BookDetail, FeaturedBook, GenreCount } from './types'
 
 export async function startSession(): Promise<string> {
   const response = await fetch('/api/v1/sessions', { method: 'POST' })
@@ -23,6 +23,13 @@ export async function getBook(workId: number): Promise<BookDetail> {
   const response = await fetch(`/api/v1/books/${workId}`)
   if (!response.ok) throw new Error(`could not load the book (${response.status})`)
   return (await response.json()) as BookDetail
+}
+
+/** The landing page's moving shelf: popular books with an Open Library cover id. */
+export async function getFeatured(): Promise<FeaturedBook[]> {
+  const response = await fetch('/api/v1/featured')
+  if (!response.ok) throw new Error(`could not load the featured books (${response.status})`)
+  return (await response.json()) as FeaturedBook[]
 }
 
 /** Explore: every genre in the catalog with its number of books, largest first. */

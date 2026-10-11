@@ -16,6 +16,16 @@ build/
 MY_TASKS.md
 IMPLEMENTATION_PLAN.md
 
+# Design-agent tooling and its working briefs (local; the Impeccable skill reads them)
+.github/skills/
+.github/agents/
+.github/hooks/
+.claude/skills/
+.impeccable/
+PRODUCT.md
+DESIGN.md
+skills-lock.json
+
 # Review document, regenerated from prelabels.csv (make grades-doc)
 eval/grades_review.md
 eval/tags_review.md

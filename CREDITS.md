@@ -11,3 +11,11 @@ repository; the `make download-*` targets fetch them.
 | VRM1_Constraint_Twist_Sample | Placeholder avatar until our own VRoid model | © 2022 pixiv Inc., [vrm-c/vrm-specification samples](https://github.com/vrm-c/vrm-specification/tree/master/samples/VRM1_Constraint_Twist_Sample) | [VRM Public License 1.0](https://vrm.dev/licenses/1.0/): avatar use by anyone, commercial use, modification and redistribution allowed, credit not required |
 | bge-base-en-v1.5 | Book and query embeddings | [BAAI](https://huggingface.co/BAAI/bge-base-en-v1.5) | MIT |
 | Qwen3-4B (via Ollama) | Query parsing and narration | [Qwen](https://huggingface.co/Qwen/Qwen3-4B) | Apache-2.0 |
+
+Fonts and covers in the web app, installed with its npm packages or loaded in the browser:
+
+| What | Used for | Source | Licence |
+| --- | --- | --- | --- |
+| Source Serif 4 (variable, optical sizes) | Display type on the landing page: headlines and the example request | [Adobe](https://github.com/adobe-fonts/source-serif), via [@fontsource-variable/source-serif-4](https://fontsource.org/fonts/source-serif-4) | SIL Open Font License 1.1 |
+| Schibsted Grotesk (variable) | Text on the landing page | [The Schibsted-Grotesk Project Authors](https://github.com/schibsted/schibsted-grotesk), via [@fontsource-variable/schibsted-grotesk](https://fontsource.org/fonts/schibsted-grotesk) | SIL Open Font License 1.1 |
+| Open Library covers | Book covers on the shelf, cards and drawer, loaded by the browser | [Open Library Covers API](https://openlibrary.org/dev/docs/api/covers) | Covers belong to their publishers; shown as catalogue thumbnails under Open Library's terms |
