@@ -11,7 +11,7 @@ from shelfwise.evaluation.conversations import (
     summarize,
 )
 from shelfwise.evaluation.parser_gold import parse_constraint
-from shelfwise.query.constraints import Constraint
+from shelfwise.query.constraints import Constraint, Op, Strength
 
 SET_C = Path("eval/data/conversations.yaml")
 
@@ -60,7 +60,7 @@ def test_mistakes_are_reported_with_where(tmp_path: Path, body: str, error: str)
         load_conversations(path)
 
 
-def c(field: str, op: str, value: object, strength: str = "soft") -> Constraint:
+def c(field: str, op: Op, value: object, strength: Strength = "soft") -> Constraint:
     return Constraint(field=field, op=op, value=value, strength=strength, source="state")
 
 

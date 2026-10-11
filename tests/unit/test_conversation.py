@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from typing import Any
 
 import pytest
 
@@ -19,13 +20,13 @@ from shelfwise.conversation.references import resolve_references
 from shelfwise.conversation.service import ask_instead, not_found_note
 from shelfwise.conversation.state import ConversationState, Guess, ShownBook, new_state
 from shelfwise.conversation.store import MemorySessionStore
-from shelfwise.query.constraints import Constraint
-from shelfwise.query.request import LookupSpec, ParsedRequest
+from shelfwise.query.constraints import Constraint, Op, Strength
+from shelfwise.query.request import Intent, LookupSpec, ParsedRequest
 
 NOW = datetime(2026, 10, 8, 12, 0, tzinfo=UTC)
 
 
-def c(field: str, op: str, value: object, strength: str = "soft", exclude: bool = False,
+def c(field: str, op: Op, value: object, strength: Strength = "soft", exclude: bool = False,
       span: str | None = None) -> Constraint:  # fmt: skip
     return Constraint(
         field=field, op=op, value=value, strength=strength, source="llm",
@@ -33,8 +34,8 @@ def c(field: str, op: str, value: object, strength: str = "soft", exclude: bool 
     )  # fmt: skip
 
 
-def parsed(intent: str = "discover", semantic: str = "", *constraints: Constraint,
-           **extra: object) -> ParsedRequest:  # fmt: skip
+def parsed(intent: Intent = "discover", semantic: str = "", *constraints: Constraint,
+           **extra: Any) -> ParsedRequest:  # fmt: skip
     return ParsedRequest(
         intent=intent, semantic_query=semantic, constraints=list(constraints), **extra
     )

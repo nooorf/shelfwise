@@ -17,7 +17,7 @@ from shelfwise.evaluation.systems import (
     hybrid_rerank,
     parsed_hybrid,
 )
-from shelfwise.query.constraints import Constraint
+from shelfwise.query.constraints import Constraint, Op, Strength
 from shelfwise.query.request import LookupSpec, ParsedRequest
 from shelfwise.ranking.rerank import CachedReranker
 from shelfwise.retrieval.dense import DenseIndex
@@ -158,7 +158,7 @@ def test_rerank_respects_filters_and_needs_a_reranker(
     assert top[0] == catalog["Sharp Objects"]  # the reranker prefers the dark psychological one
 
 
-def constraint(field: str, op: str, value: object, strength: str = "hard") -> Constraint:
+def constraint(field: str, op: Op, value: object, strength: Strength = "hard") -> Constraint:
     return Constraint(field=field, op=op, value=value, strength=strength, source="llm")
 
 

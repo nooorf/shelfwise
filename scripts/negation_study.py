@@ -43,7 +43,8 @@ VIOLATION_LABELS = Path("eval/data/violation_labels.csv")
 STUDY_SYSTEMS = ("bm25", "dense", "hybrid", "hybrid_rerank")
 
 
-def _pct(stat: dict) -> str:
+def _pct(stat: object) -> str:
+    assert isinstance(stat, dict)  # Cell.summary's per-metric {"mean", "ci95", "n"}
     if stat["mean"] is None:
         return f"{'n/a':>17}"
     low, high = stat["ci95"]

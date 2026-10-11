@@ -85,19 +85,20 @@ def main() -> None:
     llm_ms: list[float] = []
     fallbacks: list[str] = []
     fast: list[str] = []  # plain lookups parsed without the LLM
+    llm: CachedLLM | None = None
     with ExitStack() as stack:
         if args.parser == "cascade":
             conn = stack.enter_context(make_engine().connect())
             llm = CachedLLM(OllamaClient(model=args.model), LLM_CACHE)
             cascade = CascadeParser(llm, CatalogLinker(conn))
 
-            def parse(text: str, today: date) -> ParsedRequest:
-                result = cascade.parse(text, today)
+            def parse(query: str, today: date) -> ParsedRequest:
+                result = cascade.parse(query, today)
                 if result.used_llm:
                     if not result.cached:  # no latency for answers read from the cache
                         llm_ms.append(result.llm_ms)
                 elif result.fast_path:
-                    fast.append(text)
+                    fast.append(query)
                 else:
                     fallbacks.append(result.error or "unknown")
                 print(".", end="", file=sys.stderr, flush=True)
@@ -116,7 +117,9 @@ def main() -> None:
         "parser": args.parser,
         "split": "only" if args.only else args.split,
         "today": gold.today.isoformat(),
-        "llm": {
+        "llm": None
+        if llm is None
+        else {
             "model": args.model or llm.model,
             "prompt_version": PROMPT_VERSION,
             "fallbacks": fallbacks,
