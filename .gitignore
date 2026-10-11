@@ -37,7 +37,6 @@ data/raw/
 data/cache/
 data/processed/
 *.dump
-gpu-day-results.tar.gz
 
 # Models and checkpoints
 models/

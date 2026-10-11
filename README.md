@@ -57,7 +57,7 @@ The full design, with the alternatives considered, is in [docs/SYSTEM_DESIGN.md]
 
 ## Still to come: the GPU day
 
-One command on an RTX 4090 (`make gpu-day`, [scripts/gpu_day.py](scripts/gpu_day.py)) fine-tunes the embedder (bge-base, cached MNRL on graded pairs and 10,696 synthetic requests) and two cross-encoder rerankers, re-embeds the catalog, re-runs the dev benchmark and the rerank depth sweep, and then runs the **locked test split once** for the base and the final configuration. Its numbers go in the table above. The off-the-shelf reranker currently makes ranking worse (0.600 at its best depth, below dense alone), which is the case for fine-tuning one.
+One command on the Mac (`make gpu-day HOST=…`, [scripts/gpu_day.py](scripts/gpu_day.py)) sends only the training to an RTX 4090 over SSH and does the rest locally: it fine-tunes the embedder (bge-base, cached MNRL on graded pairs and 10,696 synthetic requests) and two cross-encoder rerankers, re-embeds the catalog, re-runs the dev benchmark and the rerank depth sweep, and then runs the **locked test split once** for the base and the final configuration. Its numbers go in the table above. The off-the-shelf reranker currently makes ranking worse (0.600 at its best depth, below dense alone), which is the case for fine-tuning one.
 
 ## Known gaps
 
