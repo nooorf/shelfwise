@@ -22,5 +22,5 @@ test('the arc opens a book, a question goes to the chat, and live is a click awa
   await page.goBack()
   await page.getByRole('navigation', { name: 'Pages' }).getByRole('link', { name: 'Live session' }).click()
   await expect(page).toHaveURL(/\/live$/)
-  await expect(page.getByLabel('Ask about the collection')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Speak' })).toBeVisible()
 })

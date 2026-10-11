@@ -10,7 +10,7 @@ import { ChatPage } from './ChatPage'
 
 const conversation = {
   ask: vi.fn(), undo: vi.fn(), removeChip: vi.fn(), switchChip: vi.fn(), feedback: vi.fn(),
-  surprise: vi.fn(), explore: vi.fn(), filter: vi.fn(), cancel: vi.fn(), toggleSpeech: vi.fn(),
+  surprise: vi.fn(), explore: vi.fn(), filter: vi.fn(), cancel: vi.fn(),
   listen: vi.fn(), toggleHandsFree: vi.fn(), newVisitor: vi.fn(async () => {}),
 }
 const options: unknown[] = []

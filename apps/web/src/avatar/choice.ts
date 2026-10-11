@@ -55,3 +55,23 @@ export function hasWebGL(): boolean {
     return false
   }
 }
+
+const AVATAR_KEY = 'shelfwise.avatar'
+
+/** The reader's avatar switch, remembered per browser; on unless switched off. */
+export function readAvatarSetting(): boolean {
+  try {
+    return globalThis.localStorage?.getItem(AVATAR_KEY) !== 'off'
+  } catch {
+    return true
+  }
+}
+
+export function writeAvatarSetting(on: boolean): boolean {
+  try {
+    globalThis.localStorage?.setItem(AVATAR_KEY, on ? 'on' : 'off')
+  } catch {
+    // not remembered; the switch still holds for this page
+  }
+  return on
+}

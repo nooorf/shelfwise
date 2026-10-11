@@ -11,6 +11,20 @@ describe('session store', () => {
     useSession.setState({ exchanges: [], shelf: null, shelfReply: null, status: 'ready', error: null })
   })
 
+  it('is ready once connected, offline when the socket drops, and stays busy through a reconnect', () => {
+    const { setOnline, said } = useSession.getState()
+    useSession.setState({ status: 'starting' })
+    setOnline(true)
+    expect(useSession.getState().status).toBe('ready')
+    setOnline(false)
+    expect(useSession.getState().status).toBe('offline')
+    setOnline(true)
+    expect(useSession.getState().status).toBe('ready')
+    said('thrillers')
+    setOnline(true)
+    expect(useSession.getState().status).toBe('searching')
+  })
+
   it('shows cards first, then the reply, then is ready again', () => {
     const { said, receive } = useSession.getState()
     said('thrillers')

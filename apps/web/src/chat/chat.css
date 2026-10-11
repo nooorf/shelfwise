@@ -541,6 +541,10 @@
   gap: 8px 14px;
 }
 
+.chat-state:empty {
+  display: none;
+}
+
 .chat-undo {
   display: inline-flex;
   align-items: center;

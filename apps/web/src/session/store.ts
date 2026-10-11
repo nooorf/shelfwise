@@ -27,13 +27,11 @@ export interface SessionState {
   shelf: TurnResponse | null // the turn whose books are on screen
   shelfReply: Reply | null
   error: string | null
-  speakWanted: boolean // the reader's "read aloud" setting
   speakOn: boolean | null // what the server confirmed: false when it has no speech model
   playing: boolean // speech is coming out of the speakers now
   listening: boolean // the microphone is open
   handsFree: boolean // kiosk: listen again after every answer, barge-in by voice
   setHandsFree: (on: boolean) => void
-  setSpeakWanted: (on: boolean) => void
   setPlaying: (playing: boolean) => void
   setSession: (sessionId: string | null) => void
   setOnline: (online: boolean) => void
@@ -44,7 +42,6 @@ export interface SessionState {
 
 let nextKey = 1
 
-const SPEAK_KEY = 'shelfwise.speak'
 const HANDS_FREE_KEY = 'shelfwise.handsfree'
 
 const LISTENING_PROBLEMS: Record<string, string> = {
@@ -52,7 +49,7 @@ const LISTENING_PROBLEMS: Record<string, string> = {
   unavailable: 'Voice input isn’t set up on the server (make download-stt).',
 }
 
-// A per-browser convenience: private windows and blocked storage just start with speech off.
+// A per-browser convenience: private windows and blocked storage just start with it off.
 function readSetting(key: string): boolean {
   try {
     return globalThis.localStorage?.getItem(key) === 'on'
@@ -80,7 +77,6 @@ export const useSession = create<SessionState>((set) => ({
   shelf: null,
   shelfReply: null,
   error: null,
-  speakWanted: readSetting(SPEAK_KEY),
   speakOn: null,
   playing: false,
   listening: false,
@@ -90,14 +86,12 @@ export const useSession = create<SessionState>((set) => ({
     set({ handsFree: on })
   },
 
-  setSpeakWanted: (on) => {
-    writeSetting(SPEAK_KEY, on)
-    set({ speakWanted: on, speakOn: on ? null : false })
-  },
   setPlaying: (playing) => set({ playing }),
   setSession: (sessionId) => set({ sessionId }),
   setOnline: (online) =>
-    set((s) => ({ status: online ? (s.status === 'offline' ? 'ready' : s.status) : 'offline' })),
+    set((s) => ({
+      status: online ? (s.status === 'offline' || s.status === 'starting' ? 'ready' : s.status) : 'offline',
+    })),
 
   said: (text) =>
     set((s) => ({

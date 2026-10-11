@@ -21,7 +21,6 @@ export interface Conversation {
   explore: (genre: string) => void
   filter: (filters: Filters) => void
   cancel: () => void
-  toggleSpeech: () => void
   listen: () => void
   toggleHandsFree: () => void
   newVisitor: () => Promise<void>
@@ -31,11 +30,7 @@ export interface Conversation {
 export const speech = new SpeechPlayer((playing) => useSession.getState().setPlaying(playing))
 const microphone = new Microphone()
 let liveSocket: SessionSocket | null = null // the session's current socket, for the mic
-let speechAllowed = true // false on the text-only chat page, whatever the read-aloud setting
-
-function speakWanted(): boolean {
-  return speechAllowed && useSession.getState().speakWanted
-}
+let speaking = false // whether the page wants spoken answers: the live session yes, the chat no
 
 // While the assistant talks, only frames this loud reach the server: someone speaking to the
 // kiosk gets through (barge-in); its own voice leaking past echo cancellation doesn't.
@@ -48,8 +43,16 @@ export function frameLevel(pcm: ArrayBuffer): number {
   return Math.sqrt(sum / Math.max(samples.length, 1))
 }
 
+let level = 0 // the microphone's loudness, frame by frame, for the live page's mic ring
+
+/** How loud the microphone is now (RMS, 0-1); 0 when it's closed. */
+export function micLevel(): number {
+  return microphone.open ? level : 0
+}
+
 function forward(pcm: ArrayBuffer): void {
-  if (speech.playing && frameLevel(pcm) < BARGE_IN_RMS) return
+  level = frameLevel(pcm)
+  if (speech.playing && level < BARGE_IN_RMS) return
   liveSocket?.sendAudio(pcm)
 }
 
@@ -102,8 +105,8 @@ async function openSession(
       onEvent,
       onOpenChange: (open) => {
         setOnline(open)
-        // Each new socket starts with speech off on the server: say what the reader wants.
-        if (open) next.send({ type: 'speak', on: speakWanted() })
+        // Each new socket starts with speech off on the server: say what the page wants.
+        if (open) next.send({ type: 'speak', on: speaking })
         if (open) keepListening() // a reconnect mid hands-free: the server forgot it was listening
       },
       onSessionGone: () => {
@@ -134,13 +137,13 @@ export function filtersInWords(f: Filters): string {
   return words.join(', ')
 }
 
-/** `speech: false` (the text chat): the server never speaks, whatever the read-aloud setting. */
-export function useConversation({ speech: withSpeech = true }: { speech?: boolean } = {}): Conversation {
+/** `speech`: whether the server speaks its answers (the live session) or not (the text chat). */
+export function useConversation({ speech: withSpeech }: { speech: boolean }): Conversation {
   const socket = useRef<SessionSocket | null>(null)
   const outbox = useRef<ClientMessage[]>([])
   const sessionId = useSession((s) => s.sessionId)
   const generation = useRef(0) // which session start is the page's current one
-  speechAllowed = withSpeech
+  speaking = withSpeech
 
   useEffect(() => {
     // A page opens a new session, so it starts with an empty conversation too.
@@ -157,7 +160,7 @@ export function useConversation({ speech: withSpeech = true }: { speech?: boolea
 
   const send = useCallback((message: ClientMessage) => {
     speech.stop()
-    if (speakWanted()) speech.unlock()
+    if (speaking) speech.unlock()
     if (socket.current) socket.current.send(message)
     else outbox.current.push(message)
   }, [])
@@ -207,12 +210,6 @@ export function useConversation({ speech: withSpeech = true }: { speech?: boolea
 
   const cancel = useCallback(() => send({ type: 'cancel' }), [send])
 
-  const toggleSpeech = useCallback(() => {
-    const on = !useSession.getState().speakWanted
-    useSession.getState().setSpeakWanted(on)
-    send({ type: 'speak', on })
-  }, [send])
-
   const listen = useCallback(() => {
     if (microphone.open) {
       useSession.getState().setHandsFree(false) // the mic button ends hands-free too
@@ -252,7 +249,7 @@ export function useConversation({ speech: withSpeech = true }: { speech?: boolea
   }, [sessionId])
 
   return {
-    ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel, toggleSpeech,
+    ask, undo, removeChip, switchChip, feedback, surprise, explore, filter, cancel,
     listen, toggleHandsFree, newVisitor,
   }
 }

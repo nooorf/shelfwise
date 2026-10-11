@@ -18,6 +18,7 @@ export type Fallback = 'load' | 'slow'
 
 interface StageProps {
   url: string
+  distance?: number // camera distance in metres: 1.15 head and shoulders, more shows more of her
   status: Status
   analyser: () => { node: AnalyserNode | null; sampleRate: number }
   onFallback: (why: Fallback) => void
@@ -27,7 +28,7 @@ interface StageProps {
 const MIN_FPS = 20 // averaged over the first SAMPLE_S seconds after loading
 const SAMPLE_S = 3
 
-function Model({ url, status, analyser, onFallback, onReady }: StageProps) {
+function Model({ url, status, analyser, onFallback, onReady, distance = 1.15 }: StageProps) {
   const [vrm, setVrm] = useState<VRM | null>(null)
   const camera = useThree((s) => s.camera)
   const mouth = useRef<Visemes>({ ...CLOSED })
@@ -41,8 +42,9 @@ function Model({ url, status, analyser, onFallback, onReady }: StageProps) {
         if (!live) return
         const head = new Vector3()
         bone(loaded, 'head')?.getWorldPosition(head)
-        camera.position.set(0, head.y + 0.04, 1.15) // the head bone sits at the skull's base:
-        camera.lookAt(0, head.y + 0.01, 0) // aim a little above it for head and shoulders
+        const drop = (distance - 1.15) * 0.14 // further back, aim a little lower: shoulders, then chest
+        camera.position.set(0, head.y + 0.04 - drop, distance) // the head bone sits at the skull's
+        camera.lookAt(0, head.y + 0.01 - drop, 0) // base: aim a little above it
         setVrm(loaded)
         onReady()
       })
@@ -50,7 +52,7 @@ function Model({ url, status, analyser, onFallback, onReady }: StageProps) {
     return () => {
       live = false
     }
-  }, [url, camera, onFallback, onReady])
+  }, [url, camera, onFallback, onReady, distance])
 
   useEffect(
     () => () => {
@@ -129,8 +131,9 @@ export default function AvatarStage(props: StageProps) {
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       aria-hidden="true"
     >
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[0.6, 1.8, 1.4]} intensity={1.1} />
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[0.6, 1.8, 1.4]} intensity={0.9} />
+      <directionalLight position={[-1.2, 1.4, -0.8]} intensity={0.6} color="#fff3b0" />
       <Model {...props} />
     </Canvas>
   )

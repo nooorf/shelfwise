@@ -131,16 +131,15 @@ export function ChatPage() {
               </ol>
             </div>
             <footer className="chat-dock">
-              {(latest?.chips.length || latest?.can_undo) && (
-                <div className="chat-state">
-                  <ChipBar chips={latest?.chips ?? []} onRemove={removeChip} onSwitch={switchChip} />
-                  {latest?.can_undo && (
-                    <button type="button" onClick={undo} className="chat-undo">
-                      <RotateCcw className="size-3.5" aria-hidden="true" /> Back to previous search
-                    </button>
-                  )}
-                </div>
-              )}
+              {/* Always mounted: after the last chip goes, ChipBar moves focus to the box. */}
+              <div className="chat-state">
+                <ChipBar chips={latest?.chips ?? []} onRemove={removeChip} onSwitch={switchChip} />
+                {latest?.can_undo && (
+                  <button type="button" onClick={undo} className="chat-undo">
+                    <RotateCcw className="size-3.5" aria-hidden="true" /> Back to previous search
+                  </button>
+                )}
+              </div>
               {error && (
                 <p role="alert" className="chat-error">
                   {error}

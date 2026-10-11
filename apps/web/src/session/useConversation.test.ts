@@ -46,7 +46,7 @@ beforeEach(() => {
 
 describe('useConversation', () => {
   it('keeps a question asked before the session exists and sends it once it does', async () => {
-    const { result } = renderHook(() => useConversation())
+    const { result } = renderHook(() => useConversation({ speech: false }))
 
     act(() => result.current.ask('gothic horror'))
     expect(sent).toEqual([])
@@ -56,9 +56,9 @@ describe('useConversation', () => {
   })
 
   it('ignores a session that finishes starting after the page moved on, so every message goes to one session', async () => {
-    const first = renderHook(() => useConversation())
+    const first = renderHook(() => useConversation({ speech: false }))
     first.unmount() // React's development double mount: the first start is abandoned...
-    const { result } = renderHook(() => useConversation())
+    const { result } = renderHook(() => useConversation({ speech: false }))
     const [stale, fresh] = starts
 
     await act(async () => fresh('new'))

@@ -6,7 +6,7 @@
 // the latest answer: older ones no longer apply.
 import { Cover } from '../components/Cover'
 import { PipelineInspector } from '../components/PipelineInspector'
-import { Guesses, Offers } from '../components/ResultsShelf'
+import { Guesses, Offers } from '../components/ReplyChoices'
 import { Mark } from '../components/SiteNav'
 import type { Exchange } from '../session/store'
 
