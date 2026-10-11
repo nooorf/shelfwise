@@ -1,9 +1,10 @@
-// One exchange in the chat: what the reader said, then Shelfwise's answer with its own books.
-// Cards, titles and availability come from the catalog; only the intro, the "why" lines and the
-// follow-up are the LLM's, and they have passed the validator. "Did you mean" and "which filter
-// should I drop" are only offered on the latest answer: older ones no longer apply.
-import type { BookResult, ReplyItem } from '../api/types'
-import { BookCard } from '../components/BookCard'
+// One exchange in the chat: what the reader said, then Shelfwise's answer. The answer's books
+// show large on the stage beside the chat (CoverFlow); here they are a row of small covers that
+// put that answer back on the stage, at the book clicked. Titles and availability come from the
+// catalog; only the intro, the "why" lines and the follow-up are the LLM's, and they have
+// passed the validator. "Did you mean" and "which filter should I drop" are only offered on
+// the latest answer: older ones no longer apply.
+import { Cover } from '../components/Cover'
 import { PipelineInspector } from '../components/PipelineInspector'
 import { Guesses, Offers } from '../components/ResultsShelf'
 import { Mark } from '../components/SiteNav'
@@ -12,9 +13,9 @@ import type { Exchange } from '../session/store'
 interface Props {
   exchange: Exchange
   latest: boolean
+  staged: number | null // the book in focus on the stage, when this answer is the one there
   onAsk: (text: string) => void
-  onFeedback: (book: BookResult, more: boolean) => void
-  onOpen: (book: BookResult, note?: ReplyItem) => void
+  onShow: (index: number) => void
 }
 
 function Thinking() {
@@ -30,10 +31,9 @@ function Thinking() {
   )
 }
 
-export function Turn({ exchange: e, latest, onAsk, onFeedback, onOpen }: Props) {
+export function Turn({ exchange: e, latest, staged, onAsk, onShow }: Props) {
   const response = e.response
   const reply = e.reply
-  const notes = new Map(reply?.items.map((item) => [item.work_id, item]))
   const books = response?.results ?? []
   return (
     <li className="turn">
@@ -55,20 +55,25 @@ export function Turn({ exchange: e, latest, onAsk, onFeedback, onOpen }: Props) 
             <Offers offers={response.relaxations} onAsk={onAsk} />
           )}
           {books.length > 0 && (
-            <ul className="strip" aria-label="Books">
-              {books.map((book, i) => (
-                <li key={book.work_id}>
-                  <BookCard
-                    book={book}
-                    position={i + 1}
-                    note={notes.get(book.work_id)}
-                    writing={e.pending && !reply}
-                    onFeedback={onFeedback}
-                    onOpen={(b) => onOpen(b, notes.get(b.work_id))}
-                  />
-                </li>
-              ))}
-            </ul>
+            <div className={`turn-books ${staged !== null ? 'is-staged' : ''}`}>
+              <ul aria-label="Books">
+                {books.map((book, i) => (
+                  <li key={book.work_id}>
+                    <button
+                      type="button"
+                      onClick={() => onShow(i)}
+                      aria-label={`Show ${book.title}`}
+                      aria-pressed={staged === i}
+                    >
+                      <Cover isbn={book.work_key} title={book.title} author={book.authors.join(', ')} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <span className="turn-books-note">
+                {staged !== null ? 'On the stage' : `${books.length} ${books.length === 1 ? 'book' : 'books'}`}
+              </span>
+            </div>
           )}
           {reply?.follow_up && <p className="bot-follow">{reply.follow_up}</p>}
           {e.cancelled && <p className="bot-note">Stopped.</p>}

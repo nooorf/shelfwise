@@ -79,15 +79,24 @@ function onEvent(event: ServerEvent): void {
 }
 
 /** `outbox`: messages sent before any socket existed (a quick first question while the page
- * is still starting a session); they go to the new socket, which sends them once it's open. */
+ * is still starting a session); they go to the new socket, which sends them once it's open.
+ * `current`: false once the page has moved on (unmounted, or a new visitor) while this session
+ * was starting. Its late answer is then dropped and the session ended, so it can't replace a
+ * newer socket: in development React mounts twice, and the first session used to win the race
+ * now and then, sending a message to one session and the next to another. */
 async function openSession(
   socket: MutableRefObject<SessionSocket | null>,
   outbox: ClientMessage[],
+  current: () => boolean,
 ): Promise<void> {
   const { setSession, setOnline, clear } = useSession.getState()
   socket.current?.close()
   try {
     const id = await startSession()
+    if (!current()) {
+      void endSession(id)
+      return
+    }
     setSession(id)
     const next = new SessionSocket(socketUrl(id), {
       onEvent,
@@ -98,8 +107,9 @@ async function openSession(
         if (open) keepListening() // a reconnect mid hands-free: the server forgot it was listening
       },
       onSessionGone: () => {
+        if (!current()) return
         clear()
-        void openSession(socket, outbox)
+        void openSession(socket, outbox, current)
       },
     })
     socket.current = next
@@ -108,7 +118,7 @@ async function openSession(
     next.connect()
   } catch {
     setOnline(false)
-    setTimeout(() => void openSession(socket, outbox), 3000) // the API isn't up yet
+    if (current()) setTimeout(() => current() && void openSession(socket, outbox, current), 3000) // the API isn't up yet
   }
 }
 
@@ -129,15 +139,20 @@ export function useConversation({ speech: withSpeech = true }: { speech?: boolea
   const socket = useRef<SessionSocket | null>(null)
   const outbox = useRef<ClientMessage[]>([])
   const sessionId = useSession((s) => s.sessionId)
+  const generation = useRef(0) // which session start is the page's current one
   speechAllowed = withSpeech
 
   useEffect(() => {
     // A page opens a new session, so it starts with an empty conversation too.
     useSession.getState().clear()
-    void openSession(socket, outbox.current)
-    // The latest socket, reconnects included, is the one to close: reading it late is the point.
-    // oxlint-disable-next-line react-hooks/exhaustive-deps
-    return () => socket.current?.close()
+    const mine = ++generation.current
+    void openSession(socket, outbox.current, () => generation.current === mine)
+    return () => {
+      generation.current += 1
+      // The latest socket, reconnects included, is the one to close: reading it late is the point.
+      // oxlint-disable-next-line react-hooks/exhaustive-deps
+      socket.current?.close()
+    }
   }, [])
 
   const send = useCallback((message: ClientMessage) => {
@@ -232,7 +247,8 @@ export function useConversation({ speech: withSpeech = true }: { speech?: boolea
     outbox.current.splice(0) // nothing from the previous visitor carries over
     if (sessionId) await endSession(sessionId)
     useSession.getState().clear()
-    await openSession(socket, outbox.current)
+    const mine = ++generation.current
+    await openSession(socket, outbox.current, () => generation.current === mine)
   }, [sessionId])
 
   return {

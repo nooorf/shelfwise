@@ -1,9 +1,10 @@
-// Text chat (/chat): a conversation that retrieves books, each answer with its own row of
-// cards. No microphone and no avatar here (that's /live), and the server never speaks.
-// An empty chat is a question with the box under it; once you ask, the thread scrolls and the
-// box stays at the bottom with what the search is holding (chips) just above it.
+// Text chat (/chat): a conversation that retrieves books. No microphone and no avatar here
+// (that's /live), and the server never speaks. An empty chat is a question with the box under
+// it; once you ask, the page splits: the conversation on the left, with the box and what the
+// search is holding (chips) at its foot, and a stage on the right showing one answer's books as
+// a Cover Flow. Each new answer with books takes the stage; an older one's covers bring it back.
 import { AudioLines, Plus, RotateCcw } from 'lucide-react'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import type { BookResult, ReplyItem } from '../api/types'
 import { Announcer } from '../components/Announcer'
@@ -17,6 +18,7 @@ import { useSession } from '../session/store'
 import { useConversation } from '../session/useConversation'
 import '../styles/site.css'
 import { Composer } from './Composer'
+import { CoverFlow } from './CoverFlow'
 import { Turn } from './Turn'
 import './chat.css'
 
@@ -27,12 +29,24 @@ export function ChatPage() {
   const exchanges = useSession((s) => s.exchanges)
   const error = useSession((s) => s.error)
   const [open, setOpen] = useState<{ book: BookResult; note?: ReplyItem } | null>(null)
+  // What the reader put on the stage, and which answer was newest then: a newer answer with
+  // books takes the stage back.
+  const [chosen, setChosen] = useState<{ key: number; focus: number; newest: number } | null>(null)
   const log = useRef<HTMLDivElement>(null)
   const shown = useRef(0) // exchanges already scrolled to
 
   const latest = exchanges.findLast((e) => e.response)?.response
   const busy = exchanges.some((e) => e.pending)
   const empty = exchanges.length === 0
+
+  const newest = exchanges.findLast((e) => e.response && e.response.results.length > 0)?.key
+  const stage = newest === undefined ? null : chosen?.newest === newest ? chosen : { key: newest, focus: 0 }
+  const show = (key: number, focus: number) => newest !== undefined && setChosen({ key, focus, newest })
+  const staged = stage ? exchanges.find((e) => e.key === stage.key) : undefined
+  const stagedNotes = useMemo(
+    () => new Map(staged?.reply?.items.map((item) => [item.work_id, item])),
+    [staged?.reply],
+  )
 
   // A question asked on the landing page arrives as ?q=; ask it once, then drop it from the
   // address so a reload doesn't ask again.
@@ -99,24 +113,24 @@ export function ChatPage() {
           <div className="chat-modes">{modes}</div>
         </main>
       ) : (
-        <>
+        <div className="chat-split">
           <h1 className="sr-only">Chat with Shelfwise</h1>
-          <div ref={log} className="chat-log">
-            <ol aria-label="Conversation" className="chat-thread">
-              {exchanges.map((exchange) => (
-                <Turn
-                  key={exchange.key}
-                  exchange={exchange}
-                  latest={exchange.response === latest}
-                  onAsk={ask}
-                  onFeedback={feedback}
-                  onOpen={(book, note) => setOpen({ book, note })}
-                />
-              ))}
-            </ol>
-          </div>
-          <footer className="chat-dock">
-            <div className="chat-dock-inner">
+          <div className="chat-side">
+            <div ref={log} className="chat-log">
+              <ol aria-label="Conversation" className="chat-thread">
+                {exchanges.map((exchange) => (
+                  <Turn
+                    key={exchange.key}
+                    exchange={exchange}
+                    latest={exchange.response === latest}
+                    staged={stage?.key === exchange.key ? stage.focus : null}
+                    onAsk={ask}
+                    onShow={(focus) => show(exchange.key, focus)}
+                  />
+                ))}
+              </ol>
+            </div>
+            <footer className="chat-dock">
               {(latest?.chips.length || latest?.can_undo) && (
                 <div className="chat-state">
                   <ChipBar chips={latest?.chips ?? []} onRemove={removeChip} onSwitch={switchChip} />
@@ -134,9 +148,35 @@ export function ChatPage() {
               )}
               {composer}
               {modes}
-            </div>
-          </footer>
-        </>
+            </footer>
+          </div>
+
+          <div className="stage">
+            {staged?.response && stage ? (
+              <CoverFlow
+                key={staged.key}
+                question={staged.said}
+                books={staged.response.results}
+                notes={stagedNotes}
+                writing={staged.pending && !staged.reply}
+                focus={Math.min(stage.focus, staged.response.results.length - 1)}
+                onFocus={(focus) => show(staged.key, focus)}
+                onOpen={(book) => setOpen({ book, note: stagedNotes.get(book.work_id) })}
+                onFeedback={feedback}
+              />
+            ) : (
+              busy ? (
+                <div className="stage-ghosts" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              ) : (
+                <p className="stage-empty">The books I find will stand here.</p>
+              )
+            )}
+          </div>
+        </div>
       )}
 
       {open && (

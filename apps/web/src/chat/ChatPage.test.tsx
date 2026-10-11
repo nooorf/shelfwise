@@ -64,26 +64,57 @@ describe('chat page', () => {
     expect(window.location.search).toBe('')
   })
 
-  it('shows each answer with its own books and notes, and how it searched', () => {
+  it('puts the newest answer on the stage, and an older one back when its covers are clicked', async () => {
     render(<ChatPage />)
+    expect(screen.queryByRole('region', { name: /Books for/ })).toBeNull()
     exchanges(
       { said: 'dark thrillers', turn: 1, response: turn(1, { results: [book(1, 'Sharp Objects'), book(2, 'Gone Girl')] }), reply },
       { said: 'older ones', turn: 2, response: turn(2, { results: [book(3, 'Rebecca')] }) },
     )
 
-    expect(screen.getByText('dark thrillers')).toBeInTheDocument()
     expect(screen.getByText('Two quiet, dark ones.')).toBeInTheDocument()
-    expect(screen.getByText('A slow unravelling.')).toBeInTheDocument()
     expect(screen.getByText('Shorter, or older?')).toBeInTheDocument()
-
-    const strips = screen.getAllByRole('list', { name: 'Books' })
-    expect(strips).toHaveLength(2)
-    expect(within(strips[0]).getAllByRole('article').map((a) => a.getAttribute('aria-label'))).toEqual([
-      '1. Sharp Objects',
-      '2. Gone Girl',
-    ])
-    expect(within(strips[1]).getByRole('article', { name: '1. Rebecca' })).toBeInTheDocument()
     expect(screen.getAllByText('How it searched')).toHaveLength(2)
+    expect(screen.getByRole('region', { name: 'Books for “older ones”' })).toHaveTextContent('Rebecca')
+
+    const [first] = screen.getAllByRole('list', { name: 'Books' })
+    await userEvent.click(within(first).getByRole('button', { name: 'Show Gone Girl' }))
+    const stage = screen.getByRole('region', { name: 'Books for “dark thrillers”' })
+    expect(within(stage).getByRole('heading', { level: 2 })).toHaveTextContent('Gone Girl')
+    expect(within(stage).getByText('2 of 2')).toBeInTheDocument()
+    expect(within(first).getByRole('button', { name: 'Show Gone Girl' })).toHaveAttribute('aria-pressed', 'true')
+
+    exchanges(
+      { said: 'dark thrillers', turn: 1, response: turn(1, { results: [book(1, 'Sharp Objects'), book(2, 'Gone Girl')] }), reply },
+      { said: 'older ones', turn: 2, response: turn(2, { results: [book(3, 'Rebecca')] }) },
+      { said: 'poetry', turn: 3, response: turn(3, { results: [book(4, 'Ariel')] }) },
+    )
+    expect(screen.getByRole('region', { name: 'Books for “poetry”' })).toBeInTheDocument() // the newest takes it back
+  })
+
+  it('steps through the books with the arrows, the keys and the dots, each with its note', async () => {
+    render(<ChatPage />)
+    exchanges({
+      said: 'dark thrillers', turn: 1, reply,
+      response: turn(1, { results: [book(1, 'Sharp Objects'), book(2, 'Gone Girl'), book(3, 'Rebecca')] }),
+    })
+    const stage = screen.getByRole('region', { name: 'Books for “dark thrillers”' })
+    const title = () => within(stage).getByRole('heading', { level: 2 }).textContent
+
+    expect(title()).toBe('Sharp Objects')
+    expect(within(stage).getByText('A slow unravelling.')).toBeInTheDocument()
+    expect(within(stage).getByRole('button', { name: 'Previous book' })).toBeDisabled()
+    await userEvent.click(within(stage).getByRole('button', { name: 'Next book' }))
+    expect(title()).toBe('Gone Girl')
+    await userEvent.keyboard('{ArrowRight}')
+    expect(title()).toBe('Rebecca')
+    expect(within(stage).getByRole('button', { name: 'Next book' })).toBeDisabled()
+    await userEvent.click(within(stage).getByRole('button', { name: 'Show Sharp Objects' }))
+    expect(title()).toBe('Sharp Objects')
+    await userEvent.click(within(stage).getByRole('button', { name: 'Book 2: Gone Girl' }))
+    expect(title()).toBe('Gone Girl')
+    await userEvent.click(within(stage).getByRole('button', { name: 'More like Gone Girl' }))
+    expect(conversation.feedback).toHaveBeenCalledWith(expect.objectContaining({ title: 'Gone Girl' }), true)
   })
 
   it('says it is looking, and the button stops the answer while one is coming', async () => {
@@ -118,12 +149,12 @@ describe('chat page', () => {
     expect(conversation.newVisitor).toHaveBeenCalled()
   })
 
-  it('opens a book from an answer in the drawer', async () => {
+  it('opens the book in focus in the drawer', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('', { status: 500 })))
     render(<ChatPage />)
     exchanges({ said: 'dark thrillers', turn: 1, response: turn(1, { results: [book(1, 'Sharp Objects')] }), reply })
 
-    await userEvent.click(screen.getByRole('button', { name: 'Sharp Objects' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Open Sharp Objects' }))
     expect(screen.getByRole('dialog')).toHaveTextContent('Sharp Objects')
     vi.unstubAllGlobals()
   })
