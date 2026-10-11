@@ -19,9 +19,9 @@ export function GroundingTable({ grounding }: { grounding: Grounding }) {
     <div className="flex flex-col gap-3">
       {full && (
         <p className="text-sm">
-          Invented books shown to readers: <strong className="tabular-nums">{pct(full.invented)}</strong> of{' '}
+          Invented books shown to readers: <strong>{pct(full.invented)}</strong> of{' '}
           {full.answers} answers; the validator caught them in{' '}
-          <strong className="tabular-nums">{pct(full.raw_invented)}</strong> of the first drafts.
+          <strong>{pct(full.raw_invented)}</strong> of the first drafts.
         </p>
       )}
       <div className="overflow-x-auto">

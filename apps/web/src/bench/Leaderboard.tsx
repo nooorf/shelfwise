@@ -28,7 +28,7 @@ export function Leaderboard({ systems }: { systems: SystemScore[] }) {
               <tr key={s.name} className="border-t border-line">
                 <th scope="row" className="py-1.5 pr-3 text-left font-normal">
                   <code>{s.name}</code>
-                  {s.name === SHIPPED && <span className="ml-2 rounded bg-accent-soft px-1.5 text-xs text-accent">in the app</span>}
+                  {s.name === SHIPPED && <span className="bench-badge">in the app</span>}
                 </th>
                 <td className="py-1.5 pr-3 tabular-nums">
                   {s.ndcg.mean.toFixed(3)} <span className="text-muted">[{low.toFixed(2)}–{high.toFixed(2)}]</span>

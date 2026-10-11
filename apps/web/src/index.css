@@ -22,8 +22,9 @@
 }
 
 /* Plain variables, not @theme: Tailwind drops theme colours no utility class uses, and these
-   are only read through var() (bench heatmap). */
-:root {
+   are only read through var() (bench charts). Declared on .reading-room too, so its pages keep
+   the light steps on their light paper even when the system is in dark mode. */
+:root, .reading-room {
   /* Sequential blue for magnitude (bench heatmap): near zero to high; the ink is whichever
      text colour reads best on each step (step 450 left out: no text colour reaches 4.5:1). */
   --color-seq-0: #cde2fb;
