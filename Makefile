@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate featured tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations violation-agreement negation-study synth-requests training-set train-embedder train-reranker score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e measure web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate featured tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations violation-agreement negation-study synth-requests training-set train-embedder train-reranker gpu-pack gpu-day gpu-unpack score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e measure web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -93,6 +93,17 @@ train-embedder:  ## Fine-tune the embedder into models/bge-base-ft (ARGS="--max-
 train-reranker:  ## Fine-tune a reranker into models/<base>-rerank-ft (ARGS="--base minilm --max-steps 30" smoke test)
 	uv run --group train python scripts/train_reranker.py $(ARGS)
 
+gpu-pack:  ## Before the GPU day, on the Mac: dump the database (catalog, tags, embeddings) to shelfwise.dump (needs `make up`)
+	docker compose exec -T postgres pg_dump -U shelfwise -d shelfwise -Fc > shelfwise.dump
+	@ls -lh shelfwise.dump
+
+gpu-day:  ## On the GPU machine: train, embed, evaluate, locked test split, pack the results (DUMP=shelfwise.dump for an empty database; ARGS="--dry-run"; resumable)
+	uv run python scripts/gpu_day.py $(if $(DUMP),--dump $(DUMP),) $(ARGS)
+
+gpu-unpack:  ## After the GPU day, on the Mac: unpack gpu-day-results.tar.gz (models, reports) and embed the catalog with bge-base-ft
+	tar xzf gpu-day-results.tar.gz
+	HF_HUB_OFFLINE=1 uv run python scripts/embed.py --model bge-base-ft
+
 score-tags:  ## Score the LLM's book tags against the hand labels
 	uv run python scripts/score_tags.py
 
@@ -177,7 +188,7 @@ web-test:  ## Run the web app's tests
 web-e2e:  ## Browser tests against the real API and database (needs `make up`; starts the API and web app unless they're running)
 	$(WEB) npx playwright test
 
-measure:  ## Voice measurements: time to first audio (avatar on vs off), lip-sync offset, FPS, avatar load; a browser window opens (~20 min; needs `make up`, `make llm` for the real parse; UTTERANCES=5 for a quick look)
+measure:  ## Voice measurements: time to first audio (avatar on vs off), lip-sync offset, FPS, avatar load; a browser window opens (~20 min; needs `make up`, `make llm` for the real parse; UTTERANCES=4 for a quick look)
 	$(WEB) npx playwright test -c playwright.measure.config.ts
 
 web-build:  ## Type-check and build the web app into apps/web/dist

@@ -15,6 +15,7 @@ build/
 # Private to-do list and plan (kept locally, never committed)
 MY_TASKS.md
 IMPLEMENTATION_PLAN.md
+VIDEO_SCRIPT.md
 
 # Design-agent tooling and its working briefs (local; the Impeccable skill reads them)
 .github/skills/
@@ -36,6 +37,7 @@ data/raw/
 data/cache/
 data/processed/
 *.dump
+gpu-day-results.tar.gz
 
 # Models and checkpoints
 models/
