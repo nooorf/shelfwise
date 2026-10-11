@@ -3,7 +3,7 @@
 // lazy-loaded; skipped on small screens, without WebGL or with reduced motion), and a box
 // that takes a request in your own words and opens the chat with it. Below: one request
 // taken apart into what it must and would prefer to have, then the live session.
-import { AudioLines, Menu, X } from 'lucide-react'
+import { AudioLines } from 'lucide-react'
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode, RefObject } from 'react'
 
@@ -14,8 +14,10 @@ import { availabilityText } from '../components/availability'
 import { BookDrawer } from '../components/BookDrawer'
 import { shortTitle } from '../components/bookDetails'
 import { Link } from '../components/Link'
+import { Mark, SiteNav } from '../components/SiteNav'
 import { AskBox } from './AskBox'
 import { BookArc } from './BookArc'
+import '../styles/site.css'
 import './landing.css'
 
 const Character = lazy(() => import('./Character'))
@@ -55,60 +57,6 @@ function useHorizon(hero: RefObject<HTMLElement | null>, stage: RefObject<HTMLEl
     return () => observer.disconnect()
   }, [hero, stage])
   return horizon
-}
-
-function Mark() {
-  // Three spines, the last one leaning: the only drawing on the page.
-  return (
-    <svg viewBox="0 0 20 20" className="size-5" aria-hidden="true">
-      <rect x="2" y="4" width="3.4" height="13" rx="0.6" fill="currentColor" />
-      <rect x="6.6" y="2" width="3.4" height="15" rx="0.6" fill="currentColor" />
-      <rect x="12.2" y="3.4" width="3.4" height="13.6" rx="0.6" fill="currentColor" transform="rotate(-16 13.9 17)" />
-    </svg>
-  )
-}
-
-function NavMenu() {
-  const [open, setOpen] = useState(false)
-  const box = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (!open) return
-    const away = (e: PointerEvent) => {
-      if (!box.current?.contains(e.target as Node)) setOpen(false)
-    }
-    const escape = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
-    document.addEventListener('pointerdown', away)
-    document.addEventListener('keydown', escape)
-    return () => {
-      document.removeEventListener('pointerdown', away)
-      document.removeEventListener('keydown', escape)
-    }
-  }, [open])
-  return (
-    <div ref={box} className="nav-pill">
-      <Link href="/" className="nav-brand">
-        <Mark />
-        Shelfwise
-      </Link>
-      <button
-        type="button"
-        className="nav-toggle"
-        aria-expanded={open}
-        aria-controls="nav-menu"
-        aria-label={open ? 'Close menu' : 'Menu'}
-        onClick={() => setOpen((o) => !o)}
-      >
-        {open ? <X className="size-4" aria-hidden="true" /> : <Menu className="size-4" aria-hidden="true" />}
-      </button>
-      {open && (
-        <ul id="nav-menu" className="nav-menu">
-          <li><Link href="/chat">Chat</Link></li>
-          <li><Link href="/live">Live session</Link></li>
-          <li><Link href="/bench">Benchmarks</Link></li>
-        </ul>
-      )}
-    </div>
-  )
 }
 
 function Caption({ book }: { book: FeaturedBook | null }) {
@@ -224,7 +172,7 @@ export function LandingPage() {
   }, [])
 
   return (
-    <div className="reading-room landing">
+    <div className="reading-room site landing">
       <section ref={hero} className={`hero ${model ? 'has-character' : ''}`}>
         {model && horizon > 0 && (
           // Behind the arc, so the far shelf hides everything below the character's shoulders.
@@ -240,13 +188,10 @@ export function LandingPage() {
         )}
         <BookArc ref={arc} books={books} horizon={horizon} onOpen={setOpen} onPoint={onPoint} />
 
-        <header className="nav">
-          <NavMenu />
-          <nav aria-label="Pages" className="nav-actions">
-            <Link href="/bench" className="btn btn-butter">Benchmarks</Link>
-            <Link href="/live" className="btn btn-coral">Live session</Link>
-          </nav>
-        </header>
+        <SiteNav>
+          <Link href="/bench" className="btn btn-butter">Benchmarks</Link>
+          <Link href="/live" className="btn btn-coral">Live session</Link>
+        </SiteNav>
 
         <div className="hero-copy">
           <h1 className="hero-title">

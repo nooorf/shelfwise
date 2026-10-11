@@ -6,13 +6,7 @@ import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 
 import { navigate } from '../router'
-
-const EXAMPLES = [
-  'dark and psychological, nothing supernatural, under 300 pages',
-  'something like Gone Girl, but less romance',
-  'a short mystery I can borrow today',
-  'novels about colonialism under 250 pages',
-]
+import { EXAMPLES } from './examples'
 
 const TYPE_MS = 42
 const ERASE_MS = 18

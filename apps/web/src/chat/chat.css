@@ -1,0 +1,369 @@
+/* The text chat (ChatPage.tsx), on the reading room's shared parts (styles/site.css). */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.chat > .nav {
+  flex: none;
+}
+
+/* An empty chat: the question, the box, things to try ------------------------------------ */
+
+.chat-welcome {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 16px 12vh;
+  text-align: center;
+}
+
+.chat-title {
+  font-family: var(--serif);
+  font-size: clamp(2.25rem, 4.2vw, 3.6rem);
+  font-weight: 440;
+  font-variation-settings: 'opsz' 60;
+  line-height: 1.04;
+  letter-spacing: -0.032em;
+  text-wrap: balance;
+}
+
+.chat-sub {
+  max-width: 34rem;
+  margin-bottom: 8px;
+  color: var(--color-ink-soft, #3d3e43);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.chat-welcome .composer {
+  width: min(100%, 680px);
+}
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 720px;
+}
+
+.chat-suggestions button {
+  padding: 8px 14px;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: rgb(246 247 248 / 0.75);
+  color: #3d3e43;
+  font-size: 0.875rem;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s var(--ease-out);
+}
+
+.chat-suggestions button:hover {
+  border-color: #d9cf5c;
+  background: var(--color-butter);
+  color: var(--color-ink);
+  transform: translateY(-1px);
+}
+
+.chat-modes {
+  margin-top: 4px;
+}
+
+/* The thread ---------------------------------------------------------------------------- */
+
+.chat-log {
+  position: relative; /* the turns' offsetTop, for scrolling a new one to the top */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 16px 28px;
+  mask-image: linear-gradient(to bottom, transparent, #000 22px);
+}
+
+/* Room below the last answer, so a new question can always scroll to the top. */
+.chat-thread::after {
+  content: '';
+  flex: none;
+  height: calc(100dvh - 320px);
+}
+
+.chat-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.turn {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: turn-in 0.4s var(--ease-out);
+}
+
+@keyframes turn-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+.turn-user {
+  align-self: flex-end;
+  max-width: min(80%, 560px);
+  padding: 12px 17px;
+  border-radius: 20px 20px 6px 20px;
+  background: var(--color-night);
+  color: var(--color-night-ink);
+  font-size: 0.975rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  box-shadow: 0 14px 28px -20px hsl(var(--shadow-tint) / 0.9);
+}
+
+.turn-bot {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.bot-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--color-butter);
+  color: var(--color-ink);
+  box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.08);
+}
+
+.bot-mark svg {
+  width: 17px;
+  height: 17px;
+}
+
+.bot-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding-top: 5px;
+}
+
+.bot-intro {
+  font-family: var(--serif);
+  font-size: 1.1875rem;
+  font-variation-settings: 'opsz' 20;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.bot-note {
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+}
+
+.bot-follow {
+  color: var(--color-muted);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-style: italic;
+}
+
+.bot-thinking {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  color: var(--color-muted);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-style: italic;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 4px;
+}
+
+.dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: dot 1.2s ease-in-out infinite;
+}
+
+.dots span:nth-child(2) { animation-delay: 0.15s; }
+.dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes dot {
+  0%, 60%, 100% { opacity: 0.25; transform: none; }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* The answer's books: one row, scrolled sideways. */
+.strip {
+  display: flex;
+  gap: 14px;
+  margin: 2px -16px 0 0;
+  padding: 4px 16px 12px 2px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+}
+
+.strip > li {
+  flex: 0 0 10.25rem;
+  scroll-snap-align: start;
+}
+
+.strip article {
+  height: 100%;
+  border-color: var(--color-line);
+  border-radius: 12px;
+  background: var(--color-card);
+  box-shadow: 0 14px 26px -22px hsl(var(--shadow-tint) / 0.9);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.strip article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 30px -22px hsl(var(--shadow-tint) / 0.95);
+}
+
+.strip article h3 {
+  font-family: var(--serif);
+  font-weight: 560;
+}
+
+/* "How it searched": quiet until opened. */
+.inspector-inline {
+  border-top: 1px dashed var(--color-line);
+}
+
+.inspector-inline > * {
+  padding-inline: 0;
+}
+
+.inspector-inline[open] {
+  padding-bottom: 6px;
+}
+
+/* The dock: what the search holds, the box, the other ways in ----------------------------- */
+
+.chat-dock {
+  flex: none;
+  padding: 10px 16px 18px;
+  background: linear-gradient(to top, var(--color-paper) 72%, rgb(230 231 233 / 0));
+}
+
+.chat-dock-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.chat-state {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.chat-undo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-accent);
+  font-size: 0.875rem;
+}
+
+.chat-undo:hover {
+  text-decoration: underline;
+}
+
+.chat-error,
+.chat-offline {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--color-out-soft);
+  color: var(--color-out);
+  font-size: 0.875rem;
+}
+
+.chat-offline {
+  align-self: center;
+  margin: 0 16px;
+}
+
+/* The box -------------------------------------------------------------------------------- */
+
+.composer {
+  position: relative;
+  width: 100%;
+}
+
+.composer-input {
+  display: block;
+  width: 100%;
+  min-height: 62px;
+  max-height: 200px;
+  padding: 18px 66px 18px 24px;
+  border: 1px solid #2b2b30;
+  border-radius: 20px;
+  background: var(--color-night);
+  color: var(--color-night-ink);
+  font-size: 1rem;
+  line-height: 1.55;
+  resize: none;
+  caret-color: var(--color-coral);
+  box-shadow:
+    0 22px 44px -22px hsl(var(--shadow-tint) / 0.8),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  transition: box-shadow 0.3s var(--ease-out);
+}
+
+.composer-input::placeholder {
+  color: var(--color-night-muted);
+}
+
+.composer-input:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--color-butter),
+    0 22px 44px -22px hsl(var(--shadow-tint) / 0.8);
+}
+
+.composer-go {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: #34343a;
+  color: var(--color-night-ink);
+  transition: background-color 0.25s, color 0.25s;
+}
+
+.composer-go:hover,
+.composer:focus-within .composer-go,
+.composer-go.is-stop {
+  background: var(--color-coral);
+  color: var(--color-ink);
+}
+
+.composer :focus-visible {
+  outline-color: var(--color-butter);
+}

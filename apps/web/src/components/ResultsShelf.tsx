@@ -12,7 +12,7 @@ interface Props {
   onFeedback?: (book: BookResult, more: boolean) => void
 }
 
-function Offers({ offers, onAsk }: { offers: Relaxation[]; onAsk: (text: string) => void }) {
+export function Offers({ offers, onAsk }: { offers: Relaxation[]; onAsk: (text: string) => void }) {
   return (
     <div className="rounded-md border border-line bg-card p-4">
       <p className="mb-3">Nothing matches everything. Which should I drop?</p>
@@ -41,7 +41,7 @@ function Offers({ offers, onAsk }: { offers: Relaxation[]; onAsk: (text: string)
 
 /** "Did you mean": a name that didn't match, and the catalog titles or authors it may be.
  * Choosing one sends the reader's message with the name corrected. */
-function Guesses({ guesses, onAsk }: { guesses: Guess[]; onAsk: (text: string) => void }) {
+export function Guesses({ guesses, onAsk }: { guesses: Guess[]; onAsk: (text: string) => void }) {
   return (
     <div className="rounded-md border border-line bg-card p-4">
       <p className="mb-3">Did you mean…</p>

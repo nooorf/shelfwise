@@ -31,6 +31,11 @@ export interface Conversation {
 export const speech = new SpeechPlayer((playing) => useSession.getState().setPlaying(playing))
 const microphone = new Microphone()
 let liveSocket: SessionSocket | null = null // the session's current socket, for the mic
+let speechAllowed = true // false on the text-only chat page, whatever the read-aloud setting
+
+function speakWanted(): boolean {
+  return speechAllowed && useSession.getState().speakWanted
+}
 
 // While the assistant talks, only frames this loud reach the server: someone speaking to the
 // kiosk gets through (barge-in); its own voice leaking past echo cancellation doesn't.
@@ -89,7 +94,7 @@ async function openSession(
       onOpenChange: (open) => {
         setOnline(open)
         // Each new socket starts with speech off on the server: say what the reader wants.
-        if (open) next.send({ type: 'speak', on: useSession.getState().speakWanted })
+        if (open) next.send({ type: 'speak', on: speakWanted() })
         if (open) keepListening() // a reconnect mid hands-free: the server forgot it was listening
       },
       onSessionGone: () => {
@@ -119,12 +124,16 @@ export function filtersInWords(f: Filters): string {
   return words.join(', ')
 }
 
-export function useConversation(): Conversation {
+/** `speech: false` (the text chat): the server never speaks, whatever the read-aloud setting. */
+export function useConversation({ speech: withSpeech = true }: { speech?: boolean } = {}): Conversation {
   const socket = useRef<SessionSocket | null>(null)
   const outbox = useRef<ClientMessage[]>([])
   const sessionId = useSession((s) => s.sessionId)
+  speechAllowed = withSpeech
 
   useEffect(() => {
+    // A page opens a new session, so it starts with an empty conversation too.
+    useSession.getState().clear()
     void openSession(socket, outbox.current)
     // The latest socket, reconnects included, is the one to close: reading it late is the point.
     // oxlint-disable-next-line react-hooks/exhaustive-deps
@@ -133,7 +142,7 @@ export function useConversation(): Conversation {
 
   const send = useCallback((message: ClientMessage) => {
     speech.stop()
-    if (useSession.getState().speakWanted) speech.unlock()
+    if (speakWanted()) speech.unlock()
     if (socket.current) socket.current.send(message)
     else outbox.current.push(message)
   }, [])

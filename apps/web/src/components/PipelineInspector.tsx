@@ -51,11 +51,13 @@ function Request({ title, request }: { title: string; request: Parsed | null }) 
   )
 }
 
-export function PipelineInspector({ response }: { response: TurnResponse | undefined }) {
+/** `inline`: under one chat reply, titled "How it searched", instead of a strip along the
+ * bottom of the page. */
+export function PipelineInspector({ response, inline = false }: { response: TurnResponse | undefined; inline?: boolean }) {
   return (
-    <details className="border-t border-line bg-card text-xs">
+    <details className={inline ? 'inspector-inline text-xs' : 'border-t border-line bg-card text-xs'}>
       <summary className="cursor-pointer px-4 py-2 text-muted select-none hover:text-ink md:px-6">
-        Pipeline inspector
+        {inline ? 'How it searched' : 'Pipeline inspector'}
         {response && (
           <span className="ml-2 tabular-nums">
             · {response.system ?? response.route} · parser {response.parser} · {response.timings_ms.total} ms

@@ -1,4 +1,6 @@
-// Open Library covers by ISBN, with a typographic cover when there's none (design doc §22.1).
+// Open Library covers by ISBN over a typographic cover (design doc §22.1). The typographic one
+// is always drawn and the photo fades in on top once it has loaded, so a slow, throttled
+// (Open Library allows 100 ISBN lookups per 5 minutes) or missing cover never shows as a blank.
 import { useState } from 'react'
 
 function hue(text: string): number {
@@ -8,27 +10,28 @@ function hue(text: string): number {
 }
 
 export function Cover({ isbn, title, author }: { isbn: string; title: string; author: string }) {
-  const [failed, setFailed] = useState(false)
-  if (!failed && /^\d{13}$/.test(isbn)) {
-    return (
-      <img
-        src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`}
-        alt=""
-        loading="lazy"
-        onError={() => setFailed(true)}
-        className="aspect-[2/3] w-full rounded-sm object-cover shadow-sm"
-      />
-    )
-  }
+  const [state, setState] = useState<'loading' | 'loaded' | 'failed'>('loading')
   const h = hue(title)
   return (
-    <div
-      aria-hidden="true"
-      className="flex aspect-[2/3] w-full flex-col justify-between rounded-sm p-3 font-serif shadow-sm"
-      style={{ background: `hsl(${h} 35% 32%)`, color: `hsl(${h} 40% 92%)` }}
-    >
-      <span className="line-clamp-5 text-sm leading-snug font-semibold">{title}</span>
-      <span className="line-clamp-2 text-[11px] opacity-80">{author}</span>
+    <div className="relative aspect-[2/3] w-full overflow-hidden rounded-sm shadow-sm">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 flex flex-col justify-between p-3 font-serif"
+        style={{ background: `hsl(${h} 35% 32%)`, color: `hsl(${h} 40% 92%)` }}
+      >
+        <span className="line-clamp-5 text-sm leading-snug font-semibold">{title}</span>
+        <span className="line-clamp-2 text-[11px] opacity-80">{author}</span>
+      </div>
+      {state !== 'failed' && /^\d{13}$/.test(isbn) && (
+        <img
+          src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`}
+          alt=""
+          loading="lazy"
+          onLoad={() => setState('loaded')}
+          onError={() => setState('failed')}
+          className={`absolute inset-0 size-full object-cover transition-opacity duration-500 ${state === 'loaded' ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
     </div>
   )
 }
