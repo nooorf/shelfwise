@@ -1,6 +1,6 @@
 // The benchmark dashboard (design doc §22.2, §30), in the reading room: the headline numbers
 // first, then every retrieval system on the dev split with 95% CIs, quality against latency,
-// nDCG@10 per query category, grounding, and the parser's scores. The locked test split never
+// nDCG@10 per query category, grounding, the live session's timings, and the parser's scores. The locked test split never
 // appears here. Data: GET /api/v1/bench (eval/reports).
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
@@ -15,6 +15,7 @@ import { GroundingTable } from './GroundingTable'
 import { Leaderboard } from './Leaderboard'
 import { ParetoChart } from './ParetoChart'
 import { SHIPPED } from './scales'
+import { VoicePanel } from './VoicePanel'
 import './bench.css'
 
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`
@@ -53,6 +54,7 @@ export function BenchPage() {
   const parser = bench?.parser
   const shipped = retrieval?.systems.find((s) => s.name === SHIPPED)
   const grounded = bench?.grounding?.systems.find((s) => s.name === 'full')
+  const spoken = bench?.voice?.on.ttfa ?? bench?.voice?.off.ttfa
 
   return (
     <div className="reading-room site bench">
@@ -73,7 +75,7 @@ export function BenchPage() {
           {bench && !retrieval && !parser && (
             <p className="bench-alert">No reports yet: run <code>make eval</code> and <code>make eval-parser</code>.</p>
           )}
-          {(shipped || grounded || parser) && (
+          {(shipped || grounded || parser || spoken) && (
             <div className="stats">
               {shipped && (
                 <Stat
@@ -99,6 +101,13 @@ export function BenchPage() {
               )}
               {shipped?.latency_ms && (
                 <Stat label="Search time, p95" value={`${shipped.latency_ms.p95} ms`} detail="per query, on an 8 GB M2 Mac" />
+              )}
+              {spoken && (
+                <Stat
+                  label="Spoken answer starts, median"
+                  value={`${(spoken.p50 / 1000).toFixed(2)} s`}
+                  detail="after the last word of a spoken question"
+                />
               )}
             </div>
           )}
@@ -131,6 +140,16 @@ export function BenchPage() {
         {bench?.grounding && (
           <Card id="grounding" title="Grounding: what reaches the reader">
             <GroundingTable grounding={bench.grounding} />
+          </Card>
+        )}
+
+        {bench?.voice && (
+          <Card
+            id="voice"
+            title="The live session: time to first audio"
+            intro="Spoken questions through the live page, timed from the last word of the question to the first word of the answer out of the speakers, with the avatar off and on."
+          >
+            <VoicePanel voice={bench.voice} />
           </Card>
         )}
 

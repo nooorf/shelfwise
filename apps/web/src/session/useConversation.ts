@@ -8,6 +8,7 @@ import { endSession, socketUrl, startSession } from '../api/client'
 import type { BookResult, Chip, ClientMessage, Filters, ServerEvent } from '../api/types'
 import { Microphone } from './microphone'
 import { SpeechPlayer } from './player'
+import { probe } from './probe'
 import { SessionSocket } from './socket'
 import { useSession } from './store'
 
@@ -62,6 +63,7 @@ function keepListening(): void {
 }
 
 function onEvent(event: ServerEvent): void {
+  probe.event(event)
   const handsFree = useSession.getState().handsFree
   if (event.type === 'turn') {
     speech.seen(event.turn)

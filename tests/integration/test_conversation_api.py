@@ -559,6 +559,7 @@ def test_speech_reads_the_reply_aloud_sentence_by_sentence(
     assert kinds[:2] == ["turn", "audio"] and kinds[-2:] == ["reply", "done"]
     audio = [e for e in events if e["type"] == "audio"]
     assert [a["seq"] for a in audio] == list(range(len(audio))) and audio
+    assert all(a["ms"] >= 0 for a in audio)  # each clip's synthesis time
     shown = events[0]["results"]
     assert audio[0]["text"] == f"Here are {len(shown)} books that fit."  # at once, no LLM
     notes = [a["text"] for a in audio[1:]]
@@ -599,7 +600,9 @@ def test_a_spoken_question_is_transcribed_and_answered(
     kinds = [e["type"] for e in events]
     assert kinds[:4] == ["speech_start", "listening", "transcript", "turn"]
     assert events[1] == {"type": "listening", "on": False, "reason": "heard"}
-    assert events[2] == {"type": "transcript", "text": "psychological thrillers", "fixed": []}
+    transcript = events[2].copy()
+    assert transcript.pop("ms") >= 0  # the transcription time, for the voice measurements
+    assert transcript == {"type": "transcript", "text": "psychological thrillers", "fixed": []}
     assert events[3]["semantic_query"] == "psychological thrillers" and events[3]["results"]
     assert stt.heard == [pytest.approx(1.8, abs=0.1)]  # pre-roll + speech + 600 ms
 

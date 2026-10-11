@@ -4,6 +4,7 @@ import asyncio
 import base64
 import json
 import threading
+import time
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Annotated, Any
@@ -353,12 +354,13 @@ def create_app(
         {"type": "listen", "on": bool} and, while listening, binary frames of 16 kHz 16-bit
         mono PCM. Listening answers {"type": "listening", "on", "reason"?}; the server finds
         the utterance's end itself ("speech_start" when it hears speech: barge-in), then sends
-        {"type": "transcript", "text", "fixed": [{"heard", "catalog"}]} (names respelled from
-        the catalog) and runs it as a typed "text" message; "listen" off
+        {"type": "transcript", "text", "fixed": [{"heard", "catalog"}], "ms"} (names respelled
+        from the catalog; "ms" the transcription time) and runs it as a typed "text" message; "listen" off
         before the end transcribes what was heard so far.
         Server -> client, per turn: "turn" (cards, chips, notes: everything but the narration,
         as soon as retrieval is done), then "reply" when the narration is ready, then, with
-        speech on, one "audio" per sentence ({"seq", "text", "wav": base64 16-bit WAV}), then
+        speech on, one "audio" per sentence ({"seq", "text", "wav": base64 16-bit WAV, "ms": its synthesis
+        time}), then
         "done". "speak" is answered with {"type": "speak", "on"}: false when no TTS model is
         loaded. A new message or "cancel" while the reply or its audio is being made drops it
         ("cancelled"): the server half of barge-in."""
@@ -395,10 +397,12 @@ def create_app(
 
         async def transcribe(heard: Endpointer) -> dict[str, Any] | None:
             await stop_listening("heard")
+            clock = time.perf_counter()
             text, fixes = await asyncio.to_thread(conversation.transcribe, conn, heard.audio())
             await websocket.send_json(
                 {"type": "transcript", "text": text,
-                 "fixed": [{"heard": f.heard, "catalog": f.catalog} for f in fixes]}
+                 "fixed": [{"heard": f.heard, "catalog": f.catalog} for f in fixes],
+                 "ms": round((time.perf_counter() - clock) * 1000, 1)}
             )  # fmt: skip
             return {"type": "text", "text": text} if text else None
 
@@ -417,10 +421,12 @@ def create_app(
             async def say(lines: list[str]) -> None:
                 nonlocal seq
                 for sentence in lines:
+                    clock = time.perf_counter()
                     clip = await asyncio.to_thread(conversation.audio, sentence)
                     await websocket.send_json(
                         {"type": "audio", "turn": turn, "seq": seq, "text": sentence,
-                         "wav": base64.b64encode(clip).decode("ascii")}
+                         "wav": base64.b64encode(clip).decode("ascii"),
+                         "ms": round((time.perf_counter() - clock) * 1000, 1)}
                     )  # fmt: skip
                     seq += 1
 

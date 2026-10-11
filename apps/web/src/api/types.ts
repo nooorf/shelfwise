@@ -34,11 +34,11 @@ export type ServerEvent =
   | ({ type: 'reply_piece'; turn: number } & ReplyPiece)
   | { type: 'done'; turn: number }
   | { type: 'cancelled'; turn: number }
-  | { type: 'audio'; turn: number; seq: number; text: string; wav: string }
+  | { type: 'audio'; turn: number; seq: number; text: string; wav: string; ms: number }
   | { type: 'speak'; on: boolean }
   | { type: 'listening'; on: boolean; reason?: 'heard' | 'stopped' | 'no speech' | 'unavailable' }
   | { type: 'speech_start' }
-  | { type: 'transcript'; text: string; fixed: { heard: string; catalog: string }[] }
+  | { type: 'transcript'; text: string; fixed: { heard: string; catalog: string }[]; ms: number }
   | { type: 'error'; message: string }
 
 export type ClientMessage =

@@ -39,3 +39,21 @@ export const SEQUENTIAL_STEPS = 12 // --color-seq-0 .. 11 in index.css, near zer
 export function step(score: number): number {
   return Math.round(Math.min(1, Math.max(0, score)) * (SEQUENTIAL_STEPS - 1))
 }
+
+/** Stages that run one after another, as [start, end) offsets from 0, in the order given. */
+export function waterfall<K extends string>(order: readonly K[], ms: Record<K, number>) {
+  let at = 0
+  return order.map((key) => {
+    const width = Math.max(0, ms[key])
+    const bar = { key, start: at, end: at + width }
+    at += width
+    return bar
+  })
+}
+
+/** A tick step of 1, 2 or 5 x 10^n giving about `count` ticks up to `max`. */
+export function niceStep(max: number, count = 5): number {
+  const raw = max / Math.max(count, 1)
+  const power = 10 ** Math.floor(Math.log10(raw))
+  return ([1, 2, 5, 10].find((m) => m * power >= raw) ?? 10) * power
+}

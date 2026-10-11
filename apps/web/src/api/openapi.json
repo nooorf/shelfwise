@@ -709,6 +709,36 @@
         ],
         "title": "AvailabilityState"
       },
+      "AvatarLoad": {
+        "properties": {
+          "first_frame_ms": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Spread"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "model_ms": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Spread"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "first_frame_ms",
+          "model_ms"
+        ],
+        "title": "AvatarLoad"
+      },
       "Bench": {
         "properties": {
           "retrieval": {
@@ -735,6 +765,16 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/GroundingReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "voice": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VoiceReport"
               },
               {
                 "type": "null"
@@ -1856,6 +1896,39 @@
         "title": "LookupSpec",
         "description": "A known item: a title, an author's books, or both. Canonical spellings, not as typed."
       },
+      "Offset": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "mean": {
+            "type": "number",
+            "title": "Mean"
+          },
+          "p50": {
+            "type": "number",
+            "title": "P50"
+          },
+          "p95": {
+            "type": "number",
+            "title": "P95"
+          },
+          "abs_p95": {
+            "type": "number",
+            "title": "Abs P95"
+          }
+        },
+        "type": "object",
+        "required": [
+          "n",
+          "mean",
+          "p50",
+          "p95",
+          "abs_p95"
+        ],
+        "title": "Offset"
+      },
       "ParsedConstraint": {
         "properties": {
           "field": {
@@ -2379,6 +2452,34 @@
         ],
         "title": "SpeechRequest"
       },
+      "Spread": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "mean": {
+            "type": "number",
+            "title": "Mean"
+          },
+          "p50": {
+            "type": "number",
+            "title": "P50"
+          },
+          "p95": {
+            "type": "number",
+            "title": "P95"
+          }
+        },
+        "type": "object",
+        "required": [
+          "n",
+          "mean",
+          "p50",
+          "p95"
+        ],
+        "title": "Spread"
+      },
       "SurpriseRequest": {
         "properties": {
           "narrate": {
@@ -2694,6 +2795,174 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VoiceCondition": {
+        "properties": {
+          "questions": {
+            "type": "integer",
+            "title": "Questions"
+          },
+          "answered": {
+            "type": "integer",
+            "title": "Answered"
+          },
+          "ttfa": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Spread"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "stages": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stages"
+          },
+          "first_note": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Spread"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "av_offset": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Offset"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fps": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Spread"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fps_p5": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fps P5"
+          }
+        },
+        "type": "object",
+        "required": [
+          "questions",
+          "answered",
+          "ttfa",
+          "stages",
+          "first_note",
+          "av_offset",
+          "fps",
+          "fps_p5"
+        ],
+        "title": "VoiceCondition",
+        "description": "One run of the spoken questions (`make measure`), avatar on or off; times in ms."
+      },
+      "VoiceReport": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File"
+          },
+          "created": {
+            "type": "string",
+            "title": "Created"
+          },
+          "git": {
+            "type": "string",
+            "title": "Git"
+          },
+          "parser": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parser"
+          },
+          "browser": {
+            "type": "string",
+            "title": "Browser"
+          },
+          "machine": {
+            "type": "string",
+            "title": "Machine"
+          },
+          "avatar_model": {
+            "type": "string",
+            "title": "Avatar Model"
+          },
+          "questions": {
+            "type": "integer",
+            "title": "Questions"
+          },
+          "off": {
+            "$ref": "#/components/schemas/VoiceCondition"
+          },
+          "on": {
+            "$ref": "#/components/schemas/VoiceCondition"
+          },
+          "avatar_cost_ms": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Spread"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "avatar_load": {
+            "$ref": "#/components/schemas/AvatarLoad"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "created",
+          "git",
+          "parser",
+          "browser",
+          "machine",
+          "avatar_model",
+          "questions",
+          "off",
+          "on",
+          "avatar_cost_ms",
+          "avatar_load"
+        ],
+        "title": "VoiceReport"
       }
     }
   }

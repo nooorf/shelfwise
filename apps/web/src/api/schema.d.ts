@@ -372,11 +372,17 @@ export interface components {
          * @enum {string}
          */
         AvailabilityState: "available" | "in_library_only" | "due_soon" | "borrowed" | "unavailable";
+        /** AvatarLoad */
+        AvatarLoad: {
+            first_frame_ms: components["schemas"]["Spread"] | null;
+            model_ms: components["schemas"]["Spread"] | null;
+        };
         /** Bench */
         Bench: {
             retrieval: components["schemas"]["RetrievalReport"] | null;
             parser: components["schemas"]["ParserReport"] | null;
             grounding?: components["schemas"]["GroundingReport"] | null;
+            voice?: components["schemas"]["VoiceReport"] | null;
         };
         /**
          * BookDetail
@@ -773,6 +779,19 @@ export interface components {
             /** Author */
             author?: string | null;
         };
+        /** Offset */
+        Offset: {
+            /** N */
+            n: number;
+            /** Mean */
+            mean: number;
+            /** P50 */
+            p50: number;
+            /** P95 */
+            p95: number;
+            /** Abs P95 */
+            abs_p95: number;
+        };
         /** ParsedConstraint */
         ParsedConstraint: {
             /** Field */
@@ -958,6 +977,17 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** Spread */
+        Spread: {
+            /** N */
+            n: number;
+            /** Mean */
+            mean: number;
+            /** P50 */
+            p50: number;
+            /** P95 */
+            p95: number;
+        };
         /**
          * SurpriseRequest
          * @description The "Surprise me" button: picks from what is on the shelf, within the hard chips.
@@ -1070,6 +1100,49 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /**
+         * VoiceCondition
+         * @description One run of the spoken questions (`make measure`), avatar on or off; times in ms.
+         */
+        VoiceCondition: {
+            /** Questions */
+            questions: number;
+            /** Answered */
+            answered: number;
+            ttfa: components["schemas"]["Spread"] | null;
+            /** Stages */
+            stages: {
+                [key: string]: number;
+            } | null;
+            first_note: components["schemas"]["Spread"] | null;
+            av_offset: components["schemas"]["Offset"] | null;
+            fps: components["schemas"]["Spread"] | null;
+            /** Fps P5 */
+            fps_p5: number | null;
+        };
+        /** VoiceReport */
+        VoiceReport: {
+            /** File */
+            file: string;
+            /** Created */
+            created: string;
+            /** Git */
+            git: string;
+            /** Parser */
+            parser: string | null;
+            /** Browser */
+            browser: string;
+            /** Machine */
+            machine: string;
+            /** Avatar Model */
+            avatar_model: string;
+            /** Questions */
+            questions: number;
+            off: components["schemas"]["VoiceCondition"];
+            on: components["schemas"]["VoiceCondition"];
+            avatar_cost_ms: components["schemas"]["Spread"] | null;
+            avatar_load: components["schemas"]["AvatarLoad"];
         };
     };
     responses: never;

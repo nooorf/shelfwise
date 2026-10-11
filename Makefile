@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate featured tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations violation-agreement negation-study synth-requests training-set train-embedder train-reranker score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate featured tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations violation-agreement negation-study synth-requests training-set train-embedder train-reranker score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e measure web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -176,6 +176,9 @@ web-test:  ## Run the web app's tests
 
 web-e2e:  ## Browser tests against the real API and database (needs `make up`; starts the API and web app unless they're running)
 	$(WEB) npx playwright test
+
+measure:  ## Voice measurements: time to first audio (avatar on vs off), lip-sync offset, FPS, avatar load; a browser window opens (~20 min; needs `make up`, `make llm` for the real parse; UTTERANCES=5 for a quick look)
+	$(WEB) npx playwright test -c playwright.measure.config.ts
 
 web-build:  ## Type-check and build the web app into apps/web/dist
 	$(WEB) npm run build

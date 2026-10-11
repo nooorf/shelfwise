@@ -78,3 +78,35 @@ def test_the_newest_grounding_report_in_a_fixed_system_order(tmp_path: Path) -> 
     assert grounding is not None and [s.name for s in grounding.systems] == ["llm_only", "full"]
     assert grounding.systems[0].unowned == 0.75 and grounding.systems[0].affirmed == 0.5
     assert grounding.systems[1].raw_invented == 0.2
+
+
+def test_the_newest_voice_report(tmp_path: Path) -> None:
+    spread = {"n": 3, "mean": 1200.0, "p50": 1100.0, "p95": 1500.0}
+    condition = {
+        "questions": 3, "answered": 3, "ttfa": spread,
+        "stages": {"endpoint": 700.0, "transcribe": 300.0, "parse": 100.0, "retrieve": 50.0,
+                   "voice": 30.0, "playback": 15.0, "handoffs": 5.0},
+        "first_note": None, "av_offset": None, "fps": None, "fps_p5": None,
+    }  # fmt: skip
+
+    def report(created: str) -> dict:
+        return {
+            "created": created, "git": "abc", "kind": "voice", "questions": ["a", "b", "c"],
+            "parser": "cascade", "browser": "Chromium 140", "machine": "Apple M2, 8 GB",
+            "avatar_model": "sample.vrm",
+            "conditions": {"off": condition,
+                           "on": condition | {"av_offset": spread | {"abs_p95": 40.0},
+                                              "fps": spread, "fps_p5": 55.0}},
+            "avatar_cost_ms": spread, "avatar_load": {"first_frame_ms": spread, "model_ms": None},
+            "rows": {"off": [], "on": []},
+        }  # fmt: skip
+
+    (tmp_path / "1_abc_voice.json").write_text(json.dumps(report("2026-10-10T00:00:00")))
+    (tmp_path / "2_abc_voice.json").write_text(json.dumps(report("2026-10-11T00:00:00")))
+
+    voice = load_bench(tmp_path).voice
+
+    assert voice is not None and voice.file == "2_abc_voice.json" and voice.questions == 3
+    assert voice.off.stages is not None and next(iter(voice.off.stages)) == "endpoint"
+    assert voice.on.av_offset is not None and voice.on.av_offset.abs_p95 == 40.0
+    assert voice.off.av_offset is None and voice.avatar_load.model_ms is None

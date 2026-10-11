@@ -1,5 +1,5 @@
-"""The `/bench` page's data (design doc §22.2): the newest retrieval and parser reports from
-`eval/reports`, trimmed to what the dashboard draws (no per-query rows)."""
+"""The `/bench` page's data (design doc §22.2): the newest retrieval, parser, grounding and voice
+reports from `eval/reports`, trimmed to what the dashboard draws (no per-query rows)."""
 
 import json
 from pathlib import Path
@@ -76,10 +76,55 @@ class GroundingReport(BaseModel):
     systems: list[GroundingRates]
 
 
+class Spread(BaseModel):
+    n: int
+    mean: float
+    p50: float
+    p95: float
+
+
+class Offset(Spread):
+    abs_p95: float  # p95 of the offset's size, either direction
+
+
+class VoiceCondition(BaseModel):
+    """One run of the spoken questions (`make measure`), avatar on or off; times in ms."""
+
+    questions: int
+    answered: int  # with a first audio measured
+    ttfa: Spread | None  # end of the question's speech -> first sound of the answer
+    stages: dict[str, float] | None  # mean ms per stage, in order; they add up to the mean TTFA
+    first_note: Spread | None  # end of speech -> the LLM's first book note on screen
+    av_offset: Offset | None  # mouth opening minus sound starting; positive: lips late
+    fps: Spread | None  # avatar frames per second while speaking, per answer
+    fps_p5: float | None
+
+
+class AvatarLoad(BaseModel):
+    first_frame_ms: Spread | None  # from navigation to the avatar's first frame, cold cache
+    model_ms: Spread | None  # the model's download and parse alone
+
+
+class VoiceReport(BaseModel):
+    file: str
+    created: str
+    git: str
+    parser: str | None
+    browser: str
+    machine: str
+    avatar_model: str
+    questions: int
+    off: VoiceCondition
+    on: VoiceCondition
+    avatar_cost_ms: Spread | None  # TTFA avatar on minus off, question by question
+    avatar_load: AvatarLoad
+
+
 class Bench(BaseModel):
     retrieval: RetrievalReport | None
     parser: ParserReport | None
     grounding: GroundingReport | None = None
+    voice: VoiceReport | None = None
 
 
 def _reports(folder: Path) -> list[tuple[Path, dict[str, Any]]]:
@@ -109,8 +154,20 @@ def _system(name: str, result: dict[str, Any]) -> SystemScore:
 def load_bench(folder: Path = REPORTS, split: str = "dev") -> Bench:
     """The newest retrieval and parser reports on `split`: the locked test split (and "all",
     which contains it) is never shown here."""
-    retrieval = parser = grounding = None
+    retrieval = parser = grounding = voice = None
     for path, report in _reports(folder):
+        if voice is None and path.name.endswith("_voice.json"):
+            conditions = report["conditions"]
+            voice = VoiceReport(
+                file=path.name, created=report["created"], git=report["git"],
+                parser=report.get("parser"), browser=report["browser"], machine=report["machine"],
+                avatar_model=report["avatar_model"], questions=len(report["questions"]),
+                off=VoiceCondition.model_validate(conditions["off"]),
+                on=VoiceCondition.model_validate(conditions["on"]),
+                avatar_cost_ms=report.get("avatar_cost_ms"),
+                avatar_load=AvatarLoad.model_validate(report["avatar_load"]),
+            )  # fmt: skip
+            continue
         if grounding is None and path.name.endswith("_grounding.json"):
             order = {"llm_only": 0, "naive_rag": 1, "full": 2}
             systems = [
@@ -149,4 +206,4 @@ def load_bench(folder: Path = REPORTS, split: str = "dev") -> Bench:
                 constraint_precision=strict["precision"], constraint_recall=strict["recall"],
                 constraint_f1=strict["f1"],
             )  # fmt: skip
-    return Bench(retrieval=retrieval, parser=parser, grounding=grounding)
+    return Bench(retrieval=retrieval, parser=parser, grounding=grounding, voice=voice)

@@ -16,7 +16,7 @@ export interface Bands {
   high: number // 1800-3500 Hz: second formant of front vowels
 }
 
-const QUIET = 0.015 // RMS below this is silence
+export const QUIET = 0.015 // RMS below this is silence
 const LOUD = 0.08 // RMS at which the mouth is fully open (Kokoro speaks at ~0.05-0.1)
 const SHARPEN = 3 // power on the vowel scores: one clear shape, not a blur of all five
 

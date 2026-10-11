@@ -87,7 +87,7 @@ describe('session store', () => {
     receive({ type: 'speech_start' })
     receive({ type: 'listening', on: false, reason: 'heard' })
     expect(useSession.getState()).toMatchObject({ listening: false, status: 'searching', error: null })
-    receive({ type: 'transcript', text: 'gothic horror', fixed: [] })
+    receive({ type: 'transcript', text: 'gothic horror', fixed: [], ms: 0 })
     expect(useSession.getState().exchanges.at(-1)).toMatchObject({ said: 'gothic horror', pending: true })
 
     receive({ type: 'turn', ...turn(1) })
@@ -100,7 +100,7 @@ describe('session store', () => {
     expect(useSession.getState()).toMatchObject({ status: 'ready', error: expect.stringContaining('didn’t hear') })
     receive({ type: 'listening', on: false, reason: 'unavailable' })
     expect(useSession.getState().error).toContain('isn’t set up')
-    receive({ type: 'transcript', text: '', fixed: [] })
+    receive({ type: 'transcript', text: '', fixed: [], ms: 0 })
     expect(useSession.getState().error).toContain('couldn’t make that out')
   })
 

@@ -3,6 +3,7 @@
 // sentences are still being made. stop() is barge-in: silence now, and late clips from the
 // interrupted turns are dropped. Browsers only allow sound after a user gesture: unlock() is
 // called from clicks and key presses.
+import { onset, probe } from './probe'
 
 export interface AudioOutput {
   readonly currentTime: number
@@ -12,6 +13,7 @@ export interface AudioOutput {
   createAnalyser?(): AnalyserNode
   readonly destination: AudioNode
   readonly sampleRate?: number
+  getOutputTimestamp?(): AudioTimestamp
 }
 
 const LEAD_S = 0.02 // scheduling slack so the first clip doesn't start in the past
@@ -101,5 +103,15 @@ export class SpeechPlayer {
       if (this.sources.length === 0) this.onPlaying(false)
     }
     if (this.sources.push(source) === 1) this.onPlaying(true)
+    if (probe.enabled) probe.clip({ turn, heard: heardAt(output, start + onset(buffer)), duration: buffer.duration * 1000 })
   }
+}
+
+/** When a moment on the output's clock reaches the speakers, on the page's clock (ms). */
+function heardAt(output: AudioOutput, at: number): number {
+  const stamp = output.getOutputTimestamp?.()
+  if (stamp?.contextTime != null && stamp.performanceTime != null) {
+    return stamp.performanceTime + (at - stamp.contextTime) * 1000 // includes output latency
+  }
+  return performance.now() + (at - output.currentTime) * 1000
 }

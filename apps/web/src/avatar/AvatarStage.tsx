@@ -9,6 +9,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useRef, useState } from 'react'
 import { Vector3 } from 'three'
 
+import { probe } from '../session/probe'
 import type { Status } from '../session/store'
 import { bands, CLOSED, loudness, smooth, VISEMES, visemes } from './lipsync'
 import { blinkAt, bone, loadVrm } from './load'
@@ -37,9 +38,11 @@ function Model({ url, status, analyser, onFallback, onReady, distance = 1.15 }: 
 
   useEffect(() => {
     let live = true
+    probe.mark('avatar-load-start')
     loadVrm(url)
       .then((loaded) => {
         if (!live) return
+        probe.mark('avatar-loaded')
         const head = new Vector3()
         bone(loaded, 'head')?.getWorldPosition(head)
         const drop = (distance - 1.15) * 0.14 // further back, aim a little lower: shoulders, then chest
@@ -115,6 +118,10 @@ function Model({ url, status, analyser, onFallback, onReady, distance = 1.15 }: 
       mouth.current = { ...CLOSED }
     }
     for (const v of VISEMES) expressions?.setValue(v, mouth.current[v])
+    if (probe.enabled) {
+      probe.mark('avatar-first-frame')
+      probe.frame(VISEMES.reduce((sum, v) => sum + mouth.current[v], 0), status === 'speaking')
+    }
 
     vrm.update(dt)
   })
