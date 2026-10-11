@@ -214,6 +214,40 @@ def test_parsed_hybrid_lookups_seeds_and_authors(
     ]
 
 
+def test_an_author_lookup_with_a_preference_ranks_their_books_by_it(
+    conn: Connection, catalog: dict[str, int]
+) -> None:
+    vicarage = catalog["Murder at the Vicarage"]
+    author = conn.execute(
+        select(schema.work_author.c.author_id).where(schema.work_author.c.work_id == vicarage)
+    ).scalar_one()
+    styles = add_work(conn, "The Mysterious Affair at Styles")
+    conn.execute(
+        update(schema.work)
+        .where(schema.work.c.work_id == styles)
+        .values(description="a country house murder and a Belgian detective", popularity=0.9)
+    )
+    add_copy(conn, add_edition(conn, styles, pages=296), "available")
+    conn.execute(insert(schema.work_author).values(work_id=styles, author_id=author))
+    for work_id, audience in ((vicarage, "children"), (styles, "adult")):
+        conn.execute(
+            insert(schema.work_facets).values(work_id=work_id, audience=audience, source="human")
+        )
+    refresh_search_text(conn)
+    embedder = FakeEmbedder()
+    embed_missing(conn, embedder)
+    ctx = SearchContext.build(conn, today=date(2026, 10, 6), embedder=embedder)
+    by_christie = ParsedRequest(intent="lookup", lookup=LookupSpec(author="Agatha Christie"))
+    for_kids = by_christie.model_copy(
+        update={"constraints": [constraint("facet.audience", "eq", "children", "soft")]}
+    )
+    parsed = with_parses(ctx, {"agatha christie": by_christie, "christie for kids": for_kids})
+
+    # Just the author: most borrowed first. With "for kids": the kids' book first, theirs only.
+    assert parsed_hybrid(parsed, "agatha christie", 4)[:2] == [styles, vicarage]
+    assert parsed_hybrid(parsed, "christie for kids", 4) == [vicarage, styles]
+
+
 def test_soft_constraints_move_books_without_removing_any(
     conn: Connection, ctx: SearchContext, catalog: dict[str, int]
 ) -> None:

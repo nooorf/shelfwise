@@ -56,3 +56,13 @@ def test_popular_needs_the_top_fifth() -> None:
 
     assert soft_score([popular], None, [], popularity_rank=0.9) == 1.0
     assert soft_score([popular], None, [], popularity_rank=0.5) == 0.0
+
+
+def test_reading_level_counts_a_quarter_of_a_vote() -> None:
+    beginners = soft("facet.reading_level", "eq", "intro")
+
+    assert soft_score([beginners], {"reading_level": "intro"}, []) == 0.25
+    assert soft_score([beginners], {"reading_level": "advanced"}, []) == -0.25
+    assert soft_score([beginners, TEENS], {"reading_level": "intro", "audience": "ya"}, []) == (
+        pytest.approx((0.25 + 1) / 2)
+    )

@@ -22,6 +22,7 @@ from shelfwise.query.request import ParsedRequest
 from shelfwise.query.rules import parse_rules
 from shelfwise.ranking.rerank import CachedReranker, rerank
 from shelfwise.ranking.soft import SOFT_WEIGHT, soft_score
+from shelfwise.ranking.soft import scored as is_preference
 from shelfwise.retrieval.dense import DenseIndex
 from shelfwise.retrieval.filters import FACET_COLUMNS, allowed_mask
 from shelfwise.retrieval.fusion import rrf
@@ -324,15 +325,21 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
     title or author comes first; "like X" searches near the seed book (and leaves it out); the
     negation-stripped semantic text goes to BM25 and dense; RRF, then soft constraints nudge
     (`ranking.soft`). Dense hits far below the catalog's best match are dropped (`MAX_GAP`), so a
-    filter that leaves only off-topic books shows none of them. An author named in a non-lookup ("neil gaiman for kids") narrows the
-    search to their books."""
+    filter that leaves only off-topic books shows none of them. An author named in a non-lookup,
+    or in a lookup with a preference ("neil gaiman for kids"), narrows the search to their books."""
     request = ctx.parsed(query)
     embedder, index = ctx.require_dense()
     constraints = [*request.constraints, *ctx.extra_constraints]
     mask = allowed_mask(ctx.conn, constraints, ctx.index.work_ids)
     lookup = request.lookup
     author_books = _author_books(ctx, lookup.author) if lookup and lookup.author else []
-    if author_books and request.intent != "lookup":
+    # "Something by neil gaiman for kids": a preference turns an author lookup into a search
+    # among their books, ranked by it, instead of all of them by popularity.
+    prefers = any(c.strength == "soft" and is_preference(c) for c in request.constraints)
+    narrow = bool(author_books) and (
+        request.intent != "lookup" or (prefers and not (lookup and lookup.title))
+    )
+    if narrow:
         mask = mask & np.isin(ctx.index.work_ids, author_books)
     ctx.record("filter", [], f"of {len(mask)} books pass the hard filters", int(mask.sum()))
 
@@ -388,7 +395,8 @@ def parsed_hybrid(ctx: SearchContext, query: str, k: int) -> list[int]:
     if request.intent == "lookup" and lookup:
         if lookup.title:
             known += [m.work_id for m in find_titles(ctx.conn, lookup.title)]
-        known += author_books
+        if not narrow:
+            known += author_books
     allowed = _allowed_ids(ctx, mask)
     hidden = set(request.seed_work_ids) | set(request.avoid_work_ids)
     ranked = known + [w for w, _ in scored]

@@ -30,6 +30,12 @@ _COMPARE: dict[str, Callable[[Any, Any], bool]] = {
 }
 _BOOL_FACETS = {"fiction"}  # stored as a boolean; the parser says True / False
 _YES_NO_FACETS = {"supernatural", "historical_setting"}  # 'yes' / 'no' / 'unclear'
+# Reading level is who a book is for, not what it's about, and its tags (read by the LLM from
+# the description) are the least reliable we have: it counts as this share of a vote. At a full
+# vote "for beginners" pulled any beginner's book above the Linux books asked for; a quarter
+# took learning queries from 0.60 to 0.73 NDCG@10 on dev (2026-10-11; audience at a half vote,
+# and neighbouring levels as unknown, both scored lower and were left out).
+FACET_WEIGHTS = {"reading_level": 0.25}
 
 
 def facet_match(c: Constraint, value: Any) -> int:
@@ -78,15 +84,18 @@ def soft_score(
     pages: int | None = None,
     year: int | None = None,
 ) -> float:
-    """Mean of +1 (met) / -1 (broken) / 0 (unknown) over the soft constraints that apply.
+    """Mean of +1 (met) / -1 (broken) / 0 (unknown) over the soft constraints that apply,
+    reading level at its `FACET_WEIGHTS` share of a vote.
 
     `popularity_rank` is the book's popularity percentile (1.0 = most borrowed)."""
-    votes = []
+    votes: list[float] = []
     for c in constraints:
         if c.strength != "soft" or c.op == "shift":
             continue
         if c.field.startswith("facet."):
-            votes.append(facet_match(c, (facets or {}).get(c.field.removeprefix("facet."))))
+            name = c.field.removeprefix("facet.")
+            vote = facet_match(c, (facets or {}).get(name))
+            votes.append(FACET_WEIGHTS.get(name, 1.0) * vote)
         elif c.field == "genre" and c.op == "in":
             overlap = bool(set(genres) & set(c.value if isinstance(c.value, list) else [c.value]))
             if c.polarity == "exclude":
