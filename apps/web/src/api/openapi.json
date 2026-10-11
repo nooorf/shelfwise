@@ -1261,6 +1261,55 @@
         ],
         "title": "CopyInfo"
       },
+      "Difference": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "mean": {
+            "type": "number",
+            "title": "Mean"
+          },
+          "p50": {
+            "type": "number",
+            "title": "P50"
+          },
+          "p95": {
+            "type": "number",
+            "title": "P95"
+          },
+          "ci95": {
+            "anyOf": [
+              {
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci95"
+          }
+        },
+        "type": "object",
+        "required": [
+          "n",
+          "mean",
+          "p50",
+          "p95"
+        ],
+        "title": "Difference"
+      },
       "EditionInfo": {
         "properties": {
           "isbn13": {
@@ -2936,7 +2985,7 @@
           "avatar_cost_ms": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Spread"
+                "$ref": "#/components/schemas/Difference"
               },
               {
                 "type": "null"

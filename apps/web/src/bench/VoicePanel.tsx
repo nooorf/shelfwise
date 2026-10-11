@@ -122,8 +122,12 @@ export function VoicePanel({ voice }: { voice: Voice }) {
         {cost && (
           <Stat
             label="What the avatar adds to it"
-            value={signed(cost.p50)}
-            detail={`median, the same ${cost.n} questions with the avatar on and off (p95 ${signed(cost.p95)})`}
+            value={signed(cost.mean)}
+            detail={
+              cost.ci95
+                ? `mean over the same ${cost.n} questions, avatar on vs off; 95% CI ${signed(cost.ci95[0])} to ${signed(cost.ci95[1])}`
+                : `mean over the same ${cost.n} questions, avatar on vs off`
+            }
           />
         )}
         {on.av_offset && (

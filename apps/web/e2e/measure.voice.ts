@@ -6,7 +6,7 @@
 // avatar off and on (time to first audio must not change), then the page is loaded a few
 // times from a cold cache for the avatar's load time. A headed browser: headless Chromium
 // draws WebGL in software, too slow for the avatar. Writes eval/reports/<time>_<git>_voice.json,
-// which /bench shows. UTTERANCES (default 30) and LOADS (default 5) change the counts.
+// which /bench shows. UTTERANCES (default 20) and LOADS (default 5) change the counts.
 import { execSync } from 'node:child_process'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { cpus, totalmem } from 'node:os'
@@ -19,7 +19,7 @@ import type { Log, Utterance } from './voice-stats.ts'
 import { pairedTtfa, spread, summarise, utterance } from './voice-stats.ts'
 
 const API = 'http://localhost:8000/api/v1'
-const UTTERANCES = Number(process.env.UTTERANCES ?? 30)
+const UTTERANCES = Number(process.env.UTTERANCES ?? 20)
 const LOADS = Number(process.env.LOADS ?? 5)
 const REPORTS = fileURLToPath(new URL('../../../eval/reports/', import.meta.url))
 
@@ -95,12 +95,16 @@ const fakeMicrophone = (avatar: 'on' | 'off') => `
   }
 `
 
-/** Every clip heard and the turn done, half a second ago. */
+/** The answer's spoken opening heard, and then two quiet seconds (or the turn done): a visitor
+ * asks the next question here, which stops the rest of the narration. Waiting for all of it
+ * would take minutes per question with the LLM on the 8 GB Mac, and the first audio is known. */
 const SETTLED = `(() => {
   const log = window.__probe.peek()
-  if (!log.events.some((e) => e.type === 'done' || e.type === 'error')) return false
+  const now = performance.now()
   const end = Math.max(0, ...log.clips.map((c) => c.heard + c.duration))
-  return performance.now() > end + 500
+  if (log.events.some((e) => e.type === 'done' || e.type === 'error')) return now > end + 500
+  const last = Math.max(0, ...log.events.map((e) => e.t))
+  return log.clips.length > 0 && now > end + 2000 && now > last + 2000
 })()`
 
 async function speech(text: string): Promise<string> {

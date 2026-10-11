@@ -142,8 +142,25 @@ export function summarise(rows: (Utterance | null)[]): Condition {
   }
 }
 
-/** Avatar on minus off, question by question (same questions, same order). */
-export function pairedTtfa(off: (Utterance | null)[], on: (Utterance | null)[]): Spread | null {
+/** A bootstrap 95% CI of the mean, with a fixed seed so a report can be recomputed. */
+export function meanCi(values: number[], draws = 10_000): [number, number] {
+  let seed = 1
+  const random = () => ((seed = (seed * 48271) % 2147483647) - 1) / 2147483646
+  const means = Array.from({ length: draws }, () => {
+    let sum = 0
+    for (let i = 0; i < values.length; i++) sum += values[Math.floor(random() * values.length)]
+    return sum / values.length
+  })
+  return [r(percentile(means, 2.5)), r(percentile(means, 97.5))]
+}
+
+/** Avatar on minus off, question by question (same questions, same order), with the mean's
+ * 95% CI: the spread between two runs of one question is large next to any avatar cost. */
+export function pairedTtfa(
+  off: (Utterance | null)[],
+  on: (Utterance | null)[],
+): (Spread & { ci95: [number, number] }) | null {
   const diffs = off.flatMap((u, i) => (u && on[i] ? [on[i].ttfa - u.ttfa] : []))
-  return spread(diffs)
+  const s = spread(diffs)
+  return s && { ...s, ci95: meanCi(diffs) }
 }

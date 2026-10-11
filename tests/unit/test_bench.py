@@ -97,7 +97,7 @@ def test_the_newest_voice_report(tmp_path: Path) -> None:
             "conditions": {"off": condition,
                            "on": condition | {"av_offset": spread | {"abs_p95": 40.0},
                                               "fps": spread, "fps_p5": 55.0}},
-            "avatar_cost_ms": spread, "avatar_load": {"first_frame_ms": spread, "model_ms": None},
+            "avatar_cost_ms": spread | {"ci95": [-900.0, 1100.0]}, "avatar_load": {"first_frame_ms": spread, "model_ms": None},
             "rows": {"off": [], "on": []},
         }  # fmt: skip
 
@@ -110,3 +110,4 @@ def test_the_newest_voice_report(tmp_path: Path) -> None:
     assert voice.off.stages is not None and next(iter(voice.off.stages)) == "endpoint"
     assert voice.on.av_offset is not None and voice.on.av_offset.abs_p95 == 40.0
     assert voice.off.av_offset is None and voice.avatar_load.model_ms is None
+    assert voice.avatar_cost_ms is not None and voice.avatar_cost_ms.ci95 == (-900.0, 1100.0)

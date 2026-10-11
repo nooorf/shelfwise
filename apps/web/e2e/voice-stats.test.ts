@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import type { Log, LogFrame } from './voice-stats.ts'
-import { avOffset, fps, pairedTtfa, percentile, STAGES, summarise, utterance } from './voice-stats.ts'
+import { avOffset, fps, meanCi, pairedTtfa, percentile, STAGES, summarise, utterance } from './voice-stats.ts'
 
 // Spoken until t=1000; transcript 900 ms later (300 of it Whisper); the turn 50 ms after that
 // (parse 20 + retrieve 20 + 10 handing over); the first clip 200 ms later (150 synthesis), heard
@@ -79,6 +79,14 @@ describe('summary', () => {
     expect(s.ttfa?.mean).toBe(1300)
     expect(s.stages?.endpoint).toBe(650)
     expect(s.av_offset).toBeNull()
-    expect(pairedTtfa([a, b], [b, null])).toEqual({ n: 1, mean: 100, p50: 100, p95: 100 })
+    expect(pairedTtfa([a, b], [b, null])).toEqual({ n: 1, mean: 100, p50: 100, p95: 100, ci95: [100, 100] })
+  })
+
+  it('puts a confidence interval around the mean that covers it, the same every time', () => {
+    const values = [-900, 400, 1200, -300, 800, 50, -1500, 2000]
+    const [low, high] = meanCi(values)
+    expect(low).toBeLessThan(218.75)
+    expect(high).toBeGreaterThan(218.75)
+    expect(meanCi(values)).toEqual([low, high])
   })
 })

@@ -1,0 +1,770 @@
+{
+  "created": "2026-10-11T18:53:53.276Z",
+  "git": "bbfea72-dirty",
+  "kind": "voice",
+  "questions": [
+    "Gothic horror novels, please.",
+    "Something like The Hunger Games.",
+    "A cozy mystery for the weekend.",
+    "Books by Agatha Christie.",
+    "I want to learn Python from scratch.",
+    "A short science fiction novel.",
+    "Do you have Pride and Prejudice?",
+    "Fantasy with dragons, but nothing too dark.",
+    "A funny book for a long flight.",
+    "Historical fiction set in Japan.",
+    "Something by Neil Gaiman for kids.",
+    "A thriller that is available now.",
+    "Books about the history of science.",
+    "A romance that is not too long.",
+    "Poetry for someone new to poetry.",
+    "Something like Gone Girl.",
+    "A classic Russian novel.",
+    "Self help books about habits.",
+    "A graphic novel for teenagers.",
+    "Space opera from the last ten years."
+  ],
+  "parser": "cascade",
+  "browser": "Chromium 153.0.8010.12",
+  "machine": "Apple M2, 8 GB",
+  "avatar_model": "sample.vrm",
+  "conditions": {
+    "off": {
+      "questions": 20,
+      "answered": 20,
+      "ttfa": {
+        "n": 20,
+        "mean": 11512.8,
+        "p50": 10258,
+        "p95": 18340.5
+      },
+      "stages": {
+        "endpoint": 728,
+        "transcribe": 4642,
+        "parse": 3473.9,
+        "retrieve": 1471.1,
+        "voice": 1052.4,
+        "playback": 112.2,
+        "handoffs": 19.6
+      },
+      "first_note": {
+        "n": 9,
+        "mean": 13947.5,
+        "p50": 12080.4,
+        "p95": 18987.8
+      },
+      "av_offset": null,
+      "fps": null,
+      "fps_p5": null
+    },
+    "on": {
+      "questions": 20,
+      "answered": 20,
+      "ttfa": {
+        "n": 20,
+        "mean": 11875.9,
+        "p50": 12340.7,
+        "p95": 15618.2
+      },
+      "stages": {
+        "endpoint": 721.5,
+        "transcribe": 4797.1,
+        "parse": 3548.1,
+        "retrieve": 1499.7,
+        "voice": 1157.7,
+        "playback": 113.4,
+        "handoffs": 24.1
+      },
+      "first_note": {
+        "n": 6,
+        "mean": 16728.1,
+        "p50": 16395,
+        "p95": 20123
+      },
+      "av_offset": {
+        "n": 20,
+        "mean": 10.3,
+        "p50": 3.6,
+        "p95": 62.7,
+        "abs_p95": 62.7
+      },
+      "fps": {
+        "n": 20,
+        "mean": 58.7,
+        "p50": 59.6,
+        "p95": 60.2
+      },
+      "fps_p5": 54.5
+    }
+  },
+  "avatar_cost_ms": {
+    "n": 20,
+    "mean": 363.1,
+    "p50": 928.9,
+    "p95": 6514.3,
+    "ci95": [
+      -1753.5,
+      2416.8
+    ]
+  },
+  "avatar_load": {
+    "first_frame_ms": {
+      "n": 5,
+      "mean": 839.9,
+      "p50": 726.5,
+      "p95": 1213.6
+    },
+    "model_ms": {
+      "n": 5,
+      "mean": 123,
+      "p50": 102,
+      "p95": 195.9
+    }
+  },
+  "rows": {
+    "off": [
+      {
+        "ttfa": 18314.078333334088,
+        "stages": {
+          "endpoint": 708.100000002235,
+          "transcribe": 6650.3,
+          "parse": 9564.1,
+          "retrieve": 149.7,
+          "voice": 1084.1,
+          "playback": 116.17833333185263,
+          "handoffs": 35.40000000000009
+        },
+        "first_note": 21363.699999999255,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 14965.675333331848,
+        "stages": {
+          "endpoint": 734,
+          "transcribe": 4527.5,
+          "parse": 4113.6,
+          "retrieve": 3761.9,
+          "voice": 1621.7,
+          "playback": 154.47533333259344,
+          "handoffs": 37.09999999925526
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 16508.973333336296,
+        "stages": {
+          "endpoint": 721.7000000022354,
+          "transcribe": 5590.2,
+          "parse": 5604.8,
+          "retrieve": 2824.6,
+          "voice": 1592.9,
+          "playback": 120.57333333406132,
+          "handoffs": 23.89999999999918
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 9980.074333330354,
+        "stages": {
+          "endpoint": 697.7999999977646,
+          "transcribe": 4780.8,
+          "parse": 419.4,
+          "retrieve": 2610.4,
+          "voice": 1340.5,
+          "playback": 115.57433333035442,
+          "handoffs": 12.000000002235083
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 14468.680333331838,
+        "stages": {
+          "endpoint": 707.5999999985097,
+          "transcribe": 5681.8,
+          "parse": 3227.9,
+          "retrieve": 3215.4,
+          "voice": 1458.3,
+          "playback": 133.68033333183848,
+          "handoffs": 25.900000001490525
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 12985.571333330357,
+        "stages": {
+          "endpoint": 699.3000000000002,
+          "transcribe": 5041.7,
+          "parse": 2762.1,
+          "retrieve": 2858.9,
+          "voice": 1441.4,
+          "playback": 115.57133333035745,
+          "handoffs": 14.299999999999727
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 11344.676333331852,
+        "stages": {
+          "endpoint": 721.9999999992551,
+          "transcribe": 5595.7,
+          "parse": 375.6,
+          "retrieve": 3083.4,
+          "voice": 1430.2,
+          "playback": 114.47633333259728,
+          "handoffs": 19.799999999999955
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 18842.376333334832,
+        "stages": {
+          "endpoint": 826.8000000007451,
+          "transcribe": 7982,
+          "parse": 4360.2,
+          "retrieve": 3769.8,
+          "voice": 1715.4,
+          "playback": 147.97633333259728,
+          "handoffs": 23.900000001489843
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 14833.770333333348,
+        "stages": {
+          "endpoint": 778.6999999999998,
+          "transcribe": 5654.8,
+          "parse": 3854.4,
+          "retrieve": 2858.9,
+          "voice": 1508.7,
+          "playback": 114.17033333558356,
+          "handoffs": 19.299999997764417
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 12823.877333331096,
+        "stages": {
+          "endpoint": 724.8000000000002,
+          "transcribe": 4938.2,
+          "parse": 2626.3,
+          "retrieve": 2945.8,
+          "voice": 1437.4,
+          "playback": 114.47733333258657,
+          "handoffs": 28.299999998509975
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 8729.242333333332,
+        "stages": {
+          "endpoint": 693.1999999999998,
+          "transcribe": 2915.8,
+          "parse": 3997.5,
+          "retrieve": 121.4,
+          "voice": 847.7,
+          "playback": 120.442333336312,
+          "handoffs": 17.199999997020086
+        },
+        "first_note": 11495.599999997765,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 7151.874333334825,
+        "stages": {
+          "endpoint": 743.9000000000001,
+          "transcribe": 2813.6,
+          "parse": 2865,
+          "retrieve": 144.9,
+          "voice": 443.1,
+          "playback": 121.07433333407971,
+          "handoffs": 15.300000000744944
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 10145.674333335577,
+        "stages": {
+          "endpoint": 728.1999999999998,
+          "transcribe": 5069.8,
+          "parse": 3279.3,
+          "retrieve": 118.1,
+          "voice": 842.2,
+          "playback": 90.6743333355771,
+          "handoffs": 13.399999999999864
+        },
+        "first_note": 15423.900000002235,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 10063.575333334069,
+        "stages": {
+          "endpoint": 747.9000000014903,
+          "transcribe": 4903.2,
+          "parse": 3548.4,
+          "retrieve": 96.1,
+          "voice": 642.8,
+          "playback": 95.47533333257888,
+          "handoffs": 22.899999999999864
+        },
+        "first_note": 15361.70000000298,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 7704.774333333335,
+        "stages": {
+          "endpoint": 729.7000000022354,
+          "transcribe": 3514.7,
+          "parse": 2798.4,
+          "retrieve": 94.9,
+          "voice": 466.2,
+          "playback": 88.9743333325896,
+          "handoffs": 8.199999998509895
+        },
+        "first_note": 11307.60000000149,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 9912.076333334087,
+        "stages": {
+          "endpoint": 718.7000000022354,
+          "transcribe": 4356.2,
+          "parse": 3863.3,
+          "retrieve": 109.7,
+          "voice": 751.1,
+          "playback": 97.17633333185222,
+          "handoffs": 11.999999999999886
+        },
+        "first_note": 15195.400000002235,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 6511.970333332603,
+        "stages": {
+          "endpoint": 725.7000000007451,
+          "transcribe": 2657.6,
+          "parse": 2515.5,
+          "retrieve": 119.1,
+          "voice": 384.6,
+          "playback": 92.57033333036816,
+          "handoffs": 12.400000001490184
+        },
+        "first_note": 11236.900000002235,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 7603.673333331855,
+        "stages": {
+          "endpoint": 687.6999999999998,
+          "transcribe": 2692.3,
+          "parse": 3139.2,
+          "retrieve": 229,
+          "voice": 722.3,
+          "playback": 105.77333333334536,
+          "handoffs": 20.19999999850984
+        },
+        "first_note": 12061.89999999851,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 10370.376333334803,
+        "stages": {
+          "endpoint": 733.6000000014901,
+          "transcribe": 4427.5,
+          "parse": 3908.4,
+          "retrieve": 233.5,
+          "voice": 933.9,
+          "playback": 94.27633333331323,
+          "handoffs": 20.600000000000023
+        },
+        "first_note": null,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 6995.376333334832,
+        "stages": {
+          "endpoint": 730.1000000007452,
+          "transcribe": 3047.2,
+          "parse": 2655.1,
+          "retrieve": 77.4,
+          "voice": 383,
+          "playback": 90.5763333340874,
+          "handoffs": 9.099999999999909
+        },
+        "first_note": 12080.400000002235,
+        "av_offset": null,
+        "fps": null,
+        "parser": "cascade"
+      }
+    ],
+    "on": [
+      {
+        "ttfa": 15580.570333334086,
+        "stages": {
+          "endpoint": 717.8999999985099,
+          "transcribe": 6239.5,
+          "parse": 7302.7,
+          "retrieve": 134.4,
+          "voice": 1027.2,
+          "playback": 116.67033333557629,
+          "handoffs": 30.999999999999773
+        },
+        "first_note": 18948.699999999255,
+        "av_offset": 62.529666663678654,
+        "fps": 54.66953426367605,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 11749.272333333327,
+        "stages": {
+          "endpoint": 718.5000000007449,
+          "transcribe": 4316.8,
+          "parse": 5483.7,
+          "retrieve": 122.4,
+          "voice": 964.8,
+          "playback": 117.57233333407203,
+          "handoffs": 20.59999999850993
+        },
+        "first_note": null,
+        "av_offset": 65.42766666592797,
+        "fps": 58.68034425798164,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 13148.377333334807,
+        "stages": {
+          "endpoint": 731.5000000007449,
+          "transcribe": 5359.3,
+          "parse": 6016.6,
+          "retrieve": 132.4,
+          "voice": 742.7,
+          "playback": 128.17733333555225,
+          "handoffs": 26.69999999850984
+        },
+        "first_note": 17869.10000000149,
+        "av_offset": -0.47733333629730623,
+        "fps": 57.04386039039762,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 7210.978333332576,
+        "stages": {
+          "endpoint": 708.1000000007452,
+          "transcribe": 5142.2,
+          "parse": 447.9,
+          "retrieve": 97.3,
+          "voice": 673,
+          "playback": 121.87833333108574,
+          "handoffs": 16.600000000745013
+        },
+        "first_note": null,
+        "av_offset": -9.978333332575858,
+        "fps": 59.565217391304344,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 7764.774333333335,
+        "stages": {
+          "endpoint": 712.2000000029802,
+          "transcribe": 2637.5,
+          "parse": 3133.5,
+          "retrieve": 117.5,
+          "voice": 1023.8,
+          "playback": 114.17433333184454,
+          "handoffs": 16.59999999850993
+        },
+        "first_note": null,
+        "av_offset": -7.5743333303544205,
+        "fps": 57.88895461840351,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 13214.9733333326,
+        "stages": {
+          "endpoint": 694.7999999970198,
+          "transcribe": 4660,
+          "parse": 6374,
+          "retrieve": 220.8,
+          "voice": 1028.3,
+          "playback": 116.9733333326003,
+          "handoffs": 23.900000002980278
+        },
+        "first_note": null,
+        "av_offset": 41.22666666665464,
+        "fps": 58.42000442575791,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 6783.276333333342,
+        "stages": {
+          "endpoint": 693.6999999999998,
+          "transcribe": 4839.3,
+          "parse": 432.7,
+          "retrieve": 189.7,
+          "voice": 490.2,
+          "playback": 118.17633333185222,
+          "handoffs": 15.300000001490105
+        },
+        "first_note": null,
+        "av_offset": -7.776333333342336,
+        "fps": 59.807575626188054,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 9160.979333332594,
+        "stages": {
+          "endpoint": 822.2999999977646,
+          "transcribe": 3581.3,
+          "parse": 3527.1,
+          "retrieve": 144.4,
+          "voice": 943.1,
+          "playback": 120.57933333408437,
+          "handoffs": 14.200000000745035
+        },
+        "first_note": 14540.300000000745,
+        "av_offset": -9.579333334084367,
+        "fps": 59.46394998028569,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 9867.871333334828,
+        "stages": {
+          "endpoint": 731.3999999999996,
+          "transcribe": 4232.1,
+          "parse": 3822.6,
+          "retrieve": 123.1,
+          "voice": 793.9,
+          "playback": 125.47133333259262,
+          "handoffs": 22.500000002235197
+        },
+        "first_note": 14920.900000002235,
+        "av_offset": 3.7286666666623205,
+        "fps": 57.46885355932952,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 12362.596666666679,
+        "stages": {
+          "endpoint": 725.4000000022352,
+          "transcribe": 5845,
+          "parse": 4695.4,
+          "retrieve": 119,
+          "voice": 792.3,
+          "playback": 153.1966666644439,
+          "handoffs": 26.30000000000041
+        },
+        "first_note": null,
+        "av_offset": -9.796666665934026,
+        "fps": 59.13814845416535,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 10357.55933333408,
+        "stages": {
+          "endpoint": 709.2999999985095,
+          "transcribe": 5604.6,
+          "parse": 2901,
+          "retrieve": 105.5,
+          "voice": 889.9,
+          "playback": 120.55933333408029,
+          "handoffs": 23.800000001490048
+        },
+        "first_note": 13575.300000000745,
+        "av_offset": 49.84066666442959,
+        "fps": 60.12285975687501,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 11766.533999997773,
+        "stages": {
+          "endpoint": 728.5999999999999,
+          "transcribe": 3157.4,
+          "parse": 3015.4,
+          "retrieve": 3183.1,
+          "voice": 1533.2,
+          "playback": 113.93400000000838,
+          "handoffs": 21.699999997764962
+        },
+        "first_note": null,
+        "av_offset": -1.0339999977732077,
+        "fps": 60.34710598187162,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 16332.979333332594,
+        "stages": {
+          "endpoint": 727.0999999977648,
+          "transcribe": 5309.5,
+          "parse": 3194.3,
+          "retrieve": 4988.6,
+          "voice": 1945.3,
+          "playback": 110.57933333408437,
+          "handoffs": 36.60000000074547
+        },
+        "first_note": null,
+        "av_offset": 4.520666667405749,
+        "fps": 59.954571866262924,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 13200.971333332578,
+        "stages": {
+          "endpoint": 729.0000000022355,
+          "transcribe": 5217.9,
+          "parse": 2652.6,
+          "retrieve": 3032.9,
+          "voice": 1429.7,
+          "playback": 99.5713333303429,
+          "handoffs": 27.19999999999959
+        },
+        "first_note": null,
+        "av_offset": 6.928666669657105,
+        "fps": 60.00902790688886,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 12318.77433333335,
+        "stages": {
+          "endpoint": 706.0000000014898,
+          "transcribe": 5094.6,
+          "parse": 2612.1,
+          "retrieve": 2386,
+          "voice": 1389.8,
+          "playback": 97.47433333260415,
+          "handoffs": 26.49999999925535
+        },
+        "first_note": null,
+        "av_offset": -1.3743333311140304,
+        "fps": 59.62634159268584,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 11849.576333334087,
+        "stages": {
+          "endpoint": 687.9000000014903,
+          "transcribe": 4810.2,
+          "parse": 2284.4,
+          "retrieve": 2468.9,
+          "voice": 1448.5,
+          "playback": 119.97633333259728,
+          "handoffs": 22.699999999999818
+        },
+        "first_note": null,
+        "av_offset": 7.923666665912606,
+        "fps": 59.99469073533316,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 12943.176333331823,
+        "stages": {
+          "endpoint": 733.0000000014898,
+          "transcribe": 5228.6,
+          "parse": 2646.8,
+          "retrieve": 2728.3,
+          "voice": 1480.7,
+          "playback": 90.47633333256817,
+          "handoffs": 22.699999997764962
+        },
+        "first_note": null,
+        "av_offset": 4.123666668921942,
+        "fps": 59.952988405555644,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 13220.976333336323,
+        "stages": {
+          "endpoint": 725.9000000014903,
+          "transcribe": 5305.7,
+          "parse": 2677.6,
+          "retrieve": 2939.5,
+          "voice": 1427.2,
+          "playback": 95.47633333632257,
+          "handoffs": 38.49999999851002
+        },
+        "first_note": 20514.400000002235,
+        "av_offset": -3.3763333348324522,
+        "fps": 51.4920097682221,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 13595.076333334087,
+        "stages": {
+          "endpoint": 716.4000000022352,
+          "transcribe": 4092,
+          "parse": 4200.6,
+          "retrieve": 2985.1,
+          "voice": 1482.6,
+          "playback": 89.5763333340874,
+          "handoffs": 17.2999999977651
+        },
+        "first_note": null,
+        "av_offset": 6.723666666657664,
+        "fps": 60.026560424966796,
+        "parser": "cascade"
+      },
+      {
+        "ttfa": 15088.843999998528,
+        "stages": {
+          "endpoint": 711.2000000014905,
+          "transcribe": 5268.9,
+          "parse": 3540.3,
+          "retrieve": 3774.2,
+          "voice": 1647.6,
+          "playback": 98.24399999703746,
+          "handoffs": 31.299999999999727
+        },
+        "first_note": null,
+        "av_offset": 3.456000002217479,
+        "fps": 60.191445920492974,
+        "parser": "cascade"
+      }
+    ]
+  }
+}

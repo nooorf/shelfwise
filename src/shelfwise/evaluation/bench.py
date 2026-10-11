@@ -87,6 +87,10 @@ class Offset(Spread):
     abs_p95: float  # p95 of the offset's size, either direction
 
 
+class Difference(Spread):
+    ci95: tuple[float, float] | None = None  # the mean's bootstrap 95% CI
+
+
 class VoiceCondition(BaseModel):
     """One run of the spoken questions (`make measure`), avatar on or off; times in ms."""
 
@@ -116,7 +120,7 @@ class VoiceReport(BaseModel):
     questions: int
     off: VoiceCondition
     on: VoiceCondition
-    avatar_cost_ms: Spread | None  # TTFA avatar on minus off, question by question
+    avatar_cost_ms: Difference | None  # TTFA avatar on minus off, question by question
     avatar_load: AvatarLoad
 
 

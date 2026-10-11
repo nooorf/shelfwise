@@ -578,6 +578,22 @@ export interface components {
             /** Due Date */
             due_date: string | null;
         };
+        /** Difference */
+        Difference: {
+            /** N */
+            n: number;
+            /** Mean */
+            mean: number;
+            /** P50 */
+            p50: number;
+            /** P95 */
+            p95: number;
+            /** Ci95 */
+            ci95?: [
+                number,
+                number
+            ] | null;
+        };
         /** EditionInfo */
         EditionInfo: {
             /** Isbn13 */
@@ -1141,7 +1157,7 @@ export interface components {
             questions: number;
             off: components["schemas"]["VoiceCondition"];
             on: components["schemas"]["VoiceCondition"];
-            avatar_cost_ms: components["schemas"]["Spread"] | null;
+            avatar_cost_ms: components["schemas"]["Difference"] | null;
             avatar_load: components["schemas"]["AvatarLoad"];
         };
     };
