@@ -1,0 +1,1747 @@
+{
+  "created": "2026-10-11T04:58:22+00:00",
+  "git": "8994ff2-dirty",
+  "parser": "cascade",
+  "llm_cache": {
+    "hits": 108,
+    "misses": 0
+  },
+  "summary": {
+    "sessions": 40,
+    "turns": 112,
+    "session_success": 0.325,
+    "turn_exact": 0.45535714285714285,
+    "state_precision": 0.8645833333333334,
+    "state_recall": 0.751131221719457,
+    "state_f1": 0.8038740920096852,
+    "kind_accuracy": 0.9541284403669725,
+    "route_accuracy": 0.9655172413793104,
+    "reference_accuracy": 1.0,
+    "turns_with_leaks": 1,
+    "turns_missing_keep_words": 1
+  },
+  "sessions": {
+    "C01": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "give me psychological thrillers",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "genre in [thriller] soft"
+          ],
+          "extra": [
+            "genre in [psychological thriller] soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "psychological thrillers"
+        },
+        {
+          "say": "something darker",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "genre in [thriller] soft"
+          ],
+          "extra": [
+            "genre in [psychological thriller] soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "psychological thrillers"
+        },
+        {
+          "say": "i dont want anything supernatural",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "genre in [thriller] soft"
+          ],
+          "extra": [
+            "genre in [psychological thriller] soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "psychological thrillers"
+        },
+        {
+          "say": "under three hundred pages",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "genre in [thriller] soft"
+          ],
+          "extra": [
+            "genre in [psychological thriller] soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "psychological thrillers"
+        },
+        {
+          "say": "tell me more about the second one",
+          "exact": false,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [
+            "genre in [thriller] soft"
+          ],
+          "extra": [
+            "genre in [psychological thriller] soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            2
+          ],
+          "semantic_query": "psychological thrillers"
+        }
+      ]
+    },
+    "C02": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "cozy mysteries",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.darkness lte 1 soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "cozy mysteries"
+        },
+        {
+          "say": "shorter",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.darkness lte 1 soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "cozy mysteries"
+        },
+        {
+          "say": "even shorter",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.darkness lte 1 soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "cozy mysteries"
+        },
+        {
+          "say": "newer ones please",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.darkness lte 1 soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "cozy mysteries"
+        }
+      ]
+    },
+    "C03": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "epic fantasy series",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "epic fantasy series"
+        },
+        {
+          "say": "faster paced",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "facet.pace eq fast soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "epic fantasy series"
+        },
+        {
+          "say": "for adults",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "facet.pace eq fast soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "epic fantasy series adult fiction"
+        }
+      ]
+    },
+    "C04": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "a romantic comedy",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.romance gte 2 soft",
+            "genre in [humor] soft"
+          ],
+          "extra": [
+            "genre in [romance, humor] soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "romantic comedy"
+        },
+        {
+          "say": "less romance",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "genre in [humor] soft"
+          ],
+          "extra": [
+            "genre in [romance, humor] soft",
+            "facet.romance lte 1 hard"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "romantic comedy"
+        },
+        {
+          "say": "only ones i can borrow today",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "genre in [humor] soft"
+          ],
+          "extra": [
+            "genre in [romance, humor] soft",
+            "facet.romance lte 1 hard"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "romantic comedy"
+        }
+      ]
+    },
+    "C05": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "science fiction about first contact",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "science fiction about first contact"
+        },
+        {
+          "say": "more recent",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "year gte 2021 soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "science fiction about first contact"
+        },
+        {
+          "say": "something shorter",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "year gte 2021 soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "science fiction about first contact"
+        }
+      ]
+    },
+    "C06": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "a slow burn mystery",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.pace eq slow soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "slow burn mystery"
+        },
+        {
+          "say": "actually make it fast paced",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.pace eq fast soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "slow burn mystery fast paced"
+        }
+      ]
+    },
+    "C07": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "historical fiction set in ancient rome",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "historical fiction set in ancient rome"
+        },
+        {
+          "say": "less violent",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "historical fiction set in ancient rome"
+        },
+        {
+          "say": "under 400 pages",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "historical fiction set in ancient rome"
+        }
+      ]
+    },
+    "C08": {
+      "category": "refine",
+      "turns": [
+        {
+          "say": "a heist novel",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "heist novel"
+        },
+        {
+          "say": "for teens",
+          "exact": false,
+          "kind": "new_topic",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "for teens"
+        },
+        {
+          "say": "nothing too dark",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "for teens"
+        },
+        {
+          "say": "anything similar to the first one?",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "for teens anything similar to the first one"
+        }
+      ]
+    },
+    "C09": {
+      "category": "negation",
+      "turns": [
+        {
+          "say": "vampire novels",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft",
+            "facet.supernatural eq yes soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "vampire novels"
+        },
+        {
+          "say": "without the romance",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft",
+            "facet.supernatural eq yes soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "vampire novels"
+        },
+        {
+          "say": "and nothing gory",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft",
+            "facet.supernatural eq yes soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "vampire novels"
+        }
+      ]
+    },
+    "C10": {
+      "category": "negation",
+      "turns": [
+        {
+          "say": "a creepy gothic novel",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "creepy gothic novel"
+        },
+        {
+          "say": "nothing supernatural though",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "creepy gothic novel"
+        },
+        {
+          "say": "under 350 pages",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "creepy gothic novel"
+        }
+      ]
+    },
+    "C11": {
+      "category": "negation",
+      "turns": [
+        {
+          "say": "a mystery",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "mystery"
+        },
+        {
+          "say": "not too violent",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "mystery"
+        },
+        {
+          "say": "and no romance at all",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.romance eq 0 hard"
+          ],
+          "extra": [
+            "facet.romance lte 1 hard"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "mystery at all"
+        }
+      ]
+    },
+    "C12": {
+      "category": "negation",
+      "turns": [
+        {
+          "say": "stephen king books",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        },
+        {
+          "say": "but not horror",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        },
+        {
+          "say": "something from before 1990",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        }
+      ]
+    },
+    "C13": {
+      "category": "negation",
+      "turns": [
+        {
+          "say": "a dystopian story for teens",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dystopian story for teens"
+        },
+        {
+          "say": "that isnt depressing",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dystopian story for teens"
+        },
+        {
+          "say": "and no love triangle",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft",
+            "not theme eq love triangle soft"
+          ],
+          "extra": [
+            "facet.romance lte 1 hard"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dystopian story for teens"
+        }
+      ]
+    },
+    "C14": {
+      "category": "negation",
+      "turns": [
+        {
+          "say": "fantasy with dragons",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy with dragons"
+        },
+        {
+          "say": "not ya though",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "not facet.audience eq ya hard"
+          ],
+          "extra": [
+            "facet.audience eq ya soft",
+            "not theme eq ya soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy with dragons"
+        },
+        {
+          "say": "only ones available now",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "not facet.audience eq ya hard"
+          ],
+          "extra": [
+            "facet.audience eq ya soft",
+            "not theme eq ya soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy with dragons"
+        }
+      ]
+    },
+    "C15": {
+      "category": "reference",
+      "turns": [
+        {
+          "say": "books like gone girl",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "books like gone girl"
+        },
+        {
+          "say": "the third one, is it on the shelf?",
+          "exact": true,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            3
+          ],
+          "semantic_query": "books like gone girl"
+        },
+        {
+          "say": "compare the first and the second",
+          "exact": true,
+          "kind": "reference",
+          "route": "compare",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            1,
+            2
+          ],
+          "semantic_query": "books like gone girl"
+        }
+      ]
+    },
+    "C16": {
+      "category": "reference",
+      "turns": [
+        {
+          "say": "funny fantasy",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "funny fantasy"
+        },
+        {
+          "say": "which of these is the shortest",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "funny fantasy"
+        },
+        {
+          "say": "tell me about the last one",
+          "exact": true,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            5
+          ],
+          "semantic_query": "funny fantasy"
+        }
+      ]
+    },
+    "C17": {
+      "category": "reference",
+      "turns": [
+        {
+          "say": "a book for a long flight",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "pages gte 450 soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "book for long flight"
+        },
+        {
+          "say": "show me more like the first one",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "pages gte 450 soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "book for long flight show me more like the first one"
+        },
+        {
+          "say": "the second one",
+          "exact": false,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [],
+          "extra": [
+            "pages gte 450 soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            2
+          ],
+          "semantic_query": "book for long flight show me more like the first one"
+        }
+      ]
+    },
+    "C18": {
+      "category": "reference",
+      "turns": [
+        {
+          "say": "short story collections",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "genre in [short stories] soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "short story collections"
+        },
+        {
+          "say": "tell me about that one",
+          "exact": false,
+          "kind": "reference",
+          "route": "clarify",
+          "missing": [
+            "genre in [short stories] soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "short story collections"
+        },
+        {
+          "say": "the fourth one",
+          "exact": false,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [
+            "genre in [short stories] soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            4
+          ],
+          "semantic_query": "short story collections"
+        }
+      ]
+    },
+    "C19": {
+      "category": "reference",
+      "turns": [
+        {
+          "say": "a classic novel",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "classic novel"
+        },
+        {
+          "say": "is number 2 available",
+          "exact": false,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            2
+          ],
+          "semantic_query": "classic novel"
+        },
+        {
+          "say": "anything newer than these?",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "classic novel"
+        }
+      ]
+    },
+    "C20": {
+      "category": "reference",
+      "turns": [
+        {
+          "say": "true crime",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "true crime"
+        },
+        {
+          "say": "the first two, which is darker?",
+          "exact": true,
+          "kind": "reference",
+          "route": "compare",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            1,
+            2
+          ],
+          "semantic_query": "true crime"
+        }
+      ]
+    },
+    "C21": {
+      "category": "topic",
+      "turns": [
+        {
+          "say": "dark thrillers i can borrow today",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dark thrillers"
+        },
+        {
+          "say": "actually, something funny",
+          "exact": true,
+          "kind": "new_topic",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "actually something funny"
+        },
+        {
+          "say": "(undo)",
+          "exact": true,
+          "kind": "undo",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dark thrillers"
+        }
+      ]
+    },
+    "C22": {
+      "category": "topic",
+      "turns": [
+        {
+          "say": "space opera",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "space opera"
+        },
+        {
+          "say": "what about poetry",
+          "exact": true,
+          "kind": "new_topic",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "poetry"
+        },
+        {
+          "say": "start over",
+          "exact": true,
+          "kind": "start_over",
+          "route": "start_over",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        }
+      ]
+    },
+    "C23": {
+      "category": "topic",
+      "turns": [
+        {
+          "say": "books about world war 2",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "world war 2 books"
+        },
+        {
+          "say": "under 300 pages",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "world war 2 books"
+        },
+        {
+          "say": "now something for kids about dinosaurs",
+          "exact": true,
+          "kind": "new_topic",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dinosaurs for kids"
+        }
+      ]
+    },
+    "C24": {
+      "category": "topic",
+      "turns": [
+        {
+          "say": "a cozy fantasy, available now",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "cozy fantasy"
+        },
+        {
+          "say": "start over, something about the ocean",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "ocean"
+        }
+      ]
+    },
+    "C25": {
+      "category": "topic",
+      "turns": [
+        {
+          "say": "programming books for beginners",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "programming books beginner"
+        },
+        {
+          "say": "python specifically",
+          "exact": false,
+          "kind": "chat",
+          "route": "chat",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [
+            "python"
+          ],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "programming books beginner"
+        }
+      ]
+    },
+    "C26": {
+      "category": "relax",
+      "turns": [
+        {
+          "say": "a horror novel under 20 pages published after 2024 that i can borrow now",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "horror novel"
+        },
+        {
+          "say": "drop the page limit",
+          "exact": false,
+          "kind": "relax",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "horror novel"
+        }
+      ]
+    },
+    "C27": {
+      "category": "relax",
+      "turns": [
+        {
+          "say": "a horror novel under 20 pages published after 2024 that i can borrow now",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "horror novel"
+        },
+        {
+          "say": "no thanks",
+          "exact": false,
+          "kind": "relax",
+          "route": "chat",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "horror novel"
+        }
+      ]
+    },
+    "C28": {
+      "category": "relax",
+      "turns": [
+        {
+          "say": "a romance under 30 pages published after 2024, available today",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "romance"
+        },
+        {
+          "say": "True",
+          "exact": true,
+          "kind": "chat",
+          "route": "chat",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "romance"
+        }
+      ]
+    },
+    "C29": {
+      "category": "forget",
+      "turns": [
+        {
+          "say": "fantasy under 300 pages from the last five years",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy"
+        },
+        {
+          "say": "forget the page limit",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy"
+        },
+        {
+          "say": "never mind the dates too",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "not theme eq dates soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy"
+        }
+      ]
+    },
+    "C30": {
+      "category": "forget",
+      "turns": [
+        {
+          "say": "mysteries i can take home today",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "mysteries"
+        },
+        {
+          "say": "doesnt matter if its checked out",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [
+            "available_now eq true hard",
+            "not theme eq checked out soft"
+          ],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "mysteries matter if its"
+        }
+      ]
+    },
+    "C31": {
+      "category": "forget",
+      "turns": [
+        {
+          "say": "dark fantasy for teens",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.darkness gte 2 soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dark fantasy for teens"
+        },
+        {
+          "say": "drop the teen part",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.darkness gte 2 soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "dark fantasy for teens"
+        }
+      ]
+    },
+    "C32": {
+      "category": "forget",
+      "turns": [
+        {
+          "say": "short horror stories",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "horror stories"
+        },
+        {
+          "say": "ignore the length",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.fiction eq true soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "horror stories"
+        }
+      ]
+    },
+    "C33": {
+      "category": "chat",
+      "turns": [
+        {
+          "say": "hi",
+          "exact": true,
+          "kind": "chat",
+          "route": "chat",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        },
+        {
+          "say": "what are your opening hours",
+          "exact": true,
+          "kind": "chat",
+          "route": "chat",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        },
+        {
+          "say": "ok then, recommend a good mystery",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "mystery"
+        }
+      ]
+    },
+    "C34": {
+      "category": "chat",
+      "turns": [
+        {
+          "say": "fantasy for adults",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy for adults"
+        },
+        {
+          "say": "thanks!",
+          "exact": true,
+          "kind": "chat",
+          "route": "chat",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy for adults"
+        },
+        {
+          "say": "surprise me",
+          "exact": true,
+          "kind": "chat",
+          "route": "surprise",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy for adults"
+        }
+      ]
+    },
+    "C35": {
+      "category": "chat",
+      "turns": [
+        {
+          "say": "asdfghjkl",
+          "exact": true,
+          "kind": "chat",
+          "route": "chat",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        },
+        {
+          "say": "sorry, i meant a thriller",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "genre in [thriller] soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "sorry i meant a thriller"
+        }
+      ]
+    },
+    "C36": {
+      "category": "mixed",
+      "turns": [
+        {
+          "say": "something like the hunger games but less violent",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.violence lte * soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [
+            "violent"
+          ],
+          "targets": null,
+          "semantic_query": "something like the hunger games but less violent"
+        },
+        {
+          "say": "for adults",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.violence lte * soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "something like the hunger games but less violent adult fiction"
+        },
+        {
+          "say": "the second one",
+          "exact": false,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [
+            "facet.violence lte * soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            2
+          ],
+          "semantic_query": "something like the hunger games but less violent adult fiction"
+        }
+      ]
+    },
+    "C37": {
+      "category": "mixed",
+      "turns": [
+        {
+          "say": "a long book for the summer, at least 500 pages",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "long book for summer"
+        },
+        {
+          "say": "fantasy please",
+          "exact": false,
+          "kind": "new_topic",
+          "route": "search",
+          "missing": [
+            "pages gte 500 hard"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "fantasy"
+        }
+      ]
+    },
+    "C38": {
+      "category": "mixed",
+      "turns": [
+        {
+          "say": "books about grief for teens",
+          "exact": false,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [
+            "facet.audience eq ya soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "grief for teens"
+        },
+        {
+          "say": "not too dark",
+          "exact": false,
+          "kind": "refine",
+          "route": "search",
+          "missing": [
+            "facet.audience eq ya soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "grief for teens"
+        },
+        {
+          "say": "is the first one available",
+          "exact": false,
+          "kind": "reference",
+          "route": "explain",
+          "missing": [
+            "facet.audience eq ya soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": [
+            1
+          ],
+          "semantic_query": "grief for teens"
+        }
+      ]
+    },
+    "C39": {
+      "category": "mixed",
+      "turns": [
+        {
+          "say": "a book my 10 year old would love",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "book for 10 year old"
+        },
+        {
+          "say": "about animals",
+          "exact": false,
+          "kind": "new_topic",
+          "route": "search",
+          "missing": [
+            "facet.audience eq children soft"
+          ],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "animals"
+        }
+      ]
+    },
+    "C40": {
+      "category": "mixed",
+      "turns": [
+        {
+          "say": "nordic noir",
+          "exact": true,
+          "kind": "new_search",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "nordic noir"
+        },
+        {
+          "say": "from the 2010s",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "nordic noir"
+        },
+        {
+          "say": "darker",
+          "exact": true,
+          "kind": "refine",
+          "route": "search",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": "nordic noir darker"
+        },
+        {
+          "say": "start over",
+          "exact": true,
+          "kind": "start_over",
+          "route": "start_over",
+          "missing": [],
+          "extra": [],
+          "keep_missing": [],
+          "leaked": [],
+          "targets": null,
+          "semantic_query": ""
+        }
+      ]
+    }
+  }
+}

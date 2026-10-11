@@ -318,6 +318,12 @@ def apply_turn(
     targets = resolve_references(message, shown)
     if parsed.intent in ("explain", "compare") or (targets and not _LIKE.search(text)):
         return TurnUpdate(state, "reference", targets=targets)
+    # Qwen3-4B calls bare follow-ups small talk ("not too violent", "what about poetry",
+    # 2026-10-11). With something to search on they're requests: a new topic if they name a
+    # genre, else a refinement (its semantic_query, "adult fiction" for "for adults", is no topic).
+    if parsed.intent == "other" and parsed.constraints:
+        genre = any(c.field == "genre" and c.polarity == "include" for c in parsed.constraints)
+        parsed = parsed.model_copy(update={"intent": "discover" if genre else "refine"})
     # "hi", "surprise me": the topic stays as it is. But "drop the year" is a removal even when
     # the parser calls it small talk (Qwen3-4B did, 2026-10-08).
     if parsed.intent in ("other", "surprise") and not removed_fields(message):

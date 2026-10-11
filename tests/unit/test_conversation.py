@@ -463,6 +463,25 @@ def test_a_bare_ordinal_is_a_reference_even_if_the_parser_says_small_talk() -> N
     assert (update.kind, update.targets) == ("reference", [2])
 
 
+def test_a_follow_up_with_constraints_is_never_small_talk() -> None:
+    state = turn(
+        new_state("s", NOW), "x", parsed("discover", "mystery", c("genre", "in", ["mystery"]))
+    ).state
+    violence = c("facet.violence", "lte", 1, "hard")
+
+    milder = turn(state, "not too violent", parsed("other", "not too", violence))
+    adults = turn(state, "for adults", parsed("other", "adult fiction", c("facet.audience", "eq", "adult")))  # fmt: skip
+    poetry = turn(state, "what about poetry", parsed("other", "poetry", c("genre", "in", ["poetry"])))  # fmt: skip
+    hello = turn(state, "hi", parsed("other", "hi"))
+
+    assert milder.kind == "refine"
+    assert active(milder.state) == {"genre in ['mystery'] soft", "facet.violence lte 1 hard"}
+    assert (adults.kind, adults.state.semantic_query) == ("refine", "mystery adult fiction")
+    assert active(poetry.state) == {"genre in ['poetry'] soft"}
+    assert poetry.kind == "new_topic"
+    assert (hello.kind, active(hello.state)) == ("chat", {"genre in ['mystery'] soft"})
+
+
 def test_removing_a_chip_drops_everything_behind_it() -> None:
     state = turn(new_state("s", NOW), "x",
                  parsed("discover", "thrillers",
