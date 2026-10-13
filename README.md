@@ -221,6 +221,4 @@ Book metadata is real (5,358 works from Open Library and the UCSD Goodreads Book
 | Animation | None: idle motion, blinking, head turns and lip-sync are procedural | — |
 | Fonts | Source Serif 4, Schibsted Grotesk | SIL Open Font License 1.1 |
 
-The live session's architecture borrows ideas, no code, from a friend's project ([bytesy-z/SEECS-AI-Receptionist](https://github.com/bytesy-z/SEECS-AI-Receptionist)).
-
 **Data citation.** Mengting Wan and Julian McAuley, "Item Recommendation on Monotonic Behavior Chains", RecSys 2018; Mengting Wan, Rishabh Misra, Ndapa Nakashole and Julian McAuley, "Fine-Grained Spoiler Detection from Large-Scale Review Corpora", ACL 2019.
