@@ -16,7 +16,7 @@ Hybrid retrieval, an LLM query parser, and grounded generation that **cannot inv
 ![Types](https://img.shields.io/badge/pyright-0_errors-2EA44F)
 ![Paid APIs](https://img.shields.io/badge/paid_APIs-0-2EA44F)
 
-<img src="docs/img/screenshot-live.jpg" alt="The live session: the avatar answers the spoken request 'Gothic horror novels, please' aloud, with five numbered books fanned out beside her" width="100%">
+<img src="docs/img/screenshot-landing.jpg" alt="The Shelfwise landing page: 'Describe a mood. Find it on the shelf.' over the featured book arc, with the avatar behind it" width="100%">
 
 </div>
 
@@ -49,11 +49,11 @@ Ask for *"a dark psychological thriller, nothing supernatural, under 300 pages, 
 
 <table>
 <tr>
-<td width="50%"><img src="docs/img/screenshot-landing.jpg" alt="The landing page: the featured book arc with the avatar behind it"></td>
+<td width="50%"><img src="docs/img/screenshot-live.jpg" alt="The live session: the avatar answers the spoken request 'Gothic horror novels, please' aloud, with five numbered books fanned out beside her"></td>
 <td width="50%"><img src="docs/img/screenshot-chat.jpg" alt="The chat answering 'a dark psychological thriller, nothing supernatural, under 300 pages' with constraint chips and the top pick on the stage"></td>
 </tr>
 <tr>
-<td align="center"><sub>Landing page: the featured shelf and the avatar</sub></td>
+<td align="center"><sub>Live session: ask out loud, the avatar answers with numbered picks</sub></td>
 <td align="center"><sub>Chat: every constraint becomes a chip; the top pick shows where it is shelved</sub></td>
 </tr>
 <tr>
