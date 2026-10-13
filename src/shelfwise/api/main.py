@@ -344,7 +344,7 @@ def create_app(
         conn: Annotated[Connection, Depends(resources.connection)],
         conversation: Annotated[ConversationService, Depends(conversation_service)],
     ) -> None:
-        """One socket per session (design doc §20.5, text events). Client -> server:
+        """One socket per session. Client -> server:
         {"type": "text", "text": ..., "limit"?, "narrate"?}, {"type": "undo"},
         {"type": "remove_chip", "field": ..., "label": ...},
         {"type": "chip_strength", "field": ..., "label": ..., "strength": "hard" | "soft"},

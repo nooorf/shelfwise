@@ -1,4 +1,4 @@
-// Open Library covers by ISBN over a typographic cover (design doc §22.1). The typographic one
+// Open Library covers by ISBN over a typographic cover. The typographic one
 // is always drawn and the photo fades in on top once it has loaded, so a slow, throttled
 // (Open Library allows 100 ISBN lookups per 5 minutes) or missing cover never shows as a blank.
 import { useState } from 'react'

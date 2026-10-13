@@ -11,9 +11,9 @@ repository; the `make download-*` targets fetch them.
 | VRM1_Constraint_Twist_Sample | Placeholder avatar until our own VRoid model | © 2022 pixiv Inc., [vrm-c/vrm-specification samples](https://github.com/vrm-c/vrm-specification/tree/master/samples/VRM1_Constraint_Twist_Sample) | [VRM Public License 1.0](https://vrm.dev/licenses/1.0/): avatar use by anyone, commercial use, modification and redistribution allowed, credit not required |
 | bge-base-en-v1.5 | Book and query embeddings | [BAAI](https://huggingface.co/BAAI/bge-base-en-v1.5) | MIT |
 | Qwen3-4B (via Ollama) | Query parsing and narration | [Qwen](https://huggingface.co/Qwen/Qwen3-4B) | Apache-2.0 |
-| Qwen3-8B, Qwen3-14B (via Ollama, GPU runs only) | Book tags, synthetic training requests, grounding runs | [Qwen](https://huggingface.co/Qwen) | Apache-2.0 |
-| ms-marco-MiniLM-L6-v2 | Cross-encoder reranker (baseline, and the base of `minilm-ft`) | [cross-encoder](https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2) | Apache-2.0 |
-| bge-reranker-base | Base of the fine-tuned `bge-base-ft` reranker | [BAAI](https://huggingface.co/BAAI/bge-reranker-base) | MIT |
+| Qwen3-8B, Qwen3-14B (via Ollama, GPU runs only) | Book tags, grounding runs | [Qwen](https://huggingface.co/Qwen) | Apache-2.0 |
+| ms-marco-MiniLM-L6-v2 | Cross-encoder reranker | [cross-encoder](https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2) | Apache-2.0 |
+| bge-reranker-base | Cross-encoder reranker | [BAAI](https://huggingface.co/BAAI/bge-reranker-base) | MIT |
 
 Fonts and covers in the web app, installed with its npm packages or loaded in the browser:
 

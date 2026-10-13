@@ -1,4 +1,4 @@
-"""The negation study's grid and metrics (design doc §40.1 B).
+"""The negation study's grid and metrics.
 
 For every pair and every condition — retrieval system x query text x facet handling — rank books
 for the negated request and measure:

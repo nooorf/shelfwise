@@ -1,4 +1,4 @@
-"""The LLM's words about books it was given, and nothing else (design doc §18.2, §19.1).
+"""The LLM's words about books it was given, and nothing else.
 
 The model answers in JSON whose book references are an enum of the shown books' ids, so it
 cannot name a book outside them. Code renders title, author and availability from the catalog;

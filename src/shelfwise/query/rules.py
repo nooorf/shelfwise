@@ -1,4 +1,4 @@
-"""Deterministic first pass of query understanding (design doc §12.2, step 2).
+"""Deterministic first pass of query understanding.
 
 Rules handle what an LLM gets wrong and regexes get right: page counts, years, decades, relative
 dates, availability phrases and ISBNs. Each match becomes a `Constraint` with the words it came

@@ -1,4 +1,4 @@
-// What a screen reader hears after a turn (design doc §22.4): the notes, how many books and
+// What a screen reader hears after a turn: the notes, how many books and
 // the first few titles, then the reply's opening line once it's written. One sentence group
 // per turn, so the reader isn't interrupted by every state change.
 import type { Exchange } from '../session/store'

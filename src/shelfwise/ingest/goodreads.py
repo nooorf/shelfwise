@@ -1,4 +1,4 @@
-"""Read the UCSD Book Graph (Goodreads, 2017) genre subsets into edition records (design doc §10).
+"""Read the UCSD Book Graph (Goodreads, 2017) genre subsets into edition records.
 
 Mengting Wan & Julian McAuley, "Item Recommendation on Monotonic Behavior Chains" (RecSys 2018).
 Academic use only: the raw files stay in data/raw/ (git-ignored) and are never redistributed.

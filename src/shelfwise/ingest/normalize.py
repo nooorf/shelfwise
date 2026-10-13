@@ -1,4 +1,4 @@
-"""Normalization for catalog records: ISBNs, text, titles, author names (design doc §10)."""
+"""Normalization for catalog records: ISBNs, text, titles, author names."""
 
 import re
 import unicodedata

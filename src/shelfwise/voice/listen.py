@@ -1,8 +1,8 @@
-"""Hearing the reader (design doc §21.2): the browser streams 16 kHz 16-bit mono PCM; Silero
+"""Hearing the reader: the browser streams 16 kHz 16-bit mono PCM; Silero
 VAD decides where the utterance starts and ends (endpointing); Whisper transcribes it.
 
 Endpointing: speech starts at the first 32 ms chunk above START_PROB and ends after
-END_SILENCE_MS below END_PROB (600 ms to start with, design doc; tune on set F). An utterance is
+END_SILENCE_MS below END_PROB (600 ms to start with; tune on set F). An utterance is
 cut at MAX_UTTERANCE_S, and listening gives up after NO_SPEECH_S of silence.
 
 Models (not in git): `make download-stt` puts Silero VAD in data/models/silero; Whisper (MLX on

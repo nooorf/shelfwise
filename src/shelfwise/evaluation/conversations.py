@@ -1,4 +1,4 @@
-"""Conversation set C (design doc §27): scripted sessions with the gold state after every turn.
+"""Conversation set C: scripted sessions with the gold state after every turn.
 
 Lives in `eval/data/conversations.yaml`. Each turn gives what the reader says and what the
 conversation state should be afterwards:

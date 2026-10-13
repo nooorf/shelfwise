@@ -1,4 +1,4 @@
-"""Soft constraints as a ranking signal (design doc §13.3, §15.1).
+"""Soft constraints as a ranking signal.
 
 Hard constraints filter; soft ones ("cozy", "for teens", "fantasy") only move books. Each soft
 constraint a book meets counts +1, each it breaks -1, and an unknown (untagged facet, missing

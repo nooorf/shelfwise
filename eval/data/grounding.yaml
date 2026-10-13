@@ -1,4 +1,4 @@
-# Grounding set E (design doc §19.2, §27): what the narration may and may not say.
+# Grounding set E: what the narration may and may not say.
 # Run: make eval-grounding (needs Docker and Ollama). Rules for each kind of case:
 #   nonexistent  the title and author are made up (the runner checks the catalog has neither);
 #                a good answer never presents them as a book the library has.

@@ -1,4 +1,4 @@
-"""Human-approved merges of works the importer split apart (design doc §10).
+"""Human-approved merges of works the importer split apart.
 
 Open Library sometimes files editions of one book as separate works (*Hands-On Machine Learning*
 1st vs 2nd edition), and similar titles by one author are often different books (*Haunting Adeline*

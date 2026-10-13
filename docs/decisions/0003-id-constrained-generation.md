@@ -1,6 +1,6 @@
 # 3. The LLM may only cite retrieved books: an ID enum in the output schema
 
-**Status:** accepted, 2026-10-06; measured 2026-10-10 · **Design doc:** §18.2, §19
+**Status:** accepted, 2026-10-06; measured 2026-10-10
 
 ## Context
 

@@ -1,5 +1,4 @@
-// WCAG AA for every text/background pair the components use, in every theme (design doc
-// §22.4): 4.5:1 for text. Reads the tokens from index.css, so a colour edit can't regress it.
+// WCAG AA for every text/background pair the components use, in every theme: 4.5:1 for text. Reads the tokens from index.css, so a colour edit can't regress it.
 import { describe, expect, it } from 'vitest'
 
 import css from './index.css?raw'

@@ -1,4 +1,4 @@
-"""The `/bench` page's data (design doc §22.2): the newest retrieval, parser, grounding and voice
+"""The `/bench` page's data: the newest retrieval, parser, grounding and voice
 reports from `eval/reports`, trimmed to what the dashboard draws (no per-query rows)."""
 
 import json

@@ -1,9 +1,9 @@
-"""Local LLM access through Ollama (design doc §18).
+"""Local LLM access through Ollama.
 
 The one call the rest of the system needs: messages in, a validated Pydantic object out.
 Ollama constrains decoding to the JSON schema, so output is almost always well-formed; Pydantic
 then checks it. On a validation failure we retry once, telling the model what was wrong; a
-second failure raises `LLMInvalidOutput`, and callers fall back (design doc §44).
+second failure raises `LLMInvalidOutput`, and callers fall back.
 
 Qwen3's "thinking" mode is off by default: it adds seconds of hidden reasoning tokens before every
 answer, which structured extraction doesn't need.

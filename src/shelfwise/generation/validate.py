@@ -1,4 +1,4 @@
-"""Checks on everything the LLM writes before anyone sees it (design doc §19.1, step 3).
+"""Checks on everything the LLM writes before anyone sees it.
 
 | Check            | Rule                                                                        |
 | ---------------- | --------------------------------------------------------------------------- |

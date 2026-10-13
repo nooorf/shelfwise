@@ -1,4 +1,4 @@
-// The voice measurements (`make measure`; design doc §21, §32): spoken questions into the live
+// The voice measurements (`make measure`): spoken questions into the live
 // page's microphone, answers out of its speakers, timed on the page's own clock by the probe
 // (src/session/probe.ts). Each question is the API's own voice (Kokoro) played into a fake
 // microphone that stands in for getUserMedia, so the page, the socket, the VAD, Whisper, the

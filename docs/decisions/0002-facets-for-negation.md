@@ -1,6 +1,6 @@
 # 2. Negation through LLM-extracted book facets, not the embedding
 
-**Status:** accepted, 2026-10-06; measured 2026-10-10 · **Design doc:** §11.2, §12.4 · **Study:** [docs/negation-study.md](../negation-study.md)
+**Status:** accepted, 2026-10-06; measured 2026-10-10 · **Study:** [docs/negation-study.md](../negation-study.md)
 
 ## Context
 

@@ -1,4 +1,4 @@
-.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate featured tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations violation-agreement negation-study synth-requests training-set train-embedder train-reranker gpu-day score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e measure web-build web-types test test-all lint fmt
+.PHONY: install up down migrate seed-sample import-seed drop-non-english download-goodreads build-catalog review-duplicates simulate featured tick embed llm llm-pull tag label-tags tags-doc import-tags label-violations violation-agreement negation-study score-tags pool label grades-doc import-grades blind-doc import-blind label-blind agreement eval eval-grounding eval-parser eval-conversations download-tts download-stt download-avatar api web web-install web-test web-e2e measure web-build web-types test test-all lint fmt
 
 install:  ## Install Python deps and git hooks
 	uv sync
@@ -80,22 +80,6 @@ violation-agreement:  ## Blind check of the negation-study tags: make violation-
 negation-study:  ## Run the negation study: make negation-study JUDGE=<initials> (RERANKER=minilm adds rerank)
 	@test -n "$(JUDGE)" || (echo "usage: make negation-study JUDGE=<your initials>" && exit 1)
 	uv run python scripts/negation_study.py --judge $(JUDGE) $(if $(RERANKER),--reranker $(RERANKER),)
-
-synth-requests:  ## Two synthetic reader requests per book, training data (needs make llm; MODEL=qwen3:8b; resumable)
-	uv run python scripts/make_synthetic_requests.py $(if $(MODEL),--model $(MODEL),)
-
-training-set:  ## Fine-tuning data from graded dev queries + synthetic requests (SUBSET=0.05 for a small one)
-	uv run --group train python scripts/build_training_set.py $(if $(SUBSET),--subset $(SUBSET),)
-
-train-embedder:  ## Fine-tune the embedder into models/bge-base-ft (ARGS="--max-steps 30" smoke test), then make embed MODEL=bge-base-ft
-	uv run --group train python scripts/train_embedder.py $(ARGS)
-
-train-reranker:  ## Fine-tune a reranker into models/<base>-rerank-ft (ARGS="--base minilm --max-steps 30" smoke test)
-	uv run --group train python scripts/train_reranker.py $(ARGS)
-
-gpu-day:  ## Fine-tune on the GPU machine over SSH, evaluate here: make gpu-day HOST=you@gpu-box (ARGS=--dry-run; HOST=local ARGS=--smoke rehearses on the Mac; needs `make up`, `make llm`; resumable)
-	@[ -n "$(HOST)" ] || { echo "HOST=you@gpu-box (or HOST=local)"; exit 1; }
-	HF_HUB_OFFLINE=1 uv run python scripts/gpu_day.py --host $(HOST) $(ARGS)
 
 score-tags:  ## Score the LLM's book tags against the hand labels
 	uv run python scripts/score_tags.py

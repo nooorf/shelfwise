@@ -1,6 +1,6 @@
 """Which shown books a message points at: "the second one", "number 3", "the first two".
 
-Resolved before anything else is parsed (design doc §17), against the last results in the order
+Resolved before anything else is parsed, against the last results in the order
 they were shown. Only unambiguous forms resolve: "that one" with five books on screen could be
 any of them, so it resolves to nothing and the caller asks (a tap on a card carries its own id).
 """

@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* A reading room, not a chat app (design doc §22): paper, ink, one quiet accent. */
+/* A reading room, not a chat app: paper, ink, one quiet accent. */
 @theme {
   --color-paper: #f7f3ec;
   --color-card: #fffdf8;

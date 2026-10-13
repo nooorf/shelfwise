@@ -1,4 +1,4 @@
-// The benchmark dashboard (design doc §22.2, §30), in the reading room: the headline numbers
+// The benchmark dashboard, in the reading room: the headline numbers
 // first, then every retrieval system on the dev split with 95% CIs, quality against latency,
 // nDCG@10 per query category, grounding, the live session's timings, and the parser's scores. The locked test split never
 // appears here. Data: GET /api/v1/bench (eval/reports).

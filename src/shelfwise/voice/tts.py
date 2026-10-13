@@ -1,4 +1,4 @@
-"""Text-to-speech behind one interface (design doc §21.3): Kokoro-82M through ONNX Runtime
+"""Text-to-speech behind one interface: Kokoro-82M through ONNX Runtime
 (int8, ~90 MB, about 8x faster than real time on the M2's CPU), a sentence at a time so the
 first sentence plays while the next is made.
 

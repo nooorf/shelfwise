@@ -1,4 +1,4 @@
-// Plays the reply's sentences as they arrive (design doc §21): each WAV clip is decoded in
+// Plays the reply's sentences as they arrive: each WAV clip is decoded in
 // order and scheduled right after the previous one, so speech is gapless while later
 // sentences are still being made. stop() is barge-in: silence now, and late clips from the
 // interrupted turns are dropped. Browsers only allow sound after a user gesture: unlock() is

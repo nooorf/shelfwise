@@ -1,4 +1,4 @@
-// The ways in besides asking (design doc §22.1, §22.3). None of them calls the LLM: each builds
+// The ways in besides asking. None of them calls the LLM: each builds
 // the request straight from what was tapped. Explore and Filters open a panel below the bar;
 // Escape or a choice closes it and puts focus back on its tab.
 import { Compass, Shuffle, SlidersHorizontal } from 'lucide-react'

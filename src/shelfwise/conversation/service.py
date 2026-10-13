@@ -1,4 +1,4 @@
-"""One conversation turn, end to end (design doc §8 intent routing, §17 memory).
+"""One conversation turn, end to end.
 
     load state -> parse the message -> merge (`apply_turn`) -> route -> remember what was shown
 
@@ -80,7 +80,7 @@ _TASKS: dict[str, Task] = {"search": "recommend", "surprise": "recommend", "expl
                            "compare": "compare"}  # fmt: skip
 SPOKEN_BOOKS = 3  # read aloud; a longer list is for the screen
 MAX_OFFERS = 3
-SURPRISE_POPULARITY_FLOOR = 0.3  # percentile: a quality floor (design doc §15.5)
+SURPRISE_POPULARITY_FLOOR = 0.3  # percentile: a quality floor
 _FIELD_WORDS = {
     "pages": "the page limit", "year": "the dates", "available_now": "availability",
     "genre": "the genre", "language": "the language",
@@ -207,7 +207,7 @@ class InspectorStage(BaseModel):
 
 
 class Inspector(BaseModel):
-    """The pipeline inspector's view of a turn (design doc §22.2): how the message was read,
+    """The pipeline inspector's view of a turn: how the message was read,
     what was searched, and the candidates at each stage. Timings are in `timings_ms`."""
 
     parsed: ParsedRequest | None  # this message's parse; None for a button press
@@ -413,7 +413,7 @@ class ConversationService:
         return []
 
     def spoken(self, response: TurnResponse, reply: Reply | None) -> list[str]:
-        """What to say aloud for a turn, sentence by sentence (design doc §21): the reply's
+        """What to say aloud for a turn, sentence by sentence: the reply's
         intro, the notes on the first SPOKEN_BOOKS books by title, the follow-up; without a
         reply, the turn's notes. The screen shows the rest."""
         if reply is None:

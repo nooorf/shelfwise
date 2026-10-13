@@ -1,4 +1,4 @@
-"""One turn's parse merged into the conversation state (design doc §17, merge rules).
+"""One turn's parse merged into the conversation state.
 
 | The person says                              | State operation                                  |
 | -------------------------------------------- | ------------------------------------------------ |
@@ -215,7 +215,7 @@ def _median(values: list[float]) -> float | None:
 
 
 def resolve_shift(c: Constraint, shown: list[ShownBook]) -> Constraint | None:
-    """A relative change made absolute against what was shown (design doc §12.3): "darker" is
+    """A relative change made absolute against what was shown: "darker" is
     darkness above the shown median; "shorter" is under 3/4 of the median page count. None
     when there is nothing to compare with."""
     if c.op != "shift":

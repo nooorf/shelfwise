@@ -1,4 +1,4 @@
-"""Parser gold set B (design doc §27.1): the ideal parse of each query, hand-checked.
+"""Parser gold set B: the ideal parse of each query, hand-checked.
 
 Lives in `eval/data/parser_gold.yaml`. Rules for writing it: `eval/PARSING.md`. Every query of set A
 has a gold parse (its text, category and family come from `queries.csv`); set B adds its own

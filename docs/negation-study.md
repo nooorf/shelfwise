@@ -103,7 +103,6 @@ Of the 209 books graded relevant (2–3) for the negated requests, the hard filt
 
 - Negation is a **parsing** problem, not a ranking problem. No amount of embedding or off-the-shelf reranking fixes "without": the query has to be understood and turned into a constraint.
 - Hard filters are safe for categorical tags with a reliable tagger (supernatural, audience), and should stay soft or carry an "approximately" for graded ones (violence, darkness, pace), where a one-step tagging disagreement decides the outcome.
-- A reranker fine-tuned on this catalog's graded pairs (which grade violating books 0) is the next thing to test: it sees negated queries with their correct answers, which MiniLM never did.
 
 ## Limitations
 

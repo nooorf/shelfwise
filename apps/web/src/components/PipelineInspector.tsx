@@ -1,4 +1,4 @@
-// Pipeline inspector (design doc §22.1, §22.2): a developer strip showing how the last turn was
+// Pipeline inspector: a developer strip showing how the last turn was
 // read, what was searched, the candidates at each stage with their scores, and the timings.
 import type { components } from '../api/schema'
 import type { TurnResponse } from '../api/types'

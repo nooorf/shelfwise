@@ -1,4 +1,4 @@
-"""Keep work.search_text and work_embedding up to date (design doc §10, incremental updates).
+"""Keep work.search_text and work_embedding up to date.
 
 `refresh_search_text` rebuilds each work's text and content hash; `embed_missing` encodes only
 works whose (content hash, model) pair has no embedding yet. Editing one description re-embeds one

@@ -1,4 +1,4 @@
-"""Query understanding as a cascade (design doc §12.2).
+"""Query understanding as a cascade.
 
     rules -> LLM form -> entity linking -> merge -> sanity checks
 

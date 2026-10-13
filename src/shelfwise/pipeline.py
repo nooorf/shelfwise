@@ -1,4 +1,4 @@
-"""The stateless search pipeline behind POST /api/v1/search (design doc §8, §20).
+"""The stateless search pipeline behind POST /api/v1/search.
 
 parse (cascade: rules + LLM) -> hard filters -> lookups, seeds, hybrid retrieval, soft-constraint
 nudge (`parsed_hybrid`) -> live availability.
@@ -10,8 +10,7 @@ says which parser answered and why it fell back.
 
 Indexes live in memory for the life of the process and are rebuilt when `catalog_version` changes,
 so an import or merge shows up without a restart. Availability is always read live from the copy
-table for the books returned, never from the index. Conversation state and narration plug in
-here next (Phase 4).
+table for the books returned, never from the index.
 """
 
 import threading
@@ -262,7 +261,7 @@ class SearchService:
     ) -> list[int]:
         """No topic words to search for (Explore, or filters alone): the books that pass the
         hard constraints, those meeting the preferred ones first, then those on the shelf now,
-        then the most borrowed (design doc §22.3)."""
+        then the most borrowed."""
         if contradictions(constraints):
             return []
         hard = [c for c in constraints if c.strength == "hard"]

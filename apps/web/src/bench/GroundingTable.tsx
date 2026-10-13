@@ -1,4 +1,4 @@
-// Grounding (design doc §19.2): what each system says that it shouldn't, as a share of its
+// Grounding: what each system says that it shouldn't, as a share of its
 // answers on set E. The headline is the Shelfwise row: invented books that reached a reader,
 // against how many its validator caught in the first drafts.
 import type { Bench } from '../api/types'

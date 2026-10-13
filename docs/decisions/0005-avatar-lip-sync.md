@@ -1,6 +1,6 @@
 # 5. Lip-sync from the playing audio, in the browser
 
-**Status:** accepted, 2026-10-08; measured 2026-10-11 · **Design doc:** §21.4
+**Status:** accepted, 2026-10-08; measured 2026-10-11
 
 ## Context
 

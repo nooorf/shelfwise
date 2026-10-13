@@ -1,4 +1,4 @@
-// Lip-sync from the speech audio itself (design doc §21.4): loudness opens the mouth, and the
+// Lip-sync from the speech audio itself: loudness opens the mouth, and the
 // balance of energy across the frequency bands picks the vowel shape. Vowels differ mostly
 // in their first two formants: "oo"/"oh" sit low, "ah" in the middle, "ee"/"ih" put energy
 // high. A heuristic, not phoneme recognition, but cheap and in sync by construction: it reads

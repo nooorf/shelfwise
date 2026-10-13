@@ -1,4 +1,4 @@
-// Advanced filters (design doc §22.3): form fields become must chips, no LLM call. Empty
+// Advanced filters: form fields become must chips, no LLM call. Empty
 // fields are left alone; to undo one, remove its chip.
 import { useState } from 'react'
 import type { FormEvent } from 'react'

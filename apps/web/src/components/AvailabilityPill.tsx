@@ -1,4 +1,4 @@
-// Never colour alone (design doc §22.1): every state has an icon and words.
+// Never colour alone: every state has an icon and words.
 import { BookCheck, BookX, Clock, Library, Ban } from 'lucide-react'
 import type { ComponentType } from 'react'
 

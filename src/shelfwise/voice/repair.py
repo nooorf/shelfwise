@@ -1,4 +1,4 @@
-"""Names in a transcript put back to the catalog's spelling (design doc §21.2, entity repair).
+"""Names in a transcript put back to the catalog's spelling.
 
 Whisper hears names it doesn't know as ordinary words: "Gillian Flynn" comes out "jillian
 flynn", "Stephen King" as "steven king". Before the transcript is parsed, 2-4 word phrases

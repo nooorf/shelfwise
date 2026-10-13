@@ -1,4 +1,4 @@
-// Microphone capture for voice input (design doc §21.2): 16 kHz mono 16-bit PCM in 32 ms
+// Microphone capture for voice input: 16 kHz mono 16-bit PCM in 32 ms
 // frames, the format the server's VAD and Whisper take. The AudioContext runs at 16 kHz, so
 // the browser resamples; a small AudioWorklet turns floats into Int16 frames off the main
 // thread. Echo cancellation keeps the assistant's own voice out of the microphone.

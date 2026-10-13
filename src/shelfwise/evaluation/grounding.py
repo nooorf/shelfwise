@@ -1,4 +1,4 @@
-"""Grounding set E (design doc §19.2): how often each system says something it shouldn't.
+"""Grounding set E: how often each system says something it shouldn't.
 
 Three systems answer the same cases:
 

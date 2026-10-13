@@ -1788,7 +1788,7 @@
           "stages"
         ],
         "title": "Inspector",
-        "description": "The pipeline inspector's view of a turn (design doc \u00a722.2): how the message was read,\nwhat was searched, and the candidates at each stage. Timings are in `timings_ms`."
+        "description": "The pipeline inspector's view of a turn: how the message was read,\nwhat was searched, and the candidates at each stage. Timings are in `timings_ms`."
       },
       "InspectorHit": {
         "properties": {

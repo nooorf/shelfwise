@@ -737,7 +737,7 @@ export interface components {
         };
         /**
          * Inspector
-         * @description The pipeline inspector's view of a turn (design doc §22.2): how the message was read,
+         * @description The pipeline inspector's view of a turn: how the message was read,
          *     what was searched, and the candidates at each stage. Timings are in `timings_ms`.
          */
         Inspector: {

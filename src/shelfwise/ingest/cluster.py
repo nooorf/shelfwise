@@ -1,4 +1,4 @@
-"""Group editions into works (design doc §10).
+"""Group editions into works.
 
 Two editions belong to the same work if they share a source work key (Open Library already groups
 editions) or the same normalized title + primary author. Near-identical titles by the same author

@@ -97,7 +97,7 @@ Catalog genres: psychological thriller, thriller, mystery, detective, crime, tru
 - **Fiction**: only when the person says it (novel, fiction, story, nonfiction).
 - **Reading level**: only for learning and technical requests. beginner / from scratch / intro / gentle / no previous knowledge → `intro`; know some already → `intermediate`; graduate / rigorous / advanced → `advanced`.
 
-**Negations that map to a facet are hard** (design doc §12.4):
+**Negations that map to a facet are hard**:
 
 - "nothing supernatural", "no magic" → `not facet.supernatural eq yes hard`.
 - "no romance", "without romance", "not too violent", "nothing too dark" → `<facet> lte 1 hard` (none or minor: a passing mention shouldn't disqualify a book).

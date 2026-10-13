@@ -1,6 +1,6 @@
 # 4. Ollama with Qwen3-4B for the local LLM
 
-**Status:** accepted, 2026-10-06 · **Design doc:** §18.1
+**Status:** accepted, 2026-10-06
 
 ## Context
 

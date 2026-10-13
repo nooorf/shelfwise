@@ -1,4 +1,4 @@
-"""Dev/test split by query family (design doc §27.4).
+"""Dev/test split by query family.
 
 Deterministic from the family id, so a family's paraphrases always land together and adding new
 queries never moves existing ones. About 40% of families go to the locked test split.

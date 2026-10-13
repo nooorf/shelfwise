@@ -1,4 +1,4 @@
-"""Map messy source subjects onto a controlled genre vocabulary (design doc §10).
+"""Map messy source subjects onto a controlled genre vocabulary.
 
 Open Library and Goodreads subjects look like "Fiction, psychological", "Detective and mystery
 stories" or "New York Times bestseller". Each rule matches folded subject text; anything that

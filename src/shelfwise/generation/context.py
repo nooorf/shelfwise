@@ -1,4 +1,4 @@
-"""What the LLM may know about each book it talks about (design doc §18.2, grounded context).
+"""What the LLM may know about each book it talks about.
 
 One compact record per book, built from the catalog: title, authors, pages, year, genres, the
 tags, which of the person's wishes the book meets, and the start of the description. The same

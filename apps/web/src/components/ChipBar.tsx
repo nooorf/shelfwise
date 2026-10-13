@@ -1,4 +1,4 @@
-// What the search is holding right now (design doc §22.1). Solid chips are must-haves (hard
+// What the search is holding right now. Solid chips are must-haves (hard
 // filters), dashed ones preferences. Each has a remove button: the search runs again without it.
 // A switchable chip's label is a toggle between must and preferred; the rest (e.g. "available
 // now", which only filters) stay as they are. After a removal, focus goes to the next chip's

@@ -1,4 +1,4 @@
-"""Rank fusion (design doc §14.1).
+"""Rank fusion.
 
 Reciprocal Rank Fusion combines ranked lists without comparing their raw scores, which live on
 different scales (BM25 is unbounded, cosine is -1..1):

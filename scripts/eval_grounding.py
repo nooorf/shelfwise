@@ -1,4 +1,4 @@
-"""Grounding set E: what three systems say that they shouldn't (design doc §19.2).
+"""Grounding set E: what three systems say that they shouldn't.
 
     uv run python scripts/eval_grounding.py                    # all cases, all systems
     uv run python scripts/eval_grounding.py --per-kind 2       # a quick look

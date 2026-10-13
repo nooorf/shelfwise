@@ -1,4 +1,4 @@
-"""Pieces of the narration JSON as soon as each is complete (design doc §20.3, Level 2 voice).
+"""Pieces of the narration JSON as soon as each is complete.
 
 The model streams `{"intro": "...", "items": [{"work_id": 3, "why": "..."}, ...],
 "follow_up": "..."}` token by token. `PieceParser` takes the text as it arrives and hands out

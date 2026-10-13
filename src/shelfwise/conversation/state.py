@@ -1,4 +1,4 @@
-"""Conversation memory as a typed state object, updated by deltas (design doc §17).
+"""Conversation memory as a typed state object, updated by deltas.
 
 The retrieval pipeline reads only this state, never a transcript; the LLM will see it plus the
 last three turns for tone. Everything here is JSON-serializable, so a session survives a

@@ -1,4 +1,4 @@
-"""The LLM step of query understanding (design doc §12.2, step 4).
+"""The LLM step of query understanding.
 
 The model fills `QueryLLM`: intent, the books it names, genres, and each mood or negation as a
 named choice ("not too violent", "less", ...). Code then turns those choices into constraints

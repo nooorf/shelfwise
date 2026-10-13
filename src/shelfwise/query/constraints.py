@@ -1,4 +1,4 @@
-"""The constraint model shared by the rule parser, the LLM parser and UI chips (design doc §12.1)."""
+"""The constraint model shared by the rule parser, the LLM parser and UI chips."""
 
 from dataclasses import dataclass
 from typing import Any, Literal

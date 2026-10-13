@@ -1,4 +1,4 @@
-"""Catalog schema as SQLAlchemy Core tables (design doc §9).
+"""Catalog schema as SQLAlchemy Core tables.
 
 Three levels: a *work* is what a reader means by "a book" (recommended, embedded), an *edition*
 is what an ISBN identifies (pages, year, language), and a *copy* is a physical item whose status
@@ -189,7 +189,7 @@ work_embedding = Table(
     Column("created_at", DateTime(timezone=True), nullable=False, server_default=func.now()),
 )
 
-# Access-controlled; the assistant's code paths never read it (design doc §35).
+# Access-controlled; the assistant's code paths never read it.
 loan = Table(
     "loan",
     metadata,

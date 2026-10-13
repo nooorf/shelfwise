@@ -1,4 +1,4 @@
-"""Retrieval systems under evaluation, all with the same signature (design doc §29).
+"""Retrieval systems under evaluation, all with the same signature.
 
 Each takes a query and returns ranked work ids. New systems register here, and the pooling and
 evaluation scripts pick them up by name. Dense systems need an embedding model loaded into the
@@ -29,7 +29,7 @@ from shelfwise.retrieval.fusion import rrf
 from shelfwise.retrieval.lexical import LexicalIndex, build_lexical_index
 from shelfwise.retrieval.lookup import find_authors, find_by_isbn, find_titles
 
-CANDIDATES = 100  # per channel, before fusion (design doc §13.2)
+CANDIDATES = 100  # per channel, before fusion
 # Relevance floor for parsed_hybrid's embedding searches: a book more than this below the best
 # match in the catalog is dropped. On the dev split's graded pairs (bge-base, 2026-10-08) 0.20
 # keeps 99.9% of relevant books (grade 2-3) and drops 30% of grade-0 ones.
@@ -39,7 +39,7 @@ MAX_GAP = 0.20
 AVOID_WEIGHT = 1.0
 # Books the cross-encoder reorders. Dev sweep with MiniLM (2026-10-10): 20 0.590, 50 0.600,
 # 100 0.548, 200 0.524 NDCG@10; deeper lets a weak reranker promote more wrong books. Re-sweep for
-# each new reranker (the fine-tuned ones may want more).
+# each new reranker.
 RERANK_DEPTH = 50
 
 
@@ -89,7 +89,7 @@ TRACE_TOP = 10  # candidates kept per stage for the pipeline inspector
 
 @dataclass(frozen=True)
 class TraceStage:
-    """One retrieval stage as the pipeline inspector shows it (design doc §22.2)."""
+    """One retrieval stage as the pipeline inspector shows it."""
 
     name: str  # "filter", "bm25", "dense", "seed", "fused", "final"
     count: int  # how many candidates the stage produced (filter: how many books pass)

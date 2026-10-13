@@ -1,5 +1,5 @@
 """Replies built from the record alone: the fallback when the LLM is down or keeps failing the
-validator (design doc §19.1, step 5). Always correct, never fluent."""
+validator. Always correct, never fluent."""
 
 from typing import Literal
 

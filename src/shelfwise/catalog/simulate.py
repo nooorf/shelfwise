@@ -1,4 +1,4 @@
-"""Simulated library layer: shelves, copies and a year of circulation (design doc §10).
+"""Simulated library layer: shelves, copies and a year of circulation.
 
 We build the catalog ourselves, so there is no real circulation data. This module invents a
 plausible library around the real book metadata: each work gets a hidden *demand* level, popular

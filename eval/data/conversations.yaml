@@ -15,7 +15,7 @@ sessions:
   - id: C01
     category: refine
     source: llm-draft
-    notes: the design doc's worked example (§17)
+    notes: the worked example
     turns:
       - say: give me psychological thrillers
         kind: new_search

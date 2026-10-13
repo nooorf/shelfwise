@@ -1,1 +1,1 @@
-"""Voice: text-to-speech now; speech-to-text and turn-taking follow (design doc §21)."""
+"""Voice: text-to-speech now; speech-to-text and turn-taking follow."""

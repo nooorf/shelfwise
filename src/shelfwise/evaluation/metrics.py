@@ -1,4 +1,4 @@
-"""IR metrics for graded relevance (design doc §28). Grades: 0 not relevant ... 3 perfect.
+"""IR metrics for graded relevance. Grades: 0 not relevant ... 3 perfect.
 
 A book counts as *relevant* at grade >= 2. NDCG uses graded gains (2^grade - 1). Unjudged books
 count as grade 0, so `judged_at_k` is reported alongside to show how much that matters.

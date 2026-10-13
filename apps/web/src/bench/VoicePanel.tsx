@@ -1,4 +1,4 @@
-// The live session, measured (`make measure`, design doc §21, §32): how long after a spoken
+// The live session, measured (`make measure`): how long after a spoken
 // question the first word of the answer is heard, stage by stage, whether the avatar costs
 // any of it, how well its lips keep time with the sound, its frame rate and load time.
 import { useState } from 'react'

@@ -1,4 +1,4 @@
-// Avatar or orb (design doc §21.4 fallbacks). The orb is the floor: no WebGL, a request for
+// Avatar or orb. The orb is the floor: no WebGL, a request for
 // reduced motion, no model file, a failed load or a slow device all fall back to it.
 
 export type OrbReason = 'off' | 'reduced-motion' | 'no-webgl' | 'missing' | 'load' | 'slow'

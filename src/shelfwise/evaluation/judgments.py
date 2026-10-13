@@ -28,7 +28,7 @@ class Judgment:
     query_id: str
     work_key: str
     grade: int | None = None
-    judge: str = ""  # who graded it: a name/initials, or "llm" for pre-labels (Phase 3)
+    judge: str = ""  # who graded it: a name/initials, or "llm" for pre-labels
     title: str = ""
     author: str = ""
 

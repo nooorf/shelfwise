@@ -1,4 +1,4 @@
-// The one live region (design doc §22.4). It's always in the page, so screen readers pick up
+// The one live region. It's always in the page, so screen readers pick up
 // its changes; regions created along with their text often go unannounced.
 import { useSession } from '../session/store'
 import { announcement } from './announce'

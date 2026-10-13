@@ -1,4 +1,4 @@
-"""Where conversation state lives between turns (design doc §17, expiry and privacy).
+"""Where conversation state lives between turns.
 
 Redis with a TTL: a web session expires after 30 idle minutes, a kiosk's after 2
 (`SHELFWISE_SESSION_TTL_S=120`), so a shared kiosk never shows the previous person's

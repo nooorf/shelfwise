@@ -1,10 +1,10 @@
-"""What query understanding produces for one message (design doc §12.1).
+"""What query understanding produces for one message.
 
 The rule parser, the LLM parser and the parser gold set (eval set B) all speak this contract.
 `FIELDS` is the controlled vocabulary: which constraint fields exist, which operators each allows
 and what values are valid. The LLM's output is checked against it, and so is the gold set.
 
-Named `ParsedRequest` rather than the design doc's `SearchRequest`, which is the API's request body.
+Named `ParsedRequest` rather than `SearchRequest`, which is the API's request body.
 """
 
 from collections.abc import Callable

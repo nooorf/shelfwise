@@ -1,4 +1,4 @@
-"""Hard constraints -> the set of works allowed to appear (design doc §9, §13.2).
+"""Hard constraints -> the set of works allowed to appear.
 
 Rules that keep this honest:
 
@@ -204,7 +204,7 @@ def allowed_mask(
 class Relaxation:
     dropped: tuple[Constraint, ...]
     count: int
-    # Dropping "available now": when the first of those books is due back (design doc §12.3).
+    # Dropping "available now": when the first of those books is due back.
     earliest_due: date | None = None
 
     @property

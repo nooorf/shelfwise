@@ -10,7 +10,7 @@ One row per query. Edit freely; `make test` validates the file.
 | --- | --- |
 | `id` | Unique. Prefix by category is a convention (L = lookup, A = author, …), not a rule |
 | `category` | `lookup`, `author`, `genre`, `discovery`, `multi_constraint`, `negation`, `availability`, `similarity`, `vague`, `adversarial`, `learning` (technical/course books: topic + level + goal) |
-| `persona` | `student`, `casual`, `researcher`, `librarian`, `visitor` (design doc §4) |
+| `persona` | `student`, `casual`, `researcher`, `librarian`, `visitor` |
 | `family` | Paraphrases of the same need share a family; a family never spans dev and test |
 | `source` | `llm-draft` (written by an LLM), `persona` (written by us), `real` (collected from people), `synthetic` (generated from a book record) |
 | `text` | Exactly what the person would type or say: typos, lowercase and missing punctuation included |
@@ -39,7 +39,7 @@ The ideal parse of each query: intent, lookup, seed books, constraints, and whic
 
 ## `data/negation_queries.csv` and `data/negation_pairs.csv` — the negation study
 
-40 pairs of queries for the negation study (design doc §40.1 B): a base request and the same request with one thing ruled out, covering supernatural, romance, violence, darkness, pace and audience. `negation_queries.csv` has the same columns as `queries.csv`; each pair shares a family, so both halves land in the same split. They're pooled and graded like set A (`make pool`, `make label` and `make grades-doc` read both files), but `make eval` scores set A only.
+40 pairs of queries for the negation study: a base request and the same request with one thing ruled out, covering supernatural, romance, violence, darkness, pace and audience. `negation_queries.csv` has the same columns as `queries.csv`; each pair shares a family, so both halves land in the same split. They're pooled and graded like set A (`make pool`, `make label` and `make grades-doc` read both files), but `make eval` scores set A only.
 
 `negation_pairs.csv` gives each pair a `kind`: `remove` when the ruled-out thing is common in the base query's results (can the system take it out?), `lure` when it's rare there (does naming it drag it in?). The study reports the two separately. It also names, per pair, the tag value that violates the negation, written like `supernatural=yes` or `romance>=2` in the vocabulary of `facet_labels.csv`. Violations are judged from human labels, never from the LLM tags the facet filter uses.
 
@@ -53,8 +53,8 @@ The query parser's LLM answer for every evaluated query, one JSON line each, key
 
 ## `data/conversations.yaml` — conversation set C
 
-40 scripted sessions of 2–5 turns (design doc §27, set C): refinements, negations added over turns, references to shown books ("the second one"), topic switches with undo, the no-match dialog, "forget the page limit", small talk, and mixtures. Each turn gives what the reader types and the gold state afterwards: the whole active constraint set (PARSING.md lines; `same` for unchanged), the turn's kind and route, words the search text must keep or drop, and which shown books a reference points at. Values that depend on the catalog are never gold: `*` stands for the number a "shorter" or "darker" resolves to, and `~` skips a turn's state (which offer "yes" accepts). Several sessions test known gaps on purpose; their notes say so.
+40 scripted sessions of 2–5 turns: refinements, negations added over turns, references to shown books ("the second one"), topic switches with undo, the no-match dialog, "forget the page limit", small talk, and mixtures. Each turn gives what the reader types and the gold state afterwards: the whole active constraint set (PARSING.md lines; `same` for unchanged), the turn's kind and route, words the search text must keep or drop, and which shown books a reference points at. Values that depend on the catalog are never gold: `*` stands for the number a "shorter" or "darker" resolves to, and `~` skips a turn's state (which offer "yes" accepts). Several sessions test known gaps on purpose; their notes say so.
 
-`make eval-conversations` plays every session through the conversation service on the real catalog and reports session success, turn exact match, state precision/recall/F1, kind, route and reference accuracy (`ERRORS=1` lists every miss; `PARSER=cascade` uses the LLM parser, whose answers join `llm_cache.jsonl`). `make test` validates the file. Final-turn relevance judgments (design doc: NDCG@5 on the last turn) come later, through the usual pooling.
+`make eval-conversations` plays every session through the conversation service on the real catalog and reports session success, turn exact match, state precision/recall/F1, kind, route and reference accuracy (`ERRORS=1` lists every miss; `PARSER=cascade` uses the LLM parser, whose answers join `llm_cache.jsonl`). `make test` validates the file.
 
 First scores (2026-10-11, Qwen3-4B): the cascade gets 32.5% of sessions fully right, state F1 80.4%, kind 95.4%, route 96.6%, references 100%; rules alone get 5.0% and F1 34.9%, since they extract no genres or facets. The first cascade run scored 20.0% and F1 73.2%: Qwen3-4B calls bare follow-ups ("not too violent", "true crime") small talk, and the merge dropped their constraints. Most remaining misses are `fiction` not inferred from "novel", "psychological thriller" kept as its own genre, and a few phrasings the gaps sessions target.

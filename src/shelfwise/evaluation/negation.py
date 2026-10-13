@@ -1,4 +1,4 @@
-"""Paired negation queries for the negation study (design doc §40.1 B).
+"""Paired negation queries for the negation study.
 
 Each pair is a base request and the same request with one thing ruled out ("a creepy gothic
 novel" / "... with nothing supernatural"). `negation_pairs.csv` says, per pair, which book tag

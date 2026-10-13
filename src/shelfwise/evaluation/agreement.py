@@ -1,4 +1,4 @@
-"""Agreement between two sets of labels: LLM vs human, or human vs human (design doc §11.2, §29).
+"""Agreement between two sets of labels: LLM vs human, or human vs human.
 
 Cohen's kappa corrects raw accuracy for agreement by chance: a tagger that answers "no
 supernatural" for every book scores high accuracy on a realistic shelf and kappa 0. Ordered scales

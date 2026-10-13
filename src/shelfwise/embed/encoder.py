@@ -74,6 +74,4 @@ class SentenceTransformerEmbedder:
 def load_embedder(name: str) -> SentenceTransformerEmbedder:
     if name not in MODELS:
         raise ValueError(f"unknown embedding model {name!r}; choose from {sorted(MODELS)}")
-    if not MODELS[name].available:
-        raise LookupError(f"{name!r} isn't trained yet: no {MODELS[name].hf_id}/ (Phase 7)")
     return SentenceTransformerEmbedder(MODELS[name])

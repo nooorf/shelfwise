@@ -1,4 +1,4 @@
-// The full record behind a card (design doc §22.1): opened from a card, closed with Esc, the
+// The full record behind a card: opened from a card, closed with Esc, the
 // close button or a click outside. The card's facts show at once; the rest loads.
 import { ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'

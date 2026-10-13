@@ -1,4 +1,4 @@
-"""Open Library lookups by ISBN, with an on-disk cache (design doc §10).
+"""Open Library lookups by ISBN, with an on-disk cache.
 
 An ISBN lookup touches three record types: the edition (`/isbn/{isbn}.json`), its work
 (description, subjects) and each author (name). Every response, including misses, is cached on

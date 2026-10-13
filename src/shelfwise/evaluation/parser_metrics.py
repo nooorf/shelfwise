@@ -1,4 +1,4 @@
-"""Score a parser against gold set B (design doc §28).
+"""Score a parser against gold set B.
 
 - **Constraints:** per-field precision, recall and F1. A predicted constraint counts only if field,
   op, value, strength and polarity all match a gold one ("strict"); "lenient" ignores strength,

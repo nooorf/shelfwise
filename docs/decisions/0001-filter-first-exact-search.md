@@ -1,6 +1,6 @@
 # 1. Filter first, then exact vector search in memory
 
-**Status:** accepted, 2026-10-06 · **Design doc:** §13, §32
+**Status:** accepted, 2026-10-06
 
 ## Context
 

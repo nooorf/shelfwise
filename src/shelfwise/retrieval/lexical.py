@@ -1,4 +1,4 @@
-"""Lexical retrieval: BM25 per field, held in memory (design doc §13).
+"""Lexical retrieval: BM25 per field, held in memory.
 
 Title, author and body (description + genres + tags) are separate BM25 indexes so a title match
 can count for more than a passing mention in a description. Scores come back for *every* work as

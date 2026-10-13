@@ -1,4 +1,4 @@
-"""Book tags extracted by the local LLM (design doc §11.2).
+"""Book tags extracted by the local LLM.
 
 These turn reader language into fields the system can filter and rank on: "nothing
 supernatural" becomes `supernatural != 'yes'`, "something darker" becomes `darkness > median`,

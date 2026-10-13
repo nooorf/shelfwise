@@ -1,4 +1,4 @@
-"""Copy-level availability (design doc §9).
+"""Copy-level availability.
 
 Availability is computed from `copy.status`, never stored on the work. The `work_availability`
 materialized view serves the ranker (refreshed after each sync); `fetch_live_availability` re-reads

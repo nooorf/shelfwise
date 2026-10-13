@@ -1,4 +1,4 @@
-"""The text each book is embedded as (design doc §11.1).
+"""The text each book is embedded as.
 
 One document per work, no chunking: descriptions fit easily in every model's context. Fields that
 change often or carry no meaning (availability, shelf, copies, ISBN, publisher) are excluded on

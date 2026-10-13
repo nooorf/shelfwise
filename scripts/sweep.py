@@ -1,4 +1,4 @@
-"""Tune retrieval settings on the dev split (design doc §14): fusion weights and rerank depth.
+"""Tune retrieval settings on the dev split: fusion weights and rerank depth.
 
     uv run python scripts/sweep.py fusion                      # RRF k x list weights
     uv run python scripts/sweep.py depth --reranker minilm     # books reranked vs NDCG and latency

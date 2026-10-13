@@ -1,4 +1,4 @@
-// Explore (design doc §22.3): pick a genre to browse it, books on the shelf now and the most
+// Explore: pick a genre to browse it, books on the shelf now and the most
 // borrowed first. The genres and their counts come from the catalog.
 import { useEffect, useState } from 'react'
 

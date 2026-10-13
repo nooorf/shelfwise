@@ -1,4 +1,4 @@
-"""Evaluation query set A (design doc §27). Loaded from a hand-edited CSV and validated strictly."""
+"""Evaluation query set A. Loaded from a hand-edited CSV and validated strictly."""
 
 import csv
 from collections.abc import Iterable

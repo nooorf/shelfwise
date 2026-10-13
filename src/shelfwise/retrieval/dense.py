@@ -1,4 +1,4 @@
-"""Dense retrieval: exact dot-product search over an in-memory matrix (design doc §13.2).
+"""Dense retrieval: exact dot-product search over an in-memory matrix.
 
 At library scale (tens of thousands of works) exact search takes milliseconds and has perfect
 recall; approximate indexes would add a filtered-search recall problem for no benefit. The matrix

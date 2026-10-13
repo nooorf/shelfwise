@@ -1,4 +1,4 @@
-// The talking avatar (design doc §21.4, Phase 6b): a VRM model in a small three.js scene,
+// The talking avatar: a VRM model in a small three.js scene,
 // lazy-loaded so the app never waits for it. It follows the same states as the orb (idle,
 // listening, thinking, speaking) and moves its mouth from the speech audio the speakers are
 // playing (lipsync.ts), so sound and lips can't drift apart. When playback stops the mouth
