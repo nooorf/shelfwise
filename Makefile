@@ -145,8 +145,8 @@ download-avatar:  ## Download the placeholder avatar (pixiv's VRM 1.0 sample, ~1
 	mkdir -p apps/web/public/avatar
 	[ -f apps/web/public/avatar/sample.vrm ] || curl -fL --progress-bar -o apps/web/public/avatar/sample.vrm $(AVATAR_URL)
 
-api:  ## Run the API with auto-reload
-	uv run uvicorn shelfwise.api.main:app --reload
+api:  ## Run the API with auto-reload, models from the local cache (HF_HUB_OFFLINE=0 make api to allow downloads)
+	HF_HUB_OFFLINE=$${HF_HUB_OFFLINE:-1} uv run uvicorn shelfwise.api.main:app --reload
 
 # The web app (apps/web). Node is the official prebuilt LTS in ~/.local/node (Homebrew has no
 # bottle for this macOS and builds it from source); NODE_BIN= points elsewhere if you have one.
