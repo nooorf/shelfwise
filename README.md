@@ -4,8 +4,8 @@
 
 ### Describe a mood. Find it on the shelf.
 
-**A conversational, voice-first library assistant with a talking avatar.**<br>
-Hybrid retrieval, an LLM query parser, and grounded generation that **cannot invent a book**, all running locally on an 8 GB laptop.
+**The librarian who knows how every book *feels*, and which ones are on the shelf right now.**<br>
+A conversational, voice-first library assistant with a talking avatar: hybrid retrieval, an LLM query parser, and grounded generation that **cannot invent a book**, all running locally on a laptop.
 
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
@@ -31,6 +31,26 @@ Hybrid retrieval, an LLM query parser, and grounded generation that **cannot inv
 </table>
 
 ---
+
+## Why Shelfwise
+
+Walk up to a library desk and say *"I want something dark and twisty, but short enough for one weekend."* The catalog behind the desk can't help. Library systems search for **exact titles, authors and subject headings**; they were built to find a book you already know, not to suggest one you'll love.
+
+So readers turn to the internet. They describe a mood, get a perfect recommendation, and walk to the library to find it isn't in the collection, or that every copy is out on loan until next month.
+
+**Shelfwise joins the two halves.** It understands requests the way a well-read librarian does, by mood, pace, darkness, length and what to leave out, and it only ever answers from **this library's own shelves**: which books it owns, which copies are in today, which floor and shelf to walk to, and when a borrowed copy is due back.
+
+### A living library, simulated end to end
+
+Recommendations mean little without a real collection behind them, so Shelfwise runs a complete library:
+
+- **5,358 real books** with real metadata, blurbs and covers from Open Library and the Goodreads Book Graph.
+- **Four floors**, Children & Teens, Fiction, Nonfiction, and Science & Technology, with genre shelf codes and Dewey call numbers.
+- **Multiple copies per title**, more for popular books, driven by each book's simulated demand.
+- **A full year of circulation:** 2,000 simulated patrons borrowing and returning on 14-day loans, producing today's copy statuses, due dates and borrowing history.
+- **Live availability:** a circulation ticker keeps checking books out and returning them while the app runs, so "on the shelf today" changes as you use it, just as it would at a real desk.
+
+Ask for something on the shelf now, and Shelfwise answers from that live state. When a copy is out, it tells you when it's due back.
 
 ## What it does
 
@@ -158,7 +178,6 @@ Every number above is reproducible from a JSON report in [`eval/reports/`](eval/
 ## Engineering
 
 - **Strict static analysis:** pyright with 0 errors, ruff lint and format, all enforced by pre-commit hooks and **GitHub Actions CI** with unit and database integration jobs.
-- **20k+ lines** of Python and TypeScript across a FastAPI backend, a React 19 frontend and the evaluation harness.
 - **Postgres 16 + pgvector** schema managed with Alembic migrations; Redis-backed conversation sessions; an OpenAPI-typed client for the web app.
 - **One-command workflows:** `make eval`, `make eval-grounding`, `make measure` and `make web-e2e` each rebuild their numbers from scratch.
 - **Fully local and private:** no paid APIs and no data leaves the machine. The whole stack runs on an 8 GB M2 MacBook.
@@ -204,6 +223,7 @@ make llm-pull            # the LLM (~2.5 GB); then `make llm` in its own termina
 make download-tts download-stt download-avatar   # voice and the avatar
 make api                 # http://localhost:8000/api/v1/health
 make web                 # http://localhost:5173 (another terminal)
+make tick                # optional: live checkouts and returns (another terminal)
 ```
 
 Then `make test` (unit), `make test-all` (with the database), `make web-test`, `make web-e2e` (a real browser), `make eval` (the benchmark), `make measure` (the voice timings).
@@ -219,14 +239,10 @@ Book metadata is real (5,358 works from Open Library and the UCSD Goodreads Book
 | Data | UCSD Book Graph (Goodreads, 2017) | Academic use only; downloaded locally, never redistributed |
 | Data | Open Library metadata | CC0 (public domain) |
 | Data | Open Library covers | Publishers' images, shown as catalogue thumbnails under Open Library's terms |
-| Embedding model | BAAI bge-base-en-v1.5 | MIT |
-| Rerankers | cross-encoder/ms-marco-MiniLM-L6-v2, BAAI bge-reranker-base | Apache-2.0, MIT |
 | LLM | Qwen3-4B (Mac), Qwen3-8B and 14B (offline data generation), via Ollama | Apache-2.0 |
 | Speech to text | Whisper large-v3-turbo (MLX 4-bit conversion) | MIT |
 | Voice activity | Silero VAD | MIT |
 | Voice | Kokoro-82M, voice `af_heart` (kokoro-onnx export) | Apache-2.0 (model), MIT (kokoro-onnx) |
 | Avatar | pixiv's VRM1_Constraint_Twist_Sample | VRM Public License 1.0 |
-| Animation | None: idle motion, blinking, head turns and lip-sync are procedural | — |
-| Fonts | Source Serif 4, Schibsted Grotesk | SIL Open Font License 1.1 |
 
 **Data citation.** Mengting Wan and Julian McAuley, "Item Recommendation on Monotonic Behavior Chains", RecSys 2018; Mengting Wan, Rishabh Misra, Ndapa Nakashole and Julian McAuley, "Fine-Grained Spoiler Detection from Large-Scale Review Corpora", ACL 2019.
