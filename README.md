@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📚 Shelfwise
+# Shelfwise
 
 ### Describe a mood. Find it on the shelf.
 
@@ -16,7 +16,7 @@ Hybrid retrieval, an LLM query parser, and grounded generation that **cannot inv
 ![Types](https://img.shields.io/badge/pyright-0_errors-2EA44F)
 ![Paid APIs](https://img.shields.io/badge/paid_APIs-0-2EA44F)
 
-<img src="docs/img/screenshot-chat.png" alt="Shelfwise answering 'a dark psychological thriller, nothing supernatural, under 300 pages' with available books, their shelf locations and a note for each" width="100%">
+<img src="docs/img/screenshot-live.jpg" alt="The live session: the avatar answers the spoken request 'Gothic horror novels, please' aloud, with five numbered books fanned out beside her" width="100%">
 
 </div>
 
@@ -32,39 +32,47 @@ Hybrid retrieval, an LLM query parser, and grounded generation that **cannot inv
 
 ---
 
-## ✨ What it does
+## What it does
 
 Ask for *"a dark psychological thriller, nothing supernatural, under 300 pages, on the shelf today"*, by typing or out loud. Shelfwise answers with books the library actually owns, says which floor and shelf they're on, and explains each pick, while an animated avatar speaks the answer.
 
 | | |
 | --- | --- |
-| 🧠 **Understands the whole request** | An LLM parser (Qwen3-4B with a deterministic rules fallback) splits a request into hard constraints (page limits, availability, exclusions), soft preferences (mood, pace, audience) and a topic. Each one appears as a chip the reader can drop, or toggle between *must* and *preferred*. |
-| 🔒 **Never breaks a hard constraint** | Constraints compile into a single SQL query that defines the allowed set, and every retrieval channel scores only inside it. A filter is a guarantee, not a hint. |
-| 🚫 **Gets "not" right** | Every book is tagged offline by an LLM for romance, violence, darkness, pace, the supernatural, audience and more. "Without the romance" becomes a filter, not a vector that drifts *towards* romance. |
-| 🛡️ **Can't hallucinate** | The narrator's output schema accepts only the IDs of books retrieval returned. Titles, authors and availability come from the database, and a validator checks every sentence before it is shown or spoken. |
-| 💬 **Holds a conversation** | "Shorter", "not so dark", "something like the second one", "only ones I can borrow today" refine the running request. A new topic starts fresh, and undo restores the last state. |
-| 🎙️ **Talks back** | Whisper large-v3-turbo listens, Silero VAD detects end of speech, and Kokoro speaks. The first sentence plays while the LLM is still writing the rest, and speaking over it interrupts it (barge-in). |
-| 🧑‍🎤 **Has a face** | A VRM avatar with procedural idle motion, blinking and gaze. Its lips are driven by the audio as it plays, so the voice and the mouth can't drift apart. |
-| 📊 **Shows its work** | `/bench` renders the leaderboard with confidence intervals, the quality/latency trade-off, per-category scores, grounding results and voice timings. The chat inspector exposes the parse and the candidates at every stage. |
+| **Understands the whole request** | An LLM parser (Qwen3-4B with a deterministic rules fallback) splits a request into hard constraints (page limits, availability, exclusions), soft preferences (mood, pace, audience) and a topic. Each one appears as a chip the reader can drop, or toggle between *must* and *preferred*. |
+| **Never breaks a hard constraint** | Constraints compile into a single SQL query that defines the allowed set, and every retrieval channel scores only inside it. A filter is a guarantee, not a hint. |
+| **Gets "not" right** | Every book is tagged offline by an LLM for romance, violence, darkness, pace, the supernatural, audience and more. "Without the romance" becomes a filter, not a vector that drifts *towards* romance. |
+| **Can't hallucinate** | The narrator's output schema accepts only the IDs of books retrieval returned. Titles, authors and availability come from the database, and a validator checks every sentence before it is shown or spoken. |
+| **Holds a conversation** | "Shorter", "not so dark", "something like the second one", "only ones I can borrow today" refine the running request. A new topic starts fresh, and undo restores the last state. |
+| **Talks back** | Whisper large-v3-turbo listens, Silero VAD detects end of speech, and Kokoro speaks. The first sentence plays while the LLM is still writing the rest, and speaking over it interrupts it (barge-in). |
+| **Has a face** | A VRM avatar with procedural idle motion, blinking and gaze. Its lips are driven by the audio as it plays, so the voice and the mouth can't drift apart. |
+| **Shows its work** | `/bench` renders the leaderboard with confidence intervals, the quality/latency trade-off, per-category scores, grounding results and voice timings. The chat inspector exposes the parse and the candidates at every stage. |
 
 <table>
 <tr>
-<td width="50%"><img src="docs/img/screenshot-landing.png" alt="The Shelfwise landing page with the avatar"></td>
+<td width="50%"><img src="docs/img/screenshot-landing.jpg" alt="The landing page: the featured book arc with the avatar behind it"></td>
+<td width="50%"><img src="docs/img/screenshot-chat.jpg" alt="The chat answering 'a dark psychological thriller, nothing supernatural, under 300 pages' with constraint chips and the top pick on the stage"></td>
+</tr>
+<tr>
+<td align="center"><sub>Landing page: the featured shelf and the avatar</sub></td>
+<td align="center"><sub>Chat: every constraint becomes a chip; the top pick shows where it is shelved</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/img/screenshot-details.jpg" alt="A book's details: blurb, what it's like (tone, romance, violence, pace, supernatural, audience, setting) and every copy's status and shelf"></td>
 <td width="50%"><img src="docs/img/screenshot-bench.png" alt="The benchmarks page: nDCG@10 0.682, 0% invented books, 95% constraint F1, 250 ms p95"></td>
 </tr>
 <tr>
-<td align="center"><sub>Landing page with the live avatar</sub></td>
+<td align="center"><sub>Book details: what it's like, and every copy's status and shelf</sub></td>
 <td align="center"><sub><code>/bench</code>: every claim, measured</sub></td>
 </tr>
 </table>
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
-    U(["🎙️ Voice / ⌨️ Text"]) --> STT["Whisper + Silero VAD"]
+    U(["Voice / Text"]) --> STT["Whisper + Silero VAD"]
     STT --> P
     U --> P["Query parser<br/>Qwen3-4B · rules fallback"]
     P -->|hard constraints| F["SQL filter<br/>allowed set"]
@@ -96,7 +104,7 @@ flowchart LR
 
 ---
 
-## 📈 Results
+## Results
 
 ### Ranking quality: locked test split, run once
 
@@ -121,18 +129,18 @@ Shelfwise's biggest wins are on the hardest requests:
 
 | Capability | Result | Baseline |
 | --- | --- | --- |
-| 🛡️ Invented books shown to readers (150 adversarial cases, incl. prompt injection) | **0%** | naive RAG 21% · LLM alone 77% |
-| 🛡️ LLM first drafts naming a book the library doesn't have, caught by the validator | **100%** caught before reaching a reader | 29.3% of first drafts |
-| 🚫 Top-10 books that break a "not" request (37 negation pairs) | **31%** | hybrid 62% · dense 67% |
-| 🧠 Constraint extraction F1 (184 gold parses) | **95.0%** (P 98.0%, R 92.2%) | — |
-| 💬 Conversation state F1 (40 scripted sessions, 112 turns) | **80.4%** · turn type **95.4%** | rules alone 34.9% · 70.6% |
-| 🏷️ LLM book tags vs human labels (200 books) | audience **96%** (κ 0.90) · fiction **100%** · supernatural **95%** | — |
-| ⚡ Search latency, p95 (5,358 works, all filters) | **~250 ms** | — |
-| 🧑‍🎤 Avatar lip-sync offset (median) | **4 ms** · 59 fps · first frame in 0.73 s | no measurable added latency |
+| Invented books shown to readers (150 adversarial cases, incl. prompt injection) | **0%** | naive RAG 21% · LLM alone 77% |
+| LLM first drafts naming a book the library doesn't have, caught by the validator | **100%** caught before reaching a reader | 29.3% of first drafts |
+| Top-10 books that break a "not" request (37 negation pairs) | **31%** | hybrid 62% · dense 67% |
+| Constraint extraction F1 (184 gold parses) | **95.0%** (P 98.0%, R 92.2%) | — |
+| Conversation state F1 (40 scripted sessions, 112 turns) | **80.4%** · turn type **95.4%** | rules alone 34.9% · 70.6% |
+| LLM book tags vs human labels (200 books) | audience **96%** (κ 0.90) · fiction **100%** · supernatural **95%** | — |
+| Search latency, p95 (5,358 works, all filters) | **~250 ms** | — |
+| Avatar lip-sync offset (median) | **4 ms** · 59 fps · first frame in 0.73 s | no measurable added latency |
 
 ---
 
-## 🔬 Evaluation methodology
+## Evaluation methodology
 
 Every number above is reproducible from a JSON report in [`eval/reports/`](eval/reports/), named by timestamp and git commit.
 
@@ -147,7 +155,7 @@ Every number above is reproducible from a JSON report in [`eval/reports/`](eval/
 
 ---
 
-## 🧱 Engineering
+## Engineering
 
 - **Strict static analysis:** pyright with 0 errors, ruff lint and format, all enforced by pre-commit hooks and **GitHub Actions CI** with unit and database integration jobs.
 - **20k+ lines** of Python and TypeScript across a FastAPI backend, a React 19 frontend and the evaluation harness.
@@ -165,7 +173,7 @@ Every number above is reproducible from a JSON report in [`eval/reports/`](eval/
 
 ---
 
-## 🛠️ Tech stack
+## Tech stack
 
 | Layer | Technology |
 | --- | --- |
@@ -178,7 +186,7 @@ Every number above is reproducible from a JSON report in [`eval/reports/`](eval/
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 Requires [uv](https://docs.astral.sh/uv/), Docker, [Ollama](https://ollama.com) and Node 24.
 
@@ -202,7 +210,7 @@ Then `make test` (unit), `make test-all` (with the database), `make web-test`, `
 
 ---
 
-## 📜 Licences and credits
+## Licences and credits
 
 Book metadata is real (5,358 works from Open Library and the UCSD Goodreads Book Graph); shelves, copies and 12 months of loans are simulated. None of the data or models below are in this repository: the `make download-*` targets and the first run fetch them. Details and versions are in [CREDITS.md](CREDITS.md).
 
