@@ -158,10 +158,18 @@
 }
 
 .arc-book img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.arc-book img[data-loaded='true'] {
+  opacity: 1;
 }
 
 /* A little light across the jacket. */

@@ -31,8 +31,10 @@ interface CoverProps {
   onPoint: (el: HTMLElement | null) => void
 }
 
+// The plain cover is always drawn and the photo fades in on top once it has loaded, so a slow
+// or missing cover never leaves a gap in the arc.
 function ArcCover({ book, place, index, onOpen, onPoint }: CoverProps) {
-  const [failed, setFailed] = useState(false)
+  const [cover, setCover] = useState<'loading' | 'loaded' | 'failed'>('loading')
   const big = place.scale > 0.9
   const style = {
     '--x': `${place.x}px`,
@@ -54,12 +56,11 @@ function ArcCover({ book, place, index, onOpen, onPoint }: CoverProps) {
       onBlur={() => onPoint(null)}
       aria-label={byline(book)}
     >
-      {failed ? (
-        <span className="arc-plain" style={{ background: `hsl(${hue(book.title)} 32% 30%)` }} aria-hidden="true">
-          <span className="arc-plain-title">{book.title}</span>
-          <span className="arc-plain-author">{book.authors[0]}</span>
-        </span>
-      ) : (
+      <span className="arc-plain" style={{ background: `hsl(${hue(book.title)} 32% 30%)` }} aria-hidden="true">
+        <span className="arc-plain-title">{book.title}</span>
+        <span className="arc-plain-author">{book.authors[0]}</span>
+      </span>
+      {cover !== 'failed' && (
         <img
           src={coverUrl(book.cover_id, big ? 'L' : 'M')}
           alt=""
@@ -67,7 +68,9 @@ function ArcCover({ book, place, index, onOpen, onPoint }: CoverProps) {
           height={COVER.h}
           decoding="async"
           draggable={false}
-          onError={() => setFailed(true)}
+          data-loaded={cover === 'loaded'}
+          onLoad={() => setCover('loaded')}
+          onError={() => setCover('failed')}
         />
       )}
     </button>
