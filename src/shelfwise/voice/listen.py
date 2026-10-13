@@ -139,7 +139,7 @@ class MlxWhisper:
         self._lock = threading.Lock()
 
     def transcribe(self, audio: np.ndarray) -> str:
-        import mlx_whisper
+        import mlx_whisper  # pyright: ignore[reportMissingImports]  (Apple Silicon only)
 
         with self._lock:
             result = mlx_whisper.transcribe(
@@ -155,7 +155,7 @@ def load_listening(model_dir: Path, whisper: str) -> tuple[VAD, Transcriber] | N
         log.warning("no VAD model in %s: run `make download-stt` for voice input", model_dir)
         return None
     try:
-        import mlx_whisper  # noqa: F401  (Apple Silicon only; CUDA gets faster-whisper later)
+        import mlx_whisper  # noqa: F401  # pyright: ignore[reportMissingImports]  (Apple Silicon only)
     except ImportError:
         log.warning("mlx-whisper isn't installed here: voice input is off")
         return None
