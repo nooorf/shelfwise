@@ -149,7 +149,8 @@ Shelfwise's biggest wins are on the hardest requests:
 
 | Capability | Result | Baseline |
 | --- | --- | --- |
-| Invented books shown to readers (150 adversarial cases, incl. prompt injection) | **0%** | naive RAG 21% · LLM alone 77% |
+| Invented books shown to readers (150 adversarial cases, incl. prompt injection) | **0%** | naive RAG 21% |
+| Recommended books the library doesn't own (same 150 cases) | **0%** | LLM alone 77% |
 | LLM first drafts naming a book the library doesn't have, caught by the validator | **100%** caught before reaching a reader | 29.3% of first drafts |
 | Top-10 books that break a "not" request (37 negation pairs) | **31%** | hybrid 62% · dense 67% |
 | Constraint extraction F1 (184 gold parses) | **95.0%** (P 98.0%, R 92.2%) | — |
